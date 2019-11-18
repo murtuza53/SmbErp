@@ -1,0 +1,221 @@
+package com.smb.erp.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * The persistent class for the company database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
+public class Company implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int companyid;
+
+	private String addresss;
+
+	private String companyname;
+
+	private String crno;
+
+	private String fax;
+
+	private String mob;
+
+	@Temporal(TemporalType.DATE)
+	private Date openingdate;
+
+	private String phone;
+
+	//bi-directional many-to-one association to BusDoc
+	@OneToMany(mappedBy="company")
+	private List<BusDoc> busdocs;
+
+	//bi-directional many-to-one association to CompanyGroup
+	@ManyToOne
+	@JoinColumn(name="comgroupid")
+	private CompanyGroup companygroup;
+
+	//bi-directional many-to-one association to Dept
+	@OneToMany(mappedBy="company")
+	private List<Dept> depts;
+
+	//bi-directional many-to-one association to Emp
+	@OneToMany(mappedBy="company")
+	private List<Emp> emps;
+
+	//bi-directional many-to-one association to Warehouse
+	@OneToMany(mappedBy="company")
+	private List<Warehouse> warehouses;
+
+	public Company() {
+	}
+
+	public int getCompanyid() {
+		return this.companyid;
+	}
+
+	public void setCompanyid(int companyid) {
+		this.companyid = companyid;
+	}
+
+	public String getAddresss() {
+		return this.addresss;
+	}
+
+	public void setAddresss(String addresss) {
+		this.addresss = addresss;
+	}
+
+	public String getCompanyname() {
+		return this.companyname;
+	}
+
+	public void setCompanyname(String companyname) {
+		this.companyname = companyname;
+	}
+
+	public String getCrno() {
+		return this.crno;
+	}
+
+	public void setCrno(String crno) {
+		this.crno = crno;
+	}
+
+	public String getFax() {
+		return this.fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getMob() {
+		return this.mob;
+	}
+
+	public void setMob(String mob) {
+		this.mob = mob;
+	}
+
+	public Date getOpeningdate() {
+		return this.openingdate;
+	}
+
+	public void setOpeningdate(Date openingdate) {
+		this.openingdate = openingdate;
+	}
+
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public List<BusDoc> getBusdocs() {
+		return this.busdocs;
+	}
+
+	public void setBusdocs(List<BusDoc> busdocs) {
+		this.busdocs = busdocs;
+	}
+
+	public BusDoc addBusdoc(BusDoc busdoc) {
+		getBusdocs().add(busdoc);
+		busdoc.setCompany(this);
+
+		return busdoc;
+	}
+
+	public BusDoc removeBusdoc(BusDoc busdoc) {
+		getBusdocs().remove(busdoc);
+		busdoc.setCompany(null);
+
+		return busdoc;
+	}
+
+	public CompanyGroup getCompanygroup() {
+		return this.companygroup;
+	}
+
+	public void setCompanygroup(CompanyGroup companygroup) {
+		this.companygroup = companygroup;
+	}
+
+	public List<Dept> getDepts() {
+		return this.depts;
+	}
+
+	public void setDepts(List<Dept> depts) {
+		this.depts = depts;
+	}
+
+	public Dept addDept(Dept dept) {
+		getDepts().add(dept);
+		dept.setCompany(this);
+
+		return dept;
+	}
+
+	public Dept removeDept(Dept dept) {
+		getDepts().remove(dept);
+		dept.setCompany(null);
+
+		return dept;
+	}
+
+	public List<Emp> getEmps() {
+		return this.emps;
+	}
+
+	public void setEmps(List<Emp> emps) {
+		this.emps = emps;
+	}
+
+	public Emp addEmp(Emp emp) {
+		getEmps().add(emp);
+		emp.setCompany(this);
+
+		return emp;
+	}
+
+	public Emp removeEmp(Emp emp) {
+		getEmps().remove(emp);
+		emp.setCompany(null);
+
+		return emp;
+	}
+
+	public List<Warehouse> getWarehouses() {
+		return this.warehouses;
+	}
+
+	public void setWarehouses(List<Warehouse> warehouses) {
+		this.warehouses = warehouses;
+	}
+
+	public Warehouse addWarehous(Warehouse warehous) {
+		getWarehouses().add(warehous);
+		warehous.setCompany(this);
+
+		return warehous;
+	}
+
+	public Warehouse removeWarehous(Warehouse warehous) {
+		getWarehouses().remove(warehous);
+		warehous.setCompany(null);
+
+		return warehous;
+	}
+
+}

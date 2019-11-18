@@ -1,0 +1,460 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pc="http://primefaces.org/california">
+
+	<div
+		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-dark' : ''} #{guestPreferences.gradientMenu ? 'layout-sidebar-gradient': ''}">
+		<div id="nano-container" class="nano">
+			<div class="nano-content sidebar-scroll-content">
+				<ui:fragment
+					rendered="#{guestPreferences.profileMode == 'inline' ? true : false}">
+					<div class="user-profile">
+						<a id="sidebar-profile-button" href="#"> <p:graphicImage
+								name="images/avatar.png" library="california-layout" /> <span
+							class="sidebar-profile-name">Pauline Harrell</span> <span
+							class="sidebar-profile-role">Administrator</span>
+						</a>
+						<ul id="sidebar-usermenu" class="usermenu">
+							<li><a href="#"> <i class="fa fa-fw fa-user"></i> <span
+									class="topbar-item-name">Profile</span>
+							</a></li>
+							<li><a href="#"> <i class="fa fa-fw fa-cog"></i> <span
+									class="topbar-item-name">Settings</span> <i
+									class="layout-menuitem-toggler fa fa-fw fa-angle-down"></i>
+							</a>
+								<ul>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-paint-brush"></i> <span>Change</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-star-o"></i> <span>Favorites</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-lock"></i> <span>Lock Screen</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-picture-o"></i> <span>Wallpaper</span>
+									</a></li>
+								</ul></li>
+							<li><a href="#"> <i class="fa fa-fw fa-envelope-o"></i>
+									<span class="topbar-item-name">Messages</span> <i
+									class="layout-menuitem-toggler fa fa-fw fa-angle-down"></i>
+							</a>
+								<ul>
+									<li role="menuitem"><a href="#" class="topbar-message">
+											<p:graphicImage name="images/avatar1.png"
+												library="california-layout" width="25" /> <span>Give
+												me a call</span>
+									</a></li>
+									<li role="menuitem"><a href="#" class="topbar-message">
+											<p:graphicImage name="images/avatar2.png"
+												library="california-layout" width="25" /> <span>Reports
+												attached</span>
+									</a></li>
+									<li role="menuitem"><a href="#" class="topbar-message">
+											<p:graphicImage name="images/avatar3.png"
+												library="california-layout" width="25" /> <span>About
+												your invoice</span>
+									</a></li>
+									<li role="menuitem"><a href="#" class="topbar-message">
+											<p:graphicImage name="images/avatar2.png"
+												library="california-layout" width="25" /> <span>Meeting
+												today</span>
+									</a></li>
+									<li role="menuitem"><a href="#" class="topbar-message">
+											<p:graphicImage name="images/avatar4.png"
+												library="california-layout" width="25" /> <span>Out
+												of office</span>
+									</a></li>
+								</ul></li>
+							<li><a href="#"> <i class="fa fa-fw fa-bell-o"></i> <span
+									class="topbar-item-name">Notifications</span> <i
+									class="layout-menuitem-toggler fa fa-fw fa-angle-down"></i>
+							</a>
+								<ul>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-tasks"></i> <span>Pending tasks</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-calendar-check-o"></i> <span>Meeting
+												today</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-download"></i> <span>Download</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i
+											class="fa fa-fw fa-plane"></i> <span>Book flight</span>
+									</a></li>
+								</ul></li>
+						</ul>
+					</div>
+				</ui:fragment>
+
+				<h:form id="menuform">
+					<pc:menu widgetVar="me">
+						<p:menuitem id="om_dashboard" value="Dashboard"
+							icon="fa fa-fw fa-home" />
+						<p:submenu id="om_themes" label="Themes"
+							icon="fa fa-fw fa-paint-brush">
+							<f:attribute name="badge" value="20" />
+							<p:submenu id="om_themes_flat" label="Solid"
+								icon="fa fa-fw fa-paint-brush">
+								<p:submenu id="theme1" label="Blue"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="blue_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'blue')}"
+										ajax="false" />
+									<p:menuitem id="blue_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'blue')}"
+										ajax="false" />
+									<p:menuitem id="blue_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'blue')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme2" label="Cyan"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="cyan_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'cyan')}"
+										ajax="false" />
+									<p:menuitem id="cyan_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'cyan')}"
+										ajax="false" />
+									<p:menuitem id="cyan_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'cyan')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme3" label="Green"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="green_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'green')}"
+										ajax="false" />
+									<p:menuitem id="green_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'green')}"
+										ajax="false" />
+									<p:menuitem id="green_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'green')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme4" label="Yellow"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="yellow_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'yellow')}"
+										ajax="false" />
+									<p:menuitem id="yellow_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'yellow')}"
+										ajax="false" />
+									<p:menuitem id="yellow_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'yellow')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme5" label="Purple"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="purple_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'purple')}"
+										ajax="false" />
+									<p:menuitem id="purple_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'purple')}"
+										ajax="false" />
+									<p:menuitem id="purple_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'purple')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme6" label="Pink"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="pink_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'pink')}"
+										ajax="false" />
+									<p:menuitem id="pink_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'pink')}"
+										ajax="false" />
+									<p:menuitem id="pink_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'pink')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme7" label="Blue Grey"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="bluegrey_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'bluegrey')}"
+										ajax="false" />
+									<p:menuitem id="bluegrey_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'bluegrey')}"
+										ajax="false" />
+									<p:menuitem id="bluegrey_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'bluegrey')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme8" label="Teal"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="teal_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'teal')}"
+										ajax="false" />
+									<p:menuitem id="teal_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'teal')}"
+										ajax="false" />
+									<p:menuitem id="teal_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'teal')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme9" label="Orange"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="orange_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'orange')}"
+										ajax="false" />
+									<p:menuitem id="orange_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'orange')}"
+										ajax="false" />
+									<p:menuitem id="orange_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'orange')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme10" label="Grey"
+									icon="fa fa-fw fa-paint-brush">
+									<p:menuitem id="grey_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'grey')}"
+										ajax="false" />
+									<p:menuitem id="grey_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'grey')}"
+										ajax="false" />
+									<p:menuitem id="grey_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'grey')}"
+										ajax="false" />
+								</p:submenu>
+							</p:submenu>
+							<p:submenu id="om_themes_special" label="Special"
+								icon="fa fa-fw fa-paint-brush">
+								<p:submenu id="theme17" label="Cappuccino"
+									icon="fa fa-fw fa-picture-o">
+									<p:menuitem id="cappuccino_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'cappuccino')}"
+										ajax="false" />
+									<p:menuitem id="cappuccino_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'cappuccino')}"
+										ajax="false" />
+									<p:menuitem id="cappuccino_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'cappuccino')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme18" label="Montreal"
+									icon="fa fa-fw fa-picture-o">
+									<p:menuitem id="montreal_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'montreal')}"
+										ajax="false" />
+									<p:menuitem id="montreal_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'montreal')}"
+										ajax="false" />
+									<p:menuitem id="montreal_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'montreal')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme19" label="Hollywood"
+									icon="fa fa-fw fa-picture-o">
+									<p:menuitem id="hollywood_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'hollywood')}"
+										ajax="false" />
+									<p:menuitem id="hollywood_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'hollywood')}"
+										ajax="false" />
+									<p:menuitem id="hollywood_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'hollywood')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme20" label="Peak"
+									icon="fa fa-fw fa-picture-o">
+									<p:menuitem id="peak_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'peak')}"
+										ajax="false" />
+									<p:menuitem id="peak_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'peak')}"
+										ajax="false" />
+									<p:menuitem id="peak_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'peak')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme11" label="Alive"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="alive_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'alive')}"
+										ajax="false" />
+									<p:menuitem id="alive_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'alive')}"
+										ajax="false" />
+									<p:menuitem id="alive_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'alive')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme12" label="Emerald"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="emerald_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'emerald')}"
+										ajax="false" />
+									<p:menuitem id="emerald_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'emerald')}"
+										ajax="false" />
+									<p:menuitem id="emerald_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'emerald')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme13" label="Ash"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="ash_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'ash')}"
+										ajax="false" />
+									<p:menuitem id="ash_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'ash')}"
+										ajax="false" />
+									<p:menuitem id="ash_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'ash')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme14" label="Noir"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="noir_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'noir')}"
+										ajax="false" />
+									<p:menuitem id="noir_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'noir')}"
+										ajax="false" />
+									<p:menuitem id="noir_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'noir')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme15" label="Mantle"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="mantle_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'mantle')}"
+										ajax="false" />
+									<p:menuitem id="mantle_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'mantle')}"
+										ajax="false" />
+									<p:menuitem id="mantle_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'mantle')}"
+										ajax="false" />
+								</p:submenu>
+								<p:submenu id="theme16" label="Predawn"
+									icon="fa fa-fw fa-certificate">
+									<p:menuitem id="predawn_custom0" value="Light"
+										icon="fa fa-fw fa-square-o"
+										actionListener="#{guestPreferences.setMenuMode(false, false, 'predawn')}"
+										ajax="false" />
+									<p:menuitem id="predawn_custom1" value="Dark"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, false, 'predawn')}"
+										ajax="false" />
+									<p:menuitem id="predawn_custom2" value="Gradient"
+										icon="fa fa-fw fa-square"
+										actionListener="#{guestPreferences.setMenuMode(true, true, 'predawn')}"
+										ajax="false" />
+								</p:submenu>
+							</p:submenu>
+						</p:submenu>
+						<p:submenu id="om_customization" label="Menu Modes"
+							icon="fa fa-fw fa-bars">
+							<p:menuitem id="custom3" value="Static" icon="fa fa-fw fa-bars"
+								actionListener="#{guestPreferences.setMenuLayout('static')}"
+								ajax="false" />
+							<p:menuitem id="custom4" value="Overlay" icon="fa fa-fw fa-bars"
+								actionListener="#{guestPreferences.setMenuLayout('layout-wrapper-overlay-sidebar')}"
+								ajax="false" />
+							<p:menuitem id="custom1" value="Slim" icon="fa fa-fw fa-bars"
+								actionListener="#{guestPreferences.setMenuLayout('layout-wrapper-slim-sidebar')}"
+								ajax="false" />
+							<p:menuitem id="custom2" value="Horizontal"
+								icon="fa fa-fw fa-bars"
+								actionListener="#{guestPreferences.setMenuLayout('layout-wrapper-horizontal-sidebar')}"
+								ajax="false" />
+						</p:submenu>
+						<p:submenu id="om_mega_menu_customization" label="Mega Menu"
+							icon="fa fa-fw fa-bars" styleClass="text-badge">
+							<f:attribute name="badge" value="New" />
+							<p:menuitem id="custom_mega_0" value="Light"
+								icon="fa fa-fw fa-square-o"
+								actionListener="#{guestPreferences.setMegaMenuMode(false, false)}"
+								ajax="false" />
+							<p:menuitem id="custom_mega_1" value="Dark"
+								icon="fa fa-fw fa-square"
+								actionListener="#{guestPreferences.setMegaMenuMode(true, false)}"
+								ajax="false" />
+							<p:menuitem id="custom_mega_2" value="Gradient"
+								icon="fa fa-fw fa-square"
+								actionListener="#{guestPreferences.setMegaMenuMode(true, true)}"
+								ajax="false" />
+						</p:submenu>
+						<p:submenu id="om_components" label="Master Data"
+							icon="fa fa-fw fa-table">
+							<p:menuitem id="om_prodmaster" value="Product"
+								icon="fa fa-fw fa-sitemap" update=":mainform:tabsview"
+								onclick="onTabChangeProcess()"
+								actionListener="#{tabViewController.addClosable('Product Master','prodmaster')}" />
+							<p:menuitem id="om_accmaster" value="Accounts"
+								icon="fa fa-fw fa-sitemap" update=":mainform:tabsview"
+								onclick="onTabChangeProcess()"
+								actionListener="#{tabViewController.addClosable('Account Master', 'accmaster')}" />
+						</p:submenu>
+					</pc:menu>
+				</h:form>
+			</div>
+		</div>
+
+	</div>
+
+</ui:composition>

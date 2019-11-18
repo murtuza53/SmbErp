@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-g ui-fluid">
+		<div class="ui-g-12 ui-lg-6">
+			<!-- Left Side -->
+			<div class="card card-w-title">
+				<h1>Product Details</h1>
+				<p:panelGrid columns="1" styleClass="form-group ui-panelgrid-blank"
+					layout="grid">
+					<p:outputLabel value="Product No:" for="pno" />
+                                        <p:inputText id="pno" value="#{tabViewController.selectedTab.productController.product.productid}" />
+					<p:outputLabel value="Name:" for="name" />
+					<p:inputText id="name" placeholder="Name" />
+					<p:outputLabel value="Email:" for="email" />
+					<p:inputText id="email" placeholder="Email" />
+					<p:outputLabel value="Phone:" for="phone" />
+					<p:inputText id="phone" placeholder="Phone" />
+				</p:panelGrid>
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

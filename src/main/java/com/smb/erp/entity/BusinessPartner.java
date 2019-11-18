@@ -1,0 +1,328 @@
+package com.smb.erp.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the businesspartner database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="BusinessPartner.findAll", query="SELECT b FROM BusinessPartner b")
+public class BusinessPartner implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private String partnerid;
+
+	private String address;
+
+	private String companyname;
+
+	private String companytypes;
+
+	private String creditstatus;
+
+	private String description;
+
+	private String email1;
+
+	private String email2;
+
+	private String fax1;
+
+	private String fax2;
+
+	private byte lporequired;
+
+	private String pbone2;
+
+	private String phone1;
+
+	private String pobox;
+
+	private String website;
+
+	//bi-directional many-to-one association to AccDoc
+	@OneToMany(mappedBy="businesspartner")
+	private List<AccDoc> accdocs;
+
+	//bi-directional many-to-one association to Account
+	@OneToMany(mappedBy="businesspartner")
+	private List<Account> accounts;
+
+	//bi-directional many-to-one association to BusDoc
+	@OneToMany(mappedBy="businesspartner")
+	private List<BusDoc> busdocs;
+
+	//bi-directional many-to-one association to Country
+	@ManyToOne
+	@JoinColumn(name="countryno")
+	private Country country;
+
+	//bi-directional many-to-one association to CreditLimit
+	@ManyToOne
+	@JoinColumn(name="creditlimitno")
+	private CreditLimit creditlimit;
+
+	//bi-directional many-to-one association to ContactPerson
+	@OneToMany(mappedBy="businesspartner")
+	private List<ContactPerson> contactpersons;
+
+	//bi-directional many-to-one association to PriceList
+	@OneToMany(mappedBy="businesspartner")
+	private List<PriceList> pricelists;
+
+	public BusinessPartner() {
+	}
+
+	public String getPartnerid() {
+		return this.partnerid;
+	}
+
+	public void setPartnerid(String partnerid) {
+		this.partnerid = partnerid;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCompanyname() {
+		return this.companyname;
+	}
+
+	public void setCompanyname(String companyname) {
+		this.companyname = companyname;
+	}
+
+	public String getCompanytypes() {
+		return this.companytypes;
+	}
+
+	public void setCompanytypes(String companytypes) {
+		this.companytypes = companytypes;
+	}
+
+	public String getCreditstatus() {
+		return this.creditstatus;
+	}
+
+	public void setCreditstatus(String creditstatus) {
+		this.creditstatus = creditstatus;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getEmail1() {
+		return this.email1;
+	}
+
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+
+	public String getEmail2() {
+		return this.email2;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public String getFax1() {
+		return this.fax1;
+	}
+
+	public void setFax1(String fax1) {
+		this.fax1 = fax1;
+	}
+
+	public String getFax2() {
+		return this.fax2;
+	}
+
+	public void setFax2(String fax2) {
+		this.fax2 = fax2;
+	}
+
+	public byte getLporequired() {
+		return this.lporequired;
+	}
+
+	public void setLporequired(byte lporequired) {
+		this.lporequired = lporequired;
+	}
+
+	public String getPbone2() {
+		return this.pbone2;
+	}
+
+	public void setPbone2(String pbone2) {
+		this.pbone2 = pbone2;
+	}
+
+	public String getPhone1() {
+		return this.phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPobox() {
+		return this.pobox;
+	}
+
+	public void setPobox(String pobox) {
+		this.pobox = pobox;
+	}
+
+	public String getWebsite() {
+		return this.website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public List<AccDoc> getAccdocs() {
+		return this.accdocs;
+	}
+
+	public void setAccdocs(List<AccDoc> accdocs) {
+		this.accdocs = accdocs;
+	}
+
+	public AccDoc addAccdoc(AccDoc accdoc) {
+		getAccdocs().add(accdoc);
+		accdoc.setBusinesspartner(this);
+
+		return accdoc;
+	}
+
+	public AccDoc removeAccdoc(AccDoc accdoc) {
+		getAccdocs().remove(accdoc);
+		accdoc.setBusinesspartner(null);
+
+		return accdoc;
+	}
+
+	public List<Account> getAccounts() {
+		return this.accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public Account addAccount(Account account) {
+		getAccounts().add(account);
+		account.setBusinesspartner(this);
+
+		return account;
+	}
+
+	public Account removeAccount(Account account) {
+		getAccounts().remove(account);
+		account.setBusinesspartner(null);
+
+		return account;
+	}
+
+	public List<BusDoc> getBusdocs() {
+		return this.busdocs;
+	}
+
+	public void setBusdocs(List<BusDoc> busdocs) {
+		this.busdocs = busdocs;
+	}
+
+	public BusDoc addBusdoc(BusDoc busdoc) {
+		getBusdocs().add(busdoc);
+		busdoc.setBusinesspartner(this);
+
+		return busdoc;
+	}
+
+	public BusDoc removeBusdoc(BusDoc busdoc) {
+		getBusdocs().remove(busdoc);
+		busdoc.setBusinesspartner(null);
+
+		return busdoc;
+	}
+
+	public Country getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public CreditLimit getCreditlimit() {
+		return this.creditlimit;
+	}
+
+	public void setCreditlimit(CreditLimit creditlimit) {
+		this.creditlimit = creditlimit;
+	}
+
+	public List<ContactPerson> getContactpersons() {
+		return this.contactpersons;
+	}
+
+	public void setContactpersons(List<ContactPerson> contactpersons) {
+		this.contactpersons = contactpersons;
+	}
+
+	public ContactPerson addContactperson(ContactPerson contactperson) {
+		getContactpersons().add(contactperson);
+		contactperson.setBusinesspartner(this);
+
+		return contactperson;
+	}
+
+	public ContactPerson removeContactperson(ContactPerson contactperson) {
+		getContactpersons().remove(contactperson);
+		contactperson.setBusinesspartner(null);
+
+		return contactperson;
+	}
+
+	public List<PriceList> getPricelists() {
+		return this.pricelists;
+	}
+
+	public void setPricelists(List<PriceList> pricelists) {
+		this.pricelists = pricelists;
+	}
+
+	public PriceList addPricelist(PriceList pricelist) {
+		getPricelists().add(pricelist);
+		pricelist.setBusinesspartner(this);
+
+		return pricelist;
+	}
+
+	public PriceList removePricelist(PriceList pricelist) {
+		getPricelists().remove(pricelist);
+		pricelist.setBusinesspartner(null);
+
+		return pricelist;
+	}
+
+}
