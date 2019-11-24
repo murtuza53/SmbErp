@@ -53,6 +53,7 @@ public class TabViewController implements Serializable {
 	public void add(DocumentTab<?> tab) {
 		tabs.add(tab);
 		activeTabIndex = tabs.size()-1;
+                selectedTab = tab;
 	}
 
 	public void addClosable(String title, String page) {
@@ -140,12 +141,15 @@ public class TabViewController implements Serializable {
 	//add tab for category
 	public void addTabCategory(ProductCategory pc, String title, DocumentTab.MODE mode) {
 		DocumentTab<ProductCategory> dt = new DocumentTab<ProductCategory>(pc, title, "pcategory", mode);
+                selectedTab = dt;
 		add(dt);
 	}
 
 	public void addTabProduct(Product prod, String title, DocumentTab.MODE mode) {
 		//DocumentTab<Product> dt = new DocumentTab<Product>(prod, title, "product", mode);
                 DocumentTab<Product> dt = DocumentTab.createProductController(prod, title, "product", mode);
+                System.out.println("New Product: " + dt.getData());
+                System.out.println("Product_Tab_Id: " + dt.getId());
 		add(dt);
 		System.out.println("New Product Tab Added: " + tabs.size());
 	}

@@ -8,6 +8,9 @@ package com.smb.erp.bean;
 import com.smb.erp.entity.Product;
 import com.smb.erp.repo.ProductRepository;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,28 +18,46 @@ import org.springframework.stereotype.Component;
  *
  * @author FatemaLaptop
  */
-@Component
+//@Component
+@Named
+@ViewScoped
 public class ProductController implements Serializable{
     
     @Autowired
     ProductRepository prodRepo;
     
-    private Product product;
+    @Autowired
+    TabViewController tabCon;
+    
+    DocumentTab<Product> docTab;
+    
+    private Product selected;
     
     public ProductController(){
-        
     }
     
-    public ProductController(Product prod){
-        this.product = prod;
+    @PostConstruct
+    public void init() {
+        this.docTab = tabCon.getSelectedTab();
+        setSelected(docTab.getData());
+        System.out.println("TabController: " + tabCon);
+        System.out.println("Prod_Tab_id: " + docTab.getId());
+        System.out.println("ProductController->selected: " + selected);
     }
     
-    public void setProduct(Product prod){
-        this.product = product;
+    //public ProductController(Product prod){
+    //    this.selected = prod;
+    //}
+    
+    public void setSelected(Product prod){
+        this.selected = prod;
     }
     
-    public Product getProduct(){
-        return product;
+    public Product getSelected(){
+        return selected;
     }
     
+    public DocumentTab<Product> getTab(){
+        return docTab;
+    }
 }

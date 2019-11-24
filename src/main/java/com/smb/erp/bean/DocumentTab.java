@@ -18,9 +18,9 @@ public class DocumentTab<T> extends Tab {
         documentMode = MODE.NONE;
     }
 
-    public DocumentTab(T data, String title, String page, MODE mode) {
+    public DocumentTab(T object, String title, String page, MODE mode) {
         super(title, page);
-        this.data = data;
+        this.data = object;
         this.documentMode = mode;
     }
 
@@ -58,8 +58,8 @@ public class DocumentTab<T> extends Tab {
     
     public static DocumentTab<Product> createProductController(Product data, String title, String page, MODE mode){
         DocumentTab<Product> dt = new DocumentTab<Product>(data, title, page, mode);
-        ProductController pc = new ProductController(data);
-        dt.setController(pc);
+        //ProductController pc = new ProductController(data);
+        //dt.setController(pc);
         return dt;
     }
 }
