@@ -1,14 +1,12 @@
-package com.smb.erp.bean;
+package com.smb.erp.controller;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -16,12 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
-import com.smb.erp.repo.ProductCategoryController;
-import com.smb.erp.repo.ProductRestController;
+import com.smb.erp.rest.ProductRestController;
 
 @Named
 @ConversationScoped
-public class ProductTreeView implements Serializable {
+public class ProductTreeViewController implements Serializable {
 
 	@Autowired
 	ProductCategoryController pccontroller;

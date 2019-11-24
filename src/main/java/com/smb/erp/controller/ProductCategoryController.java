@@ -1,4 +1,4 @@
-package com.smb.erp.repo;
+package com.smb.erp.controller;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smb.erp.entity.ProductCategory;
+import com.smb.erp.repo.ProductCategoryRepository;
 
 @RestController
 @RequestMapping({"/prodcat"})

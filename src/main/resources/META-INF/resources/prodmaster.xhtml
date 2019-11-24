@@ -9,26 +9,26 @@
             <p:toolbar id="toolbar">
                 <f:facet name="left">
                     <p:commandButton title="New Category" icon="fa fa-plus" 
-                                     disabled="#{productTreeView.newCategoryDisabled}"/>
+                                     disabled="#{productTreeViewController.newCategoryDisabled}"/>
                     <p:commandButton title="Edit Category" icon="fa fa-pencil"
-                                     disabled="#{productTreeView.editCategoryDisabled}"/>
+                                     disabled="#{productTreeViewController.editCategoryDisabled}"/>
                 </f:facet>
 
                 <f:facet name="right">
                     <p:commandButton title="New Product" icon="fa fa-plus" 
-                                     actionListener="#{productTreeView.createNewProduct}"
-                                     disabled="#{productTreeView.productNewDisabled}" update=":mainform:tabsview"/>
-                    <p:commandButton title="Edit Product" icon="fa fa-pencil" disabled="#{productTreeView.productEditDisabled}" />
-                    <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeView.productEditDisabled}" />
+                                     actionListener="#{productTreeViewController.createNewProduct}"
+                                     disabled="#{productTreeViewController.productNewDisabled}" update=":mainform:tabsview"/>
+                    <p:commandButton title="Edit Product" icon="fa fa-pencil" disabled="#{productTreeViewController.productEditDisabled}" />
+                    <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" />
                 </f:facet>
             </p:toolbar>
         </div>
         <div class="ui-g-3">
-            <p:tree value="#{productTreeView.root}" var="node" dynamic="true"
+            <p:tree value="#{productTreeViewController.root}" var="node" dynamic="true"
                     style="width:100%; height:100%;" selectionMode="single"
-                    selection="#{productTreeView.selectedNode}">
+                    selection="#{productTreeViewController.selectedNode}">
                 <p:ajax event="select" update="@widgetVar(ptable), :mainform:tabsview:toolbar"
-                        listener="#{productTreeView.onNodeSelect}" />
+                        listener="#{productTreeViewController.onNodeSelect}" />
                 <p:treeNode expandedIcon="pi pi-folder-open"
                             collapsedIcon="pi pi-folder">
                     <h:outputText value="#{node}" />
@@ -37,8 +37,8 @@
         </div>
         <div class="ui-g-9">
             <p:dataTable id="prodtable" var="prod"
-                         value="#{productTreeView.prodList}" widgetVar="ptable"
-                         selection="#{productTreeView.selectedProduct}"
+                         value="#{productTreeViewController.prodList}" widgetVar="ptable"
+                         selection="#{productTreeViewController.selectedProduct}"
                          selectionMode="single" rowKey="#{prod.productid}"
                          emptyMessage="No Products found">
                 <p:ajax event="rowSelect" update=":mainform:tabsview:toolbar" />

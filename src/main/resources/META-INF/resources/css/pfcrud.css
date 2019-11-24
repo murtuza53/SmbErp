@@ -1,0 +1,46 @@
+body {
+    padding:0;
+    margin:0;
+}
+.icon26{
+    width:26px !important; 
+    height:26px !important;
+}
+.toolbar-transparent{
+    background-color: transparent !important;
+    padding: 7px !important;
+    margin-bottom: 7px !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+.toolbar-transparent-shadow{
+    background-color: transparent !important;
+    border: 0px !important;
+    padding: 7px !important;
+    margin-bottom: 7px !important;
+}
+.ui-widget {
+    font-size: 12px !important;
+}
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
+}
+.ui-widget-header {
+    text-align: center;
+    text-transform: uppercase;
+}
+.ui-datatable .ui-datatable-footer .footer-section {
+    text-align: left;
+}
+.ui-datatable-scrollable table{
+    position: relative;
+}
+.column {
+    font-weight: bold;
+    background-color: menu;
+}

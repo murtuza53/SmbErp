@@ -1,27 +1,40 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-	<div class="ui-g ui-fluid">
-		<div class="ui-g-12 ui-lg-6">
-			<!-- Left Side -->
-			<div class="card card-w-title">
-				<h1>Product Details</h1>
-				<p:panelGrid columns="1" styleClass="form-group ui-panelgrid-blank"
-					layout="grid">
-					<p:outputLabel value="Product No:" for="pno" />
-                                        <p:inputText id="pno" value="#{productController.selected.productid}" disabled="true"/>
-					<p:outputLabel value="Name:" for="name" />
-                                        <p:inputText id="name" placeholder="Name" value="#{productController.selected.productname}"/>
-					<p:outputLabel value="Supplier Code:" for="supcode" />
-                                        <p:inputText id="supcode" placeholder="Supplier Code" value="#{productController.selected.supplierscode}" />
-					<p:outputLabel value="Barcode1:" for="barcode1" />
-                                        <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" />
-				</p:panelGrid>
-			</div>
-		</div>
-	</div>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-6">
+            <!-- Left Side -->
+            <div class="card card-w-title">
+                <h1>Product Details</h1>
+                <p:panelGrid columns="1" styleClass="form-group ui-panelgrid-blank"
+                             layout="grid">
+                    <p:outputLabel value="Product No:" for="pno" />
+                    <p:inputText id="pno" value="#{productController.selected.productid}" disabled="true"/>
+                    <p:outputLabel value="Name:" for="name" />
+                    <p:inputText id="name" placeholder="Name" value="#{productController.selected.productname}"/>
+                    <p:outputLabel value="Supplier Code:" for="supcode" />
+                    <p:inputText id="supcode" placeholder="Supplier Code" value="#{productController.selected.supplierscode}" />
+
+                    <p:outputLabel value="Category" for="catid" rendered="#{sabilController.businessMode}" />
+                    <p:selectOneMenu id="catid" value="#{productController.selected.prodcategry}" 
+                                     style="width: 90%" converter="#{entityConverter}" rendered="#{sabilController.businessMode}">
+                        <f:selectItem itemLabel="Business"/>
+                        <f:selectItems value="#{businessController.businesses}"
+                                       var="businessNoItem"
+                                       itemValue="#{businessNoItem}"
+                                       itemLabel="#{businessNoItem.businessName.toString()}"
+                                       />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Barcode1:" for="barcode1" />
+                    <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" />
+                </p:panelGrid>
+            </div>
+        </div>
+    </div>
 
 </ui:composition>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smb.erp.bean;
+package com.smb.erp.controller;
 
 import com.smb.erp.entity.Product;
 import com.smb.erp.repo.ProductRepository;

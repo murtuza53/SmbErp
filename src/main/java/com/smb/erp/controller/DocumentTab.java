@@ -1,4 +1,4 @@
-package com.smb.erp.bean;
+package com.smb.erp.controller;
 
 import com.smb.erp.entity.Product;
 

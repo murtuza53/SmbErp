@@ -16,7 +16,7 @@ public class Brand implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String brandid;
+	private Long brandid;
 
 	private String abbreviation;
 
@@ -37,11 +37,11 @@ public class Brand implements Serializable {
 	public Brand() {
 	}
 
-	public String getBrandid() {
+	public Long getBrandid() {
 		return this.brandid;
 	}
 
-	public void setBrandid(String brandid) {
+	public void setBrandid(Long brandid) {
 		this.brandid = brandid;
 	}
 

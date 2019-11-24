@@ -16,7 +16,7 @@ public class Country implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String countryno;
+	private Long countryno;
 
 	private String countryname;
 
@@ -45,11 +45,11 @@ public class Country implements Serializable {
 	public Country() {
 	}
 
-	public String getCountryno() {
+	public Long getCountryno() {
 		return this.countryno;
 	}
 
-	public void setCountryno(String countryno) {
+	public void setCountryno(Long countryno) {
 		this.countryno = countryno;
 	}
 
