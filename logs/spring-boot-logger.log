@@ -1,156 +1,1651 @@
-2019-11-27 16:42:29,571 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 5896 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
-2019-11-27 16:42:29,602 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-11-27 16:42:30,134 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-11-27 16:42:30,212 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 63ms. Found 5 repository interfaces.
-2019-11-27 16:42:30,758 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$bfc98dc7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:42:30,790 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$cfe4d77c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:42:30,805 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$84135c82] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:42:31,196 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2019-11-27 16:42:31,227 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2019-11-27 16:42:31,243 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2019-11-27 16:42:31,243 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
-2019-11-27 16:42:31,493 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
-2019-11-27 16:42:31,511 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2019-11-27 16:42:31,511 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1862 ms
-2019-11-27 16:42:33,896 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 2.291s
-2019-11-27 16:42:33,959 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
-2019-11-27 16:42:34,193 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
-2019-11-27 16:42:34,646 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
-2019-11-27 16:42:34,646 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
-2019-11-27 16:42:34,740 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2019-11-27 16:42:34,755 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-11-27 16:42:34,818 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-12-09 20:50:08,114 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 10956 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2019-12-09 20:50:08,167 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-12-09 20:50:09,040 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-09 20:50:09,196 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 129ms. Found 5 repository interfaces.
+2019-12-09 20:50:10,238 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a151a9bd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 20:50:10,294 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$b16cf372] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 20:50:10,308 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$659b7878] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 20:50:11,064 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-12-09 20:50:11,096 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-12-09 20:50:11,111 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-12-09 20:50:11,121 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-12-09 20:50:11,593 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-12-09 20:50:11,621 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-12-09 20:50:11,641 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3403 ms
+2019-12-09 20:50:13,764 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.949s
+2019-12-09 20:50:13,858 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2019-12-09 20:50:14,199 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2019-12-09 20:50:14,995 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2019-12-09 20:50:15,004 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2019-12-09 20:50:15,183 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2019-12-09 20:50:15,222 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-12-09 20:50:15,370 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-11-27 16:42:34,912 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
-2019-11-27 16:42:34,912 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
-2019-11-27 16:42:35,052 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-11-27 16:42:35,224 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2019-11-27 16:42:36,567 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
-2019-11-27 16:42:36,692 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 16:42:37,614 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-11-27 16:42:38,083 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2019-11-27 16:42:38,130 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2019-11-27 16:42:38,161 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 9.277 seconds (JVM running for 16.491)
-2019-11-27 16:42:58,039 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-4] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-11-27 16:42:58,039 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-4] Initializing Servlet 'dispatcherServlet'
-2019-11-27 16:42:58,070 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-4] Completed initialization in 16 ms
-2019-11-27 16:43:20,096 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplicationTests on Burhani152 with PID 928 (started by Burhani152 in D:\Projects\SmbErp)
-2019-11-27 16:43:20,128 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-11-27 16:43:20,659 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-11-27 16:43:20,737 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 63ms. Found 5 repository interfaces.
-2019-11-27 16:43:21,268 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$bffb7e7e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:21,299 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$d016c833] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:21,315 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$84454d39] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:21,502 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2019-11-27 16:43:21,518 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-11-27 16:43:21,596 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-12-09 20:50:15,541 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2019-12-09 20:50:15,548 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2019-12-09 20:50:15,792 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-12-09 20:50:16,093 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-12-09 20:50:18,604 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2019-12-09 20:50:18,794 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-12-09 20:50:19,999 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-12-09 20:50:20,591 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-12-09 20:50:20,627 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-12-09 20:50:20,644 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 13.533 seconds (JVM running for 21.222)
+2019-12-09 20:50:28,763 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-6] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-12-09 20:50:28,772 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-6] Initializing Servlet 'dispatcherServlet'
+2019-12-09 20:50:28,795 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-6] Completed initialization in 16 ms
+2019-12-09 20:51:26,610 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-1] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productController.selected.prodcategry}": Target Unreachable, [selected] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productController.selected.prodcategry}": Target Unreachable, [selected] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selected] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:01:09,833 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 14140 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2019-12-09 21:01:09,886 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-12-09 21:01:10,509 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-09 21:01:10,641 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 106ms. Found 5 repository interfaces.
+2019-12-09 21:01:11,501 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$494734d6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:01:11,540 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$59627e8b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:01:11,555 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$d910391] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:01:12,222 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-12-09 21:01:12,256 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:01:12,279 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-12-09 21:01:12,289 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-12-09 21:01:12,769 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-12-09 21:01:12,799 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-12-09 21:01:12,812 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2870 ms
+2019-12-09 21:01:14,907 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.908s
+2019-12-09 21:01:14,988 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2019-12-09 21:01:15,378 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2019-12-09 21:01:16,648 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2019-12-09 21:01:16,663 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2019-12-09 21:01:16,910 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2019-12-09 21:01:16,953 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-12-09 21:01:17,086 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-11-27 16:43:21,690 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
-2019-11-27 16:43:21,690 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
-2019-11-27 16:43:21,846 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-11-27 16:43:22,065 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2019-11-27 16:43:23,301 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
-2019-11-27 16:43:23,411 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 16:43:24,738 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-11-27 16:43:25,289 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplicationTests in 5.677 seconds (JVM running for 6.369)
-2019-11-27 16:43:25,445 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-2] Shutting down ExecutorService 'applicationTaskExecutor'
-2019-11-27 16:43:25,460 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-2] Closing JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 16:43:25,460 INFO com.zaxxer.hikari.HikariDataSource [Thread-2] HikariPool-1 - Shutdown initiated...
-2019-11-27 16:43:25,476 INFO com.zaxxer.hikari.HikariDataSource [Thread-2] HikariPool-1 - Shutdown completed.
-2019-11-27 16:43:50,360 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 22364 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
-2019-11-27 16:43:50,391 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-11-27 16:43:50,844 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-11-27 16:43:50,953 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 78ms. Found 5 repository interfaces.
-2019-11-27 16:43:51,625 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e7dae42d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:51,672 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$f7f62de2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:51,672 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$ac24b2e8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 16:43:52,063 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2019-11-27 16:43:52,078 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2019-11-27 16:43:52,094 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2019-11-27 16:43:52,094 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
-2019-11-27 16:43:52,344 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
-2019-11-27 16:43:52,359 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2019-11-27 16:43:52,359 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1937 ms
-2019-11-27 16:43:53,872 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.403s
-2019-11-27 16:43:53,934 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
-2019-11-27 16:43:54,106 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
-2019-11-27 16:43:54,543 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
-2019-11-27 16:43:54,543 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
-2019-11-27 16:43:54,637 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2019-11-27 16:43:54,668 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-11-27 16:43:54,715 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-12-09 21:01:17,241 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2019-12-09 21:01:17,257 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2019-12-09 21:01:17,604 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-12-09 21:01:18,073 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-12-09 21:01:21,079 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2019-12-09 21:01:21,391 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-12-09 21:01:23,034 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-12-09 21:01:23,773 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:01:23,840 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-12-09 21:01:23,849 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 14.822 seconds (JVM running for 28.266)
+2019-12-09 21:01:25,476 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-1] javax.faces.application.ViewExpiredException: viewId:/index.xhtml - View /index.xhtml could not be restored.
+	at com.sun.faces.lifecycle.RestoreViewPhase.execute(RestoreViewPhase.java:218)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.RestoreViewPhase.doPhase(RestoreViewPhase.java:133)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2019-12-09 21:01:25,554 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-3] javax.faces.application.ViewExpiredException: viewId:/index.xhtml - View /index.xhtml could not be restored.
+	at com.sun.faces.lifecycle.RestoreViewPhase.execute(RestoreViewPhase.java:218)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.RestoreViewPhase.doPhase(RestoreViewPhase.java:133)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2019-12-09 21:01:34,575 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-8] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:05:26,405 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 2480 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2019-12-09 21:05:26,469 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-12-09 21:05:27,094 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-09 21:05:27,221 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 110ms. Found 5 repository interfaces.
+2019-12-09 21:05:27,911 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$4aa2bdf9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:05:27,959 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$5abe07ae] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:05:27,969 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$eec8cb4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:05:28,512 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-12-09 21:05:28,545 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:05:28,561 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-12-09 21:05:28,571 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-12-09 21:05:28,945 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-12-09 21:05:28,970 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-12-09 21:05:28,977 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2453 ms
+2019-12-09 21:05:30,716 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.572s
+2019-12-09 21:05:30,794 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2019-12-09 21:05:31,064 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2019-12-09 21:05:31,723 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2019-12-09 21:05:31,736 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2019-12-09 21:05:31,864 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2019-12-09 21:05:31,902 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-12-09 21:05:32,008 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-11-27 16:43:54,809 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
-2019-11-27 16:43:54,809 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
-2019-11-27 16:43:54,934 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-11-27 16:43:55,106 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2019-11-27 16:43:56,249 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
-2019-11-27 16:43:56,358 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 16:43:57,077 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-11-27 16:43:57,405 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2019-11-27 16:43:57,436 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2019-11-27 16:43:57,452 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 7.717 seconds (JVM running for 10.842)
-2019-11-27 17:11:58,728 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplicationTests on Burhani152 with PID 23320 (started by Burhani152 in D:\Projects\SmbErp)
-2019-11-27 17:11:58,759 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-11-27 17:11:59,321 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-11-27 17:11:59,384 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 47ms. Found 5 repository interfaces.
-2019-11-27 17:11:59,962 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$bffb7e7e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:11:59,993 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$d016c833] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:12:00,009 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$84454d39] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:12:00,212 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2019-11-27 17:12:00,228 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-11-27 17:12:00,306 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-12-09 21:05:32,093 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2019-12-09 21:05:32,113 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2019-12-09 21:05:32,292 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-12-09 21:05:32,530 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-12-09 21:05:34,209 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2019-12-09 21:05:34,370 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-12-09 21:05:35,361 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-12-09 21:05:35,867 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:05:35,909 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-12-09 21:05:35,925 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.329 seconds (JVM running for 14.21)
+2019-12-09 21:05:54,166 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-3] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:29:51,485 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 9880 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2019-12-09 21:29:51,532 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-12-09 21:29:52,104 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-09 21:29:52,215 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 84ms. Found 5 repository interfaces.
+2019-12-09 21:29:52,909 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$97e6b4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:29:52,954 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$10b33069] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:29:52,964 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$c4e1b56f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:29:53,616 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-12-09 21:29:53,657 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:29:53,696 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-12-09 21:29:53,705 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-12-09 21:29:54,097 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-12-09 21:29:54,125 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-12-09 21:29:54,132 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2549 ms
+2019-12-09 21:29:55,858 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.594s
+2019-12-09 21:29:55,923 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2019-12-09 21:29:56,174 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2019-12-09 21:29:56,841 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2019-12-09 21:29:56,854 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2019-12-09 21:29:56,993 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2019-12-09 21:29:57,030 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-12-09 21:29:57,115 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-11-27 17:12:00,415 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
-2019-11-27 17:12:00,415 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
-2019-11-27 17:12:00,618 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-11-27 17:12:00,962 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2019-11-27 17:12:02,252 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
-2019-11-27 17:12:02,361 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 17:12:03,782 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-11-27 17:12:04,442 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplicationTests in 6.213 seconds (JVM running for 6.877)
-2019-11-27 17:12:04,567 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-2] Shutting down ExecutorService 'applicationTaskExecutor'
-2019-11-27 17:12:04,567 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-2] Closing JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 17:12:04,567 INFO com.zaxxer.hikari.HikariDataSource [Thread-2] HikariPool-1 - Shutdown initiated...
-2019-11-27 17:12:04,583 INFO com.zaxxer.hikari.HikariDataSource [Thread-2] HikariPool-1 - Shutdown completed.
-2019-11-27 17:12:19,193 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 16680 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
-2019-11-27 17:12:19,224 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-11-27 17:12:19,677 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-11-27 17:12:19,740 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 47ms. Found 5 repository interfaces.
-2019-11-27 17:12:20,302 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eef93764] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:12:20,318 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$ff148119] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:12:20,333 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$b343061f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-11-27 17:12:20,661 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2019-11-27 17:12:20,677 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2019-11-27 17:12:20,693 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2019-11-27 17:12:20,693 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
-2019-11-27 17:12:20,911 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
-2019-11-27 17:12:20,927 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2019-11-27 17:12:20,942 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1671 ms
-2019-11-27 17:12:22,460 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.424s
-2019-11-27 17:12:22,507 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
-2019-11-27 17:12:22,695 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
-2019-11-27 17:12:23,163 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
-2019-11-27 17:12:23,163 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
-2019-11-27 17:12:23,271 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2019-11-27 17:12:23,287 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-11-27 17:12:23,350 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-12-09 21:29:57,199 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2019-12-09 21:29:57,219 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2019-12-09 21:29:57,382 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-12-09 21:29:57,611 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-12-09 21:29:59,282 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2019-12-09 21:29:59,411 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-12-09 21:30:00,394 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-12-09 21:30:00,841 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:30:00,882 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-12-09 21:30:00,895 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.18 seconds (JVM running for 14.226)
+2019-12-09 21:30:32,365 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-8] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:31:56,681 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-5] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:634)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:183)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1736)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:395)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:424)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:285)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1388)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 66 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 67 more
+
+2019-12-09 21:32:00,511 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-9] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:32:23,602 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] JSF1073: javax.faces.component.UpdateModelException caught during processing of UPDATE_MODEL_VALUES 4 : UIComponent-ClientId=mainform:tabsview:catid, Message=javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+2019-12-09 21:32:23,609 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,616 INFO com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] Exception when handling error trying to reset the response.
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,624 WARN com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] JSF1087: Unable to generate Facelets error page as the response has already been committed.
+2019-12-09 21:32:23,629 ERROR com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.context.ExceptionHandlerImpl.handle(ExceptionHandlerImpl.java:145)
+	at javax.faces.context.ExceptionHandlerWrapper.handle(ExceptionHandlerWrapper.java:117)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:118)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	... 43 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,635 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] JSF1073: javax.faces.component.UpdateModelException caught during processing of UPDATE_MODEL_VALUES 4 : UIComponent-ClientId=mainform:tabsview:brandid, Message=javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+2019-12-09 21:32:23,640 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @42,88 value="#{productTreeViewController.selectedProduct.brand}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,647 INFO com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] Exception when handling error trying to reset the response.
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,652 WARN com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] JSF1087: Unable to generate Facelets error page as the response has already been committed.
+2019-12-09 21:32:23,657 ERROR com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.context.ExceptionHandlerImpl.handle(ExceptionHandlerImpl.java:145)
+	at javax.faces.context.ExceptionHandlerWrapper.handle(ExceptionHandlerWrapper.java:117)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:118)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	... 43 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,663 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] JSF1073: javax.faces.component.UpdateModelException caught during processing of UPDATE_MODEL_VALUES 4 : UIComponent-ClientId=mainform:tabsview:madein, Message=javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+2019-12-09 21:32:23,669 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @53,88 value="#{productTreeViewController.selectedProduct.country}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,674 INFO com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] Exception when handling error trying to reset the response.
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,682 WARN com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] JSF1087: Unable to generate Facelets error page as the response has already been committed.
+2019-12-09 21:32:23,687 ERROR com.sun.faces.renderkit.RenderKitUtils [http-nio-8080-exec-7] javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+javax.faces.FacesException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.context.ExceptionHandlerImpl.handle(ExceptionHandlerImpl.java:145)
+	at javax.faces.context.ExceptionHandlerWrapper.handle(ExceptionHandlerWrapper.java:117)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:118)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	... 43 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:32:23,693 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] JSF1073: javax.faces.component.UpdateModelException caught during processing of UPDATE_MODEL_VALUES 4 : UIComponent-ClientId=mainform:tabsview:unit, Message=javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+2019-12-09 21:32:23,699 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8080-exec-7] javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @64,88 value="#{productTreeViewController.selectedProduct.unit}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 common frames omitted
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 common frames omitted
+2019-12-09 21:34:09,170 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-10] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:50:38,623 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-8] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:51:17,663 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-4] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at javax.faces.component.UIForm.processUpdates(UIForm.java:301)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1390)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 58 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 59 more
+
+2019-12-09 21:52:03,782 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-10] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-12-09 21:52:03,789 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-10] Initializing Servlet 'dispatcherServlet'
+2019-12-09 21:52:03,811 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-10] Completed initialization in 16 ms
+2019-12-09 21:52:49,460 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 16492 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2019-12-09 21:52:49,511 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-12-09 21:52:50,125 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-09 21:52:50,254 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 104ms. Found 5 repository interfaces.
+2019-12-09 21:52:51,064 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9f50367a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:52:51,111 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$af6b802f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:52:51,125 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$639a0535] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-09 21:52:51,744 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-12-09 21:52:51,773 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:52:51,792 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-12-09 21:52:51,799 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-12-09 21:52:52,191 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-12-09 21:52:52,220 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-12-09 21:52:52,237 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2666 ms
+2019-12-09 21:52:54,124 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.729s
+2019-12-09 21:52:54,209 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2019-12-09 21:52:54,489 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2019-12-09 21:52:55,198 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2019-12-09 21:52:55,204 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2019-12-09 21:52:55,375 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2019-12-09 21:52:55,404 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-12-09 21:52:55,530 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-11-27 17:12:23,428 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
-2019-11-27 17:12:23,428 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
-2019-11-27 17:12:23,553 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-11-27 17:12:23,724 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2019-11-27 17:12:24,927 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
-2019-11-27 17:12:25,021 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-11-27 17:12:25,677 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-11-27 17:12:26,005 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2019-11-27 17:12:26,036 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2019-11-27 17:12:26,036 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 7.452 seconds (JVM running for 10.895)
-2019-11-27 17:12:34,225 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-11-27 17:12:34,225 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
-2019-11-27 17:12:34,241 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 16 ms
+2019-12-09 21:52:55,662 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2019-12-09 21:52:55,669 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2019-12-09 21:52:55,878 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-12-09 21:52:56,171 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-12-09 21:52:57,951 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2019-12-09 21:52:58,113 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-12-09 21:52:59,174 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-12-09 21:52:59,659 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-12-09 21:52:59,698 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-12-09 21:52:59,712 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 11.044 seconds (JVM running for 15.205)

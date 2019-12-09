@@ -25,16 +25,16 @@ public class Unit implements Serializable {
 	private String unitsym;
 
 	//bi-directional many-to-one association to ProductTransaction
-	@OneToMany(mappedBy="unit")
-	private List<ProductTransaction> prodtransactions;
+	//@OneToMany(mappedBy="unit")
+	//private List<ProductTransaction> prodtransactions;
 
 	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="unit1")
-	private List<Product> products1;
+	//@OneToMany(mappedBy="unit1")
+	//private List<Product> products1;
 
 	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="unit2")
-	private List<Product> products2;
+	//@OneToMany(mappedBy="unit2")
+	//private List<Product> products2;
 
 	public Unit() {
 	}
@@ -71,15 +71,15 @@ public class Unit implements Serializable {
 		this.unitsym = unitsym;
 	}
 
-	public List<ProductTransaction> getProdtransactions() {
-		return this.prodtransactions;
-	}
+	//public List<ProductTransaction> getProdtransactions() {
+	//	return this.prodtransactions;
+	//}
 
-	public void setProdtransactions(List<ProductTransaction> prodtransactions) {
-		this.prodtransactions = prodtransactions;
-	}
+	//public void setProdtransactions(List<ProductTransaction> prodtransactions) {
+	//	this.prodtransactions = prodtransactions;
+	//}
 
-	public ProductTransaction addProdtransaction(ProductTransaction prodtransaction) {
+	/*public ProductTransaction addProdtransaction(ProductTransaction prodtransaction) {
 		getProdtransactions().add(prodtransaction);
 		prodtransaction.setUnit(this);
 
@@ -135,6 +135,6 @@ public class Unit implements Serializable {
 		products2.setUnit2(null);
 
 		return products2;
-	}
+	}*/
 
 }

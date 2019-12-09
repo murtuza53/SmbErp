@@ -33,14 +33,14 @@ public abstract class AbstractController<T> implements Serializable {
         this.repository = repo;
     }
 
-    public T find(Object key){
+    public T find(Object key) {
         Optional<T> val = repository.findById(key);
-        if(val.isPresent()){
+        if (val.isPresent()) {
             return val.get();
         }
         return null;
     }
-    
+
     /**
      * Retrieve the currently selected item.
      *
@@ -140,6 +140,18 @@ public abstract class AbstractController<T> implements Serializable {
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, "Could not save due to error");
+            }
+        }
+    }
+
+    public void delete() {
+        if (selected != null) {
+            try {
+                repository.delete(selected);
+                JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " deleted");
+            } catch (Exception ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                JsfUtil.addErrorMessage(ex, "Could not deleted due to error");
             }
         }
     }

@@ -6,307 +6,291 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * The persistent class for the product database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	private Long productid;
+    private static final long serialVersionUID = 1L;
 
-	private String barcode1;
+    @Id
+    private Long productid;
 
-	private String barcode2;
+    private String barcode1;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdon;
+    private String barcode2;
 
-	private String description;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdon;
 
-	private byte inactive;
+    private String description;
 
-	private double packqty;
+    private byte inactive;
 
-	private String partnumber;
+    private double packqty;
 
-	private String productname;
+    private String partnumber;
 
-	private double reorderlevel;
+    private String productname;
 
-	private String stockid;
+    private double reorderlevel;
 
-	private String supplierscode;
+    private String stockid;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedon;
+    private String supplierscode;
 
-	//bi-directional many-to-one association to PriceList
-	@OneToMany(mappedBy="product")
-	private List<PriceList> pricelists;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedon;
 
-	//bi-directional many-to-one association to ProductAccount
-	@OneToMany(mappedBy="product")
-	private List<ProductAccount> prodaccounts;
+    //bi-directional many-to-one association to PriceList
+    @OneToMany(mappedBy = "product")
+    private List<PriceList> pricelists;
 
-	//bi-directional many-to-one association to ProductTransaction
-	@OneToMany(mappedBy="product")
-	private List<ProductTransaction> prodtransactions;
+    //bi-directional many-to-one association to ProductAccount
+    @OneToMany(mappedBy = "product")
+    private List<ProductAccount> prodaccounts;
 
-	//bi-directional many-to-one association to Brand
-	@ManyToOne
-	@JoinColumn(name="brandid")
-	private Brand brand;
+    //bi-directional many-to-one association to ProductTransaction
+    @OneToMany(mappedBy = "product")
+    private List<ProductTransaction> prodtransactions;
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne
-	@JoinColumn(name="countryid")
-	private Country country;
+    //bi-directional many-to-one association to Brand
+    @ManyToOne
+    @JoinColumn(name = "brandid")
+    private Brand brand;
 
-	//bi-directional many-to-one association to ProductCategry
-	@ManyToOne
-	@JoinColumn(name="prodcatid")
-	private ProductCategory prodcategry;
+    //bi-directional many-to-one association to Country
+    @ManyToOne
+    @JoinColumn(name = "countryid")
+    private Country country;
 
-	//bi-directional many-to-one association to Unit
-	@ManyToOne
-	@JoinColumn(name="punitid")
-	private Unit unit1;
+    //bi-directional many-to-one association to ProductCategry
+    @ManyToOne
+    @JoinColumn(name = "prodcatid")
+    private ProductCategory prodcategry;
 
-	//bi-directional many-to-one association to Unit
-	@ManyToOne
-	@JoinColumn(name="unitid")
-	private Unit unit2;
+    //bi-directional many-to-one association to Unit
+    @ManyToOne
+    @JoinColumn(name = "punitid")
+    private Unit punit;
 
-	//bi-directional many-to-one association to ProductType
-	@ManyToOne
-	@JoinColumn(name="producttypeid")
-	private ProductType producttype;
+    //bi-directional many-to-one association to Unit
+    @ManyToOne
+    @JoinColumn(name = "unitid")
+    private Unit unit;
 
-	public Product() {
-	}
+    //bi-directional many-to-one association to ProductType
+    @ManyToOne
+    @JoinColumn(name = "producttypeid")
+    private ProductType producttype;
 
-	public Long getProductid() {
-		return this.productid;
-	}
+    public Product() {
+    }
 
-	public void setProductid(Long productid) {
-		this.productid = productid;
-	}
+    public Long getProductid() {
+        return this.productid;
+    }
 
-	public String getBarcode1() {
-		return this.barcode1;
-	}
+    public void setProductid(Long productid) {
+        this.productid = productid;
+    }
 
-	public void setBarcode1(String barcode1) {
-		this.barcode1 = barcode1;
-	}
+    public String getBarcode1() {
+        return this.barcode1;
+    }
 
-	public String getBarcode2() {
-		return this.barcode2;
-	}
+    public void setBarcode1(String barcode1) {
+        this.barcode1 = barcode1;
+    }
 
-	public void setBarcode2(String barcode2) {
-		this.barcode2 = barcode2;
-	}
+    public String getBarcode2() {
+        return this.barcode2;
+    }
 
-	public Date getCreatedon() {
-		return this.createdon;
-	}
+    public void setBarcode2(String barcode2) {
+        this.barcode2 = barcode2;
+    }
 
-	public void setCreatedon(Date createdon) {
-		this.createdon = createdon;
-	}
+    public Date getCreatedon() {
+        return this.createdon;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setCreatedon(Date createdon) {
+        this.createdon = createdon;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public byte getInactive() {
-		return this.inactive;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setInactive(byte inactive) {
-		this.inactive = inactive;
-	}
+    public byte getInactive() {
+        return this.inactive;
+    }
 
-	public double getPackqty() {
-		return this.packqty;
-	}
+    public void setInactive(byte inactive) {
+        this.inactive = inactive;
+    }
 
-	public void setPackqty(double packqty) {
-		this.packqty = packqty;
-	}
+    public double getPackqty() {
+        return this.packqty;
+    }
 
-	public String getPartnumber() {
-		return this.partnumber;
-	}
+    public void setPackqty(double packqty) {
+        this.packqty = packqty;
+    }
 
-	public void setPartnumber(String partnumber) {
-		this.partnumber = partnumber;
-	}
+    public String getPartnumber() {
+        return this.partnumber;
+    }
 
-	public String getProductname() {
-		return this.productname;
-	}
+    public void setPartnumber(String partnumber) {
+        this.partnumber = partnumber;
+    }
 
-	public void setProductname(String productname) {
-		this.productname = productname;
-	}
+    public String getProductname() {
+        return this.productname;
+    }
 
-	public double getReorderlevel() {
-		return this.reorderlevel;
-	}
+    public void setProductname(String productname) {
+        this.productname = productname;
+    }
 
-	public void setReorderlevel(double reorderlevel) {
-		this.reorderlevel = reorderlevel;
-	}
+    public double getReorderlevel() {
+        return this.reorderlevel;
+    }
 
-	public String getStockid() {
-		return this.stockid;
-	}
+    public void setReorderlevel(double reorderlevel) {
+        this.reorderlevel = reorderlevel;
+    }
 
-	public void setStockid(String stockid) {
-		this.stockid = stockid;
-	}
+    public String getStockid() {
+        return this.stockid;
+    }
 
-	public String getSupplierscode() {
-		return this.supplierscode;
-	}
+    public void setStockid(String stockid) {
+        this.stockid = stockid;
+    }
 
-	public void setSupplierscode(String supplierscode) {
-		this.supplierscode = supplierscode;
-	}
+    public String getSupplierscode() {
+        return this.supplierscode;
+    }
 
-	public Date getUpdatedon() {
-		return this.updatedon;
-	}
+    public void setSupplierscode(String supplierscode) {
+        this.supplierscode = supplierscode;
+    }
 
-	public void setUpdatedon(Date updatedon) {
-		this.updatedon = updatedon;
-	}
+    public Date getUpdatedon() {
+        return this.updatedon;
+    }
 
-	public List<PriceList> getPricelists() {
-		return this.pricelists;
-	}
+    public void setUpdatedon(Date updatedon) {
+        this.updatedon = updatedon;
+    }
 
-	public void setPricelists(List<PriceList> pricelists) {
-		this.pricelists = pricelists;
-	}
+    public List<PriceList> getPricelists() {
+        return this.pricelists;
+    }
 
-	public PriceList addPricelist(PriceList pricelist) {
-		getPricelists().add(pricelist);
-		pricelist.setProduct(this);
+    public void setPricelists(List<PriceList> pricelists) {
+        this.pricelists = pricelists;
+    }
 
-		return pricelist;
-	}
+    public PriceList addPricelist(PriceList pricelist) {
+        getPricelists().add(pricelist);
+        pricelist.setProduct(this);
 
-	public PriceList removePricelist(PriceList pricelist) {
-		getPricelists().remove(pricelist);
-		pricelist.setProduct(null);
+        return pricelist;
+    }
 
-		return pricelist;
-	}
+    public PriceList removePricelist(PriceList pricelist) {
+        getPricelists().remove(pricelist);
+        pricelist.setProduct(null);
 
-	public List<ProductAccount> getProdaccounts() {
-		return this.prodaccounts;
-	}
+        return pricelist;
+    }
 
-	public void setProdaccounts(List<ProductAccount> prodaccounts) {
-		this.prodaccounts = prodaccounts;
-	}
+    public List<ProductAccount> getProdaccounts() {
+        return this.prodaccounts;
+    }
 
-	public ProductAccount addProdaccount(ProductAccount prodaccount) {
-		getProdaccounts().add(prodaccount);
-		prodaccount.setProduct(this);
+    public void setProdaccounts(List<ProductAccount> prodaccounts) {
+        this.prodaccounts = prodaccounts;
+    }
 
-		return prodaccount;
-	}
+    public ProductAccount addProdaccount(ProductAccount prodaccount) {
+        getProdaccounts().add(prodaccount);
+        prodaccount.setProduct(this);
 
-	public ProductAccount removeProdaccount(ProductAccount prodaccount) {
-		getProdaccounts().remove(prodaccount);
-		prodaccount.setProduct(null);
+        return prodaccount;
+    }
 
-		return prodaccount;
-	}
+    public ProductAccount removeProdaccount(ProductAccount prodaccount) {
+        getProdaccounts().remove(prodaccount);
+        prodaccount.setProduct(null);
 
-	public List<ProductTransaction> getProdtransactions() {
-		return this.prodtransactions;
-	}
+        return prodaccount;
+    }
 
-	public void setProdtransactions(List<ProductTransaction> prodtransactions) {
-		this.prodtransactions = prodtransactions;
-	}
+    public List<ProductTransaction> getProdtransactions() {
+        return this.prodtransactions;
+    }
 
-	public ProductTransaction addProdtransaction(ProductTransaction prodtransaction) {
-		getProdtransactions().add(prodtransaction);
-		prodtransaction.setProduct(this);
+    public void setProdtransactions(List<ProductTransaction> prodtransactions) {
+        this.prodtransactions = prodtransactions;
+    }
 
-		return prodtransaction;
-	}
+    public ProductTransaction addProdtransaction(ProductTransaction prodtransaction) {
+        getProdtransactions().add(prodtransaction);
+        prodtransaction.setProduct(this);
 
-	public ProductTransaction removeProdtransaction(ProductTransaction prodtransaction) {
-		getProdtransactions().remove(prodtransaction);
-		prodtransaction.setProduct(null);
+        return prodtransaction;
+    }
 
-		return prodtransaction;
-	}
+    public ProductTransaction removeProdtransaction(ProductTransaction prodtransaction) {
+        getProdtransactions().remove(prodtransaction);
+        prodtransaction.setProduct(null);
 
-	public Brand getBrand() {
-		return this.brand;
-	}
+        return prodtransaction;
+    }
 
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
+    public Brand getBrand() {
+        return this.brand;
+    }
 
-	public Country getCountry() {
-		return this.country;
-	}
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
 
-	public void setCountry(Country country) {
-		this.country = country;
-	}
+    public Country getCountry() {
+        return this.country;
+    }
 
-	public ProductCategory getProdcategry() {
-		return this.prodcategry;
-	}
+    public void setCountry(Country country) {
+        this.country = country;
+    }
 
-	public void setProdcategry(ProductCategory prodcategry) {
-		this.prodcategry = prodcategry;
-	}
+    public ProductCategory getProdcategry() {
+        return this.prodcategry;
+    }
 
-	public Unit getUnit1() {
-		return this.unit1;
-	}
+    public void setProdcategry(ProductCategory prodcategry) {
+        this.prodcategry = prodcategry;
+    }
 
-	public void setUnit1(Unit unit1) {
-		this.unit1 = unit1;
-	}
+    public ProductType getProducttype() {
+        return this.producttype;
+    }
 
-	public Unit getUnit2() {
-		return this.unit2;
-	}
-
-	public void setUnit2(Unit unit2) {
-		this.unit2 = unit2;
-	}
-
-	public ProductType getProducttype() {
-		return this.producttype;
-	}
-
-	public void setProducttype(ProductType producttype) {
-		this.producttype = producttype;
-	}
+    public void setProducttype(ProductType producttype) {
+        this.producttype = producttype;
+    }
 
     @Override
     public int hashCode() {
@@ -337,7 +321,33 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" + "productid=" + productid + ", productname=" + productname + '}';
     }
-        
-        
+
+    /**
+     * @return the punit
+     */
+    public Unit getPunit() {
+        return punit;
+    }
+
+    /**
+     * @param punit the punit to set
+     */
+    public void setPunit(Unit punit) {
+        this.punit = punit;
+    }
+
+    /**
+     * @return the unit
+     */
+    public Unit getUnit() {
+        return unit;
+    }
+
+    /**
+     * @param unit the unit to set
+     */
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
 
 }

@@ -1,0 +1,14 @@
+                            <p:outputLabel value="Category" for="category" />
+                            <p:autoComplete id="category" value="#{productController.selected.prodcategry}"
+                                            converter="#{entityConverter}" completeMethod="#{productCategoryController.completeFilter}"
+                                            var="cat" itemValue="#{cat}" itemLabel="#{cat.catname}" 
+                                            minQueryLength="3" dropdown="true" forceSelection="true"
+                                            required="true" requiredMessage="Category is required">
+                                <p:column style="width:20%">
+                                    <h:outputText value="#{cat.prodcatId}" />
+                                </p:column>
+
+                                <p:column>
+                                    <h:outputText value="#{cat.catname}" />
+                                </p:column>
+                            </p:autoComplete>

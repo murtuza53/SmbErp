@@ -15,9 +15,10 @@
                 </f:facet>
 
                 <f:facet name="right">
-                    <p:commandButton title="New Product" icon="fa fa-plus" 
-                                     actionListener="#{productTreeViewController.createNewProduct}"
-                                     disabled="#{productTreeViewController.productNewDisabled}" update=":mainform:tabsview"/>
+                    <p:commandButton title="New Product" icon="fa fa-plus" process="@this" 
+                                     actionListener="#{productTreeViewController.prepareCreateNewProduct}"
+                                     disabled="#{productTreeViewController.productNewDisabled}" update=":mainform:tabsview:ProductDlg" 
+                                     oncomplete="PF('ProductDialog').show();"/>
                     <p:commandButton title="Edit Product" icon="fa fa-pencil" disabled="#{productTreeViewController.productEditDisabled}" />
                     <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" />
                 </f:facet>
@@ -65,5 +66,5 @@
             </p:dataTable>
         </div>
     </div>
-
+    <ui:include src="/product.xhtml"/>
 </ui:composition>

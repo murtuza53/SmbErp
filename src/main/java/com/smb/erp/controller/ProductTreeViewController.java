@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
 
 import org.primefaces.event.NodeSelectEvent;
@@ -15,148 +14,170 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.rest.ProductRestController;
+import java.util.Date;
+import javax.faces.view.ViewScoped;
 
 @Named
-@ConversationScoped
+@ViewScoped
 public class ProductTreeViewController implements Serializable {
 
-	@Autowired
-	ProductCategoryController pccontroller;
+    @Autowired
+    ProductCategoryController pccontroller;
 
-	@Autowired
-	TabViewController tabController;
-	
-	@Autowired
-	ProductRestController pdcontroller;
+    @Autowired
+    TabViewController tabController;
 
-	private TreeNode root;
+    @Autowired
+    ProductRestController pdcontroller;
 
-	private String treeName;
+    private TreeNode root;
 
-	private TreeNode selectedNode;
-	
-	private Product selectedProduct;
+    private String treeName;
 
-	private List<Product> prodList;
+    private TreeNode selectedNode;
 
-	@PostConstruct
-	public void init() {
-		if (root == null) {
-			ProductCategory rpc = pccontroller.getRootNode();
-			root = new DefaultTreeNode("Root", null);
-			addNode(rpc, root);
-		}
-	}
+    private Product selectedProduct;
 
-	public TreeNode getRoot() {
-		return root;
-	}
+    private List<Product> prodList;
 
-	public void addNode(ProductCategory pc, TreeNode parent) {
-		DefaultTreeNode n = new DefaultTreeNode(pc, parent);
+    @PostConstruct
+    public void init() {
+        if (root == null) {
+            ProductCategory rpc = pccontroller.getRootNode();
+            root = new DefaultTreeNode("Root", null);
+            addNode(rpc, root);
+        }
+    }
 
-		if (pc.getProdcatId() == 1) {
-			n.setExpanded(true);
-		}
+    public TreeNode getRoot() {
+        return root;
+    }
 
-		if (pc.getProdcategries() != null) {
-			for (ProductCategory p : pc.getProdcategries()) {
-				addNode(p, n);
-			}
-		}
-	}
+    public void addNode(ProductCategory pc, TreeNode parent) {
+        DefaultTreeNode n = new DefaultTreeNode(pc, parent);
 
-	public void refreshProductList() {
-		ProductCategory pc = (ProductCategory) selectedNode.getData();
-		prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
-	}
+        if (pc.getProdcatId() == 1) {
+            n.setExpanded(true);
+        }
 
-	public void onNodeSelect(NodeSelectEvent event) {
-		//FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
-		//FacesContext.getCurrentInstance().addMessage(null, message);
-		refreshProductList();
-		setSelectedProduct(null);
-		//PrimeFaces.current().ajax().update("toolbar");
-	}
+        if (pc.getProdcategries() != null) {
+            for (ProductCategory p : pc.getProdcategries()) {
+                addNode(p, n);
+            }
+        }
+    }
 
-	public boolean getNewCategoryDisabled() {
-		if(getSelectedNode()==null) {
-			//System.out.println("getNewCategoryDisabled: " + getSelectedNode());
-			return true;
-		} else if(((ProductCategory)getSelectedNode().getData()).getProdcatId()>1099) {
-			//System.out.println("getNewCategoryDisabled: " + ((ProductCategory)getSelectedNode().getData()).getProdcatId());
-			return true;
-		}
-		
-		//System.out.println("getNewCategoryDisabled:" + false);
-		return false;
-	}
-	
-	public boolean getEditCategoryDisabled() {
-		if(getSelectedNode()==null) {
-			//System.out.println("getEditCategoryDisabled: " + getSelectedNode());
-			return true;
-		} else if(((ProductCategory)getSelectedNode().getData()).getProdcatId()==1) {
-			//System.out.println("getEditCategoryDisabled: " + ((ProductCategory)getSelectedNode().getData()).getProdcatId());
-			return true;
-		}
-		//System.out.println("getEditCategoryDisabled: " + false);
-		return false;
-	}
-	
-	public boolean getProductEditDisabled() {
-		if(getSelectedProduct()==null) {
-			//System.out.println("getProductEditDisabled: " + true);
-			return true;
-		} 
-		//System.out.println("getProductEditDisabled: " + false);
-		return false;
-	}
-	
-	public boolean getProductNewDisabled() {
-		if(getSelectedNode()==null) {
-			return true;
-		} else if(((ProductCategory)getSelectedNode().getData()).getProdcatId()<2000) {
-			return true;
-		}
-		return false;
-	}
-	
-	public String getTreeName() {
-		return treeName;
-	}
+    public void refreshProductList() {
+        ProductCategory pc = (ProductCategory) selectedNode.getData();
+        prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
+    }
 
-	public void setTreeName(String treeName) {
-		this.treeName = treeName;
-	}
+    public void onNodeSelect(NodeSelectEvent event) {
+        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
+        //FacesContext.getCurrentInstance().addMessage(null, message);
+        refreshProductList();
+        setSelectedProduct(null);
+        //PrimeFaces.current().ajax().update("toolbar");
+    }
 
-	public TreeNode getSelectedNode() {
-		return selectedNode;
-	}
+    public boolean getNewCategoryDisabled() {
+        if (getSelectedNode() == null) {
+            //System.out.println("getNewCategoryDisabled: " + getSelectedNode());
+            return true;
+        } else if (((ProductCategory) getSelectedNode().getData()).getProdcatId() > 1099) {
+            //System.out.println("getNewCategoryDisabled: " + ((ProductCategory)getSelectedNode().getData()).getProdcatId());
+            return true;
+        }
 
-	public void setSelectedNode(TreeNode selectedNode) {
-		this.selectedNode = selectedNode;
-		// refreshProductList();
-	}
+        //System.out.println("getNewCategoryDisabled:" + false);
+        return false;
+    }
 
-	public List<Product> getProdList() {
-		return prodList;
-	}
+    public boolean getEditCategoryDisabled() {
+        if (getSelectedNode() == null) {
+            //System.out.println("getEditCategoryDisabled: " + getSelectedNode());
+            return true;
+        } else if (((ProductCategory) getSelectedNode().getData()).getProdcatId() == 1) {
+            //System.out.println("getEditCategoryDisabled: " + ((ProductCategory)getSelectedNode().getData()).getProdcatId());
+            return true;
+        }
+        //System.out.println("getEditCategoryDisabled: " + false);
+        return false;
+    }
 
-	public void setProdList(List<Product> prodList) {
-		this.prodList = prodList;
-	}
+    public boolean getProductEditDisabled() {
+        if (getSelectedProduct() == null) {
+            //System.out.println("getProductEditDisabled: " + true);
+            return true;
+        }
+        //System.out.println("getProductEditDisabled: " + false);
+        return false;
+    }
 
-	public Product getSelectedProduct() {
-		return selectedProduct;
-	}
+    public boolean getProductNewDisabled() {
+        if (getSelectedNode() == null) {
+            return true;
+        } else if (((ProductCategory) getSelectedNode().getData()).getProdcatId() < 2000) {
+            return true;
+        }
+        return false;
+    }
 
-	public void setSelectedProduct(Product selectedProduct) {
-		this.selectedProduct = selectedProduct;
-	}
+    public String getTreeName() {
+        return treeName;
+    }
 
-	public void createNewProduct() {
-		tabController.addTabProduct(new Product(), "New Product", DocumentTab.MODE.NEW);
-	}
-	
+    public void setTreeName(String treeName) {
+        this.treeName = treeName;
+    }
+
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+        // refreshProductList();
+    }
+
+    public List<Product> getProdList() {
+        return prodList;
+    }
+
+    public void setProdList(List<Product> prodList) {
+        this.prodList = prodList;
+    }
+
+    public Product getSelectedProduct() {
+        //System.out.println(new Date() + " => getSelectedProduct: " + selectedProduct);
+        return selectedProduct;
+    }
+
+    public void setSelectedProduct(Product selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public void createNewProduct() {
+        tabController.addTabProduct(new Product(), "New Product", DocumentTab.MODE.NEW);
+    }
+
+    public String getHeaderTitle() {
+        if (selectedProduct == null || selectedProduct.getProductid() == null || selectedProduct.getProductid().longValue() == 0) {
+            return "New Product";
+        }
+        return "Edit Product";
+    }
+
+    public void prepareCreateNewProduct() {
+        selectedProduct = new Product();
+        selectedProduct.setProductid(0l);
+        selectedProduct.setProductname("Testing");
+        if (getSelectedNode() != null) {
+            if (getSelectedNode().getData() != null) {
+                selectedProduct.setProdcategry((ProductCategory) getSelectedNode().getData());
+            }
+        }
+        //System.out.println(new Date() + " => prepareCreateNewProduct: " + selectedProduct);
+    }
+
 }
