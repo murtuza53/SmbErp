@@ -5,333 +5,351 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the prodtransaction database table.
- * 
+ *
  */
 @Entity
-@Table(name="prodtransaction")
-@NamedQuery(name="ProductTransaction.findAll", query="SELECT p FROM ProductTransaction p")
+@Table(name = "prodtransaction")
+@NamedQuery(name = "ProductTransaction.findAll", query = "SELECT p FROM ProductTransaction p")
 public class ProductTransaction implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String prodtransid;
+    private static final long serialVersionUID = 1L;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date ceatedon;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String prodtransid;
 
-	private String code;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ceatedon;
 
-	private double commission;
+    private String code;
 
-	private double commissionpercentage;
+    private double commission;
 
-	private double cost;
+    private double commissionpercentage;
 
-	private String customizedname;
+    private double cost;
 
-	private double discount;
+    private String customizedname;
 
-	private double discountpercentage;
+    private double discount;
 
-	private double executedqty;
+    private double discountpercentage;
 
-	private double fcunitprice;
+    private double executedqty;
 
-	private double linecost;
+    private double fcunitprice;
 
-	private double linefcunitprice;
+    private double linecost;
 
-	private double linereceived;
+    private double linefcunitprice;
 
-	private double linesold;
+    private double linereceived;
 
-	private double lineunitprice;
+    private double linesold;
 
-	private double location;
+    private double lineunitprice;
 
-	private double received;
+    private double location;
 
-	private double sold;
+    private double received;
 
-	private String transactiontype;
+    private double sold;
 
-	private double unitprice;
+    private String transactiontype;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedon;
+    private double unitprice;
 
-	//bi-directional many-to-one association to Unit
-	@ManyToOne
-	@JoinColumn(name="unitid")
-	private Unit unit;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedon;
 
-	//bi-directional many-to-one association to Warehouse
-	@ManyToOne
-	@JoinColumn(name="warehouseid")
-	private Warehouse warehouse;
+    @ManyToOne
+    @JoinColumn(name = "busdocno")
+    private BusDoc busdoc;
 
-	//bi-directional many-to-one association to Product
-	@ManyToOne
-	@JoinColumn(name="productid")
-	private Product product;
+    //bi-directional many-to-one association to Unit
+    @ManyToOne
+    @JoinColumn(name = "unitid")
+    private Unit unit;
 
-	//bi-directional many-to-one association to ProductTransactionExecutedFrom
-	@OneToMany(mappedBy="prodtransaction")
-	private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
+    //bi-directional many-to-one association to Warehouse
+    @ManyToOne
+    @JoinColumn(name = "warehouseid")
+    private Warehouse warehouse;
 
-	//bi-directional many-to-one association to ProductTransactionExecutedTo
-	@OneToMany(mappedBy="prodtransaction")
-	private List<ProductTransactionExecutedTo> prodtransexecutedtos;
+    //bi-directional many-to-one association to Product
+    @ManyToOne
+    @JoinColumn(name = "productid")
+    private Product product;
 
-	public ProductTransaction() {
-	}
+    //bi-directional many-to-one association to ProductTransactionExecutedFrom
+    @OneToMany(mappedBy = "prodtransaction")
+    private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
 
-	public String getProdtransid() {
-		return this.prodtransid;
-	}
+    //bi-directional many-to-one association to ProductTransactionExecutedTo
+    @OneToMany(mappedBy = "prodtransaction")
+    private List<ProductTransactionExecutedTo> prodtransexecutedtos;
 
-	public void setProdtransid(String prodtransid) {
-		this.prodtransid = prodtransid;
-	}
+    public ProductTransaction() {
+    }
 
-	public Date getCeatedon() {
-		return this.ceatedon;
-	}
+    public String getProdtransid() {
+        return this.prodtransid;
+    }
 
-	public void setCeatedon(Date ceatedon) {
-		this.ceatedon = ceatedon;
-	}
+    public void setProdtransid(String prodtransid) {
+        this.prodtransid = prodtransid;
+    }
 
-	public String getCode() {
-		return this.code;
-	}
+    public Date getCeatedon() {
+        return this.ceatedon;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCeatedon(Date ceatedon) {
+        this.ceatedon = ceatedon;
+    }
 
-	public double getCommission() {
-		return this.commission;
-	}
-
-	public void setCommission(double commission) {
-		this.commission = commission;
-	}
-
-	public double getCommissionpercentage() {
-		return this.commissionpercentage;
-	}
-
-	public void setCommissionpercentage(double commissionpercentage) {
-		this.commissionpercentage = commissionpercentage;
-	}
-
-	public double getCost() {
-		return this.cost;
-	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
-	public String getCustomizedname() {
-		return this.customizedname;
-	}
-
-	public void setCustomizedname(String customizedname) {
-		this.customizedname = customizedname;
-	}
-
-	public double getDiscount() {
-		return this.discount;
-	}
-
-	public void setDiscount(double discount) {
-		this.discount = discount;
-	}
-
-	public double getDiscountpercentage() {
-		return this.discountpercentage;
-	}
-
-	public void setDiscountpercentage(double discountpercentage) {
-		this.discountpercentage = discountpercentage;
-	}
-
-	public double getExecutedqty() {
-		return this.executedqty;
-	}
-
-	public void setExecutedqty(double executedqty) {
-		this.executedqty = executedqty;
-	}
-
-	public double getFcunitprice() {
-		return this.fcunitprice;
-	}
-
-	public void setFcunitprice(double fcunitprice) {
-		this.fcunitprice = fcunitprice;
-	}
-
-	public double getLinecost() {
-		return this.linecost;
-	}
-
-	public void setLinecost(double linecost) {
-		this.linecost = linecost;
-	}
-
-	public double getLinefcunitprice() {
-		return this.linefcunitprice;
-	}
-
-	public void setLinefcunitprice(double linefcunitprice) {
-		this.linefcunitprice = linefcunitprice;
-	}
-
-	public double getLinereceived() {
-		return this.linereceived;
-	}
-
-	public void setLinereceived(double linereceived) {
-		this.linereceived = linereceived;
-	}
-
-	public double getLinesold() {
-		return this.linesold;
-	}
+    public String getCode() {
+        return this.code;
+    }
 
-	public void setLinesold(double linesold) {
-		this.linesold = linesold;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public double getLineunitprice() {
-		return this.lineunitprice;
-	}
+    public double getCommission() {
+        return this.commission;
+    }
 
-	public void setLineunitprice(double lineunitprice) {
-		this.lineunitprice = lineunitprice;
-	}
+    public void setCommission(double commission) {
+        this.commission = commission;
+    }
 
-	public double getLocation() {
-		return this.location;
-	}
+    public double getCommissionpercentage() {
+        return this.commissionpercentage;
+    }
 
-	public void setLocation(double location) {
-		this.location = location;
-	}
+    public void setCommissionpercentage(double commissionpercentage) {
+        this.commissionpercentage = commissionpercentage;
+    }
 
-	public double getReceived() {
-		return this.received;
-	}
+    public double getCost() {
+        return this.cost;
+    }
 
-	public void setReceived(double received) {
-		this.received = received;
-	}
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 
-	public double getSold() {
-		return this.sold;
-	}
+    public String getCustomizedname() {
+        return this.customizedname;
+    }
 
-	public void setSold(double sold) {
-		this.sold = sold;
-	}
+    public void setCustomizedname(String customizedname) {
+        this.customizedname = customizedname;
+    }
 
-	public String getTransactiontype() {
-		return this.transactiontype;
-	}
+    public double getDiscount() {
+        return this.discount;
+    }
 
-	public void setTransactiontype(String transactiontype) {
-		this.transactiontype = transactiontype;
-	}
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
 
-	public double getUnitprice() {
-		return this.unitprice;
-	}
+    public double getDiscountpercentage() {
+        return this.discountpercentage;
+    }
 
-	public void setUnitprice(double unitprice) {
-		this.unitprice = unitprice;
-	}
+    public void setDiscountpercentage(double discountpercentage) {
+        this.discountpercentage = discountpercentage;
+    }
 
-	public Date getUpdatedon() {
-		return this.updatedon;
-	}
+    public double getExecutedqty() {
+        return this.executedqty;
+    }
 
-	public void setUpdatedon(Date updatedon) {
-		this.updatedon = updatedon;
-	}
+    public void setExecutedqty(double executedqty) {
+        this.executedqty = executedqty;
+    }
 
-	public Unit getUnit() {
-		return this.unit;
-	}
+    public double getFcunitprice() {
+        return this.fcunitprice;
+    }
 
-	public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
+    public void setFcunitprice(double fcunitprice) {
+        this.fcunitprice = fcunitprice;
+    }
 
-	public Warehouse getWarehouse() {
-		return this.warehouse;
-	}
+    public double getLinecost() {
+        return this.linecost;
+    }
 
-	public void setWarehouse(Warehouse warehouse) {
-		this.warehouse = warehouse;
-	}
+    public void setLinecost(double linecost) {
+        this.linecost = linecost;
+    }
 
-	public Product getProduct() {
-		return this.product;
-	}
+    public double getLinefcunitprice() {
+        return this.linefcunitprice;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+    public void setLinefcunitprice(double linefcunitprice) {
+        this.linefcunitprice = linefcunitprice;
+    }
 
-	public List<ProductTransactionExecutedFrom> getProdtransexecutedfroms() {
-		return this.prodtransexecutedfroms;
-	}
+    public double getLinereceived() {
+        return this.linereceived;
+    }
 
-	public void setProdtransexecutedfroms(List<ProductTransactionExecutedFrom> prodtransexecutedfroms) {
-		this.prodtransexecutedfroms = prodtransexecutedfroms;
-	}
+    public void setLinereceived(double linereceived) {
+        this.linereceived = linereceived;
+    }
 
-	public ProductTransactionExecutedFrom addProdtransexecutedfrom(ProductTransactionExecutedFrom prodtransexecutedfrom) {
-		getProdtransexecutedfroms().add(prodtransexecutedfrom);
-		prodtransexecutedfrom.setProdtransaction(this);
+    public double getLinesold() {
+        return this.linesold;
+    }
 
-		return prodtransexecutedfrom;
-	}
+    public void setLinesold(double linesold) {
+        this.linesold = linesold;
+    }
 
-	public ProductTransactionExecutedFrom removeProdtransexecutedfrom(ProductTransactionExecutedFrom prodtransexecutedfrom) {
-		getProdtransexecutedfroms().remove(prodtransexecutedfrom);
-		prodtransexecutedfrom.setProdtransaction(null);
+    public double getLineunitprice() {
+        return this.lineunitprice;
+    }
 
-		return prodtransexecutedfrom;
-	}
+    public void setLineunitprice(double lineunitprice) {
+        this.lineunitprice = lineunitprice;
+    }
 
-	public List<ProductTransactionExecutedTo> getProdtransexecutedtos() {
-		return this.prodtransexecutedtos;
-	}
+    public double getLocation() {
+        return this.location;
+    }
 
-	public void setProdtransexecutedtos(List<ProductTransactionExecutedTo> prodtransexecutedtos) {
-		this.prodtransexecutedtos = prodtransexecutedtos;
-	}
+    public void setLocation(double location) {
+        this.location = location;
+    }
 
-	public ProductTransactionExecutedTo addProdtransexecutedto(ProductTransactionExecutedTo prodtransexecutedto) {
-		getProdtransexecutedtos().add(prodtransexecutedto);
-		prodtransexecutedto.setProdtransaction(this);
+    public double getReceived() {
+        return this.received;
+    }
 
-		return prodtransexecutedto;
-	}
+    public void setReceived(double received) {
+        this.received = received;
+    }
 
-	public ProductTransactionExecutedTo removeProdtransexecutedto(ProductTransactionExecutedTo prodtransexecutedto) {
-		getProdtransexecutedtos().remove(prodtransexecutedto);
-		prodtransexecutedto.setProdtransaction(null);
+    public double getSold() {
+        return this.sold;
+    }
 
-		return prodtransexecutedto;
-	}
+    public void setSold(double sold) {
+        this.sold = sold;
+    }
+
+    public String getTransactiontype() {
+        return this.transactiontype;
+    }
+
+    public void setTransactiontype(String transactiontype) {
+        this.transactiontype = transactiontype;
+    }
+
+    public double getUnitprice() {
+        return this.unitprice;
+    }
+
+    public void setUnitprice(double unitprice) {
+        this.unitprice = unitprice;
+    }
+
+    public Date getUpdatedon() {
+        return this.updatedon;
+    }
+
+    public void setUpdatedon(Date updatedon) {
+        this.updatedon = updatedon;
+    }
+
+    public Unit getUnit() {
+        return this.unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Warehouse getWarehouse() {
+        return this.warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public Product getProduct() {
+        return this.product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public List<ProductTransactionExecutedFrom> getProdtransexecutedfroms() {
+        return this.prodtransexecutedfroms;
+    }
+
+    public void setProdtransexecutedfroms(List<ProductTransactionExecutedFrom> prodtransexecutedfroms) {
+        this.prodtransexecutedfroms = prodtransexecutedfroms;
+    }
+
+    public ProductTransactionExecutedFrom addProdtransexecutedfrom(ProductTransactionExecutedFrom prodtransexecutedfrom) {
+        getProdtransexecutedfroms().add(prodtransexecutedfrom);
+        prodtransexecutedfrom.setProdtransaction(this);
+
+        return prodtransexecutedfrom;
+    }
+
+    public ProductTransactionExecutedFrom removeProdtransexecutedfrom(ProductTransactionExecutedFrom prodtransexecutedfrom) {
+        getProdtransexecutedfroms().remove(prodtransexecutedfrom);
+        prodtransexecutedfrom.setProdtransaction(null);
+
+        return prodtransexecutedfrom;
+    }
+
+    public List<ProductTransactionExecutedTo> getProdtransexecutedtos() {
+        return this.prodtransexecutedtos;
+    }
+
+    public void setProdtransexecutedtos(List<ProductTransactionExecutedTo> prodtransexecutedtos) {
+        this.prodtransexecutedtos = prodtransexecutedtos;
+    }
+
+    public ProductTransactionExecutedTo addProdtransexecutedto(ProductTransactionExecutedTo prodtransexecutedto) {
+        getProdtransexecutedtos().add(prodtransexecutedto);
+        prodtransexecutedto.setProdtransaction(this);
+
+        return prodtransexecutedto;
+    }
+
+    public ProductTransactionExecutedTo removeProdtransexecutedto(ProductTransactionExecutedTo prodtransexecutedto) {
+        getProdtransexecutedtos().remove(prodtransexecutedto);
+        prodtransexecutedto.setProdtransaction(null);
+
+        return prodtransexecutedto;
+    }
+
+    /**
+     * @return the busdoc
+     */
+    public BusDoc getBusdoc() {
+        return busdoc;
+    }
+
+    /**
+     * @param busdoc the busdoc to set
+     */
+    public void setBusdoc(BusDoc busdoc) {
+        this.busdoc = busdoc;
+    }
 
 }

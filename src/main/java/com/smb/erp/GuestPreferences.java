@@ -38,6 +38,8 @@ public class GuestPreferences implements Serializable {
     private boolean gradientMegaMenu = true;
 
     private String menuLayout = "layout-wrapper-slim-sidebar";	//layout-wrapper-slim-sidebar	//static
+    
+    private String busdocMenuLayout = "layout-wrapper-horizontal-sidebar";
 
     private String profileMode = "inline";
 
@@ -107,5 +109,19 @@ public class GuestPreferences implements Serializable {
         else {
             this.profileMode = profileMode;
         }
+    }
+
+    /**
+     * @return the busdocMenuLayout
+     */
+    public String getBusdocMenuLayout() {
+        return busdocMenuLayout;
+    }
+
+    /**
+     * @param busdocMenuLayout the busdocMenuLayout to set
+     */
+    public void setBusdocMenuLayout(String busdocMenuLayout) {
+        this.busdocMenuLayout = busdocMenuLayout;
     }
 }

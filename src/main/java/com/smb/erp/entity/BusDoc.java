@@ -11,6 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="busdoc")
 @NamedQuery(name="BusDoc.findAll", query="SELECT b FROM BusDoc b")
 public class BusDoc implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -73,8 +74,11 @@ public class BusDoc implements Serializable {
 	private BusDoc busdoc;
 
 	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="busdoc")
-	private List<BusDoc> busdocs;
+	//@OneToMany(mappedBy="busdoc")
+	//private List<BusDoc> busdocs;
+        
+        @OneToMany(mappedBy="busdoc")
+        private List<ProductTransaction> productTransactions;
 
 	//bi-directional many-to-one association to BusDocInfo
 	@ManyToOne
@@ -92,24 +96,24 @@ public class BusDoc implements Serializable {
 	private Company company;
 
 	//bi-directional many-to-one association to PartialPaymentDetail
-	@OneToMany(mappedBy="busdoc1")
-	private List<PartialPaymentDetail> ppdetails1;
+	//@OneToMany(mappedBy="busdoc1")
+	//private List<PartialPaymentDetail> ppdetails1;
 
 	//bi-directional many-to-one association to PartialPaymentDetail
-	@OneToMany(mappedBy="busdoc2")
-	private List<PartialPaymentDetail> ppdetails2;
+	//@OneToMany(mappedBy="busdoc2")
+	//private List<PartialPaymentDetail> ppdetails2;
 
 	//bi-directional many-to-one association to PartialPaymentDetail
-	@OneToMany(mappedBy="busdoc3")
-	private List<PartialPaymentDetail> ppdetails3;
+	//@OneToMany(mappedBy="busdoc3")
+	//private List<PartialPaymentDetail> ppdetails3;
 
 	//bi-directional many-to-one association to PartialPaymentDetail
-	@OneToMany(mappedBy="busdoc4")
-	private List<PartialPaymentDetail> ppdetails4;
+	//@OneToMany(mappedBy="busdoc4")
+	//private List<PartialPaymentDetail> ppdetails4;
 
 	//bi-directional many-to-one association to PartialPaymentDetail
-	@OneToMany(mappedBy="busdoc5")
-	private List<PartialPaymentDetail> ppdetails5;
+	//@OneToMany(mappedBy="busdoc5")
+	//private List<PartialPaymentDetail> ppdetails5;
 
 	public BusDoc() {
 	}
@@ -282,7 +286,7 @@ public class BusDoc implements Serializable {
 		this.busdoc = busdoc;
 	}
 
-	public List<BusDoc> getBusdocs() {
+	/*public List<BusDoc> getBusdocs() {
 		return this.busdocs;
 	}
 
@@ -302,7 +306,7 @@ public class BusDoc implements Serializable {
 		busdoc.setBusdoc(null);
 
 		return busdoc;
-	}
+	}*/
 
 	public BusDocInfo getBusdocinfo() {
 		return this.busdocinfo;
@@ -328,7 +332,7 @@ public class BusDoc implements Serializable {
 		this.company = company;
 	}
 
-	public List<PartialPaymentDetail> getPpdetails1() {
+	/*public List<PartialPaymentDetail> getPpdetails1() {
 		return this.ppdetails1;
 	}
 
@@ -436,6 +440,20 @@ public class BusDoc implements Serializable {
 		ppdetails5.setBusdoc5(null);
 
 		return ppdetails5;
-	}
+	}*/
+
+    /**
+     * @return the productTransactions
+     */
+    public List<ProductTransaction> getProductTransactions() {
+        return productTransactions;
+    }
+
+    /**
+     * @param productTransactions the productTransactions to set
+     */
+    public void setProductTransactions(List<ProductTransaction> productTransactions) {
+        this.productTransactions = productTransactions;
+    }
 
 }
