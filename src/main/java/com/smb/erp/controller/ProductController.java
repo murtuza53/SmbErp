@@ -8,13 +8,10 @@ package com.smb.erp.controller;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
-import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  *

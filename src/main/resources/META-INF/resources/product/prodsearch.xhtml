@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-fluid">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-12 ui-lg-12 ui-fluid">
+                <p:panel styleClass="resolution-center" header="Search Products">
+                    <p:outputLabel for="pcriteria" value="Search Criteria" />
+                    <p:inputText id="pcriteria" placeholder="Criteria" value="#{productSearchController.criteria}" />
+                    <p:commandButton value="Send" actionListener="#{productSearchController}" />
+
+                    <p:dataTable id="prodtable" var="prod"
+                                 value="#{productSearchController.productList}" widgetVar="ptable"
+                                 selection="#{productSearchController.selected}"
+                                 selectionMode="single" rowKey="#{prod.productid}"
+                                 emptyMessage="No Products found">
+                        <p:column headerText="Stock No" sortBy="#{prod.productid}">
+                            <h:outputText value="#{prod.productid}" />
+                        </p:column>
+
+                        <p:column headerText="Product Name" sortBy="#{prod.productname}"
+                                  style="width: 50%">
+                            <h:outputText value="#{prod.productname}" />
+                        </p:column>
+
+                        <p:column headerText="Sup Code" sortBy="#{prod.supplierscode}">
+                            <h:outputText value="#{prod.supplierscode}" />
+                        </p:column>
+
+                        <p:column headerText="Brand" sortBy="#{prod.brand.brandname}">
+                            <h:outputText value="#{prod.brand.brandname}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>
