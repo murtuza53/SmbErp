@@ -12,18 +12,8 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="mainform">
+        <h:form id="docform">
             <p:growl id="msgs" showDetail="true" />
-            <pe:layout fullPage="false" options="#{productSearchController.layoutOptions}"
-                       stateCookie="true" widgetVar="layoutWidget">
-                <pe:layoutPane position="center">
-                    <p:panel styleClass="resolution-center" header="Document Details">
-                    </p:panel>
-                </pe:layoutPane>
-                <pe:layoutPane position="west" size="25%">
-                    <ui:include src="./product/prodsearch.xhtml"/>
-                </pe:layoutPane>
-            </pe:layout>
         </h:form>
     </ui:define>
 

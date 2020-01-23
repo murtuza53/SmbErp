@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pc="http://primefaces.org/california">
+
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none; width: 50%; z-index: 10000;" id="leftMenu">
+        <div style="height: 32px">
+            <a href="javascript:void(0)" class="fa fa-times" onclick="closeLeftMenu()"
+               style="position: absolute; right: 0px; width: 32px; padding: 10px"/>
+        </div>
+        <h:form id="menuform">
+            <p:panel styleClass="resolution-center" header="Search Products">
+                <f:facet name="actions">
+                    <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"><h:outputText styleClass="ui-icon pi pi-question" /></h:commandLink>
+                    <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"><h:outputText styleClass="ui-icon pi pi-star" /></h:commandLink>
+                </f:facet>
+                <p:outputLabel for="pcriteria" value="Search Criteria" />
+                <p:inputText id="pcriteria" placeholder="Criteria" value="#{productSearchController.criteria}" />
+                <p:commandButton value="Send" actionListener="#{productSearchController.searchProducts()}" update="prodtable"/>
+
+                <p:dataTable id="prodtable" var="prod"
+                             value="#{productSearchController.productList}" widgetVar="ptable"
+                             selection="#{productSearchController.selectedProducts}"
+                             rowKey="#{prod.productid}"
+                             emptyMessage="No Products found">
+                    <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                    <p:column headerText="Stock#" sortBy="#{prod.productid}">
+                        <h:outputText value="#{prod.productid}" />
+                    </p:column>
+
+                    <p:column headerText="Product" sortBy="#{prod.productname}"
+                              style="width: 40%">
+                        <h:outputText value="#{prod.productname}" />
+                    </p:column>
+
+                    <p:column headerText="Unit" sortBy="#{prod.unit.unitsym}">
+                        <h:outputText value="#{prod.unit.unitsym}" />
+                    </p:column>
+
+                    <p:column headerText="SupCode" sortBy="#{prod.supplierscode}">
+                        <h:outputText value="#{prod.supplierscode}" />
+                    </p:column>
+
+                    <p:column headerText="Brand" sortBy="#{prod.brand.brandname}">
+                        <h:outputText value="#{prod.brand.brandname}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </div>
+</ui:composition>

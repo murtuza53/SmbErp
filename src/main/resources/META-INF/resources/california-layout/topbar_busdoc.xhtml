@@ -2,10 +2,17 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:po="http://primefaces.org/california">
 
     <div class="layout-topbar">
-        <h:panelGroup  styleClass="logo">
+        <h:link styleClass="logo">
             <p:graphicImage name="images/logo.png" library="california-layout" />
-        </h:panelGroup>
+        </h:link>
+
+        <a id="menu-button" onclick="openLeftMenu()">
+            <i class="fa fa-align-left" />
+        </a>
+
+        <a id="right-sidebar-button" href="#">
+            <i class="fa fa-ellipsis-v" />
+        </a>
 
     </div>
-
 </ui:composition>

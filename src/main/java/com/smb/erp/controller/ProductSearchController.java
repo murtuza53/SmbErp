@@ -28,6 +28,8 @@ public class ProductSearchController extends AbstractController<Product> {
     private String criteria = "";
 
     private List<Product> productList;
+    
+    private List<Product> selectedProducts;
 
     private LayoutOptions layoutOptions;
 
@@ -87,6 +89,20 @@ public class ProductSearchController extends AbstractController<Product> {
      */
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    /**
+     * @return the selectedProducts
+     */
+    public List<Product> getSelectedProducts() {
+        return selectedProducts;
+    }
+
+    /**
+     * @param selectedProducts the selectedProducts to set
+     */
+    public void setSelectedProducts(List<Product> selectedProducts) {
+        this.selectedProducts = selectedProducts;
     }
 
 }

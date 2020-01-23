@@ -23,9 +23,9 @@ import javax.inject.Named;
 @ViewScoped
 public class GuestPreferences implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String layout = "moody";
+    private String layout = "moody";
 
     private String theme = "noir";
 
@@ -38,8 +38,8 @@ public class GuestPreferences implements Serializable {
     private boolean gradientMegaMenu = true;
 
     private String menuLayout = "layout-wrapper-slim-sidebar";	//layout-wrapper-slim-sidebar	//static
-    
-    private String busdocMenuLayout = "layout-wrapper-horizontal-sidebar";
+
+    private String busdocMenuLayout = "layout-wrapper-overlay-sidebar";  //"layout-wrapper-horizontal-sidebar";    //"layout-wrapper-overlay-sidebar"
 
     private String profileMode = "inline";
 
@@ -105,8 +105,7 @@ public class GuestPreferences implements Serializable {
     public void setProfileMode(String profileMode) {
         if (this.menuLayout.equals("layout-wrapper-horizontal-sidebar")) {
             this.profileMode = "topbar";
-        }
-        else {
+        } else {
             this.profileMode = profileMode;
         }
     }
