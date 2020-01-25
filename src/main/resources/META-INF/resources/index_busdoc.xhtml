@@ -14,6 +14,41 @@
     <ui:define name="content">
         <h:form id="docform">
             <p:growl id="msgs" showDetail="true" />
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                    </p:toolbar>
+                </div>
+                <div class="ui-g-12">
+                    <p:dataTable id="docprodtable" var="prod"
+                                 value="#{documentController.products}" widgetVar="dptable"
+                                 selection="#{documentController.selectedProducts}"
+                                 rowKey="#{prod.productid}"
+                                 emptyMessage="No Products found">
+                        <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                        <p:column headerText="Stock#" sortBy="#{prod.productid}">
+                            <h:outputText value="#{prod.productid}" />
+                        </p:column>
+
+                        <p:column headerText="Product" sortBy="#{prod.productname}"
+                                  style="width: 40%">
+                            <h:outputText value="#{prod.productname}" />
+                        </p:column>
+
+                        <p:column headerText="Unit" sortBy="#{prod.unit.unitsym}">
+                            <h:outputText value="#{prod.unit.unitsym}" />
+                        </p:column>
+
+                        <p:column headerText="SupCode" sortBy="#{prod.supplierscode}">
+                            <h:outputText value="#{prod.supplierscode}" />
+                        </p:column>
+
+                        <p:column headerText="Brand" sortBy="#{prod.brand.brandname}">
+                            <h:outputText value="#{prod.brand.brandname}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
         </h:form>
     </ui:define>
 
