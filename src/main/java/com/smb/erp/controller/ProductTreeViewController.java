@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.rest.ProductRestController;
-import java.util.Date;
-import javax.faces.view.ViewScoped;
+import java.io.IOException;
+import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
+import org.springframework.web.context.annotation.SessionScope;
 
 @Named
-@ViewScoped
+@SessionScope
 public class ProductTreeViewController implements Serializable {
 
     @Autowired
@@ -66,7 +68,29 @@ public class ProductTreeViewController implements Serializable {
             }
         }
     }
+    
+    public void newTab() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.clear();
+        flash.put("category", (ProductCategory)getSelectedNode().getData());
+        flash.put("mode", "new");
+        flash.setKeepMessages(true);
+        flash.setRedirect(true);
+        facesContext.getExternalContext().redirect("inventory/product.xhtml");
+    }
 
+    public void editTab() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.clear();
+        flash.put("product", getSelectedProduct());
+        flash.put("mode", "edit");
+        flash.setKeepMessages(true);
+        flash.setRedirect(true);
+        facesContext.getExternalContext().redirect("inventory/product.xhtml");
+    }
+    
     public void refreshProductList() {
         ProductCategory pc = (ProductCategory) selectedNode.getData();
         prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
@@ -157,9 +181,9 @@ public class ProductTreeViewController implements Serializable {
         this.selectedProduct = selectedProduct;
     }
 
-    public void createNewProduct() {
+    /*public void createNewProduct() {
         tabController.addTabProduct(new Product(), "New Product", DocumentTab.MODE.NEW);
-    }
+    }*/
 
     public String getHeaderTitle() {
         if (selectedProduct == null || selectedProduct.getProductid() == null || selectedProduct.getProductid().longValue() == 0) {

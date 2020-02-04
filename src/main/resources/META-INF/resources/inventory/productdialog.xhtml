@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="ProductDlg" widgetVar="ProductDialog" modal="true" resizable="false" width="75%" responsive="true"
+              appendTo="@(body)" header="#{productTreeViewController.headerTitle}" closeOnEscape="true">
+        <div class="ui-fluid">
+            <div class="ui-g">
+                <!-- Left Side -->
+                <div class="ui-g-12 ui-lg-6">
+                    <p:fieldset legend="Product Details">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Product No:" for="pno" />
+                            <p:inputText id="pno" value="#{productTreeViewController.selectedProduct.productid}" disabled="true"/>
+
+                            <p:outputLabel value="Product Name:" for="name" />
+                            <p:inputText id="name" placeholder="Name" value="#{productTreeViewController.selectedProduct.productname}"/>
+
+                            <p:outputLabel value="Supplier Code:" for="supcode" />
+                            <p:inputText id="supcode" placeholder="Supplier Code" value="#{productTreeViewController.selectedProduct.supplierscode}" />
+
+                            <p:outputLabel value="Barcode1:" for="barcode1" />
+                            <p:inputText id="barcode1" placeholder="Barcode1" value="#{productTreeViewController.selectedProduct.barcode1}" />
+
+                            <p:outputLabel value="Category" for="catid" />
+                            <p:selectOneMenu id="catid" value="#{productTreeViewController.selectedProduct.prodcategry}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{productCategoryController.categoryLeafNodes}"
+                                               var="cat"
+                                               itemValue="#{cat}"
+                                               itemLabel="#{cat.catname}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Brand" for="brandid" />
+                            <p:selectOneMenu id="brandid" value="#{productTreeViewController.selectedProduct.brand}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{brandController.brandAll}"
+                                               var="br"
+                                               itemValue="#{br}"
+                                               itemLabel="#{br.brandname}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Made In" for="madein" />
+                            <p:selectOneMenu id="madein" value="#{productTreeViewController.selectedProduct.country}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{countryController.countryAll}"
+                                               var="con"
+                                               itemValue="#{con}"
+                                               itemLabel="#{con.countryname}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Unit" for="unit" />
+                            <p:selectOneMenu id="unit" value="#{productTreeViewController.selectedProduct.unit}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{unitController.unitAll}"
+                                               var="unit"
+                                               itemValue="#{unit}"
+                                               itemLabel="#{unit.unitname}"
+                                               />
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-g-12 ui-lg-6">
+                    <!-- Right Side -->
+                    <p:fieldset legend="Picture">
+
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-g-12">
+                    <p:commandButton style="width:100px" actionListener="#{productTreeViewController.save}" value="Save" update=":mainform:tabsview:ProductDlg" 
+                                     oncomplete="handleSubmit(xhr,status,args,PF('ProductDialog'));">
+                        <p:confirm header="Confirm" message="Create new product?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Cancel" style="width:100px"
+                                     oncomplete="PF('ProductDialog').hide()" update=":mainform:tabsview:prodtable" 
+                                     process="@this" immediate="true" resetValues="true"/>
+                </div>
+            </div>
+        </div>
+    </p:dialog>
+</ui:composition>

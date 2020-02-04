@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/california-layout/template.xhtml">
+
+    <ui:define name="title">
+        ${productController.title}
+    </ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:link outcome="/index">Home</p:link>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <!-- Left Side -->
+                    <div class="ui-g-12 ui-lg-6">
+                        <p:fieldset legend="Product Details">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Product No:" for="pno" />
+                                <p:inputText id="pno" value="#{productController.selected.productid}" disabled="true"/>
+
+                                <p:outputLabel value="Product Name:" for="name" />
+                                <p:inputText id="name" placeholder="Name" value="#{productController.selected.productname}"/>
+
+                                <p:outputLabel value="Supplier Code:" for="supcode" />
+                                <p:inputText id="supcode" placeholder="Supplier Code" value="#{productController.selected.supplierscode}" />
+
+                                <p:outputLabel value="Barcode1:" for="barcode1" />
+                                <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" />
+
+                                <p:outputLabel value="Category" for="catid" />
+                                <p:selectOneMenu id="catid" value="#{productController.selected.prodcategry}" 
+                                                 style="width: 100%" converter="#{entityConverter}"
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{productCategoryController.categoryLeafNodes}"
+                                                   var="cat"
+                                                   itemValue="#{cat}"
+                                                   itemLabel="#{cat.catname}"
+                                                   />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Brand" for="brandid" />
+                                <p:selectOneMenu id="brandid" value="#{productController.selected.brand}" 
+                                                 style="width: 100%" converter="#{entityConverter}"
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{brandController.brandAll}"
+                                                   var="br"
+                                                   itemValue="#{br}"
+                                                   itemLabel="#{br.brandname}"
+                                                   />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Made In" for="madein" />
+                                <p:selectOneMenu id="madein" value="#{productController.selected.country}" 
+                                                 style="width: 100%" converter="#{entityConverter}"
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{countryController.countryAll}"
+                                                   var="con"
+                                                   itemValue="#{con}"
+                                                   itemLabel="#{con.countryname}"
+                                                   />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Unit" for="unit" />
+                                <p:selectOneMenu id="unit" value="#{productController.selected.unit}" 
+                                                 style="width: 100%" converter="#{entityConverter}"
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{unitController.unitAll}"
+                                                   var="unit"
+                                                   itemValue="#{unit}"
+                                                   itemLabel="#{unit.unitname}"
+                                                   />
+                                </p:selectOneMenu>
+
+                            </p:panelGrid>
+                        </p:fieldset>
+                        
+                        <p:fieldset legend="Accounts">
+
+                        </p:fieldset>
+                    </div>
+
+                    <div class="ui-g-12 ui-lg-6">
+                        <!-- Right Side -->
+                        <p:fieldset legend="Picture">
+
+                        </p:fieldset>
+                    </div>
+
+                    <div class="ui-g-12">
+                        <p:commandButton style="width:100px" actionListener="#{productController.save}" value="Save" update="@form" 
+                                         oncomplete="handleSubmit(xhr,status,args,PF('ProductDialog'));">
+                            <p:confirm header="Confirm" message="Create new product?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="Cancel" style="width:100px"
+                                         oncomplete="PF('ProductDialog').hide()" update="@form" 
+                                         process="@this" immediate="true" resetValues="true"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

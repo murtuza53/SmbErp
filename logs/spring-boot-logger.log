@@ -2286,3 +2286,187 @@ Caused by: javax.persistence.EntityNotFoundException: Unable to find com.smb.erp
 2020-01-23 19:53:51,481 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
 2020-01-23 19:53:51,517 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 11.839 seconds (JVM running for 15.752)
 2020-01-23 20:22:27,352 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m9s978ms992µs400ns).
+2020-02-04 09:24:07,263 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 20948 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
+2020-02-04 09:24:07,300 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-02-04 09:24:07,791 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-04 09:24:07,875 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 65ms. Found 5 repository interfaces.
+2020-02-04 09:24:08,452 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$81e84e5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:24:08,492 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$1839ce9a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:24:08,498 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$cc6853a0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:24:08,906 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-02-04 09:24:08,927 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:24:08,942 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-02-04 09:24:08,945 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-02-04 09:24:09,398 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-02-04 09:24:09,427 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-02-04 09:24:09,430 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2092 ms
+2020-02-04 09:24:10,919 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.364s
+2020-02-04 09:24:10,982 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2020-02-04 09:24:11,205 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-02-04 09:24:11,788 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-02-04 09:24:11,795 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2020-02-04 09:24:11,918 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-02-04 09:24:11,941 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-02-04 09:24:12,005 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2020-02-04 09:24:12,083 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2020-02-04 09:24:12,091 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2020-02-04 09:24:12,230 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2020-02-04 09:24:12,405 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2020-02-04 09:24:13,785 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2020-02-04 09:24:13,891 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-02-04 09:24:14,549 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-02-04 09:24:15,089 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-04 09:24:15,492 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:24:15,524 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-02-04 09:24:15,529 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 8.959 seconds (JVM running for 20.163)
+2020-02-04 09:28:20,010 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 15820 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
+2020-02-04 09:28:20,042 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-02-04 09:28:20,497 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-04 09:28:20,580 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 69ms. Found 5 repository interfaces.
+2020-02-04 09:28:21,141 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$662f8ea4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:28:21,169 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$764ad859] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:28:21,176 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$2a795d5f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:28:21,524 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-02-04 09:28:21,543 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:28:21,553 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-02-04 09:28:21,557 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-02-04 09:28:21,777 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-02-04 09:28:21,800 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-02-04 09:28:21,806 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1716 ms
+2020-02-04 09:28:23,418 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.468s
+2020-02-04 09:28:23,469 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2020-02-04 09:28:23,651 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-02-04 09:28:24,103 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-02-04 09:28:24,106 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2020-02-04 09:28:24,201 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-02-04 09:28:24,218 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-02-04 09:28:24,276 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2020-02-04 09:28:24,362 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2020-02-04 09:28:24,366 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2020-02-04 09:28:24,494 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2020-02-04 09:28:24,667 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2020-02-04 09:28:25,879 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2020-02-04 09:28:25,982 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-02-04 09:28:26,367 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-02-04 09:28:26,675 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-04 09:28:26,985 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:28:27,012 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-02-04 09:28:27,016 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 7.725 seconds (JVM running for 11.797)
+2020-02-04 09:31:40,396 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on Burhani152 with PID 5616 (D:\Projects\SmbErp\target\classes started by Burhani152 in D:\Projects\SmbErp)
+2020-02-04 09:31:40,437 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-02-04 09:31:41,059 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-04 09:31:41,161 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 73ms. Found 5 repository interfaces.
+2020-02-04 09:31:41,721 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$96534908] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:31:41,748 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration$$EnhancerBySpringCGLIB$$a66e92bd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:31:41,755 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$$EnhancerBySpringCGLIB$$5a9d17c3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 09:31:42,125 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-02-04 09:31:42,148 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:31:42,160 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-02-04 09:31:42,164 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-02-04 09:31:42,381 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-02-04 09:31:42,397 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-02-04 09:31:42,402 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1917 ms
+2020-02-04 09:31:44,061 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.537s
+2020-02-04 09:31:44,117 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra 2.3.8 ( 20181116-0037 55af8b79ca53ec2df566f9c08a430259d30f9ba5) for context ''
+2020-02-04 09:31:44,307 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-02-04 09:31:44,801 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-02-04 09:31:44,807 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 6.2.10
+2020-02-04 09:31:44,919 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-02-04 09:31:44,940 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-02-04 09:31:44,996 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2020-02-04 09:31:45,094 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.3.11.Final}
+2020-02-04 09:31:45,098 INFO org.hibernate.cfg.Environment [main] HHH000206: hibernate.properties not found
+2020-02-04 09:31:45,233 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2020-02-04 09:31:45,401 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2020-02-04 09:31:46,613 INFO org.hibernate.hql.internal.QueryTranslatorFactoryInitiator [main] HHH000397: Using ASTQueryTranslatorFactory
+2020-02-04 09:31:46,712 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-02-04 09:31:47,101 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-02-04 09:31:47,394 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-04 09:31:47,732 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-02-04 09:31:47,798 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-02-04 09:31:47,804 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 8.081 seconds (JVM running for 11.728)
+2020-02-04 09:32:12,127 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8080-exec-1] javax.faces.component.UpdateModelException: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at javax.faces.component.UIInput.updateModel(UIInput.java:917)
+	at javax.faces.component.UIInput.processUpdates(UIInput.java:797)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.fieldset.Fieldset.processUpdates(Fieldset.java:116)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.dialog.Dialog.processUpdates(Dialog.java:161)
+	at javax.faces.component.UIComponentBase.processUpdates(UIComponentBase.java:1329)
+	at org.primefaces.component.api.UITabPanel.processUpdates(UITabPanel.java:1133)
+	at org.primefaces.component.tabview.TabView.processUpdates(TabView.java:165)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:634)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:183)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1736)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:395)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1747)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:424)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:285)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.processUpdates(UIViewRoot.java:1388)
+	at com.sun.faces.lifecycle.UpdateModelValuesPhase.execute(UpdateModelValuesPhase.java:78)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+	at com.sun.faces.lifecycle.LifecycleImpl.execute(LifecycleImpl.java:201)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:670)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:185)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:118)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:526)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1587)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.PropertyNotFoundException: //D:/Projects/SmbErp/target/classes/META-INF/resources/product.xhtml @31,88 value="#{productTreeViewController.selectedProduct.prodcategry}": Target Unreachable, [selectedProduct] returned null
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:139)
+	at javax.faces.component.UIInput.updateModel(UIInput.java:883)
+	... 66 more
+Caused by: javax.el.PropertyNotFoundException: Target Unreachable, [selectedProduct] returned null
+	at org.apache.el.parser.AstValue.getTarget(AstValue.java:124)
+	at org.apache.el.parser.AstValue.setValue(AstValue.java:196)
+	at org.apache.el.ValueExpressionImpl.setValue(ValueExpressionImpl.java:263)
+	at com.sun.faces.facelets.el.TagValueExpression.setValue(TagValueExpression.java:137)
+	... 67 more
+

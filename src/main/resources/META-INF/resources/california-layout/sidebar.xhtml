@@ -442,11 +442,11 @@
 						<p:submenu id="om_components" label="Master Data"
 							icon="fa fa-fw fa-table">
 							<p:menuitem id="om_prodmaster" value="Product"
-								icon="fa fa-fw fa-sitemap" update=":mainform:tabsview"
+								icon="fa fa-fw fa-sitemap" update=":mainform"
 								onclick="onTabChangeProcess()"
-								actionListener="#{tabViewController.addClosable('Product Master','prodmaster')}" />
+								actionListener="#{tabViewController.addClosable('Product Master','inventory/prodmaster')}" />
 							<p:menuitem id="om_accmaster" value="Accounts"
-								icon="fa fa-fw fa-sitemap" update=":mainform:tabsview"
+								icon="fa fa-fw fa-sitemap" update=":mainform"
 								onclick="onTabChangeProcess()"
 								actionListener="#{tabViewController.addClosable('Account Master', 'accmaster')}" />
 						</p:submenu>

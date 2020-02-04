@@ -9,6 +9,8 @@ import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,14 @@ public class ProductController extends AbstractController<Product> {
     //@Autowired
     //TabViewController tabCon;
     //DocumentTab<Product> docTab;
-    @Autowired
-    ProductTreeViewController ptvController;
+    //@Autowired
+    //ProductTreeViewController ptvController;
+    //private Product selected;
+    private ProductCategory prodCategory;
 
-    private Product selected;
+    private String mode;
+
+    private String title = "New Product";
 
     @Autowired
     public ProductController(ProductRepository repo) {
@@ -45,41 +51,63 @@ public class ProductController extends AbstractController<Product> {
         //System.out.println("TabController: " + tabCon);
         //System.out.println("Prod_Tab_id: " + docTab.getId());
         //System.out.println("ProductController->selected: " + selected);
+
+        if (mode == null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            Flash flash = facesContext.getExternalContext().getFlash();
+
+            mode = flash.get("mode").toString();
+            //flash.put("mode", mode);
+            if (mode.equalsIgnoreCase("new")) {
+                prodCategory = (ProductCategory) flash.get("category");
+                //flash.put("category", prodCategory);
+            } else {
+                setSelected((Product) flash.get("product"));
+                setTitle("Edit - " + getSelected().getProductname());
+                //flash.put("product", getSelected());
+            }
+            //flash.setKeepMessages(true);
+        }
     }
 
     //public ProductController(Product prod){
     //    this.selected = prod;
     //}
     public String getHeaderTitle() {
-        if (selected == null || selected.getProductid() == null || selected.getProductid().longValue() == 0) {
+        if (getSelected() == null || getSelected().getProductid() == null || getSelected().getProductid().longValue() == 0) {
             return "New Product";
         }
         return "Edit Product";
     }
 
-    public void setSelected(Product prod) {
-        this.selected = prod;
-    }
-
-    public Product getSelected() {
-        return selected;
-    }
-
     //public DocumentTab<Product> getTab(){
     //    return docTab;
     //}
-    public void prepareCreateNew() {
-        selected = new Product();
-        selected.setProductid(0l);
-        selected.setProductname("Testing");
+    /*public void prepareCreateNew() {
+        Product p = new Product();
+        p.setProductid(0l);
+        p.setProductname("Testing");
         if (ptvController.getSelectedNode() != null) {
             if (ptvController.getSelectedNode().getData() != null) {
-                selected.setProdcategry((ProductCategory)ptvController.getSelectedNode().getData());
+                selected.setProdcategry((ProductCategory) ptvController.getSelectedNode().getData());
             }
         }
     }
 
     public void prepareEdit() {
         selected = ptvController.getSelectedProduct();
+    }*/
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

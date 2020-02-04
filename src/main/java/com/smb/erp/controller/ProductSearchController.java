@@ -7,7 +7,6 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.Product;
 import com.smb.erp.repo.ProductRepository;
-import com.smb.erp.util.JsfUtil;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -34,8 +33,6 @@ public class ProductSearchController extends AbstractController<Product> {
 
     private LayoutOptions layoutOptions;
 
-    private DocumentController docController;
-    
     @Autowired
     public ProductSearchController(ProductRepository repo) {
         this.prodRepo = repo;
@@ -62,14 +59,6 @@ public class ProductSearchController extends AbstractController<Product> {
         productList = prodRepo.findByCriteria(criteria.trim());
     }
 
-    public void transfer(){
-        System.out.println("Selected: " + selectedProducts);
-        if(selectedProducts!=null && docController!=null){
-            docController.addProduct(selectedProducts);
-            JsfUtil.addSuccessMessage("Prodcuts Added: " + selectedProducts.size());
-        }
-    }
-    
     public LayoutOptions getLayoutOptions() {
         return layoutOptions;
     }
@@ -114,20 +103,6 @@ public class ProductSearchController extends AbstractController<Product> {
      */
     public void setSelectedProducts(List<Product> selectedProducts) {
         this.selectedProducts = selectedProducts;
-    }
-
-    /**
-     * @return the docController
-     */
-    public DocumentController getDocController() {
-        return docController;
-    }
-
-    /**
-     * @param docController the docController to set
-     */
-    public void setDocController(DocumentController docController) {
-        this.docController = docController;
     }
 
 }

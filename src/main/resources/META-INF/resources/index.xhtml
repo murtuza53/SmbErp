@@ -7,19 +7,17 @@
                 template="/california-layout/template.xhtml">
 
     <ui:define name="breadcrumb">
-        <li><p:link outcome="/index">Empty</p:link></li>
+        <p:link outcome="/index">Home</p:link>
     </ui:define>
 
     <ui:define name="content">
         <h:form id="mainform">
-            <p:messages showDetail="true" />
             <p:remoteCommand name="onTabChangeProcess" process="tabsview, @this"/> 
-            <p:growl id="msgs" showDetail="true" />
             <p:tabView id="tabsview" dynamic="true" cache="true" onTabChange="onTabChangeProcess()"
                        activeIndex="#{tabViewController.activeTabIndex}" scrollable="true" style="height:100% !important">
                 <p:ajax event="tabClose" listener="#{tabViewController.onTabClose}"
-                        update="tabsview, :mainform:msgs" />
-                <p:ajax event="tabChange" update="tabsview, :mainform:msgs" />
+                        update="tabsview, :msgs" />
+                <p:ajax event="tabChange" update="tabsview, :msgs" />
                 <c:forEach items="#{tabViewController.tabs}" var="tab">
                     <p:tab id="#{tab.id}" title="#{tab.title}" 
                            closable="#{tab.closable}">
