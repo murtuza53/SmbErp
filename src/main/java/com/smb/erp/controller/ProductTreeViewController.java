@@ -15,6 +15,7 @@ import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.rest.ProductRestController;
 import java.io.IOException;
+import java.util.Date;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import org.springframework.web.context.annotation.SessionScope;
@@ -31,6 +32,9 @@ public class ProductTreeViewController implements Serializable {
 
     @Autowired
     ProductRestController pdcontroller;
+    
+    @Autowired
+    TabViewController mainTabs;
 
     private TreeNode root;
 
@@ -68,8 +72,21 @@ public class ProductTreeViewController implements Serializable {
             }
         }
     }
-    
+
     public void newTab() throws IOException {
+        Product p = new Product();
+        p.setCreatedon(new Date());
+        p.setProdcategry((ProductCategory)getSelectedNode().getData());
+        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
+        mainTabs.add(tab);
+    }
+
+    public void editTab() throws IOException {
+        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.NEW);
+        mainTabs.add(tab);
+    }
+
+    public void newTab_In_newBtab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();
@@ -80,7 +97,7 @@ public class ProductTreeViewController implements Serializable {
         facesContext.getExternalContext().redirect("inventory/product.xhtml");
     }
 
-    public void editTab() throws IOException {
+    public void editTab_In_newBtab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();

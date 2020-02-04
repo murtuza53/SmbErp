@@ -3,9 +3,9 @@ package com.smb.erp.controller;
 import java.util.Date;
 
 public class Tab {
-	
-	private String id = "tab-"+new Date().getTime();
-	private String title;
+
+    private String id = "tab-" + new Date().getTime();
+    private String title;
     private String page;
     private boolean closable;
 
@@ -21,9 +21,9 @@ public class Tab {
     }
 
     public String getId() {
-    	return id;
+        return id;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -31,13 +31,13 @@ public class Tab {
     public String getPage() {
         return page;
     }
-    
+
     public boolean getClosable() {
-    	return closable;
+        return closable;
     }
-    
+
     public void setClosable(boolean closable) {
-    	this.closable = closable;
+        this.closable = closable;
     }
 
 }

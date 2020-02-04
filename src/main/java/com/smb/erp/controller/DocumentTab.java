@@ -5,7 +5,7 @@ import com.smb.erp.entity.Product;
 public class DocumentTab<T> extends Tab {
 
     enum MODE {
-        NEW, UPDATE, NONE;
+        NEW, UPDATE, NONE, LIST, REPORT;
     }
 
     private T data;
