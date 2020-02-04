@@ -34,7 +34,7 @@ public class DocumentController implements Serializable{
     
     @PostConstruct
     public void init(){
-        searchController.setDocController(this);
+        //searchController.setDocController(this);
     }
     
     public void addProduct(List<Product> prods){

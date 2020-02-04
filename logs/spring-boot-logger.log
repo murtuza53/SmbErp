@@ -3242,3 +3242,25 @@ Caused by: java.lang.NullPointerException
 	... 88 more
 
 2020-02-04 17:14:48,567 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5h31m42s993ms278µs500ns).
+2020-02-04 17:41:10,883 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplicationTests on Burhani152 with PID 19468 (started by Burhani152 in D:\Projects\SmbErp)
+2020-02-04 17:41:10,928 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-02-04 17:41:11,861 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-02-04 17:41:11,934 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 59ms. Found 5 JPA repository interfaces.
+2020-02-04 17:41:12,664 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 17:41:12,725 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 17:41:12,754 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-04 17:41:13,033 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-02-04 17:41:13,143 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-02-04 17:41:13,341 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-02-04 17:41:13,591 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-02-04 17:41:13,612 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-02-04 17:41:13,647 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-02-04 17:41:15,095 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-02-04 17:41:15,257 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-02-04 17:41:15,925 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-02-04 17:41:16,570 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-04 17:41:17,055 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplicationTests in 6.734 seconds (JVM running for 7.759)
+2020-02-04 17:41:17,195 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-04 17:41:17,200 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringContextShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-02-04 17:41:17,205 INFO com.zaxxer.hikari.HikariDataSource [SpringContextShutdownHook] HikariPool-1 - Shutdown initiated...
+2020-02-04 17:41:17,213 INFO com.zaxxer.hikari.HikariDataSource [SpringContextShutdownHook] HikariPool-1 - Shutdown completed.
