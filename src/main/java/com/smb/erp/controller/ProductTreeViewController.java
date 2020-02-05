@@ -16,6 +16,7 @@ import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.rest.ProductRestController;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import org.springframework.web.context.annotation.SessionScope;
@@ -45,6 +46,8 @@ public class ProductTreeViewController implements Serializable {
     private Product selectedProduct;
 
     private List<Product> prodList;
+    
+    private HashMap<String, DocumentTab<Product>> productMap = new HashMap<String, DocumentTab<Product>>();
 
     @PostConstruct
     public void init() {
@@ -73,6 +76,10 @@ public class ProductTreeViewController implements Serializable {
         }
     }
 
+    public DocumentTab<Product> getDocumentTab(String windowId){
+        return productMap.get(windowId);
+    }
+    
     public void newTab() throws IOException {
         Product p = new Product();
         p.setCreatedon(new Date());
@@ -85,24 +92,28 @@ public class ProductTreeViewController implements Serializable {
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.NEW);
         mainTabs.add(tab);
     }
-
+    
     public void newTab_In_newBtab() throws IOException {
+        String windowId = new Date().getTime()+"";
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();
         flash.put("category", (ProductCategory)getSelectedNode().getData());
         flash.put("mode", "new");
+        flash.put("windowid", windowId);
         flash.setKeepMessages(true);
         flash.setRedirect(true);
         facesContext.getExternalContext().redirect("inventory/product.xhtml");
     }
 
     public void editTab_In_newBtab() throws IOException {
+        String windowId = new Date().getTime()+"";
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();
         flash.put("product", getSelectedProduct());
         flash.put("mode", "edit");
+        flash.put("windowid", windowId);
         flash.setKeepMessages(true);
         flash.setRedirect(true);
         facesContext.getExternalContext().redirect("inventory/product.xhtml");

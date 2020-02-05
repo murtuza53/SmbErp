@@ -8,6 +8,7 @@ package com.smb.erp.controller;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
+import com.smb.erp.util.JsfUtil;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
@@ -30,8 +31,8 @@ public class ProductController extends AbstractController<Product> {
     //@Autowired
     //TabViewController tabCon;
     //DocumentTab<Product> docTab;
-    //@Autowired
-    //ProductTreeViewController ptvController;
+    @Autowired
+    ProductTreeViewController ptvController;
     //private Product selected;
     private ProductCategory prodCategory;
 
@@ -51,23 +52,29 @@ public class ProductController extends AbstractController<Product> {
         //System.out.println("TabController: " + tabCon);
         //System.out.println("Prod_Tab_id: " + docTab.getId());
         //System.out.println("ProductController->selected: " + selected);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
 
-        if (mode == null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            Flash flash = facesContext.getExternalContext().getFlash();
+        String windowId = flash.get("windowid").toString();
 
-            mode = flash.get("mode").toString();
-            //flash.put("mode", mode);
-            if (mode.equalsIgnoreCase("new")) {
-                prodCategory = (ProductCategory) flash.get("category");
-                //flash.put("category", prodCategory);
-            } else {
-                setSelected((Product) flash.get("product"));
-                setTitle("Edit - " + getSelected().getProductname());
-                //flash.put("product", getSelected());
-            }
-            //flash.setKeepMessages(true);
+        DocumentTab<Product> tab = ptvController.getDocumentTab(windowId);
+        if (tab == null) {
+            JsfUtil.addErrorMessage("Error", "This page could not be loaded");
+            return;
         }
+        setSelected(tab.getData());
+        //mode = flash.get("mode").toString();
+        //flash.put("mode", mode);
+        if (getSelected().getProductid() != null || getSelected().getProductid() > 0) {          //(mode.equalsIgnoreCase("new")) {
+            //prodCategory = (ProductCategory) flash.get("category");
+            //flash.put("category", prodCategory);
+            //} else {
+            //setSelected((Product) flash.get("product"));
+            setTitle("Edit - " + getSelected().getProductname());
+            //flash.put("product", getSelected());
+        }
+        flash.put("windowid", windowId);
+        flash.setKeepMessages(true);
     }
 
     //public ProductController(Product prod){

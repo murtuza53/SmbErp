@@ -16,13 +16,13 @@
 
                 <f:facet name="right">
                     <p:commandButton title="New Product" icon="fa fa-plus" process="@this" 
-                                     actionListener="#{productTreeViewController.newTab()}"
+                                     actionListener="#{productTreeViewController.newTab_In_newBtab()}"
                                      disabled="#{productTreeViewController.productNewDisabled}" 
-                                     update="tabsview"/>
+                                     update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
                     <p:commandButton title="Edit Product" icon="fa fa-pencil" 
                                      disabled="#{productTreeViewController.productEditDisabled}" 
-                                     actionListener="#{productTreeViewController.editTab()}"
-                                     update="tabsview"/>
+                                     actionListener="#{productTreeViewController.editTab_In_newBtab()}"
+                                     update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
 
                     <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" />
                 </f:facet>
