@@ -36,16 +36,17 @@
                                 <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" />
 
                                 <p:outputLabel value="Category" for="catid" />
-                                <p:selectOneMenu id="catid" value="#{productController.selected.prodcategry}" 
+                                <p:selectOneMenu id="catid" value="#{productController.prodCategory}" 
+                                                 required="true" requiredMessage="Valid Category must be selected"
                                                  style="width: 100%" converter="#{entityConverter}"
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItems value="#{productCategoryController.categoryLeafNodes}"
                                                    var="cat"
                                                    itemValue="#{cat}"
-                                                   itemLabel="#{cat.catname}"
+                                                   itemLabel="#{cat}"
                                                    />
                                 </p:selectOneMenu>
-
+                                
                                 <p:outputLabel value="Brand" for="brandid" />
                                 <p:selectOneMenu id="brandid" value="#{productController.selected.brand}" 
                                                  style="width: 100%" converter="#{entityConverter}"
@@ -81,7 +82,7 @@
 
                             </p:panelGrid>
                         </p:fieldset>
-                        
+
                         <p:fieldset legend="Accounts">
 
                         </p:fieldset>
@@ -95,9 +96,7 @@
                     </div>
 
                     <div class="ui-g-12">
-                        <p:commandButton style="width:100px" actionListener="#{productController.save}" value="Save" update="@form" 
-                                         oncomplete="handleSubmit(xhr,status,args,PF('ProductDialog'));">
-                            <p:confirm header="Confirm" message="Create new product?" icon="ui-icon-alert"/>
+                        <p:commandButton style="width:100px" actionListener="#{productController.save}" value="Save" update="@form, :growl" >
                         </p:commandButton>
 
                         <p:commandButton value="Cancel" style="width:100px"

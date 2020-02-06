@@ -3,156 +3,182 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the prodcategry database table.
- * 
+ *
  */
 @Entity
-@Table(name="prodcategry")
-@NamedQuery(name="ProductCategory.findAll", query="SELECT p FROM ProductCategory p")
+@Table(name = "prodcategry")
+@NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p")
 public class ProductCategory implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long prodcatId;
+    private static final long serialVersionUID = 1L;
 
-	private String catname;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long prodcatId;
 
-	private String description;
-	
-	private String groupcode;
+    private String catname;
 
-	//bi-directional many-to-one association to PriceList
-	@OneToMany(mappedBy="prodcategry")
-	private List<PriceList> pricelists;
+    private String description;
 
-	//bi-directional many-to-one association to ProductCategry
-	@ManyToOne
-	@JoinColumn(name="parentid")
-	private ProductCategory prodcategry;
+    private String groupcode;
 
-	//bi-directional many-to-one association to ProductCategry
-	@OneToMany(mappedBy="prodcategry")
-	private List<ProductCategory> prodcategries;
+    //bi-directional many-to-one association to PriceList
+    @OneToMany(mappedBy = "prodcategry")
+    private List<PriceList> pricelists;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="prodcategry")
-	private List<Product> products;
+    //bi-directional many-to-one association to ProductCategry
+    @ManyToOne
+    @JoinColumn(name = "parentid")
+    private ProductCategory prodcategry;
 
-	public ProductCategory() {
-	}
+    //bi-directional many-to-one association to ProductCategry
+    @OneToMany(mappedBy = "prodcategry")
+    private List<ProductCategory> prodcategries;
 
-	public Long getProdcatId() {
-		return this.prodcatId;
-	}
+    //bi-directional many-to-one association to Product
+    @OneToMany(mappedBy = "prodcategry")
+    private List<Product> products;
 
-	public void setProdcatId(Long prodcatId) {
-		this.prodcatId = prodcatId;
-	}
+    public ProductCategory() {
+    }
 
-	public String getCatname() {
-		return this.catname;
-	}
+    public Long getProdcatId() {
+        return this.prodcatId;
+    }
 
-	public void setCatname(String catname) {
-		this.catname = catname;
-	}
+    public void setProdcatId(Long prodcatId) {
+        this.prodcatId = prodcatId;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getCatname() {
+        return this.catname;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCatname(String catname) {
+        this.catname = catname;
+    }
 
-	public List<PriceList> getPricelists() {
-		return this.pricelists;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setPricelists(List<PriceList> pricelists) {
-		this.pricelists = pricelists;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public PriceList addPricelist(PriceList pricelist) {
-		getPricelists().add(pricelist);
-		pricelist.setProdcategry(this);
+    public List<PriceList> getPricelists() {
+        return this.pricelists;
+    }
 
-		return pricelist;
-	}
+    public void setPricelists(List<PriceList> pricelists) {
+        this.pricelists = pricelists;
+    }
 
-	public PriceList removePricelist(PriceList pricelist) {
-		getPricelists().remove(pricelist);
-		pricelist.setProdcategry(null);
+    public PriceList addPricelist(PriceList pricelist) {
+        getPricelists().add(pricelist);
+        pricelist.setProdcategry(this);
 
-		return pricelist;
-	}
+        return pricelist;
+    }
 
-	public ProductCategory getProdcategry() {
-		return this.prodcategry;
-	}
+    public PriceList removePricelist(PriceList pricelist) {
+        getPricelists().remove(pricelist);
+        pricelist.setProdcategry(null);
 
-	public void setProdcategry(ProductCategory prodcategry) {
-		this.prodcategry = prodcategry;
-	}
+        return pricelist;
+    }
 
-	public List<ProductCategory> getProdcategries() {
-		return this.prodcategries;
-	}
+    public ProductCategory getProdcategry() {
+        return this.prodcategry;
+    }
 
-	public void setProdcategries(List<ProductCategory> prodcategries) {
-		this.prodcategries = prodcategries;
-	}
+    public void setProdcategry(ProductCategory prodcategry) {
+        this.prodcategry = prodcategry;
+    }
 
-	public ProductCategory addProdcategry(ProductCategory prodcategry) {
-		getProdcategries().add(prodcategry);
-		prodcategry.setProdcategry(this);
+    public List<ProductCategory> getProdcategries() {
+        return this.prodcategries;
+    }
 
-		return prodcategry;
-	}
+    public void setProdcategries(List<ProductCategory> prodcategries) {
+        this.prodcategries = prodcategries;
+    }
 
-	public ProductCategory removeProdcategry(ProductCategory prodcategry) {
-		getProdcategries().remove(prodcategry);
-		prodcategry.setProdcategry(null);
+    public ProductCategory addProdcategry(ProductCategory prodcategry) {
+        getProdcategries().add(prodcategry);
+        prodcategry.setProdcategry(this);
 
-		return prodcategry;
-	}
+        return prodcategry;
+    }
 
-	public List<Product> getProducts() {
-		return this.products;
-	}
+    public ProductCategory removeProdcategry(ProductCategory prodcategry) {
+        getProdcategries().remove(prodcategry);
+        prodcategry.setProdcategry(null);
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+        return prodcategry;
+    }
 
-	public Product addProduct(Product product) {
-		getProducts().add(product);
-		product.setProdcategry(this);
+    public List<Product> getProducts() {
+        return this.products;
+    }
 
-		return product;
-	}
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
-	public Product removeProduct(Product product) {
-		getProducts().remove(product);
-		product.setProdcategry(null);
+    public Product addProduct(Product product) {
+        getProducts().add(product);
+        product.setProdcategry(this);
 
-		return product;
-	}
+        return product;
+    }
 
-	@Override
-	public String toString() {
-		return getCatname() + "[" + getProdcatId() + "]";
-	}
+    public Product removeProduct(Product product) {
+        getProducts().remove(product);
+        product.setProdcategry(null);
 
-	public String getGroupcode() {
-		return groupcode;
-	}
+        return product;
+    }
 
-	public void setGroupcode(String groupcode) {
-		this.groupcode = groupcode;
-	}
+    @Override
+    public String toString() {
+        return getCatname() + " [" + getProdcatId() + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.prodcatId);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProductCategory other = (ProductCategory) obj;
+        if (!Objects.equals(this.prodcatId, other.prodcatId)) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getGroupcode() {
+        return groupcode;
+    }
+
+    public void setGroupcode(String groupcode) {
+        this.groupcode = groupcode;
+    }
 }

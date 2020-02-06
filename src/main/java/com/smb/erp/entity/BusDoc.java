@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -454,6 +455,36 @@ public class BusDoc implements Serializable {
      */
     public void setProductTransactions(List<ProductTransaction> productTransactions) {
         this.productTransactions = productTransactions;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.docno);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BusDoc other = (BusDoc) obj;
+        if (!Objects.equals(this.docno, other.docno)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return docno;
     }
 
 }

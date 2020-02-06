@@ -9,6 +9,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class JsfUtil {
 
@@ -99,4 +102,41 @@ public class JsfUtil {
         return "";
     }
 
+
+    public static SelectItem[] getSelectItems(List<?> entities, boolean selectOne) {
+        int size = selectOne ? entities.size() + 1 : entities.size();
+        SelectItem[] items = new SelectItem[size];
+        int i = 0;
+        if (selectOne) {
+            items[0] = new SelectItem("", "---");
+            i++;
+        }
+        for (Object x : entities) {
+            items[i++] = new SelectItem(x, x.toString());
+        }
+        return items;
+    }
+
+    public static SelectItem[] getSelectItems(List<?> entities) {
+        int size = entities.size();
+        SelectItem[] items = new SelectItem[size];
+        int i = 0;
+        for (Object x : entities) {
+            items[i++] = new SelectItem(x, x.toString());
+        }
+        return items;
+    }
+
+    public static HttpSession getSession() {
+        return (HttpSession) FacesContext.
+                getCurrentInstance().
+                getExternalContext().
+                getSession(false);
+    }
+
+    public static HttpServletRequest getRequest() {
+        return (HttpServletRequest) FacesContext.
+                getCurrentInstance().
+                getExternalContext().getRequest();
+    }    
 }

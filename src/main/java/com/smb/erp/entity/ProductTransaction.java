@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The persistent class for the prodtransaction database table.
@@ -350,6 +351,36 @@ public class ProductTransaction implements Serializable {
      */
     public void setBusdoc(BusDoc busdoc) {
         this.busdoc = busdoc;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductTransaction{" + "prodtransid=" + prodtransid + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.prodtransid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProductTransaction other = (ProductTransaction) obj;
+        if (!Objects.equals(this.prodtransid, other.prodtransid)) {
+            return false;
+        }
+        return true;
     }
 
 }

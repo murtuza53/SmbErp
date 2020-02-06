@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -136,5 +137,35 @@ public class Unit implements Serializable {
 
 		return products2;
 	}*/
+
+    @Override
+    public String toString() {
+        return unitname + " [" + unitid + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.unitid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Unit other = (Unit) obj;
+        if (!Objects.equals(this.unitid, other.unitid)) {
+            return false;
+        }
+        return true;
+    }
 
 }

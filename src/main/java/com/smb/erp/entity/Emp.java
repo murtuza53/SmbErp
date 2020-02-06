@@ -4,360 +4,391 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the emp database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Emp.findAll", query="SELECT e FROM Emp e")
+@NamedQuery(name = "Emp.findAll", query = "SELECT e FROM Emp e")
 public class Emp implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String empid;
+    private static final long serialVersionUID = 1L;
 
-	private String addressstate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String empid;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dob;
+    private String addressstate;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date doj;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dob;
 
-	private String emailaddress;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date doj;
 
-	private String empname;
+    private String emailaddress;
 
-	private String fulladdress;
+    private String empname;
 
-	private String gender;
+    private String fulladdress;
 
-	private String mobileno1;
+    private String gender;
 
-	private String mobileno2;
+    private String mobileno1;
 
-	private String phoneno;
+    private String mobileno2;
 
-	private String post;
+    private String phoneno;
 
-	private double salary;
+    private String post;
 
-	//bi-directional many-to-one association to AccDoc
-	@OneToMany(mappedBy="emp")
-	private List<AccDoc> accdocs;
+    private double salary;
 
-	//bi-directional many-to-one association to Asset
-	@OneToMany(mappedBy="emp")
-	private List<Asset> assets;
+    //bi-directional many-to-one association to AccDoc
+    @OneToMany(mappedBy = "emp")
+    private List<AccDoc> accdocs;
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="emp1")
-	private List<BusDoc> busdocs1;
+    //bi-directional many-to-one association to Asset
+    @OneToMany(mappedBy = "emp")
+    private List<Asset> assets;
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="emp2")
-	private List<BusDoc> busdocs2;
+    //bi-directional many-to-one association to BusDoc
+    @OneToMany(mappedBy = "emp1")
+    private List<BusDoc> busdocs1;
 
-	//bi-directional many-to-one association to Dependant
-	@OneToMany(mappedBy="emp")
-	private List<Dependant> dependants;
+    //bi-directional many-to-one association to BusDoc
+    @OneToMany(mappedBy = "emp2")
+    private List<BusDoc> busdocs2;
 
-	//bi-directional many-to-one association to Dept
-	@ManyToOne
-	@JoinColumn(name="deptid")
-	private Dept dept;
+    //bi-directional many-to-one association to Dependant
+    @OneToMany(mappedBy = "emp")
+    private List<Dependant> dependants;
 
-	//bi-directional many-to-one association to Emp
-	@ManyToOne
-	@JoinColumn(name="managerid")
-	private Emp emp;
+    //bi-directional many-to-one association to Dept
+    @ManyToOne
+    @JoinColumn(name = "deptid")
+    private Dept dept;
 
-	//bi-directional many-to-one association to Emp
-	@OneToMany(mappedBy="emp")
-	private List<Emp> emps;
+    //bi-directional many-to-one association to Emp
+    @ManyToOne
+    @JoinColumn(name = "managerid")
+    private Emp emp;
 
-	//bi-directional many-to-one association to Authentication
-	@ManyToOne
-	@JoinColumn(name="username")
-	private Authentication authentication;
+    //bi-directional many-to-one association to Emp
+    @OneToMany(mappedBy = "emp")
+    private List<Emp> emps;
 
-	//bi-directional many-to-one association to Company
-	@ManyToOne
-	@JoinColumn(name="companyid")
-	private Company company;
+    //bi-directional many-to-one association to Authentication
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private Authentication authentication;
 
-	public Emp() {
-	}
+    //bi-directional many-to-one association to Company
+    @ManyToOne
+    @JoinColumn(name = "companyid")
+    private Company company;
 
-	public String getEmpid() {
-		return this.empid;
-	}
+    public Emp() {
+    }
 
-	public void setEmpid(String empid) {
-		this.empid = empid;
-	}
+    public String getEmpid() {
+        return this.empid;
+    }
 
-	public String getAddressstate() {
-		return this.addressstate;
-	}
+    public void setEmpid(String empid) {
+        this.empid = empid;
+    }
 
-	public void setAddressstate(String addressstate) {
-		this.addressstate = addressstate;
-	}
+    public String getAddressstate() {
+        return this.addressstate;
+    }
 
-	public Date getDob() {
-		return this.dob;
-	}
+    public void setAddressstate(String addressstate) {
+        this.addressstate = addressstate;
+    }
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public Date getDob() {
+        return this.dob;
+    }
 
-	public Date getDoj() {
-		return this.doj;
-	}
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
-	public void setDoj(Date doj) {
-		this.doj = doj;
-	}
+    public Date getDoj() {
+        return this.doj;
+    }
 
-	public String getEmailaddress() {
-		return this.emailaddress;
-	}
+    public void setDoj(Date doj) {
+        this.doj = doj;
+    }
 
-	public void setEmailaddress(String emailaddress) {
-		this.emailaddress = emailaddress;
-	}
+    public String getEmailaddress() {
+        return this.emailaddress;
+    }
 
-	public String getEmpname() {
-		return this.empname;
-	}
+    public void setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+    }
 
-	public void setEmpname(String empname) {
-		this.empname = empname;
-	}
+    public String getEmpname() {
+        return this.empname;
+    }
 
-	public String getFulladdress() {
-		return this.fulladdress;
-	}
+    public void setEmpname(String empname) {
+        this.empname = empname;
+    }
 
-	public void setFulladdress(String fulladdress) {
-		this.fulladdress = fulladdress;
-	}
+    public String getFulladdress() {
+        return this.fulladdress;
+    }
 
-	public String getGender() {
-		return this.gender;
-	}
+    public void setFulladdress(String fulladdress) {
+        this.fulladdress = fulladdress;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public String getGender() {
+        return this.gender;
+    }
 
-	public String getMobileno1() {
-		return this.mobileno1;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setMobileno1(String mobileno1) {
-		this.mobileno1 = mobileno1;
-	}
+    public String getMobileno1() {
+        return this.mobileno1;
+    }
 
-	public String getMobileno2() {
-		return this.mobileno2;
-	}
+    public void setMobileno1(String mobileno1) {
+        this.mobileno1 = mobileno1;
+    }
 
-	public void setMobileno2(String mobileno2) {
-		this.mobileno2 = mobileno2;
-	}
+    public String getMobileno2() {
+        return this.mobileno2;
+    }
 
-	public String getPhoneno() {
-		return this.phoneno;
-	}
+    public void setMobileno2(String mobileno2) {
+        this.mobileno2 = mobileno2;
+    }
 
-	public void setPhoneno(String phoneno) {
-		this.phoneno = phoneno;
-	}
+    public String getPhoneno() {
+        return this.phoneno;
+    }
 
-	public String getPost() {
-		return this.post;
-	}
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
+    }
 
-	public void setPost(String post) {
-		this.post = post;
-	}
+    public String getPost() {
+        return this.post;
+    }
 
-	public double getSalary() {
-		return this.salary;
-	}
+    public void setPost(String post) {
+        this.post = post;
+    }
 
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
+    public double getSalary() {
+        return this.salary;
+    }
 
-	public List<AccDoc> getAccdocs() {
-		return this.accdocs;
-	}
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
 
-	public void setAccdocs(List<AccDoc> accdocs) {
-		this.accdocs = accdocs;
-	}
+    public List<AccDoc> getAccdocs() {
+        return this.accdocs;
+    }
 
-	public AccDoc addAccdoc(AccDoc accdoc) {
-		getAccdocs().add(accdoc);
-		accdoc.setEmp(this);
+    public void setAccdocs(List<AccDoc> accdocs) {
+        this.accdocs = accdocs;
+    }
 
-		return accdoc;
-	}
+    public AccDoc addAccdoc(AccDoc accdoc) {
+        getAccdocs().add(accdoc);
+        accdoc.setEmp(this);
 
-	public AccDoc removeAccdoc(AccDoc accdoc) {
-		getAccdocs().remove(accdoc);
-		accdoc.setEmp(null);
+        return accdoc;
+    }
 
-		return accdoc;
-	}
+    public AccDoc removeAccdoc(AccDoc accdoc) {
+        getAccdocs().remove(accdoc);
+        accdoc.setEmp(null);
 
-	public List<Asset> getAssets() {
-		return this.assets;
-	}
+        return accdoc;
+    }
 
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
-	}
+    public List<Asset> getAssets() {
+        return this.assets;
+    }
 
-	public Asset addAsset(Asset asset) {
-		getAssets().add(asset);
-		asset.setEmp(this);
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
 
-		return asset;
-	}
+    public Asset addAsset(Asset asset) {
+        getAssets().add(asset);
+        asset.setEmp(this);
 
-	public Asset removeAsset(Asset asset) {
-		getAssets().remove(asset);
-		asset.setEmp(null);
+        return asset;
+    }
 
-		return asset;
-	}
+    public Asset removeAsset(Asset asset) {
+        getAssets().remove(asset);
+        asset.setEmp(null);
 
-	public List<BusDoc> getBusdocs1() {
-		return this.busdocs1;
-	}
+        return asset;
+    }
 
-	public void setBusdocs1(List<BusDoc> busdocs1) {
-		this.busdocs1 = busdocs1;
-	}
+    public List<BusDoc> getBusdocs1() {
+        return this.busdocs1;
+    }
 
-	public BusDoc addBusdocs1(BusDoc busdocs1) {
-		getBusdocs1().add(busdocs1);
-		busdocs1.setEmp1(this);
+    public void setBusdocs1(List<BusDoc> busdocs1) {
+        this.busdocs1 = busdocs1;
+    }
 
-		return busdocs1;
-	}
+    public BusDoc addBusdocs1(BusDoc busdocs1) {
+        getBusdocs1().add(busdocs1);
+        busdocs1.setEmp1(this);
 
-	public BusDoc removeBusdocs1(BusDoc busdocs1) {
-		getBusdocs1().remove(busdocs1);
-		busdocs1.setEmp1(null);
+        return busdocs1;
+    }
 
-		return busdocs1;
-	}
+    public BusDoc removeBusdocs1(BusDoc busdocs1) {
+        getBusdocs1().remove(busdocs1);
+        busdocs1.setEmp1(null);
 
-	public List<BusDoc> getBusdocs2() {
-		return this.busdocs2;
-	}
+        return busdocs1;
+    }
 
-	public void setBusdocs2(List<BusDoc> busdocs2) {
-		this.busdocs2 = busdocs2;
-	}
+    public List<BusDoc> getBusdocs2() {
+        return this.busdocs2;
+    }
 
-	public BusDoc addBusdocs2(BusDoc busdocs2) {
-		getBusdocs2().add(busdocs2);
-		busdocs2.setEmp2(this);
+    public void setBusdocs2(List<BusDoc> busdocs2) {
+        this.busdocs2 = busdocs2;
+    }
 
-		return busdocs2;
-	}
+    public BusDoc addBusdocs2(BusDoc busdocs2) {
+        getBusdocs2().add(busdocs2);
+        busdocs2.setEmp2(this);
 
-	public BusDoc removeBusdocs2(BusDoc busdocs2) {
-		getBusdocs2().remove(busdocs2);
-		busdocs2.setEmp2(null);
+        return busdocs2;
+    }
 
-		return busdocs2;
-	}
+    public BusDoc removeBusdocs2(BusDoc busdocs2) {
+        getBusdocs2().remove(busdocs2);
+        busdocs2.setEmp2(null);
 
-	public List<Dependant> getDependants() {
-		return this.dependants;
-	}
-
-	public void setDependants(List<Dependant> dependants) {
-		this.dependants = dependants;
-	}
-
-	public Dependant addDependant(Dependant dependant) {
-		getDependants().add(dependant);
-		dependant.setEmp(this);
-
-		return dependant;
-	}
-
-	public Dependant removeDependant(Dependant dependant) {
-		getDependants().remove(dependant);
-		dependant.setEmp(null);
-
-		return dependant;
-	}
-
-	public Dept getDept() {
-		return this.dept;
-	}
-
-	public void setDept(Dept dept) {
-		this.dept = dept;
-	}
-
-	public Emp getEmp() {
-		return this.emp;
-	}
-
-	public void setEmp(Emp emp) {
-		this.emp = emp;
-	}
-
-	public List<Emp> getEmps() {
-		return this.emps;
-	}
-
-	public void setEmps(List<Emp> emps) {
-		this.emps = emps;
-	}
-
-	public Emp addEmp(Emp emp) {
-		getEmps().add(emp);
-		emp.setEmp(this);
-
-		return emp;
-	}
-
-	public Emp removeEmp(Emp emp) {
-		getEmps().remove(emp);
-		emp.setEmp(null);
-
-		return emp;
-	}
-
-	public Authentication getAuthentication() {
-		return this.authentication;
-	}
-
-	public void setAuthentication(Authentication authentication) {
-		this.authentication = authentication;
-	}
-
-	public Company getCompany() {
-		return this.company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+        return busdocs2;
+    }
+
+    public List<Dependant> getDependants() {
+        return this.dependants;
+    }
+
+    public void setDependants(List<Dependant> dependants) {
+        this.dependants = dependants;
+    }
+
+    public Dependant addDependant(Dependant dependant) {
+        getDependants().add(dependant);
+        dependant.setEmp(this);
+
+        return dependant;
+    }
+
+    public Dependant removeDependant(Dependant dependant) {
+        getDependants().remove(dependant);
+        dependant.setEmp(null);
+
+        return dependant;
+    }
+
+    public Dept getDept() {
+        return this.dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
+
+    public Emp getEmp() {
+        return this.emp;
+    }
+
+    public void setEmp(Emp emp) {
+        this.emp = emp;
+    }
+
+    public List<Emp> getEmps() {
+        return this.emps;
+    }
+
+    public void setEmps(List<Emp> emps) {
+        this.emps = emps;
+    }
+
+    public Emp addEmp(Emp emp) {
+        getEmps().add(emp);
+        emp.setEmp(this);
+
+        return emp;
+    }
+
+    public Emp removeEmp(Emp emp) {
+        getEmps().remove(emp);
+        emp.setEmp(null);
+
+        return emp;
+    }
+
+    public Authentication getAuthentication() {
+        return this.authentication;
+    }
+
+    public void setAuthentication(Authentication authentication) {
+        this.authentication = authentication;
+    }
+
+    public Company getCompany() {
+        return this.company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "Emp{" + "empid=" + empid + ", empname=" + empname + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.empid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Emp other = (Emp) obj;
+        if (!Objects.equals(this.empid, other.empid)) {
+            return false;
+        }
+        return true;
+    }
 
 }

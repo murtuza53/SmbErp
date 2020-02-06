@@ -1,14 +1,14 @@
 package com.smb.erp.controller;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductCategoryRepository;
+import com.smb.erp.util.JsfUtil;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -50,6 +50,10 @@ public class ProductCategoryController extends AbstractController<ProductCategor
         return leafNodes;
     }
 
+    public SelectItem[] getSelectableCategoryLeafNodes(){
+        return JsfUtil.getSelectItems(getCategoryLeafNodes());
+    }
+    
     public List<ProductCategory> completeFilter(String criteria) {
         return pdrepo.findCategoryLeafNodesByCriteria(criteria);
     }

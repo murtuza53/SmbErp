@@ -9,12 +9,14 @@ import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
 import com.smb.erp.util.JsfUtil;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 //@Component
 @Named(value = "productController")
+@Service
 @ViewScoped
 public class ProductController extends AbstractController<Product> {
 
@@ -42,6 +45,7 @@ public class ProductController extends AbstractController<Product> {
 
     @Autowired
     public ProductController(ProductRepository repo) {
+        super(Product.class, repo);
         this.prodRepo = repo;
     }
 
@@ -52,10 +56,13 @@ public class ProductController extends AbstractController<Product> {
         //System.out.println("TabController: " + tabCon);
         //System.out.println("Prod_Tab_id: " + docTab.getId());
         //System.out.println("ProductController->selected: " + selected);
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        Flash flash = facesContext.getExternalContext().getFlash();
+        
+        //FacesContext facesContext = FacesContext.getCurrentInstance();
+        //Flash flash = facesContext.getExternalContext().getFlash();
 
-        String windowId = flash.get("windowid").toString();
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        
+        String windowId = params.get("windowid").toString();
 
         DocumentTab<Product> tab = ptvController.getDocumentTab(windowId);
         if (tab == null) {
@@ -63,18 +70,20 @@ public class ProductController extends AbstractController<Product> {
             return;
         }
         setSelected(tab.getData());
+        setProdCategory(getSelected().getProdcategry());
+        System.out.println("ProductController:Init: " + getSelected() + "\tCategory: " + getSelected().getProdcategry());
         //mode = flash.get("mode").toString();
         //flash.put("mode", mode);
-        if (getSelected().getProductid() != null || getSelected().getProductid() > 0) {          //(mode.equalsIgnoreCase("new")) {
+        //if (getSelected().getProductid() != null || getSelected().getProductid() > 0) {          //(mode.equalsIgnoreCase("new")) {
             //prodCategory = (ProductCategory) flash.get("category");
             //flash.put("category", prodCategory);
             //} else {
             //setSelected((Product) flash.get("product"));
-            setTitle("Edit - " + getSelected().getProductname());
+            setTitle("Edit - " + tab.getTitle());
             //flash.put("product", getSelected());
-        }
-        flash.put("windowid", windowId);
-        flash.setKeepMessages(true);
+        //}
+        //flash.put("windowid", windowId);
+        //flash.setKeepMessages(true);
     }
 
     //public ProductController(Product prod){
@@ -116,5 +125,20 @@ public class ProductController extends AbstractController<Product> {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * @return the prodCategory
+     */
+    public ProductCategory getProdCategory() {
+        System.out.println("getProdCategory: " + prodCategory);
+        return prodCategory;
+    }
+
+    /**
+     * @param prodCategory the prodCategory to set
+     */
+    public void setProdCategory(ProductCategory prodCategory) {
+        this.prodCategory = prodCategory;
     }
 }

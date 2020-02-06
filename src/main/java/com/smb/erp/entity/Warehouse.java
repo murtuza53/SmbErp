@@ -150,4 +150,34 @@ public class Warehouse implements Serializable {
 		this.company = company;
 	}
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + this.warehouseid;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Warehouse other = (Warehouse) obj;
+        if (this.warehouseid != other.warehouseid) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Warehouse{" + "abbreviation=" + abbreviation + '}';
+    }
+
 }

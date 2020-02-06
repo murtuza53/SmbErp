@@ -12,6 +12,9 @@
                                      disabled="#{productTreeViewController.newCategoryDisabled}"/>
                     <p:commandButton title="Edit Category" icon="fa fa-pencil"
                                      disabled="#{productTreeViewController.editCategoryDisabled}"/>
+                    <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh"
+                                     actionListener="#{productTreeViewController.refreshCategoryTree()}"
+                                     update="cattree"/>
                 </f:facet>
 
                 <f:facet name="right">
@@ -23,13 +26,14 @@
                                      disabled="#{productTreeViewController.productEditDisabled}" 
                                      actionListener="#{productTreeViewController.editTab_In_newBtab()}"
                                      update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-
                     <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" />
+                    <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable"
+                                     actionListener="#{productTreeViewController.refreshProductList()}"/>
                 </f:facet>
             </p:toolbar>
         </div>
         <div class="ui-g-3">
-            <p:tree value="#{productTreeViewController.root}" var="node" dynamic="true"
+            <p:tree id="cattree" value="#{productTreeViewController.root}" var="node" dynamic="true"
                     style="width:100%; height:100%;" selectionMode="single"
                     selection="#{productTreeViewController.selectedNode}">
                 <p:ajax event="select" update="@widgetVar(ptable), :mainform:tabsview:toolbar"

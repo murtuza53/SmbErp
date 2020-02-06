@@ -5,217 +5,247 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the company database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
+@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
 public class Company implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int companyid;
+    private static final long serialVersionUID = 1L;
 
-	private String addresss;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int companyid;
 
-	private String companyname;
+    private String addresss;
 
-	private String crno;
+    private String companyname;
 
-	private String fax;
+    private String crno;
 
-	private String mob;
+    private String fax;
 
-	@Temporal(TemporalType.DATE)
-	private Date openingdate;
+    private String mob;
 
-	private String phone;
+    @Temporal(TemporalType.DATE)
+    private Date openingdate;
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="company")
-	private List<BusDoc> busdocs;
+    private String phone;
 
-	//bi-directional many-to-one association to CompanyGroup
-	@ManyToOne
-	@JoinColumn(name="comgroupid")
-	private CompanyGroup companygroup;
+    //bi-directional many-to-one association to BusDoc
+    @OneToMany(mappedBy = "company")
+    private List<BusDoc> busdocs;
 
-	//bi-directional many-to-one association to Dept
-	@OneToMany(mappedBy="company")
-	private List<Dept> depts;
+    //bi-directional many-to-one association to CompanyGroup
+    @ManyToOne
+    @JoinColumn(name = "comgroupid")
+    private CompanyGroup companygroup;
 
-	//bi-directional many-to-one association to Emp
-	@OneToMany(mappedBy="company")
-	private List<Emp> emps;
+    //bi-directional many-to-one association to Dept
+    @OneToMany(mappedBy = "company")
+    private List<Dept> depts;
 
-	//bi-directional many-to-one association to Warehouse
-	@OneToMany(mappedBy="company")
-	private List<Warehouse> warehouses;
+    //bi-directional many-to-one association to Emp
+    @OneToMany(mappedBy = "company")
+    private List<Emp> emps;
 
-	public Company() {
-	}
+    //bi-directional many-to-one association to Warehouse
+    @OneToMany(mappedBy = "company")
+    private List<Warehouse> warehouses;
 
-	public int getCompanyid() {
-		return this.companyid;
-	}
+    public Company() {
+    }
 
-	public void setCompanyid(int companyid) {
-		this.companyid = companyid;
-	}
+    public int getCompanyid() {
+        return this.companyid;
+    }
 
-	public String getAddresss() {
-		return this.addresss;
-	}
+    public void setCompanyid(int companyid) {
+        this.companyid = companyid;
+    }
 
-	public void setAddresss(String addresss) {
-		this.addresss = addresss;
-	}
+    public String getAddresss() {
+        return this.addresss;
+    }
 
-	public String getCompanyname() {
-		return this.companyname;
-	}
+    public void setAddresss(String addresss) {
+        this.addresss = addresss;
+    }
 
-	public void setCompanyname(String companyname) {
-		this.companyname = companyname;
-	}
+    public String getCompanyname() {
+        return this.companyname;
+    }
 
-	public String getCrno() {
-		return this.crno;
-	}
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
 
-	public void setCrno(String crno) {
-		this.crno = crno;
-	}
+    public String getCrno() {
+        return this.crno;
+    }
 
-	public String getFax() {
-		return this.fax;
-	}
+    public void setCrno(String crno) {
+        this.crno = crno;
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    public String getFax() {
+        return this.fax;
+    }
 
-	public String getMob() {
-		return this.mob;
-	}
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
-	public void setMob(String mob) {
-		this.mob = mob;
-	}
+    public String getMob() {
+        return this.mob;
+    }
 
-	public Date getOpeningdate() {
-		return this.openingdate;
-	}
+    public void setMob(String mob) {
+        this.mob = mob;
+    }
 
-	public void setOpeningdate(Date openingdate) {
-		this.openingdate = openingdate;
-	}
+    public Date getOpeningdate() {
+        return this.openingdate;
+    }
 
-	public String getPhone() {
-		return this.phone;
-	}
+    public void setOpeningdate(Date openingdate) {
+        this.openingdate = openingdate;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getPhone() {
+        return this.phone;
+    }
 
-	public List<BusDoc> getBusdocs() {
-		return this.busdocs;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setBusdocs(List<BusDoc> busdocs) {
-		this.busdocs = busdocs;
-	}
+    public List<BusDoc> getBusdocs() {
+        return this.busdocs;
+    }
 
-	public BusDoc addBusdoc(BusDoc busdoc) {
-		getBusdocs().add(busdoc);
-		busdoc.setCompany(this);
+    public void setBusdocs(List<BusDoc> busdocs) {
+        this.busdocs = busdocs;
+    }
 
-		return busdoc;
-	}
+    public BusDoc addBusdoc(BusDoc busdoc) {
+        getBusdocs().add(busdoc);
+        busdoc.setCompany(this);
 
-	public BusDoc removeBusdoc(BusDoc busdoc) {
-		getBusdocs().remove(busdoc);
-		busdoc.setCompany(null);
+        return busdoc;
+    }
 
-		return busdoc;
-	}
+    public BusDoc removeBusdoc(BusDoc busdoc) {
+        getBusdocs().remove(busdoc);
+        busdoc.setCompany(null);
 
-	public CompanyGroup getCompanygroup() {
-		return this.companygroup;
-	}
+        return busdoc;
+    }
 
-	public void setCompanygroup(CompanyGroup companygroup) {
-		this.companygroup = companygroup;
-	}
+    public CompanyGroup getCompanygroup() {
+        return this.companygroup;
+    }
 
-	public List<Dept> getDepts() {
-		return this.depts;
-	}
+    public void setCompanygroup(CompanyGroup companygroup) {
+        this.companygroup = companygroup;
+    }
 
-	public void setDepts(List<Dept> depts) {
-		this.depts = depts;
-	}
+    public List<Dept> getDepts() {
+        return this.depts;
+    }
 
-	public Dept addDept(Dept dept) {
-		getDepts().add(dept);
-		dept.setCompany(this);
+    public void setDepts(List<Dept> depts) {
+        this.depts = depts;
+    }
 
-		return dept;
-	}
+    public Dept addDept(Dept dept) {
+        getDepts().add(dept);
+        dept.setCompany(this);
 
-	public Dept removeDept(Dept dept) {
-		getDepts().remove(dept);
-		dept.setCompany(null);
+        return dept;
+    }
 
-		return dept;
-	}
+    public Dept removeDept(Dept dept) {
+        getDepts().remove(dept);
+        dept.setCompany(null);
 
-	public List<Emp> getEmps() {
-		return this.emps;
-	}
+        return dept;
+    }
 
-	public void setEmps(List<Emp> emps) {
-		this.emps = emps;
-	}
+    public List<Emp> getEmps() {
+        return this.emps;
+    }
 
-	public Emp addEmp(Emp emp) {
-		getEmps().add(emp);
-		emp.setCompany(this);
+    public void setEmps(List<Emp> emps) {
+        this.emps = emps;
+    }
 
-		return emp;
-	}
+    public Emp addEmp(Emp emp) {
+        getEmps().add(emp);
+        emp.setCompany(this);
 
-	public Emp removeEmp(Emp emp) {
-		getEmps().remove(emp);
-		emp.setCompany(null);
+        return emp;
+    }
 
-		return emp;
-	}
+    public Emp removeEmp(Emp emp) {
+        getEmps().remove(emp);
+        emp.setCompany(null);
 
-	public List<Warehouse> getWarehouses() {
-		return this.warehouses;
-	}
+        return emp;
+    }
 
-	public void setWarehouses(List<Warehouse> warehouses) {
-		this.warehouses = warehouses;
-	}
+    public List<Warehouse> getWarehouses() {
+        return this.warehouses;
+    }
 
-	public Warehouse addWarehous(Warehouse warehous) {
-		getWarehouses().add(warehous);
-		warehous.setCompany(this);
+    public void setWarehouses(List<Warehouse> warehouses) {
+        this.warehouses = warehouses;
+    }
 
-		return warehous;
-	}
+    public Warehouse addWarehous(Warehouse warehous) {
+        getWarehouses().add(warehous);
+        warehous.setCompany(this);
 
-	public Warehouse removeWarehous(Warehouse warehous) {
-		getWarehouses().remove(warehous);
-		warehous.setCompany(null);
+        return warehous;
+    }
 
-		return warehous;
-	}
+    public Warehouse removeWarehous(Warehouse warehous) {
+        getWarehouses().remove(warehous);
+        warehous.setCompany(null);
+
+        return warehous;
+    }
+
+    @Override
+    public String toString() {
+        return companyname + " [" + companyid + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.companyid;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Company other = (Company) obj;
+        if (this.companyid != other.companyid) {
+            return false;
+        }
+        return true;
+    }
 
 }

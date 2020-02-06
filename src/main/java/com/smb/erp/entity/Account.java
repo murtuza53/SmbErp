@@ -3,202 +3,233 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the account database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Account.findAll", query="SELECT a FROM Account a")
+@NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
 public class Account implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	private String accountid;
+    private static final long serialVersionUID = 1L;
 
-	private String accountname;
+    @Id
+    private String accountid;
 
-	private String accounttype;
+    private String accountname;
 
-	private double openingbalance;
+    private String accounttype;
 
-	//bi-directional many-to-one association to AccountGroup
-	@ManyToOne
-	@JoinColumn(name="accountgroupid")
-	private AccountGroup accountgroup;
+    private double openingbalance;
 
-	//bi-directional many-to-one association to AccountType
-	@ManyToOne
-	@JoinColumn(name="acctypeid")
-	private AccountType accounttypeBean;
+    //bi-directional many-to-one association to AccountGroup
+    @ManyToOne
+    @JoinColumn(name = "accountgroupid")
+    private AccountGroup accountgroup;
 
-	//bi-directional many-to-one association to BusinessPartner
-	@ManyToOne
-	@JoinColumn(name="businesspartnerid")
-	private BusinessPartner businesspartner;
+    //bi-directional many-to-one association to AccountType
+    @ManyToOne
+    @JoinColumn(name = "acctypeid")
+    private AccountType accounttypeBean;
 
-	//bi-directional many-to-one association to LederLine
-	@OneToMany(mappedBy="account")
-	private List<LederLine> ledlines;
+    //bi-directional many-to-one association to BusinessPartner
+    @ManyToOne
+    @JoinColumn(name = "businesspartnerid")
+    private BusinessPartner businesspartner;
 
-	//bi-directional many-to-one association to ProductAccount
-	@OneToMany(mappedBy="account1")
-	private List<ProductAccount> prodaccounts1;
+    //bi-directional many-to-one association to LederLine
+    @OneToMany(mappedBy = "account")
+    private List<LederLine> ledlines;
 
-	//bi-directional many-to-one association to ProductAccount
-	@OneToMany(mappedBy="account2")
-	private List<ProductAccount> prodaccounts2;
+    //bi-directional many-to-one association to ProductAccount
+    @OneToMany(mappedBy = "account1")
+    private List<ProductAccount> prodaccounts1;
 
-	//bi-directional many-to-one association to ProductAccount
-	@OneToMany(mappedBy="account3")
-	private List<ProductAccount> prodaccounts3;
+    //bi-directional many-to-one association to ProductAccount
+    @OneToMany(mappedBy = "account2")
+    private List<ProductAccount> prodaccounts2;
 
-	public Account() {
-	}
+    //bi-directional many-to-one association to ProductAccount
+    @OneToMany(mappedBy = "account3")
+    private List<ProductAccount> prodaccounts3;
 
-	public String getAccountid() {
-		return this.accountid;
-	}
+    public Account() {
+    }
 
-	public void setAccountid(String accountid) {
-		this.accountid = accountid;
-	}
+    public String getAccountid() {
+        return this.accountid;
+    }
 
-	public String getAccountname() {
-		return this.accountname;
-	}
+    public void setAccountid(String accountid) {
+        this.accountid = accountid;
+    }
 
-	public void setAccountname(String accountname) {
-		this.accountname = accountname;
-	}
+    public String getAccountname() {
+        return this.accountname;
+    }
 
-	public String getAccounttype() {
-		return this.accounttype;
-	}
+    public void setAccountname(String accountname) {
+        this.accountname = accountname;
+    }
 
-	public void setAccounttype(String accounttype) {
-		this.accounttype = accounttype;
-	}
+    public String getAccounttype() {
+        return this.accounttype;
+    }
 
-	public double getOpeningbalance() {
-		return this.openingbalance;
-	}
+    public void setAccounttype(String accounttype) {
+        this.accounttype = accounttype;
+    }
 
-	public void setOpeningbalance(double openingbalance) {
-		this.openingbalance = openingbalance;
-	}
+    public double getOpeningbalance() {
+        return this.openingbalance;
+    }
 
-	public AccountGroup getAccountgroup() {
-		return this.accountgroup;
-	}
+    public void setOpeningbalance(double openingbalance) {
+        this.openingbalance = openingbalance;
+    }
 
-	public void setAccountgroup(AccountGroup accountgroup) {
-		this.accountgroup = accountgroup;
-	}
+    public AccountGroup getAccountgroup() {
+        return this.accountgroup;
+    }
 
-	public AccountType getAccounttypeBean() {
-		return this.accounttypeBean;
-	}
+    public void setAccountgroup(AccountGroup accountgroup) {
+        this.accountgroup = accountgroup;
+    }
 
-	public void setAccounttypeBean(AccountType accounttypeBean) {
-		this.accounttypeBean = accounttypeBean;
-	}
+    public AccountType getAccounttypeBean() {
+        return this.accounttypeBean;
+    }
 
-	public BusinessPartner getBusinesspartner() {
-		return this.businesspartner;
-	}
+    public void setAccounttypeBean(AccountType accounttypeBean) {
+        this.accounttypeBean = accounttypeBean;
+    }
 
-	public void setBusinesspartner(BusinessPartner businesspartner) {
-		this.businesspartner = businesspartner;
-	}
+    public BusinessPartner getBusinesspartner() {
+        return this.businesspartner;
+    }
 
-	public List<LederLine> getLedlines() {
-		return this.ledlines;
-	}
+    public void setBusinesspartner(BusinessPartner businesspartner) {
+        this.businesspartner = businesspartner;
+    }
 
-	public void setLedlines(List<LederLine> ledlines) {
-		this.ledlines = ledlines;
-	}
+    public List<LederLine> getLedlines() {
+        return this.ledlines;
+    }
 
-	public LederLine addLedline(LederLine ledline) {
-		getLedlines().add(ledline);
-		ledline.setAccount(this);
+    public void setLedlines(List<LederLine> ledlines) {
+        this.ledlines = ledlines;
+    }
 
-		return ledline;
-	}
+    public LederLine addLedline(LederLine ledline) {
+        getLedlines().add(ledline);
+        ledline.setAccount(this);
 
-	public LederLine removeLedline(LederLine ledline) {
-		getLedlines().remove(ledline);
-		ledline.setAccount(null);
+        return ledline;
+    }
 
-		return ledline;
-	}
+    public LederLine removeLedline(LederLine ledline) {
+        getLedlines().remove(ledline);
+        ledline.setAccount(null);
 
-	public List<ProductAccount> getProdaccounts1() {
-		return this.prodaccounts1;
-	}
+        return ledline;
+    }
 
-	public void setProdaccounts1(List<ProductAccount> prodaccounts1) {
-		this.prodaccounts1 = prodaccounts1;
-	}
+    public List<ProductAccount> getProdaccounts1() {
+        return this.prodaccounts1;
+    }
 
-	public ProductAccount addProdaccounts1(ProductAccount prodaccounts1) {
-		getProdaccounts1().add(prodaccounts1);
-		prodaccounts1.setAccount1(this);
+    public void setProdaccounts1(List<ProductAccount> prodaccounts1) {
+        this.prodaccounts1 = prodaccounts1;
+    }
 
-		return prodaccounts1;
-	}
+    public ProductAccount addProdaccounts1(ProductAccount prodaccounts1) {
+        getProdaccounts1().add(prodaccounts1);
+        prodaccounts1.setAccount1(this);
 
-	public ProductAccount removeProdaccounts1(ProductAccount prodaccounts1) {
-		getProdaccounts1().remove(prodaccounts1);
-		prodaccounts1.setAccount1(null);
+        return prodaccounts1;
+    }
 
-		return prodaccounts1;
-	}
+    public ProductAccount removeProdaccounts1(ProductAccount prodaccounts1) {
+        getProdaccounts1().remove(prodaccounts1);
+        prodaccounts1.setAccount1(null);
 
-	public List<ProductAccount> getProdaccounts2() {
-		return this.prodaccounts2;
-	}
+        return prodaccounts1;
+    }
 
-	public void setProdaccounts2(List<ProductAccount> prodaccounts2) {
-		this.prodaccounts2 = prodaccounts2;
-	}
+    public List<ProductAccount> getProdaccounts2() {
+        return this.prodaccounts2;
+    }
 
-	public ProductAccount addProdaccounts2(ProductAccount prodaccounts2) {
-		getProdaccounts2().add(prodaccounts2);
-		prodaccounts2.setAccount2(this);
+    public void setProdaccounts2(List<ProductAccount> prodaccounts2) {
+        this.prodaccounts2 = prodaccounts2;
+    }
 
-		return prodaccounts2;
-	}
+    public ProductAccount addProdaccounts2(ProductAccount prodaccounts2) {
+        getProdaccounts2().add(prodaccounts2);
+        prodaccounts2.setAccount2(this);
 
-	public ProductAccount removeProdaccounts2(ProductAccount prodaccounts2) {
-		getProdaccounts2().remove(prodaccounts2);
-		prodaccounts2.setAccount2(null);
+        return prodaccounts2;
+    }
 
-		return prodaccounts2;
-	}
+    public ProductAccount removeProdaccounts2(ProductAccount prodaccounts2) {
+        getProdaccounts2().remove(prodaccounts2);
+        prodaccounts2.setAccount2(null);
 
-	public List<ProductAccount> getProdaccounts3() {
-		return this.prodaccounts3;
-	}
+        return prodaccounts2;
+    }
 
-	public void setProdaccounts3(List<ProductAccount> prodaccounts3) {
-		this.prodaccounts3 = prodaccounts3;
-	}
+    public List<ProductAccount> getProdaccounts3() {
+        return this.prodaccounts3;
+    }
 
-	public ProductAccount addProdaccounts3(ProductAccount prodaccounts3) {
-		getProdaccounts3().add(prodaccounts3);
-		prodaccounts3.setAccount3(this);
+    public void setProdaccounts3(List<ProductAccount> prodaccounts3) {
+        this.prodaccounts3 = prodaccounts3;
+    }
 
-		return prodaccounts3;
-	}
+    public ProductAccount addProdaccounts3(ProductAccount prodaccounts3) {
+        getProdaccounts3().add(prodaccounts3);
+        prodaccounts3.setAccount3(this);
 
-	public ProductAccount removeProdaccounts3(ProductAccount prodaccounts3) {
-		getProdaccounts3().remove(prodaccounts3);
-		prodaccounts3.setAccount3(null);
+        return prodaccounts3;
+    }
 
-		return prodaccounts3;
-	}
+    public ProductAccount removeProdaccounts3(ProductAccount prodaccounts3) {
+        getProdaccounts3().remove(prodaccounts3);
+        prodaccounts3.setAccount3(null);
+
+        return prodaccounts3;
+    }
+
+    @Override
+    public String toString() {
+        return accountname + " [" + accountid + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.accountid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Account other = (Account) obj;
+        if (!Objects.equals(this.accountid, other.accountid)) {
+            return false;
+        }
+        return true;
+    }
 
 }

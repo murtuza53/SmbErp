@@ -19,6 +19,16 @@
     </h:head>
 
     <h:body styleClass="main-body">
+        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+           <f:facet name="start">
+               <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+           </f:facet>
+
+           <f:facet name="complete">
+               <h:outputText value="" />
+           </f:facet>
+       </p:ajaxStatus>
+        <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
 
         <div class="layout-wrapper #{guestPreferences.menuLayout != 'static' ? guestPreferences.menuLayout : null}">
             <ui:include src="./megamenu.xhtml" />
@@ -43,16 +53,6 @@
                 </div>
             </div>
         </div>
-
-        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
-           <f:facet name="start">
-               <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
-           </f:facet>
-
-           <f:facet name="complete">
-               <h:outputText value="" />
-           </f:facet>
-       </p:ajaxStatus>
 
         <!--<h:outputStylesheet name="css/pfcrud.css"/>-->
         <h:outputStylesheet name="css/nanoscroller.css" library="california-layout" />

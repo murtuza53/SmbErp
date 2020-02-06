@@ -3,122 +3,153 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the brand database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Brand.findAll", query="SELECT b FROM Brand b")
+@NamedQuery(name = "Brand.findAll", query = "SELECT b FROM Brand b")
 public class Brand implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long brandid;
+    private static final long serialVersionUID = 1L;
 
-	private String abbreviation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long brandid;
 
-	private String brandname;
+    private String abbreviation;
 
-	private String description;
+    private String brandname;
 
-	private String logofile;
+    private String description;
 
-	//bi-directional many-to-one association to PriceList
-	@OneToMany(mappedBy="brand")
-	private List<PriceList> pricelists;
+    private String logofile;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="brand")
-	private List<Product> products;
+    //bi-directional many-to-one association to PriceList
+    @OneToMany(mappedBy = "brand")
+    private List<PriceList> pricelists;
 
-	public Brand() {
-	}
+    //bi-directional many-to-one association to Product
+    @OneToMany(mappedBy = "brand")
+    private List<Product> products;
 
-	public Long getBrandid() {
-		return this.brandid;
-	}
+    public Brand() {
+    }
 
-	public void setBrandid(Long brandid) {
-		this.brandid = brandid;
-	}
+    public Long getBrandid() {
+        return this.brandid;
+    }
 
-	public String getAbbreviation() {
-		return this.abbreviation;
-	}
+    public void setBrandid(Long brandid) {
+        this.brandid = brandid;
+    }
 
-	public void setAbbreviation(String abbreviation) {
-		this.abbreviation = abbreviation;
-	}
+    public String getAbbreviation() {
+        return this.abbreviation;
+    }
 
-	public String getBrandname() {
-		return this.brandname;
-	}
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
 
-	public void setBrandname(String brandname) {
-		this.brandname = brandname;
-	}
+    public String getBrandname() {
+        return this.brandname;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setBrandname(String brandname) {
+        this.brandname = brandname;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public String getLogofile() {
-		return this.logofile;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setLogofile(String logofile) {
-		this.logofile = logofile;
-	}
+    public String getLogofile() {
+        return this.logofile;
+    }
 
-	public List<PriceList> getPricelists() {
-		return this.pricelists;
-	}
+    public void setLogofile(String logofile) {
+        this.logofile = logofile;
+    }
 
-	public void setPricelists(List<PriceList> pricelists) {
-		this.pricelists = pricelists;
-	}
+    public List<PriceList> getPricelists() {
+        return this.pricelists;
+    }
 
-	public PriceList addPricelist(PriceList pricelist) {
-		getPricelists().add(pricelist);
-		pricelist.setBrand(this);
+    public void setPricelists(List<PriceList> pricelists) {
+        this.pricelists = pricelists;
+    }
 
-		return pricelist;
-	}
+    public PriceList addPricelist(PriceList pricelist) {
+        getPricelists().add(pricelist);
+        pricelist.setBrand(this);
 
-	public PriceList removePricelist(PriceList pricelist) {
-		getPricelists().remove(pricelist);
-		pricelist.setBrand(null);
+        return pricelist;
+    }
 
-		return pricelist;
-	}
+    public PriceList removePricelist(PriceList pricelist) {
+        getPricelists().remove(pricelist);
+        pricelist.setBrand(null);
 
-	public List<Product> getProducts() {
-		return this.products;
-	}
+        return pricelist;
+    }
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+    public List<Product> getProducts() {
+        return this.products;
+    }
 
-	public Product addProduct(Product product) {
-		getProducts().add(product);
-		product.setBrand(this);
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
-		return product;
-	}
+    public Product addProduct(Product product) {
+        getProducts().add(product);
+        product.setBrand(this);
 
-	public Product removeProduct(Product product) {
-		getProducts().remove(product);
-		product.setBrand(null);
+        return product;
+    }
 
-		return product;
-	}
+    public Product removeProduct(Product product) {
+        getProducts().remove(product);
+        product.setBrand(null);
+
+        return product;
+    }
+
+    @Override
+    public String toString() {
+        return brandname + " [" + brandid + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.brandid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Brand other = (Brand) obj;
+        if (!Objects.equals(this.brandid, other.brandid)) {
+            return false;
+        }
+        return true;
+    }
 
 }

@@ -4,239 +4,270 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the branch database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Branch.findAll", query="SELECT b FROM Branch b")
+@NamedQuery(name = "Branch.findAll", query = "SELECT b FROM Branch b")
 public class Branch implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String branchno;
+    private static final long serialVersionUID = 1L;
 
-	private String abbreviation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String branchno;
 
-	private String branchname;
+    private String abbreviation;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date crexpirydate;
+    private String branchname;
 
-	private String crno;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date crexpirydate;
 
-	private String emailaddress;
+    private String crno;
 
-	private String fax;
+    private String emailaddress;
 
-	private String footer;
+    private String fax;
 
-	private String header;
+    private String footer;
 
-	private String location;
+    private String header;
 
-	private String logo;
+    private String location;
 
-	private String tel1;
+    private String logo;
 
-	private String tel2;
+    private String tel1;
 
-	private String website;
+    private String tel2;
 
-	//bi-directional many-to-one association to AccDoc
-	@OneToMany(mappedBy="branch")
-	private List<AccDoc> accdocs;
+    private String website;
 
-	//bi-directional many-to-one association to Asset
-	@OneToMany(mappedBy="branchBean")
-	private List<Asset> assets;
+    //bi-directional many-to-one association to AccDoc
+    @OneToMany(mappedBy = "branch")
+    private List<AccDoc> accdocs;
 
-	//bi-directional many-to-one association to LederLine
-	@OneToMany(mappedBy="branch")
-	private List<LederLine> ledlines;
+    //bi-directional many-to-one association to Asset
+    @OneToMany(mappedBy = "branchBean")
+    private List<Asset> assets;
 
-	public Branch() {
-	}
+    //bi-directional many-to-one association to LederLine
+    @OneToMany(mappedBy = "branch")
+    private List<LederLine> ledlines;
 
-	public String getBranchno() {
-		return this.branchno;
-	}
+    public Branch() {
+    }
 
-	public void setBranchno(String branchno) {
-		this.branchno = branchno;
-	}
+    public String getBranchno() {
+        return this.branchno;
+    }
 
-	public String getAbbreviation() {
-		return this.abbreviation;
-	}
+    public void setBranchno(String branchno) {
+        this.branchno = branchno;
+    }
 
-	public void setAbbreviation(String abbreviation) {
-		this.abbreviation = abbreviation;
-	}
+    public String getAbbreviation() {
+        return this.abbreviation;
+    }
 
-	public String getBranchname() {
-		return this.branchname;
-	}
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
 
-	public void setBranchname(String branchname) {
-		this.branchname = branchname;
-	}
+    public String getBranchname() {
+        return this.branchname;
+    }
 
-	public Date getCrexpirydate() {
-		return this.crexpirydate;
-	}
+    public void setBranchname(String branchname) {
+        this.branchname = branchname;
+    }
 
-	public void setCrexpirydate(Date crexpirydate) {
-		this.crexpirydate = crexpirydate;
-	}
+    public Date getCrexpirydate() {
+        return this.crexpirydate;
+    }
 
-	public String getCrno() {
-		return this.crno;
-	}
+    public void setCrexpirydate(Date crexpirydate) {
+        this.crexpirydate = crexpirydate;
+    }
 
-	public void setCrno(String crno) {
-		this.crno = crno;
-	}
+    public String getCrno() {
+        return this.crno;
+    }
 
-	public String getEmailaddress() {
-		return this.emailaddress;
-	}
+    public void setCrno(String crno) {
+        this.crno = crno;
+    }
 
-	public void setEmailaddress(String emailaddress) {
-		this.emailaddress = emailaddress;
-	}
+    public String getEmailaddress() {
+        return this.emailaddress;
+    }
 
-	public String getFax() {
-		return this.fax;
-	}
+    public void setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    public String getFax() {
+        return this.fax;
+    }
 
-	public String getFooter() {
-		return this.footer;
-	}
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
-	public void setFooter(String footer) {
-		this.footer = footer;
-	}
+    public String getFooter() {
+        return this.footer;
+    }
 
-	public String getHeader() {
-		return this.header;
-	}
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
 
-	public void setHeader(String header) {
-		this.header = header;
-	}
+    public String getHeader() {
+        return this.header;
+    }
 
-	public String getLocation() {
-		return this.location;
-	}
+    public void setHeader(String header) {
+        this.header = header;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public String getLocation() {
+        return this.location;
+    }
 
-	public String getLogo() {
-		return this.logo;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public void setLogo(String logo) {
-		this.logo = logo;
-	}
+    public String getLogo() {
+        return this.logo;
+    }
 
-	public String getTel1() {
-		return this.tel1;
-	}
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
-	public void setTel1(String tel1) {
-		this.tel1 = tel1;
-	}
+    public String getTel1() {
+        return this.tel1;
+    }
 
-	public String getTel2() {
-		return this.tel2;
-	}
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
+    }
 
-	public void setTel2(String tel2) {
-		this.tel2 = tel2;
-	}
-
-	public String getWebsite() {
-		return this.website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	public List<AccDoc> getAccdocs() {
-		return this.accdocs;
-	}
-
-	public void setAccdocs(List<AccDoc> accdocs) {
-		this.accdocs = accdocs;
-	}
-
-	public AccDoc addAccdoc(AccDoc accdoc) {
-		getAccdocs().add(accdoc);
-		accdoc.setBranch(this);
-
-		return accdoc;
-	}
-
-	public AccDoc removeAccdoc(AccDoc accdoc) {
-		getAccdocs().remove(accdoc);
-		accdoc.setBranch(null);
-
-		return accdoc;
-	}
-
-	public List<Asset> getAssets() {
-		return this.assets;
-	}
-
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
-	}
-
-	public Asset addAsset(Asset asset) {
-		getAssets().add(asset);
-		asset.setBranchBean(this);
-
-		return asset;
-	}
-
-	public Asset removeAsset(Asset asset) {
-		getAssets().remove(asset);
-		asset.setBranchBean(null);
-
-		return asset;
-	}
-
-	public List<LederLine> getLedlines() {
-		return this.ledlines;
-	}
-
-	public void setLedlines(List<LederLine> ledlines) {
-		this.ledlines = ledlines;
-	}
-
-	public LederLine addLedline(LederLine ledline) {
-		getLedlines().add(ledline);
-		ledline.setBranch(this);
-
-		return ledline;
-	}
-
-	public LederLine removeLedline(LederLine ledline) {
-		getLedlines().remove(ledline);
-		ledline.setBranch(null);
-
-		return ledline;
-	}
+    public String getTel2() {
+        return this.tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
+    }
+
+    public String getWebsite() {
+        return this.website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public List<AccDoc> getAccdocs() {
+        return this.accdocs;
+    }
+
+    public void setAccdocs(List<AccDoc> accdocs) {
+        this.accdocs = accdocs;
+    }
+
+    public AccDoc addAccdoc(AccDoc accdoc) {
+        getAccdocs().add(accdoc);
+        accdoc.setBranch(this);
+
+        return accdoc;
+    }
+
+    public AccDoc removeAccdoc(AccDoc accdoc) {
+        getAccdocs().remove(accdoc);
+        accdoc.setBranch(null);
+
+        return accdoc;
+    }
+
+    public List<Asset> getAssets() {
+        return this.assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
+
+    public Asset addAsset(Asset asset) {
+        getAssets().add(asset);
+        asset.setBranchBean(this);
+
+        return asset;
+    }
+
+    public Asset removeAsset(Asset asset) {
+        getAssets().remove(asset);
+        asset.setBranchBean(null);
+
+        return asset;
+    }
+
+    public List<LederLine> getLedlines() {
+        return this.ledlines;
+    }
+
+    public void setLedlines(List<LederLine> ledlines) {
+        this.ledlines = ledlines;
+    }
+
+    public LederLine addLedline(LederLine ledline) {
+        getLedlines().add(ledline);
+        ledline.setBranch(this);
+
+        return ledline;
+    }
+
+    public LederLine removeLedline(LederLine ledline) {
+        getLedlines().remove(ledline);
+        ledline.setBranch(null);
+
+        return ledline;
+    }
+
+    @Override
+    public String toString() {
+        return branchname + " [" + branchno + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.branchno);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Branch other = (Branch) obj;
+        if (!Objects.equals(this.branchno, other.branchno)) {
+            return false;
+        }
+        return true;
+    }
 
 }

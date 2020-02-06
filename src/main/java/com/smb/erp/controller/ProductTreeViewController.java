@@ -33,7 +33,7 @@ public class ProductTreeViewController implements Serializable {
 
     @Autowired
     ProductRestController pdcontroller;
-    
+
     @Autowired
     TabViewController mainTabs;
 
@@ -46,16 +46,12 @@ public class ProductTreeViewController implements Serializable {
     private Product selectedProduct;
 
     private List<Product> prodList;
-    
+
     private HashMap<String, DocumentTab<Product>> productMap = new HashMap<String, DocumentTab<Product>>();
 
     @PostConstruct
     public void init() {
-        if (root == null) {
-            ProductCategory rpc = pccontroller.getRootNode();
-            root = new DefaultTreeNode("Root", null);
-            addNode(rpc, root);
-        }
+        refreshCategoryTree();
     }
 
     public TreeNode getRoot() {
@@ -65,6 +61,11 @@ public class ProductTreeViewController implements Serializable {
     public void addNode(ProductCategory pc, TreeNode parent) {
         DefaultTreeNode n = new DefaultTreeNode(pc, parent);
 
+        if(selectedNode!=null && ((ProductCategory)selectedNode.getData()).getProdcatId().longValue()==pc.getProdcatId().longValue()){
+            selectedNode = n;
+            parent.setExpanded(true);
+        }
+        
         if (pc.getProdcatId() == 1) {
             n.setExpanded(true);
         }
@@ -76,14 +77,14 @@ public class ProductTreeViewController implements Serializable {
         }
     }
 
-    public DocumentTab<Product> getDocumentTab(String windowId){
+    public DocumentTab<Product> getDocumentTab(String windowId) {
         return productMap.get(windowId);
     }
-    
+
     public void newTab() throws IOException {
         Product p = new Product();
         p.setCreatedon(new Date());
-        p.setProdcategry((ProductCategory)getSelectedNode().getData());
+        p.setProdcategry((ProductCategory) getSelectedNode().getData());
         DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
         mainTabs.add(tab);
     }
@@ -92,22 +93,29 @@ public class ProductTreeViewController implements Serializable {
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.NEW);
         mainTabs.add(tab);
     }
-    
+
     public void newTab_In_newBtab() throws IOException {
-        String windowId = new Date().getTime()+"";
+        String windowId = new Date().getTime() + "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();
-        flash.put("category", (ProductCategory)getSelectedNode().getData());
+        flash.put("category", (ProductCategory) getSelectedNode().getData());
         flash.put("mode", "new");
         flash.put("windowid", windowId);
         flash.setKeepMessages(true);
         flash.setRedirect(true);
-        facesContext.getExternalContext().redirect("inventory/product.xhtml");
+
+        Product p = new Product();
+        p.setCreatedon(new Date());
+        p.setProdcategry((ProductCategory) getSelectedNode().getData());
+        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
+        productMap.put(windowId, tab);
+
+        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
     }
 
     public void editTab_In_newBtab() throws IOException {
-        String windowId = new Date().getTime()+"";
+        String windowId = new Date().getTime() + "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.clear();
@@ -116,9 +124,19 @@ public class ProductTreeViewController implements Serializable {
         flash.put("windowid", windowId);
         flash.setKeepMessages(true);
         flash.setRedirect(true);
-        facesContext.getExternalContext().redirect("inventory/product.xhtml");
+
+        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.EDIT);
+        productMap.put(windowId, tab);
+
+        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
     }
-    
+
+    public void refreshCategoryTree() {
+        ProductCategory rpc = pccontroller.getRootNode();
+        root = new DefaultTreeNode("Root", null);
+        addNode(rpc, root);
+    }
+
     public void refreshProductList() {
         ProductCategory pc = (ProductCategory) selectedNode.getData();
         prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
@@ -212,7 +230,6 @@ public class ProductTreeViewController implements Serializable {
     /*public void createNewProduct() {
         tabController.addTabProduct(new Product(), "New Product", DocumentTab.MODE.NEW);
     }*/
-
     public String getHeaderTitle() {
         if (selectedProduct == null || selectedProduct.getProductid() == null || selectedProduct.getProductid().longValue() == 0) {
             return "New Product";

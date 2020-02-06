@@ -319,7 +319,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" + "productid=" + productid + ", productname=" + productname + '}';
+        return productname + " [" + productid  + "]";
     }
 
     /**
