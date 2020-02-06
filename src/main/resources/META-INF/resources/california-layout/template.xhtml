@@ -18,7 +18,7 @@
         <ui:insert name="head"/>
     </h:head>
 
-    <h:body styleClass="main-body">
+    <h:body styleClass="main-body" onunload="savepage();">
         <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
            <f:facet name="start">
                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>

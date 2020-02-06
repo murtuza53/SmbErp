@@ -15,6 +15,9 @@
     </ui:define>
 
     <ui:define name="content">
+        <h:form id="exit">
+            <p:remoteCommand  id="savepage" name="savepage" action="#{productController.savepage()}"/>
+        </h:form>
         <h:form id="mainform">
             <div class="ui-fluid">
                 <div class="ui-g">
@@ -46,7 +49,7 @@
                                                    itemLabel="#{cat}"
                                                    />
                                 </p:selectOneMenu>
-                                
+
                                 <p:outputLabel value="Brand" for="brandid" />
                                 <p:selectOneMenu id="brandid" value="#{productController.selected.brand}" 
                                                  style="width: 100%" converter="#{entityConverter}"
@@ -96,16 +99,27 @@
                     </div>
 
                     <div class="ui-g-12">
-                        <p:commandButton style="width:100px" actionListener="#{productController.save}" value="Save" update="@form, :growl" >
+                        <p:commandButton style="width:100px" actionListener="#{productController.save}" value="Save" update="@form, :growl" 
+                                         widgetVar="savebtn">
                         </p:commandButton>
 
-                        <p:commandButton value="Cancel" style="width:100px"
+                        <p:commandButton value="Cancel" style="width:100px" 
                                          oncomplete="PF('ProductDialog').hide()" update="@form" 
                                          process="@this" immediate="true" resetValues="true"/>
                     </div>
                 </div>
             </div>
         </h:form>
+        <script type="text/javascript">
+            var myEvent = window.attachEvent || window.addEventListener;
+            var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+            myEvent(chkevent, function (e) { // For >=IE7, Chrome, Firefox
+                var confirmationMessage = 'Are you sure to leave the page?';  // a space
+                (e || window.event).returnValue = confirmationMessage;
+                return confirmationMessage;
+            });
+        </script> 
     </ui:define>
 
 </ui:composition>

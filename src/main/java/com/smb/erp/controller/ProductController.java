@@ -141,4 +141,8 @@ public class ProductController extends AbstractController<Product> {
     public void setProdCategory(ProductCategory prodCategory) {
         this.prodCategory = prodCategory;
     }
+    
+    public void savepage(){
+        System.out.println("ProductController: savepage");
+    }
 }
