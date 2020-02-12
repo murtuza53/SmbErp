@@ -28,7 +28,7 @@ public class Product implements Serializable {
 
     private String description;
 
-    private byte inactive;
+    private boolean inactive;
 
     private double packqty;
 
@@ -130,11 +130,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public byte getInactive() {
+    public boolean getInactive() {
         return this.inactive;
     }
 
-    public void setInactive(byte inactive) {
+    public void setInactive(boolean inactive) {
         this.inactive = inactive;
     }
 

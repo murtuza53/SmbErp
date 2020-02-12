@@ -23,8 +23,8 @@ public class AccountType implements Serializable {
     private String name;
 
     //bi-directional many-to-one association to Account
-    @OneToMany(mappedBy = "accounttypeBean")
-    private List<Account> accounts;
+    //@OneToMany(mappedBy = "accounttype")
+    //private List<Account> accounts;
 
     public AccountType() {
     }
@@ -53,7 +53,7 @@ public class AccountType implements Serializable {
         this.name = name;
     }
 
-    public List<Account> getAccounts() {
+    /*public List<Account> getAccounts() {
         return this.accounts;
     }
 
@@ -63,17 +63,17 @@ public class AccountType implements Serializable {
 
     public Account addAccount(Account account) {
         getAccounts().add(account);
-        account.setAccounttypeBean(this);
+        account.setAccounttype(this);
 
         return account;
     }
 
     public Account removeAccount(Account account) {
         getAccounts().remove(account);
-        account.setAccounttypeBean(null);
+        account.setAccounttype(null);
 
         return account;
-    }
+    }*/
 
     @Override
     public String toString() {

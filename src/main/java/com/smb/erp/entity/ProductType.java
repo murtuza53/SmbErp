@@ -4,75 +4,105 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the producttype database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="ProductType.findAll", query="SELECT p FROM ProductType p")
+@NamedQuery(name = "ProductType.findAll", query = "SELECT p FROM ProductType p")
 public class ProductType implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int producttypeid;
+    private static final long serialVersionUID = 1L;
 
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int producttypeid;
 
-	private String name;
+    private String description;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="producttype")
-	private List<Product> products;
+    private String name;
 
-	public ProductType() {
-	}
+    //bi-directional many-to-one association to Product
+    @OneToMany(mappedBy = "producttype")
+    private List<Product> products;
 
-	public int getProducttypeid() {
-		return this.producttypeid;
-	}
+    public ProductType() {
+    }
 
-	public void setProducttypeid(int producttypeid) {
-		this.producttypeid = producttypeid;
-	}
+    public int getProducttypeid() {
+        return this.producttypeid;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setProducttypeid(int producttypeid) {
+        this.producttypeid = producttypeid;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public List<Product> getProducts() {
-		return this.products;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+    public List<Product> getProducts() {
+        return this.products;
+    }
 
-	public Product addProduct(Product product) {
-		getProducts().add(product);
-		product.setProducttype(this);
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
-		return product;
-	}
+    public Product addProduct(Product product) {
+        getProducts().add(product);
+        product.setProducttype(this);
 
-	public Product removeProduct(Product product) {
-		getProducts().remove(product);
-		product.setProducttype(null);
+        return product;
+    }
 
-		return product;
-	}
+    public Product removeProduct(Product product) {
+        getProducts().remove(product);
+        product.setProducttype(null);
+
+        return product;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductType{" + "producttypeid=" + producttypeid + ", description=" + description + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + this.producttypeid;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProductType other = (ProductType) obj;
+        if (this.producttypeid != other.producttypeid) {
+            return false;
+        }
+        return true;
+    }
 
 }

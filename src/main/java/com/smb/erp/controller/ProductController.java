@@ -79,7 +79,7 @@ public class ProductController extends AbstractController<Product> {
             //flash.put("category", prodCategory);
             //} else {
             //setSelected((Product) flash.get("product"));
-            setTitle("Edit - " + tab.getTitle());
+            setTitle(tab.getTitle());
             //flash.put("product", getSelected());
         //}
         //flash.put("windowid", windowId);

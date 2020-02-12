@@ -20,7 +20,7 @@ public class Account implements Serializable {
 
     private String accountname;
 
-    private String accounttype;
+    private String nodetype;
 
     private double openingbalance;
 
@@ -29,10 +29,14 @@ public class Account implements Serializable {
     @JoinColumn(name = "accountgroupid")
     private AccountGroup accountgroup;
 
+    @ManyToOne
+    @JoinColumn(name = "parentid")
+    private Account parentid;
+
     //bi-directional many-to-one association to AccountType
     @ManyToOne
     @JoinColumn(name = "acctypeid")
-    private AccountType accounttypeBean;
+    private AccountType accounttype;
 
     //bi-directional many-to-one association to BusinessPartner
     @ManyToOne
@@ -40,20 +44,20 @@ public class Account implements Serializable {
     private BusinessPartner businesspartner;
 
     //bi-directional many-to-one association to LederLine
-    @OneToMany(mappedBy = "account")
-    private List<LederLine> ledlines;
+    //@OneToMany(mappedBy = "account")
+    //private List<LederLine> ledlines;
 
     //bi-directional many-to-one association to ProductAccount
-    @OneToMany(mappedBy = "account1")
-    private List<ProductAccount> prodaccounts1;
+    //@OneToMany(mappedBy = "account1")
+    //private List<ProductAccount> prodaccounts1;
 
     //bi-directional many-to-one association to ProductAccount
-    @OneToMany(mappedBy = "account2")
-    private List<ProductAccount> prodaccounts2;
+    //@OneToMany(mappedBy = "account2")
+    //private List<ProductAccount> prodaccounts2;
 
     //bi-directional many-to-one association to ProductAccount
-    @OneToMany(mappedBy = "account3")
-    private List<ProductAccount> prodaccounts3;
+    //@OneToMany(mappedBy = "account3")
+    //private List<ProductAccount> prodaccounts3;
 
     public Account() {
     }
@@ -74,14 +78,6 @@ public class Account implements Serializable {
         this.accountname = accountname;
     }
 
-    public String getAccounttype() {
-        return this.accounttype;
-    }
-
-    public void setAccounttype(String accounttype) {
-        this.accounttype = accounttype;
-    }
-
     public double getOpeningbalance() {
         return this.openingbalance;
     }
@@ -98,14 +94,6 @@ public class Account implements Serializable {
         this.accountgroup = accountgroup;
     }
 
-    public AccountType getAccounttypeBean() {
-        return this.accounttypeBean;
-    }
-
-    public void setAccounttypeBean(AccountType accounttypeBean) {
-        this.accounttypeBean = accounttypeBean;
-    }
-
     public BusinessPartner getBusinesspartner() {
         return this.businesspartner;
     }
@@ -114,7 +102,7 @@ public class Account implements Serializable {
         this.businesspartner = businesspartner;
     }
 
-    public List<LederLine> getLedlines() {
+    /*public List<LederLine> getLedlines() {
         return this.ledlines;
     }
 
@@ -200,7 +188,7 @@ public class Account implements Serializable {
         prodaccounts3.setAccount3(null);
 
         return prodaccounts3;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -230,6 +218,48 @@ public class Account implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the parentid
+     */
+    public Account getParentid() {
+        return parentid;
+    }
+
+    /**
+     * @param parentid the parentid to set
+     */
+    public void setParentid(Account parentid) {
+        this.parentid = parentid;
+    }
+
+    /**
+     * @return the nodetype
+     */
+    public String getNodetype() {
+        return nodetype;
+    }
+
+    /**
+     * @param nodetype the nodetype to set
+     */
+    public void setNodetype(String nodetype) {
+        this.nodetype = nodetype;
+    }
+
+    /**
+     * @return the accounttype
+     */
+    public AccountType getAccounttype() {
+        return accounttype;
+    }
+
+    /**
+     * @param accounttype the accounttype to set
+     */
+    public void setAccounttype(AccountType accounttype) {
+        this.accounttype = accounttype;
     }
 
 }
