@@ -7,6 +7,7 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.Account;
 import com.smb.erp.entity.Product;
+import com.smb.erp.entity.ProductAccount;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
 import com.smb.erp.util.JsfUtil;
@@ -46,12 +47,6 @@ public class ProductController extends AbstractController<Product> {
     private String mode;
 
     private String title = "New Product";
-
-    private Account salesAccount;
-
-    private Account purchaseAccount;
-
-    private Account consumptionAccount;
 
     @Autowired
     public ProductController(ProductRepository repo) {
@@ -93,13 +88,17 @@ public class ProductController extends AbstractController<Product> {
         //}
         //flash.put("windowid", windowId);
         //flash.setKeepMessages(true);
-        
-        //load default accounts
-        salesAccount = systemController.getDefaultAccount("SalesAccount");
-        purchaseAccount = systemController.getDefaultAccount("PurchaseAcount");
-        consumptionAccount = systemController.getDefaultAccount("ConsumptionAccount");
-    }
 
+        //load default accounts
+        if (getSelected().getProdaccount() == null) {
+            ProductAccount pa = new ProductAccount();
+            getSelected().setProdaccount(pa);
+            pa.setSalesAccount(systemController.getDefaultAccount("SalesAccount"));
+            pa.setPurchaseAccount(systemController.getDefaultAccount("PurchaseAcount"));
+            pa.setConsumptionAccount(systemController.getDefaultAccount("ConsumptionAccount"));
+        }
+    }
+    
     //public ProductController(Product prod){
     //    this.selected = prod;
     //}
@@ -158,47 +157,5 @@ public class ProductController extends AbstractController<Product> {
 
     public void savepage() {
         System.out.println("ProductController: savepage");
-    }
-
-    /**
-     * @return the salesAccount
-     */
-    public Account getSalesAccount() {
-        return salesAccount;
-    }
-
-    /**
-     * @param salesAccount the salesAccount to set
-     */
-    public void setSalesAccount(Account salesAccount) {
-        this.salesAccount = salesAccount;
-    }
-
-    /**
-     * @return the purchaseAccount
-     */
-    public Account getPurchaseAccount() {
-        return purchaseAccount;
-    }
-
-    /**
-     * @param purchaseAccount the purchaseAccount to set
-     */
-    public void setPurchaseAccount(Account purchaseAccount) {
-        this.purchaseAccount = purchaseAccount;
-    }
-
-    /**
-     * @return the consumptionAccount
-     */
-    public Account getConsumptionAccount() {
-        return consumptionAccount;
-    }
-
-    /**
-     * @param consumptionAccount the consumptionAccount to set
-     */
-    public void setConsumptionAccount(Account consumptionAccount) {
-        this.consumptionAccount = consumptionAccount;
     }
 }

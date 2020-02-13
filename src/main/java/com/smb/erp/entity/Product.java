@@ -49,9 +49,9 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     private List<PriceList> pricelists;
 
-    //bi-directional many-to-one association to ProductAccount
-    @OneToMany(mappedBy = "product")
-    private List<ProductAccount> prodaccounts;
+    @ManyToOne (cascade = CascadeType.MERGE)
+    @JoinColumn(name = "prodaccountid")
+    private ProductAccount prodaccount;
 
     //bi-directional many-to-one association to ProductTransaction
     @OneToMany(mappedBy = "product")
@@ -216,28 +216,6 @@ public class Product implements Serializable {
         return pricelist;
     }
 
-    public List<ProductAccount> getProdaccounts() {
-        return this.prodaccounts;
-    }
-
-    public void setProdaccounts(List<ProductAccount> prodaccounts) {
-        this.prodaccounts = prodaccounts;
-    }
-
-    public ProductAccount addProdaccount(ProductAccount prodaccount) {
-        getProdaccounts().add(prodaccount);
-        prodaccount.setProduct(this);
-
-        return prodaccount;
-    }
-
-    public ProductAccount removeProdaccount(ProductAccount prodaccount) {
-        getProdaccounts().remove(prodaccount);
-        prodaccount.setProduct(null);
-
-        return prodaccount;
-    }
-
     public List<ProductTransaction> getProdtransactions() {
         return this.prodtransactions;
     }
@@ -348,6 +326,20 @@ public class Product implements Serializable {
      */
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    /**
+     * @return the prodaccount
+     */
+    public ProductAccount getProdaccount() {
+        return prodaccount;
+    }
+
+    /**
+     * @param prodaccount the prodaccount to set
+     */
+    public void setProdaccount(ProductAccount prodaccount) {
+        this.prodaccount = prodaccount;
     }
 
 }

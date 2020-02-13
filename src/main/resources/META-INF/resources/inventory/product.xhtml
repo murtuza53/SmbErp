@@ -18,7 +18,7 @@
         <h:form id="exit">
             <p:remoteCommand  id="savepage" name="savepage" action="#{productController.savepage()}"/>
         </h:form>
-        <h:form id="mainform">
+        <h:form id="mainform" onkeypress="if (event.keyCode == 13) { return false; }">
             <div class="ui-fluid">
                 <div class="ui-g">
                     <!-- Left Side -->
@@ -72,6 +72,63 @@
                                                    />
                                 </p:selectOneMenu>
 
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Accounts">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Sales Account" for="sales"/>
+                                <p:autoComplete id="sales" value="#{productController.selected.prodaccount.salesAccount}" 
+                                                converter="#{entityConverter}" completeMethod="#{accountController.completeFilterLeaf}"
+                                                var="accItem" itemValue="#{accItem}" itemLabel="#{accItem.accountname} [#{accItem.accountid}]" 
+                                                minQueryLength="3" dropdown="true" forceSelection="true">
+                                    <p:column style="width:20%">
+                                        <h:outputText value="#{accItem.accountid}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{accItem.accountname}" />
+                                    </p:column>
+                                </p:autoComplete>
+
+                                <p:outputLabel value="Purchase Account" for="purchase"/>
+                                <p:autoComplete id="purchase" value="#{productController.selected.prodaccount.purchaseAccount}" 
+                                                converter="#{entityConverter}" completeMethod="#{accountController.completeFilterLeaf}"
+                                                var="accItem" itemValue="#{accItem}" itemLabel="#{accItem.accountname} [#{accItem.accountid}]" 
+                                                minQueryLength="3" dropdown="true" forceSelection="true">
+                                    <p:column style="width:20%">
+                                        <h:outputText value="#{accItem.accountid}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{accItem.accountname}" />
+                                    </p:column>
+                                </p:autoComplete>
+
+                                <p:outputLabel value="Consumption Account" for="cos"/>
+                                <p:autoComplete id="cos" value="#{productController.selected.prodaccount.consumptionAccount}" 
+                                                converter="#{entityConverter}" completeMethod="#{accountController.completeFilterLeaf}"
+                                                var="accItem" itemValue="#{accItem}" itemLabel="#{accItem.accountname} [#{accItem.accountid}]" 
+                                                minQueryLength="3" dropdown="true" forceSelection="true">
+                                    <p:column style="width:20%">
+                                        <h:outputText value="#{accItem.accountid}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{accItem.accountname}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </p:panelGrid>
+                        </p:fieldset>
+                    </div>
+
+                    <div class="ui-g-12 ui-lg-6">
+                        <!-- Right Side -->
+                        <p:fieldset legend="UOM">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+
                                 <p:outputLabel value="Unit" for="unit" />
                                 <p:selectOneMenu id="unit" value="#{productController.selected.unit}" 
                                                  style="width: 100%" converter="#{entityConverter}"
@@ -81,32 +138,26 @@
                                                    itemValue="#{unit}"
                                                    itemLabel="#{unit.unitname}"
                                                    />
+                                    <p:ajax update="pqty" />
                                 </p:selectOneMenu>
 
+                                <p:outputLabel value="Packing Unit" for="punit" />
+                                <p:selectOneMenu id="punit" value="#{productController.selected.punit}" 
+                                                 style="width: 100%" converter="#{entityConverter}"
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{unitController.unitAll}"
+                                                   var="unit"
+                                                   itemValue="#{unit}"
+                                                   itemLabel="#{unit.unitname}"
+                                                   />
+                                    <p:ajax update="pqty_label" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel id="pqty_label" value="Packing Qty for #{productController.selected.punit.unitname}" for="pqty" />
+                                <p:inputNumber id="pqty" value="#{productController.selected.packqty}" 
+                                               symbol="  #{productController.selected.unit.unitname}" symbolPosition="s"
+                                               decimalSeparator="." thousandSeparator="," style="text-align: right"/>
                             </p:panelGrid>
-                        </p:fieldset>
-
-                        <p:fieldset legend="Accounts">
-                            <p:outputLabel value="Sales Account" for="sales"/>
-                            <p:autoComplete id="sales" value="#{productController.salesAccount}" size="40"
-                                            converter="#{entityConverter}" completeMethod="#{accountController.completeFilterLeaf}"
-                                            var="accItem" itemValue="#{accItem}" itemLabel="#{accItem.accountid}" 
-                                            minQueryLength="3" dropdown="true" forceSelection="true">
-                                <p:column style="width:20%">
-                                    <h:outputText value="#{accItem.accountid}" />
-                                </p:column>
-
-                                <p:column>
-                                    <h:outputText value="#{accItem.accountname}" />
-                                </p:column>
-                            </p:autoComplete>
-                        </p:fieldset>
-                    </div>
-
-                    <div class="ui-g-12 ui-lg-6">
-                        <!-- Right Side -->
-                        <p:fieldset legend="Picture">
-
                         </p:fieldset>
                     </div>
 

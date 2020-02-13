@@ -52,10 +52,11 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
                 propertyTable.put(sd.getReferredclass() + "." + sd.getPropertyname(), sd.getValue());
             }
         }
+        System.out.println("SystemDefaultsController: " + propertyTable);
     }
     
     public Account getDefaultAccount(String propertyname){
-        return accountRepo.getOne(propertyTable.get(propertyname));
+        return accountRepo.getOne(propertyTable.get("Account." + propertyname));
     }
     
     public List<SystemDefaults> findAllData(){

@@ -1,84 +1,120 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
-
 
 /**
  * The persistent class for the prodaccount database table.
- * 
+ *
  */
 @Entity
-@Table(name="prodaccount")
-@NamedQuery(name="ProductAccount.findAll", query="SELECT p FROM ProductAccount p")
+@Table(name = "prodaccount")
+@NamedQuery(name = "ProductAccount.findAll", query = "SELECT p FROM ProductAccount p")
 public class ProductAccount implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int prodaccountid;
+    private static final long serialVersionUID = 1L;
 
-	//bi-directional many-to-one association to Account
-	@ManyToOne
-	@JoinColumn(name="salesaccountid")
-	private Account account1;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer prodaccountid;
 
-	//bi-directional many-to-one association to Account
-	@ManyToOne
-	@JoinColumn(name="purchaseaccountid")
-	private Account account2;
+    //bi-directional many-to-one association to Account
+    @ManyToOne
+    @JoinColumn(name = "salesaccountid")
+    private Account salesAccount;
 
-	//bi-directional many-to-one association to Account
-	@ManyToOne
-	@JoinColumn(name="consumptionaccountid")
-	private Account account3;
+    //bi-directional many-to-one association to Account
+    @ManyToOne
+    @JoinColumn(name = "purchaseaccountid")
+    private Account purchaseAccount;
 
-	//bi-directional many-to-one association to Product
-	@ManyToOne
-	@JoinColumn(name="productid")
-	private Product product;
+    //bi-directional many-to-one association to Account
+    @ManyToOne
+    @JoinColumn(name = "consumptionaccountid")
+    private Account consumptionAccount;
 
-	public ProductAccount() {
-	}
+    public ProductAccount() {
+    }
 
-	public int getProdaccountid() {
-		return this.prodaccountid;
-	}
+    public Integer getProdaccountid() {
+        return this.prodaccountid;
+    }
 
-	public void setProdaccountid(int prodaccountid) {
-		this.prodaccountid = prodaccountid;
-	}
+    public void setProdaccountid(Integer prodaccountid) {
+        this.prodaccountid = prodaccountid;
+    }
 
-	public Account getAccount1() {
-		return this.account1;
-	}
+    /**
+     * @return the salesAccount
+     */
+    public Account getSalesAccount() {
+        return salesAccount;
+    }
 
-	public void setAccount1(Account account1) {
-		this.account1 = account1;
-	}
+    /**
+     * @param salesAccount the salesAccount to set
+     */
+    public void setSalesAccount(Account salesAccount) {
+        this.salesAccount = salesAccount;
+    }
 
-	public Account getAccount2() {
-		return this.account2;
-	}
+    /**
+     * @return the purchaseAccount
+     */
+    public Account getPurchaseAccount() {
+        return purchaseAccount;
+    }
 
-	public void setAccount2(Account account2) {
-		this.account2 = account2;
-	}
+    /**
+     * @param purchaseAccount the purchaseAccount to set
+     */
+    public void setPurchaseAccount(Account purchaseAccount) {
+        this.purchaseAccount = purchaseAccount;
+    }
 
-	public Account getAccount3() {
-		return this.account3;
-	}
+    /**
+     * @return the consumptionAccount
+     */
+    public Account getConsumptionAccount() {
+        return consumptionAccount;
+    }
 
-	public void setAccount3(Account account3) {
-		this.account3 = account3;
-	}
+    /**
+     * @param consumptionAccount the consumptionAccount to set
+     */
+    public void setConsumptionAccount(Account consumptionAccount) {
+        this.consumptionAccount = consumptionAccount;
+    }
 
-	public Product getProduct() {
-		return this.product;
-	}
+    @Override
+    public String toString() {
+        return "ProductAccount{" + "prodaccountid=" + prodaccountid + '}';
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.prodaccountid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProductAccount other = (ProductAccount) obj;
+        if (!Objects.equals(this.prodaccountid, other.prodaccountid)) {
+            return false;
+        }
+        return true;
+    }
 
 }
