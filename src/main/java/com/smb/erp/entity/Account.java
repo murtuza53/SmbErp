@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
-@NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
+@NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a ORDER BY a.accountname")
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;

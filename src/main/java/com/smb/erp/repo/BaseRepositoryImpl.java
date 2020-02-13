@@ -44,4 +44,14 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
         return query.getResultList();
     }
 
+    @Override
+    @Transactional
+    public List<T> findAll() {
+        try {
+            return entityManager.createNamedQuery(getDomainClass().getSimpleName() + ".findAll").getResultList();
+        } catch (IllegalArgumentException err) {
+            return super.findAll();
+        }
+    }
+
 }

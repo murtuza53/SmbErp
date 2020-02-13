@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.Account;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.ProductRepository;
@@ -12,7 +13,6 @@ import com.smb.erp.util.JsfUtil;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +36,22 @@ public class ProductController extends AbstractController<Product> {
     //DocumentTab<Product> docTab;
     @Autowired
     ProductTreeViewController ptvController;
+
+    @Autowired
+    SystemDefaultsController systemController;
+
     //private Product selected;
     private ProductCategory prodCategory;
 
     private String mode;
 
     private String title = "New Product";
+
+    private Account salesAccount;
+
+    private Account purchaseAccount;
+
+    private Account consumptionAccount;
 
     @Autowired
     public ProductController(ProductRepository repo) {
@@ -56,12 +66,11 @@ public class ProductController extends AbstractController<Product> {
         //System.out.println("TabController: " + tabCon);
         //System.out.println("Prod_Tab_id: " + docTab.getId());
         //System.out.println("ProductController->selected: " + selected);
-        
+
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //Flash flash = facesContext.getExternalContext().getFlash();
-
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        
+
         String windowId = params.get("windowid").toString();
 
         DocumentTab<Product> tab = ptvController.getDocumentTab(windowId);
@@ -75,15 +84,20 @@ public class ProductController extends AbstractController<Product> {
         //mode = flash.get("mode").toString();
         //flash.put("mode", mode);
         //if (getSelected().getProductid() != null || getSelected().getProductid() > 0) {          //(mode.equalsIgnoreCase("new")) {
-            //prodCategory = (ProductCategory) flash.get("category");
-            //flash.put("category", prodCategory);
-            //} else {
-            //setSelected((Product) flash.get("product"));
-            setTitle(tab.getTitle());
-            //flash.put("product", getSelected());
+        //prodCategory = (ProductCategory) flash.get("category");
+        //flash.put("category", prodCategory);
+        //} else {
+        //setSelected((Product) flash.get("product"));
+        setTitle(tab.getTitle());
+        //flash.put("product", getSelected());
         //}
         //flash.put("windowid", windowId);
         //flash.setKeepMessages(true);
+        
+        //load default accounts
+        salesAccount = systemController.getDefaultAccount("SalesAccount");
+        purchaseAccount = systemController.getDefaultAccount("PurchaseAcount");
+        consumptionAccount = systemController.getDefaultAccount("ConsumptionAccount");
     }
 
     //public ProductController(Product prod){
@@ -141,8 +155,50 @@ public class ProductController extends AbstractController<Product> {
     public void setProdCategory(ProductCategory prodCategory) {
         this.prodCategory = prodCategory;
     }
-    
-    public void savepage(){
+
+    public void savepage() {
         System.out.println("ProductController: savepage");
+    }
+
+    /**
+     * @return the salesAccount
+     */
+    public Account getSalesAccount() {
+        return salesAccount;
+    }
+
+    /**
+     * @param salesAccount the salesAccount to set
+     */
+    public void setSalesAccount(Account salesAccount) {
+        this.salesAccount = salesAccount;
+    }
+
+    /**
+     * @return the purchaseAccount
+     */
+    public Account getPurchaseAccount() {
+        return purchaseAccount;
+    }
+
+    /**
+     * @param purchaseAccount the purchaseAccount to set
+     */
+    public void setPurchaseAccount(Account purchaseAccount) {
+        this.purchaseAccount = purchaseAccount;
+    }
+
+    /**
+     * @return the consumptionAccount
+     */
+    public Account getConsumptionAccount() {
+        return consumptionAccount;
+    }
+
+    /**
+     * @param consumptionAccount the consumptionAccount to set
+     */
+    public void setConsumptionAccount(Account consumptionAccount) {
+        this.consumptionAccount = consumptionAccount;
     }
 }

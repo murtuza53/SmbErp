@@ -87,7 +87,19 @@
                         </p:fieldset>
 
                         <p:fieldset legend="Accounts">
+                            <p:outputLabel value="Sales Account" for="sales"/>
+                            <p:autoComplete id="sales" value="#{productController.salesAccount}" size="40"
+                                            converter="#{entityConverter}" completeMethod="#{accountController.completeFilterLeaf}"
+                                            var="accItem" itemValue="#{accItem}" itemLabel="#{accItem.accountid}" 
+                                            minQueryLength="3" dropdown="true" forceSelection="true">
+                                <p:column style="width:20%">
+                                    <h:outputText value="#{accItem.accountid}" />
+                                </p:column>
 
+                                <p:column>
+                                    <h:outputText value="#{accItem.accountname}" />
+                                </p:column>
+                            </p:autoComplete>
                         </p:fieldset>
                     </div>
 

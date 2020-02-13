@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "prodcategry")
-@NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p")
+@NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p ORDER BY p.catname")
 public class ProductCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
