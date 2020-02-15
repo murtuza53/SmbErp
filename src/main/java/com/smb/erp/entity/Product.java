@@ -49,7 +49,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     private List<PriceList> pricelists;
 
-    @ManyToOne (cascade = CascadeType.MERGE)
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "prodaccountid")
     private ProductAccount prodaccount;
 

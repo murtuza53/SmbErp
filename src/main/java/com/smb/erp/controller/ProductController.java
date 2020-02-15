@@ -5,7 +5,6 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.Account;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductAccount;
 import com.smb.erp.entity.ProductCategory;
@@ -92,6 +91,7 @@ public class ProductController extends AbstractController<Product> {
         //load default accounts
         if (getSelected().getProdaccount() == null) {
             ProductAccount pa = new ProductAccount();
+            pa.setProdaccountid(0);
             getSelected().setProdaccount(pa);
             pa.setSalesAccount(systemController.getDefaultAccount("SalesAccount"));
             pa.setPurchaseAccount(systemController.getDefaultAccount("PurchaseAcount"));
