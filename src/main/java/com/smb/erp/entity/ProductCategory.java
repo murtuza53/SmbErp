@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
-@Table(name = "prodcategry")
+@Table(name = "prodcategory")
 @NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p ORDER BY p.catname")
 public class ProductCategory implements Serializable {
 
@@ -27,20 +27,20 @@ public class ProductCategory implements Serializable {
     private String groupcode;
 
     //bi-directional many-to-one association to PriceList
-    @OneToMany(mappedBy = "prodcategry")
+    @OneToMany(mappedBy = "prodcategory")
     private List<PriceList> pricelists;
 
     //bi-directional many-to-one association to ProductCategry
     @ManyToOne
     @JoinColumn(name = "parentid")
-    private ProductCategory prodcategry;
+    private ProductCategory prodcategory;
 
     //bi-directional many-to-one association to ProductCategry
-    @OneToMany(mappedBy = "prodcategry")
-    private List<ProductCategory> prodcategries;
+    @OneToMany(mappedBy = "prodcategory")
+    private List<ProductCategory> prodcategories;
 
     //bi-directional many-to-one association to Product
-    @OneToMany(mappedBy = "prodcategry")
+    @OneToMany(mappedBy = "prodcategory")
     private List<Product> products;
 
     public ProductCategory() {
@@ -80,44 +80,44 @@ public class ProductCategory implements Serializable {
 
     public PriceList addPricelist(PriceList pricelist) {
         getPricelists().add(pricelist);
-        pricelist.setProdcategry(this);
+        pricelist.setProdcategory(this);
 
         return pricelist;
     }
 
     public PriceList removePricelist(PriceList pricelist) {
         getPricelists().remove(pricelist);
-        pricelist.setProdcategry(null);
+        pricelist.setProdcategory(null);
 
         return pricelist;
     }
 
-    public ProductCategory getProdcategry() {
-        return this.prodcategry;
+    public ProductCategory getProdcategory() {
+        return this.prodcategory;
     }
 
-    public void setProdcategry(ProductCategory prodcategry) {
-        this.prodcategry = prodcategry;
+    public void setProdcategory(ProductCategory prodcategory) {
+        this.prodcategory = prodcategory;
     }
 
-    public List<ProductCategory> getProdcategries() {
-        return this.prodcategries;
+    public List<ProductCategory> getProdcategories() {
+        return this.prodcategories;
     }
 
-    public void setProdcategries(List<ProductCategory> prodcategries) {
-        this.prodcategries = prodcategries;
+    public void setProdcategories(List<ProductCategory> prodcategories) {
+        this.prodcategories = prodcategories;
     }
 
-    public ProductCategory addProdcategry(ProductCategory prodcategry) {
-        getProdcategries().add(prodcategry);
-        prodcategry.setProdcategry(this);
+    public ProductCategory addProdcategory(ProductCategory prodcategory) {
+        getProdcategories().add(prodcategory);
+        prodcategory.setProdcategory(this);
 
-        return prodcategry;
+        return prodcategory;
     }
 
     public ProductCategory removeProdcategry(ProductCategory prodcategry) {
-        getProdcategries().remove(prodcategry);
-        prodcategry.setProdcategry(null);
+        getProdcategories().remove(prodcategry);
+        prodcategry.setProdcategory(null);
 
         return prodcategry;
     }
@@ -132,14 +132,14 @@ public class ProductCategory implements Serializable {
 
     public Product addProduct(Product product) {
         getProducts().add(product);
-        product.setProdcategry(this);
+        product.setProdcategory(this);
 
         return product;
     }
 
     public Product removeProduct(Product product) {
         getProducts().remove(product);
-        product.setProdcategry(null);
+        product.setProdcategory(null);
 
         return product;
     }

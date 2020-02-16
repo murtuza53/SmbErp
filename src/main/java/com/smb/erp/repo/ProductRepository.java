@@ -15,7 +15,7 @@ public interface ProductRepository extends BaseRepository<Product, Long> {
 
     //@Query(value = "SELECT * FROM author WHERE first_name = :firstName", nativeQuery = true)
     //List<Author> findAuthorsByFirstName(@Param("firstName") String firstName);
-    @Query("SELECT p FROM Product p WHERE p.prodcategry.prodcatId=?1 ORDER BY p.productname")
+    @Query("SELECT p FROM Product p WHERE p.prodcategory.prodcatId=?1 ORDER BY p.productname")
     List<Product> findByCategoryId(Long catId);
 
     @Query("SELECT OBJECT(p) FROM Product as p "

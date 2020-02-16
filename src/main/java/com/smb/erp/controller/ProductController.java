@@ -73,8 +73,8 @@ public class ProductController extends AbstractController<Product> {
             return;
         }
         setSelected(tab.getData());
-        setProdCategory(getSelected().getProdcategry());
-        System.out.println("ProductController:Init: " + getSelected() + "\tCategory: " + getSelected().getProdcategry());
+        setProdCategory(getSelected().getProdcategory());
+        System.out.println("ProductController:Init: " + getSelected() + "\tCategory: " + getSelected().getProdcategory());
         //mode = flash.get("mode").toString();
         //flash.put("mode", mode);
         //if (getSelected().getProductid() != null || getSelected().getProductid() > 0) {          //(mode.equalsIgnoreCase("new")) {

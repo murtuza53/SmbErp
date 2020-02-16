@@ -46,22 +46,22 @@ public class PriceList implements Serializable {
 
 	//bi-directional many-to-one association to Brand
 	@ManyToOne
-	@JoinColumn(name="brandno")
+	@JoinColumn(name="brandid")
 	private Brand brand;
 
 	//bi-directional many-to-one association to BusinessPartner
 	@ManyToOne
-	@JoinColumn(name="companyno")
+	@JoinColumn(name="partnerid")
 	private BusinessPartner businesspartner;
 
 	//bi-directional many-to-one association to ProductCategry
 	@ManyToOne
-	@JoinColumn(name="groupno")
-	private ProductCategory prodcategry;
+	@JoinColumn(name="prodcatId")
+	private ProductCategory prodcategory;
 
 	//bi-directional many-to-one association to Product
 	@ManyToOne
-	@JoinColumn(name="productno")
+	@JoinColumn(name="productid")
 	private Product product;
 
 	public PriceList() {
@@ -187,12 +187,12 @@ public class PriceList implements Serializable {
 		this.businesspartner = businesspartner;
 	}
 
-	public ProductCategory getProdcategry() {
-		return this.prodcategry;
+	public ProductCategory getProdcategory() {
+		return this.prodcategory;
 	}
 
-	public void setProdcategry(ProductCategory prodcategry) {
-		this.prodcategry = prodcategry;
+	public void setProdcategory(ProductCategory prodcategory) {
+		this.prodcategory = prodcategory;
 	}
 
 	public Product getProduct() {

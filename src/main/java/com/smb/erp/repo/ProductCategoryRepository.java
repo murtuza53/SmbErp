@@ -15,12 +15,12 @@ public interface ProductCategoryRepository extends BaseRepository<ProductCategor
 	//@Query(value = "SELECT * FROM author WHERE first_name = :firstName", nativeQuery = true)
     //List<Author> findAuthorsByFirstName(@Param("firstName") String firstName);
 	
-	@Query("SELECT p FROM ProductCategory p WHERE p.prodcategry.prodcatId=?1 ORDER BY p.catname")
+	@Query("SELECT p FROM ProductCategory p WHERE p.prodcategory.prodcatId=?1 ORDER BY p.catname")
 	List<ProductCategory> findByParentId(Long parentId);
         
-        @Query(value = "SELECT * FROM prodcategry c1 LEFT JOIN prodcategry c2 ON c2.parentid = c1.prodcatId WHERE c2.prodcatId IS NULL ORDER BY c1.catname", nativeQuery = true)
+        @Query(value = "SELECT * FROM prodcategory c1 LEFT JOIN prodcategory c2 ON c2.parentid = c1.prodcatId WHERE c2.prodcatId IS NULL ORDER BY c1.catname", nativeQuery = true)
         List<ProductCategory> findCategoryLeafNodes();
 
-        @Query(value = "SELECT * FROM prodcategry c1 LEFT JOIN prodcategry c2 ON c2.parentid = c1.prodcatId WHERE c2.prodcatId IS NULL AND c1.catname LIKE %?1% ORDER BY c1.catname", nativeQuery = true)
+        @Query(value = "SELECT * FROM prodcategory c1 LEFT JOIN prodcategory c2 ON c2.parentid = c1.prodcatId WHERE c2.prodcatId IS NULL AND c1.catname LIKE %?1% ORDER BY c1.catname", nativeQuery = true)
         List<ProductCategory> findCategoryLeafNodesByCriteria(String criteria);
 }

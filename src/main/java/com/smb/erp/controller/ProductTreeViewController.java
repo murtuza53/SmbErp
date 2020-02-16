@@ -70,8 +70,8 @@ public class ProductTreeViewController implements Serializable {
             n.setExpanded(true);
         }
 
-        if (pc.getProdcategries() != null) {
-            for (ProductCategory p : pc.getProdcategries()) {
+        if (pc.getProdcategories() != null) {
+            for (ProductCategory p : pc.getProdcategories()) {
                 addNode(p, n);
             }
         }
@@ -84,7 +84,7 @@ public class ProductTreeViewController implements Serializable {
     public void newTab() throws IOException {
         Product p = new Product();
         p.setCreatedon(new Date());
-        p.setProdcategry((ProductCategory) getSelectedNode().getData());
+        p.setProdcategory((ProductCategory) getSelectedNode().getData());
         DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
         mainTabs.add(tab);
     }
@@ -107,7 +107,7 @@ public class ProductTreeViewController implements Serializable {
 
         Product p = new Product();
         p.setCreatedon(new Date());
-        p.setProdcategry((ProductCategory) getSelectedNode().getData());
+        p.setProdcategory((ProductCategory) getSelectedNode().getData());
         DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
 
@@ -243,7 +243,7 @@ public class ProductTreeViewController implements Serializable {
         selectedProduct.setProductname("Testing");
         if (getSelectedNode() != null) {
             if (getSelectedNode().getData() != null) {
-                selectedProduct.setProdcategry((ProductCategory) getSelectedNode().getData());
+                selectedProduct.setProdcategory((ProductCategory) getSelectedNode().getData());
             }
         }
         //System.out.println(new Date() + " => prepareCreateNewProduct: " + selectedProduct);

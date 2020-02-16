@@ -70,7 +70,7 @@ public class Product implements Serializable {
     //bi-directional many-to-one association to ProductCategry
     @ManyToOne
     @JoinColumn(name = "prodcatid")
-    private ProductCategory prodcategry;
+    private ProductCategory prodcategory;
 
     //bi-directional many-to-one association to Unit
     @ManyToOne
@@ -254,12 +254,12 @@ public class Product implements Serializable {
         this.country = country;
     }
 
-    public ProductCategory getProdcategry() {
-        return this.prodcategry;
+    public ProductCategory getProdcategory() {
+        return this.prodcategory;
     }
 
-    public void setProdcategry(ProductCategory prodcategry) {
-        this.prodcategry = prodcategry;
+    public void setProdcategory(ProductCategory prodcategory) {
+        this.prodcategory = prodcategory;
     }
 
     public ProductType getProducttype() {
