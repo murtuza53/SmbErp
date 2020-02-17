@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import org.apache.commons.lang3.SerializationUtils;
 
 /**
  * The persistent class for the product database table.
@@ -17,7 +18,7 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long productid;
+    private Long productid = 0l;
 
     private String barcode1;
 
@@ -49,7 +50,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     private List<PriceList> pricelists;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "prodaccountid")
     private ProductAccount prodaccount;
 
@@ -297,7 +298,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return productname + " [" + productid  + "]";
+        return productname + " [" + productid + "]";
     }
 
     /**
@@ -342,4 +343,13 @@ public class Product implements Serializable {
         this.prodaccount = prodaccount;
     }
 
+    @Override
+    public Product clone() {
+        Product p = SerializationUtils.clone(this);
+        p.setProductid(0l);
+        if (p.getProdaccount() != null) {
+            p.getProdaccount().setProdaccountid(0);
+        }
+        return p;
+    }
 }

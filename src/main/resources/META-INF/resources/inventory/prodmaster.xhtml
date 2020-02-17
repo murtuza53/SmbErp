@@ -26,7 +26,9 @@
                                      disabled="#{productTreeViewController.productEditDisabled}" 
                                      actionListener="#{productTreeViewController.editTab_In_newBtab()}"
                                      update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                    <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" />
+                    <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" 
+                                     actionListener="#{productTreeViewController.cloneTab_In_newBtab()}"
+                                     update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
                     <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable"
                                      actionListener="#{productTreeViewController.refreshProductList()}"/>
                 </f:facet>

@@ -108,6 +108,7 @@ public class ProductTreeViewController implements Serializable {
         Product p = new Product();
         p.setCreatedon(new Date());
         p.setProdcategory((ProductCategory) getSelectedNode().getData());
+        setSelectedProduct(p);
         DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
 
@@ -126,6 +127,24 @@ public class ProductTreeViewController implements Serializable {
         flash.setRedirect(true);
 
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.EDIT);
+        productMap.put(windowId, tab);
+
+        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
+    }
+
+    public void cloneTab_In_newBtab() throws IOException {
+        String windowId = new Date().getTime() + "";
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.clear();
+        setSelectedProduct(getSelectedProduct().clone());
+        flash.put("product", getSelectedProduct());
+        flash.put("mode", "edit");
+        flash.put("windowid", windowId);
+        flash.setKeepMessages(true);
+        flash.setRedirect(true);
+
+        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "New Product", "inventory/product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
 
         facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);

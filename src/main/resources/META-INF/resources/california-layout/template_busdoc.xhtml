@@ -38,33 +38,6 @@
     </h:head>
 
     <h:body styleClass="main-body">
-
-        <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
-            <ui:include src="./megamenu.xhtml" />
-            <ui:include src="./topbar_busdoc.xhtml" />
-            <ui:include src="./sidebar_busdoc.xhtml" />
-            <ui:include src="./right-sidebar.xhtml" />
-
-            <div class="layout-main">
-                <div class="route-bar">
-                    <div class="route-bar-breadcrumb">
-                        <i class="fa fa-home"></i> <span>/ </span>
-                        <ui:insert name="viewname" />
-                    </div>
-
-                    <ui:include src="./route-bar-menu.xhtml" />
-                </div>
-
-                <div class="w3-container">
-                    <div class="layout-main-content">
-                        <ui:insert name="content"/>
-                    </div>
-                </div>
-
-                <ui:include src="./footer.xhtml" />
-            </div>
-        </div>
-
         <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
             <f:facet name="start">
                 <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
@@ -74,6 +47,37 @@
                 <h:outputText value="" />
             </f:facet>
         </p:ajaxStatus>
+        <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
+
+        <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
+            <ui:include src="./megamenu.xhtml" />
+            <ui:include src="./topbar_busdoc.xhtml" />
+            <ui:include src="./sidebar_busdoc.xhtml" />
+            <ui:include src="./right-sidebar.xhtml" />
+
+            <div class="layout-main">
+                <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
+                            return false;
+                        }">
+
+                    <div class="route-bar">
+                        <div class="route-bar-breadcrumb">
+                            <i class="fa fa-home"></i> <span>/ </span>
+                            <ui:insert name="viewname" />
+                        </div>
+
+                        <ui:include src="./route-bar-menu_doc.xhtml" />
+                    </div>
+
+                    <div class="w3-container">
+                        <div class="layout-main-content">
+                            <ui:insert name="content"/>
+                        </div>
+                    </div>
+
+                </h:form>
+            </div>
+        </div>
 
         <h:outputStylesheet name="css/sidebar.css" />
         <h:outputStylesheet name="css/nanoscroller.css" library="california-layout" />

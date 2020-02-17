@@ -39,6 +39,9 @@ public class ProductController extends AbstractController<Product> {
 
     @Autowired
     SystemDefaultsController systemController;
+    
+    @Autowired
+    TableKeyController keyController;
 
     //private Product selected;
     private ProductCategory prodCategory;
@@ -102,6 +105,16 @@ public class ProductController extends AbstractController<Product> {
     //public ProductController(Product prod){
     //    this.selected = prod;
     //}
+    
+    @Override
+    public void save(){
+        if(getSelected().getProductid()==null || getSelected().getProductid()==0){
+            getSelected().setProductid(keyController.getProductNextId());
+        }
+        super.save();
+        setSelected(prodRepo.getOne(getSelected().getProductid()));
+    }
+    
     public String getHeaderTitle() {
         if (getSelected() == null || getSelected().getProductid() == null || getSelected().getProductid().longValue() == 0) {
             return "New Product";
