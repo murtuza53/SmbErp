@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div id="id01" class="w3-modal" >
+            <div class="w3-modal-content" style="width: 70%; height: 70%;">
+                <header class="w3-container w3-teal"> 
+                    <span onclick="document.getElementById('id01').style.display = 'none'" 
+                          class="w3-button w3-display-topright">&times;</span>
+                    <h2>Modal Header</h2>
+                </header>
+                <div class="w3-container">
+                    <h:form id="productsearchform">
+                        <p:outputLabel for="pcriteria" value="Search Criteria" />
+                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{productSearchController.criteria}" />
+                        <p:commandButton value="Send" actionListener="#{productSearchController.searchProducts()}" update="prodtable"/>
+
+                        <p:dataTable id="prodtable" var="prod"
+                                     value="#{productSearchController.productList}" widgetVar="ptable"
+                                     selection="#{productSearchController.selectedProducts}"
+                                     rowKey="#{prod.productid}"
+                                     emptyMessage="No Products found"
+                                     scrollable="true"
+                                     scrollHeight="300">
+                            <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                            <p:column headerText="Stock#" sortBy="#{prod.productid}">
+                                <h:outputText value="#{prod.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" sortBy="#{prod.productname}"
+                                      style="width: 40%">
+                                <h:outputText value="#{prod.productname}" />
+                            </p:column>
+
+                            <p:column headerText="Unit" sortBy="#{prod.unit.unitsym}">
+                                <h:outputText value="#{prod.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column headerText="SupCode" sortBy="#{prod.supplierscode}">
+                                <h:outputText value="#{prod.supplierscode}" />
+                            </p:column>
+
+                            <p:column headerText="Brand" sortBy="#{prod.brand.brandname}">
+                                <h:outputText value="#{prod.brand.brandname}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+
+</html>
