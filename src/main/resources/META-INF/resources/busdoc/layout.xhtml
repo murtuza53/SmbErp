@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title><ui:insert name="title">PrimeFaces California</ui:insert></title>
+        <h:outputScript name="js/nanoscroller.js" library="california-layout" />
+        <h:outputScript name="js/layout.js" library="california-layout" />
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="main-body">
+        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+            <f:facet name="start">
+                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+        <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
+        <pe:layout fullPage="true" resizerTip="Resize Me" togglerTipClosed="Open Me" togglerTipOpen="Close me">
+            <pe:layoutPane position="north" closable="false" size="60">
+                NORTH
+            </pe:layoutPane>
+            <pe:layoutPane position="center">
+                <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
+                    <div class="layout-main" style="padding-top: 0;">
+                        <h:form id="mainform">
+                            <div class="w3-container">
+                                <div class="layout-main-content">
+                                                            <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
+                                    return false;
+                                }">
+                                                                
+                                </h:form>
+                                </div>
+                            </div>
+
+                        </h:form>
+                    </div>
+                </div>
+            </pe:layoutPane>
+            <pe:layoutPane position="east" size="200">
+                EAST
+            </pe:layoutPane>
+        </pe:layout>            
+
+        <h:outputStylesheet id="layoutCSS">
+            body {
+            margin: 4px !important;
+            }
+
+            body > form > .ui-layout-north {
+            background: none;
+            border: none;
+            color: #000000;
+            padding: 4px;
+            overflow: hidden;
+            }
+
+            .ui-datatable thead th,
+            .ui-datatable tbody td,
+            .ui-datatable tfoot td {
+            white-space: nowrap;
+            }
+
+            #messages > div {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            -moz-border-radius-bottomleft: 0;
+            -moz-border-radius-bottomright: 0;
+            }
+        </h:outputStylesheet>
+
+        <h:outputStylesheet name="css/sidebar.css" />
+        <h:outputStylesheet name="css/nanoscroller.css" library="california-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="california-layout" />
+    </h:body>
+
+</html>

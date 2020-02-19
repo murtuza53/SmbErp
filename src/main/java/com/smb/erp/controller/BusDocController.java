@@ -7,6 +7,8 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.repo.BusDocRepository;
+import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +30,9 @@ public class BusDocController extends AbstractController<BusDoc> {
         this.repo = repo;
     }
 
+    @PostConstruct
+    public void init(){
+        setSelected(new BusDoc());
+        getSelected().setCreatedon(new Date());
+    }
 }
