@@ -6,7 +6,6 @@
 package com.smb.erp.repo;
 
 import com.smb.erp.entity.Account;
-import com.smb.erp.entity.ProductCategory;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

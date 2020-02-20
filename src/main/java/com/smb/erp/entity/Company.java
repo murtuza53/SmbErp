@@ -10,14 +10,14 @@ import java.util.List;
  *
  */
 @Entity
-@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
+@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c ORDER BY c.companyname")
 public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int companyid;
+    private Integer companyid;
 
     private String addresss;
 
@@ -53,16 +53,16 @@ public class Company implements Serializable {
 
     //bi-directional many-to-one association to Warehouse
     @OneToMany(mappedBy = "company")
-    private List<Warehouse> warehouses;
+    private List<Branch> branches;
 
     public Company() {
     }
 
-    public int getCompanyid() {
+    public Integer getCompanyid() {
         return this.companyid;
     }
 
-    public void setCompanyid(int companyid) {
+    public void setCompanyid(Integer companyid) {
         this.companyid = companyid;
     }
 
@@ -196,26 +196,12 @@ public class Company implements Serializable {
         return emp;
     }
 
-    public List<Warehouse> getWarehouses() {
-        return this.warehouses;
+    public List<Branch> getBranches() {
+        return this.branches;
     }
 
-    public void setWarehouses(List<Warehouse> warehouses) {
-        this.warehouses = warehouses;
-    }
-
-    public Warehouse addWarehous(Warehouse warehous) {
-        getWarehouses().add(warehous);
-        warehous.setCompany(this);
-
-        return warehous;
-    }
-
-    public Warehouse removeWarehous(Warehouse warehous) {
-        getWarehouses().remove(warehous);
-        warehous.setCompany(null);
-
-        return warehous;
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
     }
 
     @Override

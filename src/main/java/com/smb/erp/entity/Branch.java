@@ -18,7 +18,7 @@ public class Branch implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String branchno;
+    private String branchid;
 
     private String abbreviation;
 
@@ -59,15 +59,26 @@ public class Branch implements Serializable {
     @OneToMany(mappedBy = "branch")
     private List<LederLine> ledlines;
 
+    //bi-directional many-to-one association to ProductTransaction
+    @OneToMany(mappedBy="branch")
+    private List<ProductTransaction> prodtransactions;
+
+    //bi-directional many-to-one association to Company
+    @ManyToOne
+    @JoinColumn(name="companyid")
+    private Company company;
+
+    
+    
     public Branch() {
     }
 
-    public String getBranchno() {
-        return this.branchno;
+    public String getBranchid() {
+        return this.branchid;
     }
 
-    public void setBranchno(String branchno) {
-        this.branchno = branchno;
+    public void setBranchid(String branchid) {
+        this.branchid = branchid;
     }
 
     public String getAbbreviation() {
@@ -242,13 +253,13 @@ public class Branch implements Serializable {
 
     @Override
     public String toString() {
-        return branchname + " [" + branchno + "]";
+        return branchname + " [" + branchid + "]";
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.branchno);
+        hash = 53 * hash + Objects.hashCode(this.branchid);
         return hash;
     }
 
@@ -264,10 +275,38 @@ public class Branch implements Serializable {
             return false;
         }
         final Branch other = (Branch) obj;
-        if (!Objects.equals(this.branchno, other.branchno)) {
+        if (!Objects.equals(this.branchid, other.branchid)) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the prodtransactions
+     */
+    public List<ProductTransaction> getProdtransactions() {
+        return prodtransactions;
+    }
+
+    /**
+     * @param prodtransactions the prodtransactions to set
+     */
+    public void setProdtransactions(List<ProductTransaction> prodtransactions) {
+        this.prodtransactions = prodtransactions;
+    }
+
+    /**
+     * @return the company
+     */
+    public Company getCompany() {
+        return company;
+    }
+
+    /**
+     * @param company the company to set
+     */
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
 }

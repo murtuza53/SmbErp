@@ -67,7 +67,7 @@ public abstract class AbstractController<T> implements Serializable {
     public Collection<T> getItems() {
         if (items == null) {
             items = repository.findAll();
-            System.out.println("SabilCategory_List: " + items.size());
+            System.out.println(itemClass.getSimpleName() + "_List: " + items.size());
         }
         return items;
     }

@@ -76,8 +76,8 @@ public class ProductTransaction implements Serializable {
 
     //bi-directional many-to-one association to Warehouse
     @ManyToOne
-    @JoinColumn(name = "warehouseid")
-    private Warehouse warehouse;
+    @JoinColumn(name = "branchid")
+    private Branch branch;
 
     //bi-directional many-to-one association to Product
     @ManyToOne
@@ -279,13 +279,6 @@ public class ProductTransaction implements Serializable {
         this.unit = unit;
     }
 
-    public Warehouse getWarehouse() {
-        return this.warehouse;
-    }
-
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
-    }
 
     public Product getProduct() {
         return this.product;
@@ -381,6 +374,20 @@ public class ProductTransaction implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the branch
+     */
+    public Branch getBranch() {
+        return branch;
+    }
+
+    /**
+     * @param branch the branch to set
+     */
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
 }
