@@ -30,7 +30,9 @@
             </f:facet>
         </p:ajaxStatus>
         <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
-        <pe:layout fullPage="true" resizerTip="Resize Me" togglerTipClosed="Open Me" togglerTipOpen="Close me">
+        <ui:insert name="productsearch" />
+
+        <pe:layout fullPage="true" resizerTip="Resize Me" togglerTipClosed="Open Me" togglerTipOpen="Close me" style="z-index: -1;">
             <pe:layoutPane position="north" closable="false" resizable="false" size="60" slidable="false">
                 <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
                     <ui:include src="./topbar_busdoc.xhtml" />
@@ -63,9 +65,9 @@
                     </div>
                 </div>
             </pe:layoutPane>
-            <pe:layoutPane position="east" size="200">
+            <pe:layoutPane position="east" size="250">
                 <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
-                    <ui:insert name="histroy"/>
+                    <ui:insert name="history"/>
                 </div>
             </pe:layoutPane>
         </pe:layout>            
@@ -76,20 +78,54 @@
             margin: 0px !important;
             }
 
+            body > .ui-layout-resizer{
+            }
+
+            body > .ui-layout-resizer{
+            }
+
             body > .ui-layout-north {
             background: none;
             border: none;
             color: #000000;
             padding: 0px;
             overflow: hidden;
+            inset: 
             }
 
             body > .ui-layout-center{
-            background: none;
             border: none;
             color: #000000;
             padding: 0px;
             overflow: auto;
+            }
+
+            body > .ui-layout-east{
+            border: none;
+            color: #000000;
+            padding: 0px;
+            overflow: auto;
+            }
+
+            /* Custom styles for the SlideOut */
+            .product-panel {
+            border-color: green;
+            border-width: 5px;
+            position: fixed;
+            z-index: 100 !important;
+            display: inline;
+            }
+            .product-handle {
+            padding: 8px;
+            font-size: 14px;
+            color: white !important;
+            background-color: green;
+            }
+
+            .slide-product-panel{
+            height: 450px !important;
+            overflow: auto;
+            z-index: 100 !important;
             }
 
         </h:outputStylesheet>
