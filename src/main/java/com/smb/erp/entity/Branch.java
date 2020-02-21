@@ -11,14 +11,14 @@ import java.util.Objects;
  *
  */
 @Entity
-@NamedQuery(name = "Branch.findAll", query = "SELECT b FROM Branch b")
+@NamedQuery(name = "Branch.findAll", query = "SELECT b FROM Branch b ORDER BY b.branchname")
 public class Branch implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String branchid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer branchid;
 
     private String abbreviation;
 
@@ -48,20 +48,20 @@ public class Branch implements Serializable {
     private String website;
 
     //bi-directional many-to-one association to AccDoc
-    @OneToMany(mappedBy = "branch")
-    private List<AccDoc> accdocs;
+    //@OneToMany(mappedBy = "branch")
+    //private List<AccDoc> accdocs;
 
     //bi-directional many-to-one association to Asset
-    @OneToMany(mappedBy = "branchBean")
-    private List<Asset> assets;
+    //@OneToMany(mappedBy = "branchBean")
+    //private List<Asset> assets;
 
     //bi-directional many-to-one association to LederLine
-    @OneToMany(mappedBy = "branch")
-    private List<LederLine> ledlines;
+    //@OneToMany(mappedBy = "branch")
+    //private List<LederLine> ledlines;
 
     //bi-directional many-to-one association to ProductTransaction
-    @OneToMany(mappedBy="branch")
-    private List<ProductTransaction> prodtransactions;
+    //@OneToMany(mappedBy="branch")
+    //private List<ProductTransaction> prodtransactions;
 
     //bi-directional many-to-one association to Company
     @ManyToOne
@@ -73,11 +73,11 @@ public class Branch implements Serializable {
     public Branch() {
     }
 
-    public String getBranchid() {
+    public Integer getBranchid() {
         return this.branchid;
     }
 
-    public void setBranchid(String branchid) {
+    public void setBranchid(Integer branchid) {
         this.branchid = branchid;
     }
 
@@ -185,7 +185,7 @@ public class Branch implements Serializable {
         this.website = website;
     }
 
-    public List<AccDoc> getAccdocs() {
+    /*public List<AccDoc> getAccdocs() {
         return this.accdocs;
     }
 
@@ -249,7 +249,7 @@ public class Branch implements Serializable {
         ledline.setBranch(null);
 
         return ledline;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -281,30 +281,18 @@ public class Branch implements Serializable {
         return true;
     }
 
-    /**
-     * @return the prodtransactions
-     */
-    public List<ProductTransaction> getProdtransactions() {
+    /*public List<ProductTransaction> getProdtransactions() {
         return prodtransactions;
     }
 
-    /**
-     * @param prodtransactions the prodtransactions to set
-     */
     public void setProdtransactions(List<ProductTransaction> prodtransactions) {
         this.prodtransactions = prodtransactions;
-    }
+    }*/
 
-    /**
-     * @return the company
-     */
     public Company getCompany() {
         return company;
     }
 
-    /**
-     * @param company the company to set
-     */
     public void setCompany(Company company) {
         this.company = company;
     }

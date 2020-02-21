@@ -16,8 +16,8 @@ public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer companyid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer companyid = 0;
 
     private String addresss;
 
@@ -35,8 +35,8 @@ public class Company implements Serializable {
     private String phone;
 
     //bi-directional many-to-one association to BusDoc
-    @OneToMany(mappedBy = "company")
-    private List<BusDoc> busdocs;
+    //@OneToMany(mappedBy = "company")
+    //private List<BusDoc> busdocs;
 
     //bi-directional many-to-one association to CompanyGroup
     @ManyToOne
@@ -122,7 +122,7 @@ public class Company implements Serializable {
         this.phone = phone;
     }
 
-    public List<BusDoc> getBusdocs() {
+    /*public List<BusDoc> getBusdocs() {
         return this.busdocs;
     }
 
@@ -142,7 +142,7 @@ public class Company implements Serializable {
         busdoc.setCompany(null);
 
         return busdoc;
-    }
+    }*/
 
     public CompanyGroup getCompanygroup() {
         return this.companygroup;

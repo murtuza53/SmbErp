@@ -5,14 +5,10 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.Account;
-import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.entity.TableKey;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.TableKeyRepository;
 import java.util.HashMap;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.annotation.SessionScope;
@@ -57,6 +53,10 @@ public class TableKeyController extends AbstractController<TableKey> {
         }
     }
 
+    public synchronized int getCompanyNextId(){
+        return (int)getNextKey("company");
+    }
+    
     public synchronized long getUnitNextId(){
         return getNextKey("unit");
     }

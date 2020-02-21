@@ -7,8 +7,70 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <!-- Left Side -->
-            <div class="ui-g-12 ui-lg-8">
-                
+            <div class="ui-g-12 ui-lg-6">
+                <p:dataTable id="comtable" var="com"
+                             value="#{companyController.companyList}" widgetVar="ctable"
+                             selection="#{companyController.selectedCompany}"
+                             rowKey="#{com.companyid}"
+                             emptyMessage="No Company found">
+                    <p:ajax event="rowSelect" update=":mainform:tabsview:companydetails" />
+                    <f:facet name="header">
+                        Company List
+                        <p:commandButton actionListener="#{companyController.createNewCompany()}"
+                                         process="@this"
+                                         update=":mainform:tabsview:companydetails" 
+                                         icon="fa fa-plus" style="float: right;"/>
+                    </f:facet>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{com.companyid}" />
+                    </p:column>
+
+                    <p:column headerText="Name" style="width: 40%">
+                        <h:outputText value="#{com.companyname}" />
+                    </p:column>
+
+                    <p:column headerText="CR No">
+                        <h:outputText value="#{com.crno}" />
+                    </p:column>
+
+                    <p:column headerText="Phone">
+                        <h:outputText value="#{com.phone}" />
+                    </p:column>
+
+                    <p:column headerText="Fax">
+                        <h:outputText value="#{com.fax}" />
+                    </p:column>
+                </p:dataTable>
+
+                <p:spacer height="10 px" />
+
+                <p:panel id="companydetails" header="#{companyController.companyHeader}">
+                    <f:facet name="actions">
+                         <p:commandButton styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                                          rendered="#{companyController.selectedCompany ne null}" process="@form"
+                                        actionListener="#{companyController.saveCompany()}"
+                                        update=":mainform:tabsview:comtable" icon="fa fa-save" />
+                    </f:facet>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        <p:outputLabel value="Company Id:" for="cno" />
+                        <p:inputText id="cno" value="#{companyController.selectedCompany.companyid}" disabled="true" style="width: 100% !important"/>
+
+                        <p:outputLabel value="Name:" for="name" />
+                        <p:inputText id="name" placeholder="Name" value="#{companyController.selectedCompany.companyname}" style="width: 100% !important"/>
+
+                        <p:outputLabel value="CR No:" for="crno" />
+                        <p:inputText id="crno" placeholder="CR No" value="#{companyController.selectedCompany.crno}" style="width: 100% !important"/>
+
+                        <p:outputLabel value="Phone:" for="phone" />
+                        <p:inputText id="phone" placeholder="Phone" value="#{companyController.selectedCompany.phone}" style="width: 100% !important"/>
+
+                        <p:outputLabel value="Fax:" for="fax" />
+                        <p:inputText id="fax" placeholder="Fax" value="#{companyController.selectedCompany.fax}" style="width: 100% !important"/>
+
+                    </p:panelGrid>
+                </p:panel>
             </div>
 
             <!-- Right Side -->
@@ -17,6 +79,5 @@
             </div>
         </div>
     </div>
-</div>
 
 </ui:composition>

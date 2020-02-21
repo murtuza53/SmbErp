@@ -5,7 +5,7 @@
  */
 package com.smb.erp.repo;
 
-import com.smb.erp.entity.TableKey;
+import com.smb.erp.entity.Branch;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface TableKeyRepository extends BaseRepository<TableKey, String> {
-
-    TableKey findByTablename(String tablename);
-
+public interface BranchRepository extends BaseRepository<Branch, Integer> {
+    
 }

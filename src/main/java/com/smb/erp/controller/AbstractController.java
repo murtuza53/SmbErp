@@ -4,6 +4,7 @@ import com.smb.erp.repo.BaseRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public abstract class AbstractController<T> implements Serializable {
 
     private Class<T> itemClass;
     private T selected;
-    private Collection<T> items;
+    private List<T> items;
     private BaseRepository repository;
 
     public AbstractController() {
@@ -64,7 +65,7 @@ public abstract class AbstractController<T> implements Serializable {
      *
      * @return a collection of Entity items returned by the data layer
      */
-    public Collection<T> getItems() {
+    public List<T> getItems() {
         if (items == null) {
             items = repository.findAll();
             System.out.println(itemClass.getSimpleName() + "_List: " + items.size());
@@ -77,7 +78,7 @@ public abstract class AbstractController<T> implements Serializable {
      *
      * @param items a collection of Entity items
      */
-    public void setItems(Collection<T> items) {
+    public void setItems(List<T> items) {
         this.items = items;
     }
 
