@@ -11,6 +11,7 @@ import com.smb.erp.entity.CompanyGroup;
 import com.smb.erp.repo.BranchRepository;
 import com.smb.erp.repo.CompanyGroupRepository;
 import com.smb.erp.repo.CompanyRepository;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -60,7 +61,8 @@ public class CompanyController extends AbstractController<Company> {
     
     public void createNewCompany(){
         selectedCompany = new Company();
-        //System.out.println("New Company Created");
+        selectedCompany.setCompanyname("New Company");
+        System.out.println("New Company Created");
     }
 
     public String getCompanyHeader(){
@@ -73,7 +75,7 @@ public class CompanyController extends AbstractController<Company> {
     }
     
     public void saveCompany(){
-        System.out.println("Save Company: " + selectedCompany);
+        System.out.println("Save Company: " + selectedCompany + "\t" + new Date());
         if(selectedCompany.getCompanyid()==0){
             selectedCompany.setCompanyid(keyController.getCompanyNextId());
             setSelected(selectedCompany);
@@ -140,6 +142,7 @@ public class CompanyController extends AbstractController<Company> {
      * @return the selectedCompany
      */
     public Company getSelectedCompany() {
+        System.out.println("getSelectedCompany: " + new Date() + "\t" + selectedCompany);
         return selectedCompany;
     }
 
