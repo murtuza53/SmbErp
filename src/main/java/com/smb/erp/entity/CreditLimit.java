@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -28,8 +29,8 @@ public class CreditLimit implements Serializable {
 	private double rate;
 
 	//bi-directional many-to-one association to BusinessPartner
-	@OneToMany(mappedBy="creditlimit")
-	private List<BusinessPartner> businesspartners;
+	//@OneToMany(mappedBy="creditlimit")
+	//private List<BusinessPartner> businesspartners;
 
 	public CreditLimit() {
 	}
@@ -74,7 +75,7 @@ public class CreditLimit implements Serializable {
 		this.rate = rate;
 	}
 
-	public List<BusinessPartner> getBusinesspartners() {
+	/*public List<BusinessPartner> getBusinesspartners() {
 		return this.businesspartners;
 	}
 
@@ -94,6 +95,36 @@ public class CreditLimit implements Serializable {
 		businesspartner.setCreditlimit(null);
 
 		return businesspartner;
-	}
+	}*/
 
+    @Override
+    public String toString() {
+        return "CreditLimit{" + "creditlimitno=" + creditlimitno + ", amountfc=" + amountfc + ", amountlc=" + amountlc + ", daysduration=" + daysduration + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.creditlimitno);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CreditLimit other = (CreditLimit) obj;
+        if (!Objects.equals(this.creditlimitno, other.creditlimitno)) {
+            return false;
+        }
+        return true;
+    }
+        
 }

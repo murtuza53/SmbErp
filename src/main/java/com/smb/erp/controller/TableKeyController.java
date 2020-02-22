@@ -56,6 +56,10 @@ public class TableKeyController extends AbstractController<TableKey> {
     public synchronized int getCompanyNextId(){
         return (int)getNextKey("company");
     }
+
+    public synchronized int getBranchNextId(){
+        return (int)getNextKey("branch");
+    }
     
     public synchronized long getUnitNextId(){
         return getNextKey("unit");

@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -24,74 +26,76 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Named(value = "companyController")
 @ViewScoped
+@Service
 public class CompanyController extends AbstractController<Company> {
 
     CompanyRepository repo;
 
     @Autowired
     TableKeyController keyController;
-    
+
     @Autowired
     CompanyGroupRepository groupRepo;
 
     @Autowired
     BranchRepository branchRepo;
-    
+
     private List<CompanyGroup> groupList;
-    
+
     private List<Branch> branchList;
-    
+
     private CompanyGroup selectedCompanyGroup;
-    
+
     private Branch selectedBranch;
-    
+
     private Company selectedCompany;
-    
+
     @Autowired
     public CompanyController(CompanyRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
         super(Company.class, repo);
         this.repo = repo;
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         refresh();
     }
-    
-    public void createNewCompany(){
+
+    public void createNewCompany() {
         selectedCompany = new Company();
         selectedCompany.setCompanyname("New Company");
         System.out.println("New Company Created");
     }
-    
-    public void createNewBranch(){
+
+    public void createNewBranch() {
         selectedBranch = new Branch();
         selectedBranch.setBranchname("New Branch");
     }
 
-    public String getCompanyHeader(){
-        if(selectedCompany==null){
+    public String getCompanyHeader() {
+        if (selectedCompany == null) {
             return "No Company Selected";
-        } else if(selectedCompany.getCompanyid()==0){
+        } else if (selectedCompany.getCompanyid() == 0) {
             return "New Company";
         }
         return "Edit - " + selectedCompany;
     }
 
-    public String getBranchHeader(){
-        if(selectedBranch==null){
+    public String getBranchHeader() {
+        if (selectedBranch == null) {
             return "No Branch Selected";
-        } else if(selectedBranch.getBranchid()==0){
+        } else if (selectedBranch.getBranchid() == 0) {
             return "New Branch";
         }
         return "Edit - " + selectedBranch;
     }
-    
-    public void saveCompany(){
+
+    @Transactional
+    public void saveCompany() {
         int select = 0;
         System.out.println("Save Company: " + selectedCompany + "\t" + new Date());
-        if(selectedCompany.getCompanyid()==0){
+        if (selectedCompany.getCompanyid() == 0) {
             selectedCompany.setCompanyid(keyController.getCompanyNextId());
             setSelected(selectedCompany);
             super.save();
@@ -105,17 +109,20 @@ public class CompanyController extends AbstractController<Company> {
         selectedCompany = repo.getOne(select);
     }
 
-    public void saveBranch(){
+    @Transactional
+    public void saveBranch() {
         int select = 0;
         System.out.println("Save Branch: " + selectedBranch + "\t" + new Date());
-        if(selectedBranch.getBranchid()==0){
-            selectedBranch.setBranchid(keyController.getBrandNextId());
+        if (selectedBranch.getBranchid() == 0) {
+            selectedBranch.setBranchid(keyController.getBranchNextId());
             selectedCompany.addBranch(selectedBranch);
-            setSelected(selectedCompany);
-            super.save();
+            //setSelected(selectedCompany);
+            //super.save();
+            branchRepo.save(selectedBranch);
         } else {
-            setSelected(selectedCompany);
-            super.save();
+            //setSelected(selectedCompany);
+            //super.save();
+            branchRepo.save(selectedBranch);
         }
         select = selectedBranch.getBranchid();
         refresh();
@@ -123,27 +130,33 @@ public class CompanyController extends AbstractController<Company> {
         getBranchList();
         selectedBranch = branchRepo.getOne(select);
     }
-    
-    public void refresh(){
+
+    public void refresh() {
         setItems(null);
         groupList = null;
         branchList = null;
     }
-    
-    public List<Company> getCompanyList(){
+
+    public List<Company> getCompanyList() {
         return getItems();
     }
-    
-    public List<CompanyGroup> getGroupList(){
-        if(groupList==null){
+
+    public List<CompanyGroup> getGroupList() {
+        if (groupList == null) {
             groupList = groupRepo.findAll();
         }
         return groupList;
     }
 
-    public List<Branch> getBranchList(){
-        if(branchList==null){
-            branchList = branchRepo.findAll();
+    public void refreshBranch(){
+        branchList = null;
+    }
+    
+    public List<Branch> getBranchList() {
+        if (branchList == null) {
+            if (selectedCompany != null) {
+                branchList = branchRepo.findBranchByCompanyId(selectedCompany.getCompanyid());
+            }
         }
         return branchList;
     }
@@ -180,7 +193,7 @@ public class CompanyController extends AbstractController<Company> {
      * @return the selectedCompany
      */
     public Company getSelectedCompany() {
-        System.out.println("getSelectedCompany: " + new Date() + "\t" + selectedCompany);
+        //System.out.println("getSelectedCompany: " + new Date() + "\t" + selectedCompany);
         return selectedCompany;
     }
 
@@ -188,8 +201,8 @@ public class CompanyController extends AbstractController<Company> {
      * @param selectedCompany the selectedCompany to set
      */
     public void setSelectedCompany(Company selectedCompany) {
-        System.out.println("setSelectedCompany: " + new Date() + "\t" + selectedCompany);
+        //System.out.println("setSelectedCompany: " + new Date() + "\t" + selectedCompany);
         this.selectedCompany = selectedCompany;
     }
-    
+
 }

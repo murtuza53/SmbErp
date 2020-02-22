@@ -24,7 +24,7 @@
                                      selection="#{companyController.selectedCompany}"
                                      rowKey="#{com.companyid}"
                                      emptyMessage="No Company found">
-                            <p:ajax event="rowSelect" update=":comedit" />
+                            <p:ajax event="rowSelect" listener="#{companyController.refreshBranch()}" update=":comedit, :branchlist"/>
                             <f:facet name="header">
                                 Company List
                                 <p:commandButton id="btnedit" actionListener="#{companyController.createNewCompany()}"
@@ -118,7 +118,7 @@
                             </p:column>
 
                             <p:column headerText="Phone">
-                                <h:outputText value="#{branch.phone}" />
+                                <h:outputText value="#{branch.tel1}" />
                             </p:column>
 
                             <p:column headerText="Fax">
@@ -150,7 +150,7 @@
                                 <p:inputText id="bcrno" placeholder="CR No" value="#{companyController.selectedBranch.crno}" style="width: 100% !important"/>
 
                                 <p:outputLabel value="Phone:" for="bphone" />
-                                <p:inputText id="bphone" placeholder="Phone" value="#{companyController.selectedBranch.phone}" style="width: 100% !important"/>
+                                <p:inputText id="bphone" placeholder="Phone" value="#{companyController.selectedBranch.tel1}" style="width: 100% !important"/>
 
                                 <p:outputLabel value="Fax:" for="bfax" />
                                 <p:inputText id="bfax" placeholder="Fax" value="#{companyController.selectedBranch.fax}" style="width: 100% !important"/>

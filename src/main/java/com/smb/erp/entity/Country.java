@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
-@NamedQuery(name = "Country.findAll", query = "SELECT c FROM Country c")
+@NamedQuery(name = "Country.findAll", query = "SELECT c FROM Country c ORDER BY c.countryname")
 public class Country implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,21 +27,21 @@ public class Country implements Serializable {
 
     private String currencysym;
 
-    private byte defcountry;
+    private Boolean defcountry;
 
     private double rate;
 
     //bi-directional many-to-one association to AccDoc
-    @OneToMany(mappedBy = "country")
-    private List<AccDoc> accdocs;
+    //@OneToMany(mappedBy = "country")
+    //private List<AccDoc> accdocs;
 
     //bi-directional many-to-one association to BusinessPartner
-    @OneToMany(mappedBy = "country")
-    private List<BusinessPartner> businesspartners;
+    //@OneToMany(mappedBy = "country")
+    //private List<BusinessPartner> businesspartners;
 
     //bi-directional many-to-one association to Product
-    @OneToMany(mappedBy = "country")
-    private List<Product> products;
+    //@OneToMany(mappedBy = "country")
+    //private List<Product> products;
 
     public Country() {
     }
@@ -86,11 +86,11 @@ public class Country implements Serializable {
         this.currencysym = currencysym;
     }
 
-    public byte getDefcountry() {
+    public Boolean getDefcountry() {
         return this.defcountry;
     }
 
-    public void setDefcountry(byte defcountry) {
+    public void setDefcountry(Boolean defcountry) {
         this.defcountry = defcountry;
     }
 
@@ -102,7 +102,7 @@ public class Country implements Serializable {
         this.rate = rate;
     }
 
-    public List<AccDoc> getAccdocs() {
+    /*public List<AccDoc> getAccdocs() {
         return this.accdocs;
     }
 
@@ -166,7 +166,7 @@ public class Country implements Serializable {
         product.setCountry(null);
 
         return product;
-    }
+    }*/
 
     @Override
     public String toString() {

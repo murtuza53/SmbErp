@@ -6,6 +6,9 @@
 package com.smb.erp.repo;
 
 import com.smb.erp.entity.Branch;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +17,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BranchRepository extends BaseRepository<Branch, Integer> {
+    
+    @Query("SELECT b FROM Branch as b WHERE b.company.companyid=:companyid ORDER BY b.branchname")
+    List<Branch> findBranchByCompanyId(@Param("companyid") int companyid);
     
 }

@@ -52,7 +52,7 @@ public class Company implements Serializable {
     private List<Emp> emps;
 
     //bi-directional many-to-one association to Warehouse
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Branch> branches;
 
     public Company() {

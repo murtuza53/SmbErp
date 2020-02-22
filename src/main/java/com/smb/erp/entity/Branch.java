@@ -67,8 +67,6 @@ public class Branch implements Serializable {
     @ManyToOne
     @JoinColumn(name="companyid")
     private Company company;
-
-    
     
     public Branch() {
     }

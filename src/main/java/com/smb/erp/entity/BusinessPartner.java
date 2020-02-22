@@ -1,205 +1,212 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Objects;
+import java.util.StringTokenizer;
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * The persistent class for the businesspartner database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="BusinessPartner.findAll", query="SELECT b FROM BusinessPartner b")
+@NamedQuery(name = "BusinessPartner.findAll", query = "SELECT b FROM BusinessPartner b ORDER BY b.companyname")
 public class BusinessPartner implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String partnerid;
+    private static final long serialVersionUID = 1L;
 
-	private String address;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String partnerid;
 
-	private String companyname;
+    private String address;
 
-	private String companytypes;
+    private String companyname;
 
-	private String creditstatus;
+    private String companytypes;        //Customer, Supplier
 
-	private String description;
+    private String creditstatus;
 
-	private String email1;
+    private String description;
 
-	private String email2;
+    private String email1;
 
-	private String fax1;
+    private String email2;
 
-	private String fax2;
+    private String fax1;
 
-	private byte lporequired;
+    private String fax2;
 
-	private String pbone2;
+    private byte lporequired;
 
-	private String phone1;
+    private String pbone2;
 
-	private String pobox;
+    private String phone1;
 
-	private String website;
+    private String pobox;
 
-	//bi-directional many-to-one association to AccDoc
-	@OneToMany(mappedBy="businesspartner")
-	private List<AccDoc> accdocs;
+    private String website;
 
-	//bi-directional many-to-one association to Account
-	@OneToMany(mappedBy="businesspartner")
-	private List<Account> accounts;
+    @XmlTransient
+    @Transient
+    public static final String CUSTOMER = "Customer";
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="businesspartner")
-	private List<BusDoc> busdocs;
+    @XmlTransient
+    @Transient
+    public static final String SUPPLIER = "Supplier";
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne
-	@JoinColumn(name="countryno")
-	private Country country;
+    //bi-directional many-to-one association to AccDoc
+    //@OneToMany(mappedBy="businesspartner")
+    //private List<AccDoc> accdocs;
+    //bi-directional many-to-one association to Account
+    //@OneToMany(mappedBy = "businesspartner")
+    //private List<Account> accounts;
+    //bi-directional many-to-one association to BusDoc
+    //@OneToMany(mappedBy="businesspartner")
+    //private List<BusDoc> busdocs;
+    //bi-directional many-to-one association to Country
+    @ManyToOne
+    @JoinColumn(name = "countryno")
+    private Country country;
 
-	//bi-directional many-to-one association to CreditLimit
-	@ManyToOne
-	@JoinColumn(name="creditlimitno")
-	private CreditLimit creditlimit;
+    //bi-directional many-to-one association to CreditLimit
+    @ManyToOne
+    @JoinColumn(name = "creditlimitno")
+    private CreditLimit creditlimit;
 
-	//bi-directional many-to-one association to ContactPerson
-	@OneToMany(mappedBy="businesspartner")
-	private List<ContactPerson> contactpersons;
+    //bi-directional many-to-one association to ContactPerson
+    //@OneToMany(mappedBy="businesspartner")
+    //private List<ContactPerson> contactpersons;
+    //bi-directional many-to-one association to PriceList
+    //@OneToMany(mappedBy="businesspartner")
+    //private List<PriceList> pricelists;
+    public BusinessPartner() {
+    }
 
-	//bi-directional many-to-one association to PriceList
-	@OneToMany(mappedBy="businesspartner")
-	private List<PriceList> pricelists;
+    public String getPartnerid() {
+        return this.partnerid;
+    }
 
-	public BusinessPartner() {
-	}
+    public void setPartnerid(String partnerid) {
+        this.partnerid = partnerid;
+    }
 
-	public String getPartnerid() {
-		return this.partnerid;
-	}
+    public String getAddress() {
+        return this.address;
+    }
 
-	public void setPartnerid(String partnerid) {
-		this.partnerid = partnerid;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getAddress() {
-		return this.address;
-	}
+    public String getCompanyname() {
+        return this.companyname;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
 
-	public String getCompanyname() {
-		return this.companyname;
-	}
+    public String getCompanytypes() {
+        return this.companytypes;
+    }
 
-	public void setCompanyname(String companyname) {
-		this.companyname = companyname;
-	}
+    public void setCompanytypes(String companytypes) {
+        this.companytypes = companytypes;
+    }
 
-	public String getCompanytypes() {
-		return this.companytypes;
-	}
+    public String getCreditstatus() {
+        return this.creditstatus;
+    }
 
-	public void setCompanytypes(String companytypes) {
-		this.companytypes = companytypes;
-	}
+    public void setCreditstatus(String creditstatus) {
+        this.creditstatus = creditstatus;
+    }
 
-	public String getCreditstatus() {
-		return this.creditstatus;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setCreditstatus(String creditstatus) {
-		this.creditstatus = creditstatus;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getEmail1() {
+        return this.email1;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setEmail1(String email1) {
+        this.email1 = email1;
+    }
 
-	public String getEmail1() {
-		return this.email1;
-	}
+    public String getEmail2() {
+        return this.email2;
+    }
 
-	public void setEmail1(String email1) {
-		this.email1 = email1;
-	}
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
 
-	public String getEmail2() {
-		return this.email2;
-	}
+    public String getFax1() {
+        return this.fax1;
+    }
 
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
+    public void setFax1(String fax1) {
+        this.fax1 = fax1;
+    }
 
-	public String getFax1() {
-		return this.fax1;
-	}
+    public String getFax2() {
+        return this.fax2;
+    }
 
-	public void setFax1(String fax1) {
-		this.fax1 = fax1;
-	}
+    public void setFax2(String fax2) {
+        this.fax2 = fax2;
+    }
 
-	public String getFax2() {
-		return this.fax2;
-	}
+    public byte getLporequired() {
+        return this.lporequired;
+    }
 
-	public void setFax2(String fax2) {
-		this.fax2 = fax2;
-	}
+    public void setLporequired(byte lporequired) {
+        this.lporequired = lporequired;
+    }
 
-	public byte getLporequired() {
-		return this.lporequired;
-	}
+    public String getPbone2() {
+        return this.pbone2;
+    }
 
-	public void setLporequired(byte lporequired) {
-		this.lporequired = lporequired;
-	}
+    public void setPbone2(String pbone2) {
+        this.pbone2 = pbone2;
+    }
 
-	public String getPbone2() {
-		return this.pbone2;
-	}
+    public String getPhone1() {
+        return this.phone1;
+    }
 
-	public void setPbone2(String pbone2) {
-		this.pbone2 = pbone2;
-	}
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
+    }
 
-	public String getPhone1() {
-		return this.phone1;
-	}
+    public String getPobox() {
+        return this.pobox;
+    }
 
-	public void setPhone1(String phone1) {
-		this.phone1 = phone1;
-	}
+    public void setPobox(String pobox) {
+        this.pobox = pobox;
+    }
 
-	public String getPobox() {
-		return this.pobox;
-	}
+    public String getWebsite() {
+        return this.website;
+    }
 
-	public void setPobox(String pobox) {
-		this.pobox = pobox;
-	}
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
-	public String getWebsite() {
-		return this.website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	public List<AccDoc> getAccdocs() {
+    /*public List<AccDoc> getAccdocs() {
 		return this.accdocs;
 	}
 
@@ -220,30 +227,30 @@ public class BusinessPartner implements Serializable {
 
 		return accdoc;
 	}
+    
+    public List<Account> getAccounts() {
+        return this.accounts;
+    }
 
-	public List<Account> getAccounts() {
-		return this.accounts;
-	}
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
-	}
+    public Account addAccount(Account account) {
+        getAccounts().add(account);
+        account.setBusinesspartner(this);
 
-	public Account addAccount(Account account) {
-		getAccounts().add(account);
-		account.setBusinesspartner(this);
+        return account;
+    }
 
-		return account;
-	}
+    public Account removeAccount(Account account) {
+        getAccounts().remove(account);
+        account.setBusinesspartner(null);
 
-	public Account removeAccount(Account account) {
-		getAccounts().remove(account);
-		account.setBusinesspartner(null);
+        return account;
+    }
 
-		return account;
-	}
-
-	public List<BusDoc> getBusdocs() {
+    public List<BusDoc> getBusdocs() {
 		return this.busdocs;
 	}
 
@@ -263,25 +270,24 @@ public class BusinessPartner implements Serializable {
 		busdoc.setBusinesspartner(null);
 
 		return busdoc;
-	}
+	}*/
+    public Country getCountry() {
+        return this.country;
+    }
 
-	public Country getCountry() {
-		return this.country;
-	}
+    public void setCountry(Country country) {
+        this.country = country;
+    }
 
-	public void setCountry(Country country) {
-		this.country = country;
-	}
+    public CreditLimit getCreditlimit() {
+        return this.creditlimit;
+    }
 
-	public CreditLimit getCreditlimit() {
-		return this.creditlimit;
-	}
+    public void setCreditlimit(CreditLimit creditlimit) {
+        this.creditlimit = creditlimit;
+    }
 
-	public void setCreditlimit(CreditLimit creditlimit) {
-		this.creditlimit = creditlimit;
-	}
-
-	public List<ContactPerson> getContactpersons() {
+    /*public List<ContactPerson> getContactpersons() {
 		return this.contactpersons;
 	}
 
@@ -323,6 +329,101 @@ public class BusinessPartner implements Serializable {
 		pricelist.setBusinesspartner(null);
 
 		return pricelist;
-	}
+	}*/
+    public boolean isLocalCompany() {
+        if (getCountry() == null) {
+            return true;
+        }
+        return getCountry().getDefcountry();
+    }
 
+    public boolean isForeignCompany() {
+        if (getCountry() == null) {
+            return false;
+        }
+        return !getCountry().getDefcountry();
+    }
+
+    public boolean isCustomer() {
+        return getCompanytypes().indexOf(CUSTOMER) >= 0;
+    }
+
+    public boolean isSupplier() {
+        return getCompanytypes().indexOf(SUPPLIER) >= 0;
+    }
+
+    public static String[] getAvailableCompanyTypes() {
+        return new String[]{CUSTOMER, SUPPLIER};
+    }
+
+    public String[] getCompanyTypesArray() {
+        if (getCompanytypes() == null) {
+            return null;
+        }
+        StringTokenizer tokens = new StringTokenizer(getCompanytypes(), ",");
+        List<String> list = new LinkedList<String>();
+        while (tokens.hasMoreTokens()) {
+            String token = tokens.nextToken().trim();
+            if (token.length() > 0) {
+                list.add(token);
+            }
+        }
+        String[] types = new String[list.size()];
+        list.toArray(types);
+        return types;
+    }
+
+    public void setCompanyTypesArray(String[] types) {
+        if (types == null) {
+            return;
+        }
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < types.length; i++) {
+            if (i == types.length - 1) {
+                buffer.append(types[i]);
+            } else {
+                buffer.append(types[i]).append(",");
+            }
+        }
+        setCompanytypes(buffer.toString());
+    }
+
+    public String getCurrency() {
+        if (getCountry() == null) {
+            return "LC";
+        }
+
+        return getCountry().getCurrencysym();
+    }
+
+    @Override
+    public String toString() {
+        return companyname + " [" + partnerid + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.partnerid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BusinessPartner other = (BusinessPartner) obj;
+        if (!Objects.equals(this.partnerid, other.partnerid)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

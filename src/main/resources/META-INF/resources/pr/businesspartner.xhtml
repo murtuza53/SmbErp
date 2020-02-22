@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/california-layout/template.xhtml">
+    <ui:define name="title">
+        Business Partner
+    </ui:define>
+
+    <ui:define name="breadcrumb">
+        Business Partner
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-12 ui-lg-12">
+                        <p:panel id="companydetails" header="Business Parners">
+                            <f:facet name="actions">
+                                <p:commandButton id="btnsave" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                                                 actionListener="#{businessPartnerController.save()}" 
+                                                 update=":bustable, :growl" icon="fa fa-save" />
+                            </f:facet>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Company Id:" for="cno" />
+                                <p:inputText id="cno" value="#{companyController.selectedCompany.companyid}" disabled="true" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Name:" for="cname" />
+                                <p:inputText id="cname" placeholder="Company Name" value="#{companyController.selectedCompany.companyname}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="CR No:" for="crno" />
+                                <p:inputText id="crno" placeholder="CR No" value="#{companyController.selectedCompany.crno}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Phone:" for="phone" />
+                                <p:inputText id="phone" placeholder="Phone" value="#{companyController.selectedCompany.phone}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Fax:" for="fax" />
+                                <p:inputText id="fax" placeholder="Fax" value="#{companyController.selectedCompany.fax}" style="width: 100% !important"/>
+
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-lg-12">
+                        <p:dataTable id="bustable" var="bus" widgetVar="btable"
+                                     value="#{businessPartnerController.items}"
+                                     selectionMode="single"
+                                     selection="#{businessPartnerController.selected}"
+                                     rowKey="#{bus.partnerid}"
+                                     emptyMessage="No Business Partner found">
+                            <p:ajax event="rowSelect" update=":btnedit"/>
+                            <f:facet name="header">
+                                List
+                                <p:commandButton id="btnedit" actionListener="#{companyController.createNewCompany()}"
+                                                 update=":comedit"
+                                                 icon="fa fa-plus" style="float: right;"/>
+                            </f:facet>
+
+                            <p:column headerText="Id">
+                                <h:outputText value="#{bus.partnerid}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 40%">
+                                <h:outputText value="#{bus.companyname}" />
+                            </p:column>
+
+                            <p:column headerText="Email">
+                                <h:outputText value="#{bus.email1}" />
+                            </p:column>
+
+                            <p:column headerText="Phone">
+                                <h:outputText value="#{bus.phone1}" />
+                            </p:column>
+
+                            <p:column headerText="Fax">
+                                <h:outputText value="#{bus.fax1}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
