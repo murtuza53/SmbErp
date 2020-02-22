@@ -17,7 +17,7 @@ public class CompanyGroup implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comgroupid = 0;
 
     private String addresss;

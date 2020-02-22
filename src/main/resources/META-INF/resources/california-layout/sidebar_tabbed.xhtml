@@ -132,14 +132,17 @@
                         <p:submenu id="om_components" label="Master Data"
                                    icon="fa fa-fw fa-table">
                             <p:menuitem id="om_company" value="Company"
-                                        icon="fa fa-fw fa-sitemap"
-                                        outcome="/company/company.xhtml" />
+                                        icon="fa fa-fw fa-sitemap" update=":mainform"
+                                        onclick="onTabChangeProcess()"
+                                        actionListener="#{tabViewController.addClosable('Company','company/company')}" />
                             <p:menuitem id="om_prodmaster" value="Product"
                                         icon="fa fa-fw fa-sitemap" update=":mainform"
-                                        outcome="/inventory/prodmaster.xhtml" />
+                                        onclick="onTabChangeProcess()"
+                                        actionListener="#{tabViewController.addClosable('Product Master','inventory/prodmaster')}" />
                             <p:menuitem id="om_accmaster" value="Accounts"
-                                        icon="fa fa-fw fa-sitemap" 
-                                        outcome="/accmaster.xhtml" />
+                                        icon="fa fa-fw fa-sitemap" update=":mainform"
+                                        onclick="onTabChangeProcess()"
+                                        actionListener="#{tabViewController.addClosable('Account Master', 'accmaster')}" />
                         </p:submenu>
                     </pc:menu>
                 </h:form>

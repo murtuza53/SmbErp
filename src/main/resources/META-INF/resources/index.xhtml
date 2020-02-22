@@ -6,28 +6,16 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/california-layout/template.xhtml">
 
+    <ui:define name="title">
+        Dashboard
+    </ui:define>
+
     <ui:define name="breadcrumb">
+        Dashboard
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="mainform">
-            <p:remoteCommand name="onTabChangeProcess" process="tabsview, @this"/> 
-            <p:tabView id="tabsview" dynamic="true" cache="true" onTabChange="onTabChangeProcess()"
-                       activeIndex="#{tabViewController.activeTabIndex}" scrollable="true" style="height:100% !important">
-                <p:ajax event="tabClose" listener="#{tabViewController.onTabClose}"
-                        update="tabsview, :msgs" />
-                <p:ajax event="tabChange" update="tabsview, :msgs" />
-                <c:forEach items="#{tabViewController.tabs}" var="tab">
-                    <p:tab id="#{tab.id}" title="#{tab.title}" 
-                           closable="#{tab.closable}">
-                        <f:facet name="title">
-                            <h:outputText value="#{tab.title}" />
-                        </f:facet>
-                        <ui:include src="#{tab.page}.xhtml" />
-                    </p:tab>
-                </c:forEach>
-            </p:tabView>
-        </h:form>
+        Page Body
     </ui:define>
 
 </ui:composition>

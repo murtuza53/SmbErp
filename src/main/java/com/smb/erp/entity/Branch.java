@@ -17,8 +17,8 @@ public class Branch implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer branchid;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer branchid = 0;
 
     private String abbreviation;
 

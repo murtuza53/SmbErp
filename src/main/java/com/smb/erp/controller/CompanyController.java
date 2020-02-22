@@ -64,6 +64,11 @@ public class CompanyController extends AbstractController<Company> {
         selectedCompany.setCompanyname("New Company");
         System.out.println("New Company Created");
     }
+    
+    public void createNewBranch(){
+        selectedBranch = new Branch();
+        selectedBranch.setBranchname("New Branch");
+    }
 
     public String getCompanyHeader(){
         if(selectedCompany==null){
@@ -73,8 +78,18 @@ public class CompanyController extends AbstractController<Company> {
         }
         return "Edit - " + selectedCompany;
     }
+
+    public String getBranchHeader(){
+        if(selectedBranch==null){
+            return "No Branch Selected";
+        } else if(selectedBranch.getBranchid()==0){
+            return "New Branch";
+        }
+        return "Edit - " + selectedBranch;
+    }
     
     public void saveCompany(){
+        int select = 0;
         System.out.println("Save Company: " + selectedCompany + "\t" + new Date());
         if(selectedCompany.getCompanyid()==0){
             selectedCompany.setCompanyid(keyController.getCompanyNextId());
@@ -84,6 +99,29 @@ public class CompanyController extends AbstractController<Company> {
             setSelected(selectedCompany);
             super.save();
         }
+        select = selectedCompany.getCompanyid();
+        refresh();
+        getCompanyList();
+        selectedCompany = repo.getOne(select);
+    }
+
+    public void saveBranch(){
+        int select = 0;
+        System.out.println("Save Branch: " + selectedBranch + "\t" + new Date());
+        if(selectedBranch.getBranchid()==0){
+            selectedBranch.setBranchid(keyController.getBrandNextId());
+            selectedCompany.addBranch(selectedBranch);
+            setSelected(selectedCompany);
+            super.save();
+        } else {
+            setSelected(selectedCompany);
+            super.save();
+        }
+        select = selectedBranch.getBranchid();
+        refresh();
+        getCompanyList();
+        getBranchList();
+        selectedBranch = branchRepo.getOne(select);
     }
     
     public void refresh(){
@@ -103,7 +141,7 @@ public class CompanyController extends AbstractController<Company> {
         return groupList;
     }
 
-    public List<Branch> getBranchAll(){
+    public List<Branch> getBranchList(){
         if(branchList==null){
             branchList = branchRepo.findAll();
         }
@@ -150,6 +188,7 @@ public class CompanyController extends AbstractController<Company> {
      * @param selectedCompany the selectedCompany to set
      */
     public void setSelectedCompany(Company selectedCompany) {
+        System.out.println("setSelectedCompany: " + new Date() + "\t" + selectedCompany);
         this.selectedCompany = selectedCompany;
     }
     

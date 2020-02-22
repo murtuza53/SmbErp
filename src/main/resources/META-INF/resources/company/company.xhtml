@@ -2,82 +2,165 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                template="/california-layout/template.xhtml">
+    <ui:define name="title">
+        Company
+    </ui:define>
 
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <!-- Left Side -->
-            <div class="ui-g-12 ui-lg-6">
-                <p:dataTable id="comtable" var="com"
-                             value="#{companyController.companyList}" widgetVar="ctable"
-                             selection="#{companyController.selectedCompany}"
-                             rowKey="#{com.companyid}"
-                             emptyMessage="No Company found">
-                    <p:ajax event="rowSelect" update=":mainform:tabsview:companydetails" />
-                    <f:facet name="header">
-                        Company List
-                        <p:commandButton actionListener="#{companyController.createNewCompany()}"
-                                         process="@this"
-                                         update=":mainform:tabsview:companydetails" 
-                                         icon="fa fa-plus" style="float: right;"/>
-                    </f:facet>
+    <ui:define name="breadcrumb">
+        Company
+    </ui:define>
 
-                    <p:column headerText="Id">
-                        <h:outputText value="#{com.companyid}" />
-                    </p:column>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <!-- Left Side -->
+                <div class="ui-g-12 ui-lg-6">
+                    <h:form id="comlist">
+                        <p:dataTable id="comtable" var="com" widgetVar="ctable"
+                                     value="#{companyController.companyList}"
+                                     selectionMode="single"
+                                     selection="#{companyController.selectedCompany}"
+                                     rowKey="#{com.companyid}"
+                                     emptyMessage="No Company found">
+                            <p:ajax event="rowSelect" update=":comedit" />
+                            <f:facet name="header">
+                                Company List
+                                <p:commandButton id="btnedit" actionListener="#{companyController.createNewCompany()}"
+                                                 update=":comedit"
+                                                 icon="fa fa-plus" style="float: right;"/>
+                            </f:facet>
 
-                    <p:column headerText="Name" style="width: 40%">
-                        <h:outputText value="#{com.companyname}" />
-                    </p:column>
+                            <p:column headerText="Id">
+                                <h:outputText value="#{com.companyid}" />
+                            </p:column>
 
-                    <p:column headerText="CR No">
-                        <h:outputText value="#{com.crno}" />
-                    </p:column>
+                            <p:column headerText="Name" style="width: 40%">
+                                <h:outputText value="#{com.companyname}" />
+                            </p:column>
 
-                    <p:column headerText="Phone">
-                        <h:outputText value="#{com.phone}" />
-                    </p:column>
+                            <p:column headerText="CR No">
+                                <h:outputText value="#{com.crno}" />
+                            </p:column>
 
-                    <p:column headerText="Fax">
-                        <h:outputText value="#{com.fax}" />
-                    </p:column>
-                </p:dataTable>
+                            <p:column headerText="Phone">
+                                <h:outputText value="#{com.phone}" />
+                            </p:column>
 
-                <p:spacer height="10 px" />
+                            <p:column headerText="Fax">
+                                <h:outputText value="#{com.fax}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:spacer height="10 px" />
 
-                <p:panel id="companydetails" header="#{companyController.companyHeader}" rendered="#{companyController.selectedCompany ne null}">
-                    <f:facet name="actions">
-                         <p:commandButton styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                                          immediate="true"
-                                          actionListener="#{companyController.saveCompany()}"
-                                        update="@widgetVar(comtable), :growl" icon="fa fa-save" />
-                    </f:facet>
-                    <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" 
-                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                        <p:outputLabel value="Company Id:" for="cno" />
-                        <p:inputText id="cno" value="#{companyController.selectedCompany.companyid}" disabled="true" style="width: 100% !important"/>
+                    <h:form id="comedit">
+                        <p:panel id="companydetails" header="#{companyController.companyHeader}" rendered="#{companyController.selectedCompany ne null}">
+                            <f:facet name="actions">
+                                <p:commandButton id="btnsave" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                                                 actionListener="#{companyController.saveCompany()}" 
+                                                 update=":comlist, :growl" icon="fa fa-save" />
+                            </f:facet>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Company Id:" for="cno" />
+                                <p:inputText id="cno" value="#{companyController.selectedCompany.companyid}" disabled="true" style="width: 100% !important"/>
 
-                        <p:outputLabel value="Name:" for="cname" />
-                        <p:inputText id="cname" placeholder="Company Name" value="#{companyController.selectedCompany.companyname}" style="width: 100% !important"/>
+                                <p:outputLabel value="Name:" for="cname" />
+                                <p:inputText id="cname" placeholder="Company Name" value="#{companyController.selectedCompany.companyname}" style="width: 100% !important"/>
 
-                        <p:outputLabel value="CR No:" for="crno" />
-                        <p:inputText id="crno" placeholder="CR No" value="#{companyController.selectedCompany.crno}" style="width: 100% !important"/>
+                                <p:outputLabel value="CR No:" for="crno" />
+                                <p:inputText id="crno" placeholder="CR No" value="#{companyController.selectedCompany.crno}" style="width: 100% !important"/>
 
-                        <p:outputLabel value="Phone:" for="phone" />
-                        <p:inputText id="phone" placeholder="Phone" value="#{companyController.selectedCompany.phone}" style="width: 100% !important"/>
+                                <p:outputLabel value="Phone:" for="phone" />
+                                <p:inputText id="phone" placeholder="Phone" value="#{companyController.selectedCompany.phone}" style="width: 100% !important"/>
 
-                        <p:outputLabel value="Fax:" for="fax" />
-                        <p:inputText id="fax" placeholder="Fax" value="#{companyController.selectedCompany.fax}" style="width: 100% !important"/>
+                                <p:outputLabel value="Fax:" for="fax" />
+                                <p:inputText id="fax" placeholder="Fax" value="#{companyController.selectedCompany.fax}" style="width: 100% !important"/>
 
-                    </p:panelGrid>
-                </p:panel>
-            </div>
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </div>
 
-            <!-- Right Side -->
-            <div class="ui-g-12 ui-lg-4">
+                <!-- Right Side -->
+                <div class="ui-g-12 ui-lg-6">
+                    <h:form id="branchlist">
+                        <p:dataTable id="branchtable" var="branch" widgetVar="btable"
+                                     value="#{companyController.branchList}"
+                                     selectionMode="single"
+                                     selection="#{companyController.selectedBranch}"
+                                     rowKey="#{branch.branchid}"
+                                     emptyMessage="No Branch found">
+                            <p:ajax event="rowSelect" update=":branchedit" />
+                            <f:facet name="header">
+                                Branch List for #{companyController.selectedCompany.companyname}
+                                <p:commandButton id="btnbedit" actionListener="#{companyController.createNewBranch()}"
+                                                 update=":branchedit"
+                                                 icon="fa fa-plus" style="float: right;"/>
+                            </f:facet>
 
+                            <p:column headerText="Id">
+                                <h:outputText value="#{branch.branchid}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 40%">
+                                <h:outputText value="#{branch.branchname}" />
+                            </p:column>
+
+                            <p:column headerText="Short">
+                                <h:outputText value="#{branch.abbreviation}" />
+                            </p:column>
+
+                            <p:column headerText="CR No">
+                                <h:outputText value="#{branch.crno}" />
+                            </p:column>
+
+                            <p:column headerText="Phone">
+                                <h:outputText value="#{branch.phone}" />
+                            </p:column>
+
+                            <p:column headerText="Fax">
+                                <h:outputText value="#{branch.fax}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:spacer height="10 px" />
+
+                    <h:form id="branchedit">
+                        <p:panel id="branchdetails" header="#{companyController.branchHeader}" rendered="#{companyController.selectedBranch ne null}">
+                            <f:facet name="actions">
+                                <p:commandButton id="btnsave" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                                                 actionListener="#{companyController.saveBranch()}" 
+                                                 update=":branchlist, :growl" icon="fa fa-save" />
+                            </f:facet>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Branch Id:" for="bno" />
+                                <p:inputText id="bno" value="#{companyController.selectedBranch.branchid}" disabled="true" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Name:" for="bname" />
+                                <p:inputText id="bname" placeholder="Branch Name" value="#{companyController.selectedBranch.branchname}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Short Name:" for="sname" />
+                                <p:inputText id="sname" placeholder="Short Name" value="#{companyController.selectedBranch.abbreviation}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="CR No:" for="bcrno" />
+                                <p:inputText id="bcrno" placeholder="CR No" value="#{companyController.selectedBranch.crno}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Phone:" for="bphone" />
+                                <p:inputText id="bphone" placeholder="Phone" value="#{companyController.selectedBranch.phone}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Fax:" for="bfax" />
+                                <p:inputText id="bfax" placeholder="Fax" value="#{companyController.selectedBranch.fax}" style="width: 100% !important"/>
+
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </div>
             </div>
         </div>
-    </div>
+    </ui:define>
 
 </ui:composition>

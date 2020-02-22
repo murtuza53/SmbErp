@@ -61,8 +61,8 @@ public class TableKeyController extends AbstractController<TableKey> {
         return getNextKey("unit");
     }
     
-    public synchronized long getBrandNextId(){
-        return getNextKey("brand");
+    public synchronized int getBrandNextId(){
+        return (int)getNextKey("brand");
     }
     
     public synchronized long getGroupNextId(){

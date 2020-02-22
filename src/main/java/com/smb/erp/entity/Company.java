@@ -16,7 +16,7 @@ public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer companyid = 0;
 
     private String addresss;
@@ -204,6 +204,20 @@ public class Company implements Serializable {
         this.branches = branches;
     }
 
+    public Branch addBranch(Branch br) {
+        getBranches().add(br);
+        br.setCompany(this);
+
+        return br;
+    }
+
+    public Branch removeBranch(Branch br) {
+        getBranches().remove(br);
+        br.setCompany(null);
+
+        return br;
+    }
+    
     @Override
     public String toString() {
         return companyname + " [" + companyid + "]";
