@@ -19,9 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface BusinessPartnerRepository extends BaseRepository<BusinessPartner, Integer> {
     
     @Query("SELECT b FROM BusinessPartner as b WHERE (b.companyname LIKE %:criteria% OR b.email1 LIKE %:criteria%) "
-            + "AND (b.companytypes LIKE %:customer% OR b.companytypes LIKE %:supplier%) ORDER BY b.companyname")
-    List<BusinessPartner> findBusinessPartnerByTypeBySearchCriteria(@Param("criteria") String criteria, @Param("customer") String customer,
-                                                                    @Param("supplier") String supplier);
+            + "AND b.companytypes LIKE %:bustype% ORDER BY b.companyname")
+    List<BusinessPartner> findBusinessPartnerByTypeBySearchCriteria(@Param("criteria") String criteria, @Param("bustype") String bustype);
 
     @Query("SELECT b FROM BusinessPartner as b WHERE b.companyname LIKE %:criteria% OR b.email1 LIKE %:criteria% ORDER BY b.companyname")
     List<BusinessPartner> findBusinessPartnerBySearchCriteria(@Param("criteria") String criteria);

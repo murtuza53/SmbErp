@@ -9,6 +9,7 @@ import com.smb.erp.entity.Account;
 import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.SystemDefaultsRepository;
+import com.smb.erp.util.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -57,6 +58,14 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
     
     public Account getDefaultAccount(String propertyname){
         return accountRepo.getOne(propertyTable.get("Account." + propertyname));
+    }
+    
+    public List<String> getAsList(String propertyname){
+        return StringUtils.tokensToList(propertyTable.get("List." + propertyname));
+    }
+
+    public List<String> getAsList(String propertyname, String firstValue){
+        return StringUtils.tokensToList(propertyTable.get("List." + propertyname), firstValue);
     }
     
     public List<SystemDefaults> findAllData(){

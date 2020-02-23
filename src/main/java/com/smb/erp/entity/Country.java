@@ -27,7 +27,7 @@ public class Country implements Serializable {
 
     private String currencysym;
 
-    private Boolean defcountry;
+    private boolean defcountry;
 
     private double rate;
 
@@ -86,11 +86,11 @@ public class Country implements Serializable {
         this.currencysym = currencysym;
     }
 
-    public Boolean getDefcountry() {
+    public boolean getDefcountry() {
         return this.defcountry;
     }
 
-    public void setDefcountry(Boolean defcountry) {
+    public void setDefcountry(boolean defcountry) {
         this.defcountry = defcountry;
     }
 

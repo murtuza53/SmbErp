@@ -99,6 +99,20 @@
             <version>2.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/net.sf.barcode4j/barcode4j -->
+        <dependency>
+            <groupId>net.sf.barcode4j</groupId>
+            <artifactId>barcode4j</artifactId>
+            <version>2.1</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/net.glxn/qrgen -->
+        <dependency>
+            <groupId>net.glxn</groupId>
+            <artifactId>qrgen</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

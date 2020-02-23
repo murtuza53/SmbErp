@@ -85,7 +85,7 @@ public class ProductTreeViewController implements Serializable {
         Product p = new Product();
         p.setCreatedon(new Date());
         p.setProdcategory((ProductCategory) getSelectedNode().getData());
-        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
+        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "product", DocumentTab.MODE.NEW);
         mainTabs.add(tab);
     }
 
@@ -109,10 +109,10 @@ public class ProductTreeViewController implements Serializable {
         p.setCreatedon(new Date());
         p.setProdcategory((ProductCategory) getSelectedNode().getData());
         setSelectedProduct(p);
-        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "inventory/product", DocumentTab.MODE.NEW);
+        DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
 
-        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
+        facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);
     }
 
     public void editTab_In_newBtab() throws IOException {
@@ -126,10 +126,10 @@ public class ProductTreeViewController implements Serializable {
         flash.setKeepMessages(true);
         flash.setRedirect(true);
 
-        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "inventory/product", DocumentTab.MODE.EDIT);
+        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "product", DocumentTab.MODE.EDIT);
         productMap.put(windowId, tab);
 
-        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
+        facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);
     }
 
     public void cloneTab_In_newBtab() throws IOException {
@@ -144,10 +144,10 @@ public class ProductTreeViewController implements Serializable {
         flash.setKeepMessages(true);
         flash.setRedirect(true);
 
-        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "New Product", "inventory/product", DocumentTab.MODE.NEW);
+        DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "New Product", "product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
 
-        facesContext.getExternalContext().redirect("inventory/product.xhtml?windowid=" + windowId);
+        facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);
     }
 
     public void refreshCategoryTree() {

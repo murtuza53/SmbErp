@@ -28,7 +28,7 @@ public class BusinessPartner implements Serializable {
 
     private String companytypes;        //Customer, Supplier
 
-    private String creditstatus;
+    private String creditstatus;        //Cash, 30 Days, 60 Days, 90 Days, PDC
 
     private String description;
 
@@ -40,7 +40,7 @@ public class BusinessPartner implements Serializable {
 
     private String fax2;
 
-    private byte lporequired;
+    private boolean lporequired;
 
     private String pbone2;
 
@@ -49,6 +49,18 @@ public class BusinessPartner implements Serializable {
     private String pobox;
 
     private String website;
+    
+    private String shopno;
+    
+    private String buildingno;
+    
+    private String roadno;
+    
+    private String blockno;
+    
+    private String town;
+    
+    private String area;
 
     @XmlTransient
     @Transient
@@ -73,7 +85,7 @@ public class BusinessPartner implements Serializable {
     private Country country;
 
     //bi-directional many-to-one association to CreditLimit
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "creditlimitno")
     private CreditLimit creditlimit;
 
@@ -166,11 +178,11 @@ public class BusinessPartner implements Serializable {
         this.fax2 = fax2;
     }
 
-    public byte getLporequired() {
+    public boolean getLporequired() {
         return this.lporequired;
     }
 
-    public void setLporequired(byte lporequired) {
+    public void setLporequired(boolean lporequired) {
         this.lporequired = lporequired;
     }
 
@@ -345,11 +357,11 @@ public class BusinessPartner implements Serializable {
     }
 
     public boolean isCustomer() {
-        return getCompanytypes().indexOf(CUSTOMER) >= 0;
+        return getCompanytypes().contains(CUSTOMER);
     }
 
     public boolean isSupplier() {
-        return getCompanytypes().indexOf(SUPPLIER) >= 0;
+        return getCompanytypes().contains(SUPPLIER);
     }
 
     public static String[] getAvailableCompanyTypes() {
@@ -361,7 +373,7 @@ public class BusinessPartner implements Serializable {
             return null;
         }
         StringTokenizer tokens = new StringTokenizer(getCompanytypes(), ",");
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         while (tokens.hasMoreTokens()) {
             String token = tokens.nextToken().trim();
             if (token.length() > 0) {
@@ -424,6 +436,90 @@ public class BusinessPartner implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the shopno
+     */
+    public String getShopno() {
+        return shopno;
+    }
+
+    /**
+     * @param shopno the shopno to set
+     */
+    public void setShopno(String shopno) {
+        this.shopno = shopno;
+    }
+
+    /**
+     * @return the buildingno
+     */
+    public String getBuildingno() {
+        return buildingno;
+    }
+
+    /**
+     * @param buildingno the buildingno to set
+     */
+    public void setBuildingno(String buildingno) {
+        this.buildingno = buildingno;
+    }
+
+    /**
+     * @return the roadno
+     */
+    public String getRoadno() {
+        return roadno;
+    }
+
+    /**
+     * @param roadno the roadno to set
+     */
+    public void setRoadno(String roadno) {
+        this.roadno = roadno;
+    }
+
+    /**
+     * @return the blockno
+     */
+    public String getBlockno() {
+        return blockno;
+    }
+
+    /**
+     * @param blockno the blockno to set
+     */
+    public void setBlockno(String blockno) {
+        this.blockno = blockno;
+    }
+
+    /**
+     * @return the town
+     */
+    public String getTown() {
+        return town;
+    }
+
+    /**
+     * @param town the town to set
+     */
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    /**
+     * @return the area
+     */
+    public String getArea() {
+        return area;
+    }
+
+    /**
+     * @param area the area to set
+     */
+    public void setArea(String area) {
+        this.area = area;
     }
     
 }

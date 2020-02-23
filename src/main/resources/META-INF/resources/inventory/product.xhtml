@@ -33,17 +33,14 @@
                     <p:fieldset legend="Product Details">
                         <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
                                      styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Product No:" for="pno" />
-                            <p:inputText id="pno" value="#{productController.selected.productid}" disabled="true"/>
+                            <p:outputLabel value="Product No:" for="prodno" />
+                            <p:inputText id="prodno" value="#{productController.selected.productid}" disabled="true"/>
 
                             <p:outputLabel value="Product Name:" for="name" />
                             <p:inputText id="name" placeholder="Name" value="#{productController.selected.productname}"/>
 
                             <p:outputLabel value="Supplier Code:" for="supcode" />
                             <p:inputText id="supcode" placeholder="Supplier Code" value="#{productController.selected.supplierscode}" />
-
-                            <p:outputLabel value="Barcode1:" for="barcode1" />
-                            <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" />
 
                             <p:outputLabel value="Category" for="catid" />
                             <p:selectOneMenu id="catid" value="#{productController.prodCategory}" 
@@ -164,6 +161,28 @@
                             <p:inputNumber id="pqty" value="#{productController.selected.packqty}" 
                                            symbol="  #{productController.selected.unit.unitname}" symbolPosition="s"
                                            decimalSeparator="." thousandSeparator="," style="text-align: right"/>
+                        </p:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset legend="Barcode">
+                        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4, ui-grid-col-4" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Product No:" for="pno" />
+                            <p:inputText id="pno" placeholder="Barcode1" value="#{productController.selected.productid}" disabled="true" />
+                            <p:barcode id="prodimage" value="#{productController.selected.productid.toString()}" type="code128" 
+                                       format="svg" title="ProductId"/>
+
+                            <p:outputLabel value="Barcode1:" for="barcode1" />
+                            <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" >
+                                <p:ajax event="blur" update="barcode1image" />
+                            </p:inputText>
+                            <p:barcode id="barcode1image" value="#{productController.selected.barcode1}" type="code128" format="svg" title="Barcode1" />
+
+                            <p:outputLabel value="Barcode2:" for="barcode2" />
+                            <p:inputText id="barcode2" placeholder="Barcode2" value="#{productController.selected.barcode2}" >
+                                <p:ajax event="blur" update="barcode2image" />
+                            </p:inputText>
+                            <p:barcode id="barcode2image" value="#{productController.selected.barcode2}" type="code128" format="svg" title="Barcode2"/>
                         </p:panelGrid>
                     </p:fieldset>
                 </div>

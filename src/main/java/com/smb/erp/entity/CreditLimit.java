@@ -3,79 +3,82 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Objects;
-
 
 /**
  * The persistent class for the creditlimit database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="CreditLimit.findAll", query="SELECT c FROM CreditLimit c")
+@NamedQuery(name = "CreditLimit.findAll", query = "SELECT c FROM CreditLimit c")
 public class CreditLimit implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String creditlimitno;
+    private static final long serialVersionUID = 1L;
 
-	private double amountfc;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    private BigInteger creditlimitno;
 
-	private double amountlc;
+    private double amountfc;
 
-	private BigInteger daysduration;
+    private double amountlc;
 
-	private double rate;
+    private BigInteger daysduration;
 
-	//bi-directional many-to-one association to BusinessPartner
-	//@OneToMany(mappedBy="creditlimit")
-	//private List<BusinessPartner> businesspartners;
+    private double rate;
 
-	public CreditLimit() {
-	}
+    //bi-directional many-to-one association to BusinessPartner
+    //@OneToMany(mappedBy="creditlimit")
+    //private List<BusinessPartner> businesspartners;
+    public CreditLimit() {
+    }
 
-	public String getCreditlimitno() {
-		return this.creditlimitno;
-	}
+    public CreditLimit(int no) {
+        this.creditlimitno = BigInteger.valueOf(no);
+    }
 
-	public void setCreditlimitno(String creditlimitno) {
-		this.creditlimitno = creditlimitno;
-	}
+    public BigInteger getCreditlimitno() {
+        return this.creditlimitno;
+    }
 
-	public double getAmountfc() {
-		return this.amountfc;
-	}
+    public void setCreditlimitno(BigInteger creditlimitno) {
+        this.creditlimitno = creditlimitno;
+    }
 
-	public void setAmountfc(double amountfc) {
-		this.amountfc = amountfc;
-	}
+    public double getAmountfc() {
+        return this.amountfc;
+    }
 
-	public double getAmountlc() {
-		return this.amountlc;
-	}
+    public void setAmountfc(double amountfc) {
+        this.amountfc = amountfc;
+    }
 
-	public void setAmountlc(double amountlc) {
-		this.amountlc = amountlc;
-	}
+    public double getAmountlc() {
+        return this.amountlc;
+    }
 
-	public BigInteger getDaysduration() {
-		return this.daysduration;
-	}
+    public void setAmountlc(double amountlc) {
+        this.amountlc = amountlc;
+    }
 
-	public void setDaysduration(BigInteger daysduration) {
-		this.daysduration = daysduration;
-	}
+    public BigInteger getDaysduration() {
+        return this.daysduration;
+    }
 
-	public double getRate() {
-		return this.rate;
-	}
+    public void setDaysduration(BigInteger daysduration) {
+        this.daysduration = daysduration;
+    }
 
-	public void setRate(double rate) {
-		this.rate = rate;
-	}
+    public double getRate() {
+        return this.rate;
+    }
 
-	/*public List<BusinessPartner> getBusinesspartners() {
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    /*public List<BusinessPartner> getBusinesspartners() {
 		return this.businesspartners;
 	}
 
@@ -96,7 +99,6 @@ public class CreditLimit implements Serializable {
 
 		return businesspartner;
 	}*/
-
     @Override
     public String toString() {
         return "CreditLimit{" + "creditlimitno=" + creditlimitno + ", amountfc=" + amountfc + ", amountlc=" + amountlc + ", daysduration=" + daysduration + '}';
@@ -126,5 +128,5 @@ public class CreditLimit implements Serializable {
         }
         return true;
     }
-        
+
 }
