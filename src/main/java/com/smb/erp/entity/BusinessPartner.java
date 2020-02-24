@@ -49,17 +49,17 @@ public class BusinessPartner implements Serializable {
     private String pobox;
 
     private String website;
-    
+
     private String shopno;
-    
+
     private String buildingno;
-    
+
     private String roadno;
-    
+
     private String blockno;
-    
+
     private String town;
-    
+
     private String area;
 
     @XmlTransient
@@ -95,6 +95,9 @@ public class BusinessPartner implements Serializable {
     //bi-directional many-to-one association to PriceList
     //@OneToMany(mappedBy="businesspartner")
     //private List<PriceList> pricelists;
+    @OneToMany(mappedBy = "partnerid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private List<VatBusinessRegister> businessRegisters;
+
     public BusinessPartner() {
     }
 
@@ -521,5 +524,19 @@ public class BusinessPartner implements Serializable {
     public void setArea(String area) {
         this.area = area;
     }
-    
+
+    /**
+     * @return the businessRegisters
+     */
+    public List<VatBusinessRegister> getBusinessRegisters() {
+        return businessRegisters;
+    }
+
+    /**
+     * @param businessRegisters the businessRegisters to set
+     */
+    public void setBusinessRegisters(List<VatBusinessRegister> businessRegisters) {
+        this.businessRegisters = businessRegisters;
+    }
+
 }
