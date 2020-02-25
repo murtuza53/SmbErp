@@ -7,11 +7,13 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.CreditLimit;
+import com.smb.erp.entity.VatBusinessRegister;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CountryRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -55,6 +57,8 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     private boolean local;
 
     private DocumentTab.MODE mode = DocumentTab.MODE.LIST;
+    
+    private VatBusinessRegister selectedVatRegister;
 
     @Autowired
     public BusinessPartnerController(BusinessPartnerRepository repo) {
@@ -79,15 +83,29 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
                 bus.setCountry(countryRepo.findCountryDefault());
                 bus.setCreditlimit(new CreditLimit(0));
                 setSelected(bus);
+                newVatRegister();
                 mode = DocumentTab.MODE.NEW;
             } else {
                 String bpid = req.getParameter("bpid");
                 if (bpid != null) {
                     setSelected(repo.getOne(Integer.parseInt(bpid)));
+                    if(getSelected().getBusinessRegisters()!=null && getSelected().getBusinessRegisters().size()>0){
+                        selectedVatRegister = getSelected().getBusinessRegisters().get(getSelected().getBusinessRegisters().size()-1);
+                    } else {
+                        newVatRegister();
+                    }
                 }
                 mode = DocumentTab.MODE.EDIT;
             }
         }
+    }
+    
+    public void newVatRegister(){
+        selectedVatRegister = new VatBusinessRegister();
+        selectedVatRegister.setPartnerid(getSelected());
+        List<VatBusinessRegister> list = new LinkedList<VatBusinessRegister>();
+        list.add(selectedVatRegister);
+        getSelected().setBusinessRegisters(list);
     }
 
     public String getTitle() {

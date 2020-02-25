@@ -191,4 +191,18 @@ public class VatBusinessRegister implements Serializable {
         return true;
     }
 
+    /**
+     * @return the partnerid
+     */
+    public BusinessPartner getPartnerid() {
+        return partnerid;
+    }
+
+    /**
+     * @param partnerid the partnerid to set
+     */
+    public void setPartnerid(BusinessPartner partnerid) {
+        this.partnerid = partnerid;
+    }
+
 }
