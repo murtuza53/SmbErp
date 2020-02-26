@@ -94,7 +94,7 @@ public class VatAccountType implements Serializable {
 
     @Override
     public String toString() {
-        return "VatAccountType{" + "vataccounttypeid=" + vataccounttypeid + ", accounttype=" + accounttype + '}';
+        return accounttype + " [" + vataccounttypeid + "]";
     }
 
 

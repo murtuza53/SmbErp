@@ -21,7 +21,7 @@
                             <f:facet name="actions">
                                 <p:commandButton id="btnrefresh" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
                                                  actionListener="#{businessPartnerController.refresh()}" 
-                                                 update="bustable :growl" icon="fa fa-refresh" />
+                                                 update="@form :growl" icon="fa fa-refresh" />
                             </f:facet>
                             <p:panelGrid columns="5" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" 
                                          styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
@@ -31,9 +31,10 @@
                                 <p:outputLabel value="Partner Type:" for="ptype" />
                                 <p:selectOneMenu id="ptype" value="#{businessPartnerController.selectedType}" converter="#{entityConverter}" 
                                                  effect="fold" style="width:90%">
+                                    <f:selectItem itemValue="Both" itemLabel="Both" />
                                     <f:selectItems value="#{businessPartnerController.companyTypes}" />
                                 </p:selectOneMenu>
-                                
+
                             </p:panelGrid>
                         </p:panel>
                     </div>
@@ -47,21 +48,25 @@
                                      emptyMessage="No Business Partner found">
                             <p:ajax event="rowSelect" update="btnedit"/>
                             <f:facet name="header">
-                            <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this" 
-                                             actionListener="#{businessPartnerController.newTab_In_newBtab()}"
-                                             ajax="false" onclick="form.target = '_blank'"/>
+                                List of Business Partners
 
-                            <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
-                                             disabled="#{businessPartnerController.selected ne null}" 
-                                             actionListener="#{businessPartnerController.editTab_In_newBtab()}"
-                                             ajax="false" onclick="form.target = '_blank'"/>
+                                <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
+                                                 style="float: right"
+                                                 disabled="#{businessPartnerController.companyDisabled}" 
+                                                 actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                                 ajax="false" onclick="form.target = '_blank'"/>
+
+                                <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
+                                                 style="float: right"
+                                                 actionListener="#{businessPartnerController.newTab_In_newBtab()}"
+                                                 ajax="false" onclick="form.target = '_blank'"/>
                             </f:facet>
 
-                            <p:column headerText="Id">
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
                                 <h:outputText value="#{bus.partnerid}" />
                             </p:column>
 
-                            <p:column headerText="Name" style="width: 40%">
+                            <p:column headerText="Name" style="width: 20%">
                                 <h:outputText value="#{bus.companyname}" />
                             </p:column>
 
@@ -75,6 +80,22 @@
 
                             <p:column headerText="Fax">
                                 <h:outputText value="#{bus.fax1}" />
+                            </p:column>
+
+                            <p:column headerText="Type">
+                                <h:outputText value="#{bus.companytypes}" />
+                            </p:column>
+
+                            <p:column headerText="TRN No">
+                                <h:outputText value="#{bus.currentVatRegister.trnno}" />
+                            </p:column>
+
+                            <p:column headerText="Vat Category">
+                                <h:outputText value="#{bus.currentVatRegister.vatcategoryid}" />
+                            </p:column>
+
+                            <p:column headerText="Vat Type">
+                                <h:outputText value="#{bus.currentVatRegister.vataccounttypeid}" />
                             </p:column>
                         </p:dataTable>
                     </div>

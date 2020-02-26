@@ -16,9 +16,9 @@ public class CreditLimit implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
-    private BigInteger creditlimitno;
+    private Integer creditlimitno = 0;
 
     private double amountfc;
 
@@ -35,14 +35,14 @@ public class CreditLimit implements Serializable {
     }
 
     public CreditLimit(int no) {
-        this.creditlimitno = BigInteger.valueOf(no);
+        this.creditlimitno = no;
     }
 
-    public BigInteger getCreditlimitno() {
+    public Integer getCreditlimitno() {
         return this.creditlimitno;
     }
 
-    public void setCreditlimitno(BigInteger creditlimitno) {
+    public void setCreditlimitno(Integer creditlimitno) {
         this.creditlimitno = creditlimitno;
     }
 

@@ -85,7 +85,7 @@ public class VatCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "VatCategory{" + "vatcategoryid=" + vatcategoryid + ", categoryname=" + categoryname + ", vatpercentage=" + vatpercentage + '}';
+        return categoryname + " [" + vatcategoryid + "]";
     }
 
     @Override

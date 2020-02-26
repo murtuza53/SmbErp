@@ -20,7 +20,7 @@ public class BusinessPartner implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String partnerid;
+    private Integer partnerid;
 
     private String address;
 
@@ -101,11 +101,11 @@ public class BusinessPartner implements Serializable {
     public BusinessPartner() {
     }
 
-    public String getPartnerid() {
+    public Integer getPartnerid() {
         return this.partnerid;
     }
 
-    public void setPartnerid(String partnerid) {
+    public void setPartnerid(Integer partnerid) {
         this.partnerid = partnerid;
     }
 
@@ -539,4 +539,10 @@ public class BusinessPartner implements Serializable {
         this.businessRegisters = businessRegisters;
     }
 
+    public VatBusinessRegister getCurrentVatRegister(){
+        if(getBusinessRegisters()!=null && getBusinessRegisters().size()>0){
+            return getBusinessRegisters().get(getBusinessRegisters().size()-1);
+        }
+        return null;
+    }
 }

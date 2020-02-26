@@ -19,7 +19,7 @@ public class VatBusinessRegister implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer vatregisterid;
 
-    private String state;
+    private String countrystate;
 
     private String trnno;
 
@@ -66,15 +66,15 @@ public class VatBusinessRegister implements Serializable {
     /**
      * @return the state
      */
-    public String getState() {
-        return state;
+    public String getCountryState() {
+        return countrystate;
     }
 
     /**
      * @param state the state to set
      */
-    public void setState(String state) {
-        this.state = state;
+    public void setCountryState(String state) {
+        this.countrystate = state;
     }
 
     /**

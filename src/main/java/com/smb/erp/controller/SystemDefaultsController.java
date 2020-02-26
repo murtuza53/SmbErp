@@ -60,7 +60,12 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
         return accountRepo.getOne(propertyTable.get("Account." + propertyname));
     }
     
+    public String getDefaultList(String propertyname){
+        return propertyTable.get("List." + propertyname);
+    }
+    
     public List<String> getAsList(String propertyname){
+        //System.out.println("getAsList => " + propertyname + " => " + propertyTable.get("List." + propertyname));
         return StringUtils.tokensToList(propertyTable.get("List." + propertyname));
     }
 

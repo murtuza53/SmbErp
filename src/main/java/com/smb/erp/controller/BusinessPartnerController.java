@@ -12,9 +12,12 @@ import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CountryRepository;
 import com.smb.erp.util.JsfUtil;
+import com.smb.erp.util.StringUtils;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -22,6 +25,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -39,25 +44,30 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
 
     @Autowired
     AccountRepository accRepo;
-    
+
     @Autowired
     SystemDefaultsController defaultController;
-    
+
     @Autowired
     CountryRepository countryRepo;
 
+    @Autowired
+    TableKeyController keyController;
+
     private List<String> companyTypes;
     
+    private String companyTypeAll;
+
     private List<String> creditStatusTypes;
 
-    private String selectedType = "All";
+    private String selectedType = "Both";
 
     private String criteria;
 
     private boolean local;
 
     private DocumentTab.MODE mode = DocumentTab.MODE.LIST;
-    
+
     private VatBusinessRegister selectedVatRegister;
 
     @Autowired
@@ -70,7 +80,9 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     @PostConstruct
     public void init() {
         //companyTypes = new LinkedList<>(Arrays.asList(BusinessPartner.getAvailableCompanyTypes()));
-        companyTypes = defaultController.getAsList("BusinessPartnerType", "All");
+        companyTypes = defaultController.getAsList("BusinessPartnerType");
+        companyTypeAll = defaultController.getDefaultList("BusinessPartnerType");
+        //System.out.println("getAsList => CreditStatus => " + defaultController.getAsList("CreditStatus"));
         creditStatusTypes = defaultController.getAsList("CreditStatus");
         //companyTypes.addFirst("All");
 
@@ -89,8 +101,8 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
                 String bpid = req.getParameter("bpid");
                 if (bpid != null) {
                     setSelected(repo.getOne(Integer.parseInt(bpid)));
-                    if(getSelected().getBusinessRegisters()!=null && getSelected().getBusinessRegisters().size()>0){
-                        selectedVatRegister = getSelected().getBusinessRegisters().get(getSelected().getBusinessRegisters().size()-1);
+                    if (getSelected().getBusinessRegisters() != null && getSelected().getBusinessRegisters().size() > 0) {
+                        selectedVatRegister = getSelected().getBusinessRegisters().get(getSelected().getBusinessRegisters().size() - 1);
                     } else {
                         newVatRegister();
                     }
@@ -99,13 +111,35 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
             }
         }
     }
-    
-    public void newVatRegister(){
+
+    @Transactional
+    public void saveBusiness(){
+        try {
+            if (getSelected().getPartnerid() == null || getSelected().getPartnerid() == 0) {
+                getSelected().setPartnerid(keyController.getBusinessPartnerNextId());
+            }
+            super.save();
+            setSelected(repo.getOne(getSelected().getPartnerid()));
+            JsfUtil.addSuccessMessage(criteria);
+        } catch (Exception ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            JsfUtil.addErrorMessage(ex, "Could not save due to error");
+        }
+    }
+
+    public void newVatRegister() {
         selectedVatRegister = new VatBusinessRegister();
-        selectedVatRegister.setPartnerid(getSelected());
+        getSelectedVatRegister().setPartnerid(getSelected());
         List<VatBusinessRegister> list = new LinkedList<VatBusinessRegister>();
-        list.add(selectedVatRegister);
+        list.add(getSelectedVatRegister());
         getSelected().setBusinessRegisters(list);
+    }
+
+    public boolean getCompanyDisabled() {
+        if (getSelected() == null) {
+            return true;
+        }
+        return false;
     }
 
     public String getTitle() {
@@ -121,7 +155,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     }
 
     public void refresh() {
-        if (selectedType.equalsIgnoreCase("All")) {
+        if (selectedType.equalsIgnoreCase("Both")) {
             setItems(repo.findBusinessPartnerBySearchCriteria(criteria));
         } else {
             setItems(repo.findBusinessPartnerByTypeBySearchCriteria(criteria, selectedType));
@@ -192,7 +226,28 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
         this.local = local;
     }
 
-    public List<String> getCreditStatusTypes(){
+    public List<String> getCreditStatusTypes() {
         return creditStatusTypes;
+    }
+
+    /**
+     * @return the selectedVatRegister
+     */
+    public VatBusinessRegister getSelectedVatRegister() {
+        return selectedVatRegister;
+    }
+
+    /**
+     * @return the companyTypeAll
+     */
+    public String getCompanyTypeAll() {
+        return companyTypeAll;
+    }
+
+    /**
+     * @param companyTypeAll the companyTypeAll to set
+     */
+    public void setCompanyTypeAll(String companyTypeAll) {
+        this.companyTypeAll = companyTypeAll;
     }
 }

@@ -16,7 +16,7 @@
 
     <ui:define name="toolbar">
         <li>
-            <p:commandButton title="Save" actionListener="#{businessPartnerController.save}" update=":mainform, :growl"
+            <p:commandButton title="Save" actionListener="#{businessPartnerController.saveBusiness}" update=":mainform, :growl"
                              icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
         </li>
         <li>
@@ -30,7 +30,7 @@
             <div class="ui-g">
                 <!-- Left Side -->
                 <div class="ui-g-12 ui-lg-6">
-                    <p:fieldset legend="Company Details">
+                    <p:fieldset legend="Business Partner Details">
                         <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
                                      styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                             <p:outputLabel value="Company Id:" for="comno" />
@@ -40,8 +40,9 @@
                             <p:inputText id="name" placeholder="Business Partner Name" value="#{businessPartnerController.selected.companyname}"/>
 
                             <p:outputLabel value="Partner Type:" for="ptype" />
-                            <p:selectOneMenu id="ptype" value="#{businessPartnerController.selected.companyname}" converter="#{entityConverter}" 
+                            <p:selectOneMenu id="ptype" value="#{businessPartnerController.selected.companytypes}" converter="#{entityConverter}" 
                                              effect="fold" style="width:100%">
+                                <f:selectItem itemValue="#{businessPartnerController.companyTypeAll}" itemLabel="Both" />
                                 <f:selectItems value="#{businessPartnerController.companyTypes}" />
                             </p:selectOneMenu>
 
@@ -67,6 +68,54 @@
 
                             <p:outputLabel value="Credit Days:" for="days" />
                             <p:inputNumber id="days" value="#{businessPartnerController.selected.creditlimit.daysduration}" minValue="0" maxValue="90" decimalPlaces="0" />
+                        </p:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset legend="VAT">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Registration Id:" for="regid" />
+                            <p:inputText id="regid" placeholder="Registration Id" value="#{businessPartnerController.selectedVatRegister.vatregisterid}" disabled="true"/>
+
+                            <p:outputLabel value="State:" for="state" />
+                            <p:inputText id="state" value="#{businessPartnerController.selectedVatRegister.countryState}" />
+
+                            <p:outputLabel value="VAT Number:" for="trno" />
+                            <p:inputText id="trno" value="#{businessPartnerController.selectedVatRegister.trnno}" />
+
+                            <p:outputLabel value="Vat Category:" for="vcat" />
+                            <p:selectOneMenu id="vcat" value="#{businessPartnerController.selectedVatRegister.vatcategoryid}" converter="#{entityConverter}" 
+                                             style="width:100%">
+                                <f:selectItems value="#{vatcategoryController.vatCategoryAll}" var="vatcat" itemValue="#{vatcat}" itemLabel="#{vatcat.categoryname}">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Category Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{vatcat.categoryname}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Vat %"/>
+                                        </f:facet>
+                                        <h:outputText value="#{vatcat.vatpercentage}" />
+                                    </p:column>
+                                </f:selectItems>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Vat Account Type" for="vacc" />
+                            <p:selectOneMenu id="vacc" value="#{businessPartnerController.selectedVatRegister.vataccounttypeid}" converter="#{entityConverter}" 
+                                             style="width:100%">
+                                <f:selectItems value="#{vatacounttypeController.vatAccountTypeAll}" var="vatacc" itemValue="#{vatacc}" itemLabel="#{vatacc.accounttype}">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Account Type"/>
+                                        </f:facet>
+                                        <h:outputText value="#{vatacc.accounttype}" />
+                                    </p:column>
+                                </f:selectItems>
+                            </p:selectOneMenu>
+
                         </p:panelGrid>
                     </p:fieldset>
                 </div>
