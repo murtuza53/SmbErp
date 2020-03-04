@@ -5,11 +5,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/california-layout/template.xhtml">
     <ui:define name="title">
-        Product Master
+        Chart of Accounts
     </ui:define>
 
     <ui:define name="breadcrumb">
-        Product Master
+        Chart of Accounts
     </ui:define>
 
     <ui:define name="content">
@@ -18,12 +18,24 @@
                 <div class="ui-g-12">
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
-                            <p:commandButton title="New Category" icon="fa fa-plus" 
-                                             disabled="#{productTreeViewController.newCategoryDisabled}"/>
-                            <p:commandButton title="Edit Category" icon="fa fa-pencil"
-                                             disabled="#{productTreeViewController.editCategoryDisabled}"/>
-                            <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh"
-                                             actionListener="#{productTreeViewController.refreshCategoryTree()}"
+                            <p:commandButton title="New Account Group" icon="fas fa-folder-plus" 
+                                             actionListener="#{chartOfAccountController.createNewAccountGroup()}"
+                                             disabled="#{chartOfAccountController.newGroupDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Edit Account Group" icon="fa fa-edit"
+                                             actionListener="#{chartOfAccountController.editAccountGroup()}"
+                                             disabled="#{chartOfAccountController.editGroupDisabled}"/>
+                            <p:commandButton title="New Account" icon="fas fa-file-medical" 
+                                             actionListener="#{chartOfAccountController.createNewAccount()}"
+                                             disabled="#{chartOfAccountController.newAccountDisabled}"/>
+                            <p:commandButton title="Edit Account" icon="fa fa-file-signature"
+                                             actionListener="#{chartOfAccountController.editAccount()}"
+                                             disabled="#{chartOfAccountController.editAccountDisabled}"/>
+                            <p:commandButton title="Clone Account" icon="fa fa-copy"
+                                             actionListener="#{chartOfAccountController.cloneAccount()}"
+                                             disabled="#{chartOfAccountController.cloneAccountDisabled}"/>
+                            <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh"
+                                             actionListener="#{chartOfAccountController.refreshCoa()}"
                                              update="cattree"/>
                         </f:facet>
 
@@ -44,22 +56,29 @@
                         </f:facet>
                     </p:toolbar>
                 </div>
-                <div class="ui-g-3">
-                    <p:tree id="cattree" value="#{productTreeViewController.root}" var="node" dynamic="true"
+                <div class="ui-g-4">
+                    <p:tree id="cattree" value="#{chartOfAccountController.root}" var="node" dynamic="true"
                             style="width:100%; height:100%;" selectionMode="single"
-                            selection="#{productTreeViewController.selectedNode}">
+                            selection="#{chartOfAccountController.selectedNode}">
                         <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
-                                listener="#{productTreeViewController.onNodeSelect}" />
-                        <p:treeNode type="CAT" expandedIcon="fa fa-folder-open"
+                                listener="#{chartOfAccountController.onNodeSelect}" />
+                        <p:treeNode type="ROOT" expandedIcon="fa fa-book-open"
+                                    collapsedIcon="fa fa-book">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode type="GROUP" expandedIcon="fa fa-folder-open"
                                     collapsedIcon="fa fa-folder">
                             <h:outputText value="#{node}" />
                         </p:treeNode>
-                        <p:treeNode icon="fa fa-file">
+                        <p:treeNode type="ACCOUNT" icon="fa fa-file-contract">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode icon="fa fa-file-alt">
                             <h:outputText value="#{node}" />
                         </p:treeNode>
                     </p:tree>
                 </div>
-                <div class="ui-g-9">
+                <div class="ui-g-8">
                     <p:dataTable id="prodtable" var="prod"
                                  value="#{productTreeViewController.prodList}" widgetVar="ptable"
                                  selection="#{productTreeViewController.selectedProduct}"
@@ -90,6 +109,7 @@
                 </div>
             </div>
         </h:form>
+        <ui:include src="/accounts/accountedit.xhtml"/>
     </ui:define>
 
 </ui:composition>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="AccountEditDlg" widgetVar="AccountEditDialog" modal="true" resizable="true"  appendTo="@(body)" header="Account" closeOnEscape="true">
+
+            <h:form id="AccountForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="4" columnClasses="column, ,column">
+
+                        <h:outputLabel value="Account Id" for="accid" />
+                        <p:inputText id="accid" value="#{chartOfAccountController.selectedAccount.accountid}" disabled="true"/>
+
+                        <p:outputLabel value="Type" for="ntype" />
+                        <p:inputText id="ntype" value="#{chartOfAccountController.selectedAccount.nodetype}" title="Node Type" size="40" maxlength="40" disabled="true"/>
+
+                        <p:outputLabel value="Parent" for="par" />
+                        <p:inputText id="par" value="#{chartOfAccountController.selectedAccount.parentid}" title="Parent Group" size="40" maxlength="40" disabled="true"/>
+
+                        <p:outputLabel value="Account Name" for="accname" />
+                        <p:inputText id="accname" value="#{chartOfAccountController.selectedAccount.accountname}" title="Category Symbol" size="40"/>
+
+                        <p:outputLabel value="Account Type" for="acctype" />
+                        <p:selectOneMenu id="acctype" value="#{chartOfAccountController.selectedAccount.accounttype}" effect="fold" style="width:90%"
+                                         required="true" requiredMessage="Account Type is required" rendered="#{chartOfAccountController.selectedAccount ne null}"
+                                         filter="true" filterMatchMode="contains" converter="#{entityConverter}">
+                            <f:selectItems value="#{accounttypeController.items}" var="item" itemLabel="#{item.name}" itemValue="#{item}"/>
+                            <p:column style="width: 70%">
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            <p:column style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{item.acctypeid}"/>
+                            </p:column>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{chartOfAccountController.save}" value="Save" update=":mainform:cattree,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccountEditDialog'));">
+                        <p:confirm header="Confirmation" message="Sure you want to save?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="Cancel" oncomplete="PF('AccountEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

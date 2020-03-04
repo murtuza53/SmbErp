@@ -24,7 +24,7 @@ public interface AccountRepository extends BaseRepository<Account, String> {
     @Query("SELECT a FROM Account as a WHERE (a.accountname LIKE %:criteria% OR a.accountid LIKE %:criteria%) AND a.nodetype='GROUP' ORDER BY a.accountname")
     List<Account> findAccountGroupBySearchCriteria(@Param("criteria") String criteria);
 
-    @Query("SELECT a FROM Account as a WHERE a.parentid.accountid LIKE %:parentid% AND a.nodetype='ACCOUNT' ORDER BY a.accountname")
+    @Query("SELECT a FROM Account as a WHERE a.parentid.accountid=:parentid ORDER BY a.accountid")
     List<Account> findAccountByParentBySearchCriteria(@Param("parentid") String parentid);
     
 }

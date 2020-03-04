@@ -59,7 +59,7 @@ public class ProductTreeViewController implements Serializable {
     }
 
     public void addNode(ProductCategory pc, TreeNode parent) {
-        DefaultTreeNode n = new DefaultTreeNode(pc, parent);
+        DefaultTreeNode n = new DefaultTreeNode("CAT",pc, parent);
 
         if(selectedNode!=null && ((ProductCategory)selectedNode.getData()).getProdcatId().longValue()==pc.getProdcatId().longValue()){
             selectedNode = n;
@@ -152,7 +152,7 @@ public class ProductTreeViewController implements Serializable {
 
     public void refreshCategoryTree() {
         ProductCategory rpc = pccontroller.getRootNode();
-        root = new DefaultTreeNode("Root", null);
+        root = new DefaultTreeNode("CAT","Root", null);
         addNode(rpc, root);
     }
 

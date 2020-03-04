@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
+import org.springframework.data.domain.Sort;
 
 /**
  * Represents an abstract shell of to be used as JSF Controller to be used in
@@ -22,9 +23,10 @@ public abstract class AbstractController<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Class<T> itemClass;
-    private T selected;
-    private List<T> items;
+    protected T selected;
+    protected List<T> items;
     private BaseRepository repository;
+    private Sort sortFields;
 
     public AbstractController() {
     }
@@ -67,8 +69,13 @@ public abstract class AbstractController<T> implements Serializable {
      */
     public List<T> getItems() {
         if (items == null) {
-            items = repository.findAll();
-            System.out.println(itemClass.getSimpleName() + "_List: " + items.size());
+            if (sortFields != null) {
+                items = repository.findAll(sortFields);
+                System.out.println("SortedList: " + items.size());
+            } else {
+                items = repository.findAll();
+                System.out.println("List: " + items.size());
+            }
         }
         return items;
     }
@@ -137,6 +144,7 @@ public abstract class AbstractController<T> implements Serializable {
         if (selected != null) {
             try {
                 repository.save(selected);
+                setItems(null);
                 JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " saved");
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
@@ -149,11 +157,26 @@ public abstract class AbstractController<T> implements Serializable {
         if (selected != null) {
             try {
                 repository.delete(selected);
+                setItems(null);
                 JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " deleted");
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, "Could not deleted due to error");
             }
         }
+    }
+
+    /**
+     * @return the sortField
+     */
+    public Sort getSortFields() {
+        return sortFields;
+    }
+
+    /**
+     * @param sortField the sortField to set
+     */
+    public void setSortFields(Sort sortFields) {
+        this.sortFields = sortFields;
     }
 }
