@@ -6,26 +6,26 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.entity.Account;
-import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.joinfaces.autoconfigure.butterfaces.ButterfacesProperties;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.annotation.SessionScope;
 
 /**
  *
  * @author Burhani152
  */
 @Named
-@SessionScope
+@ViewScoped
 public class ChartOfAccountController implements Serializable {
 
     @Autowired
@@ -63,12 +63,13 @@ public class ChartOfAccountController implements Serializable {
         addNode(ra, root);
     }
 
-    public void save(){
+    public void save() {
         selectedAccount.setAccountid(accController.getAccountNextNo(selectedAccount.getParentid()));
+        System.out.println("Save_Account: " + selectedAccount.getAccountid());
         accRepo.save(selectedAccount);
         JsfUtil.addSuccessMessage("New Account added successfuly");
     }
-    
+
     public void addNode(Account acc, TreeNode parent) {
         DefaultTreeNode n = new DefaultTreeNode(acc.getNodetype(), acc, parent);
 
@@ -93,7 +94,7 @@ public class ChartOfAccountController implements Serializable {
         //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         //FacesContext.getCurrentInstance().addMessage(null, message);
         refreshAccountList();
-        setSelectedAccount((Account)selectedNode.getData());
+        setSelectedAccount((Account) selectedNode.getData());
         //PrimeFaces.current().ajax().update("toolbar");
     }
 
@@ -102,36 +103,38 @@ public class ChartOfAccountController implements Serializable {
         //prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
     }
 
-    public void createNewAccountGroup(){
+    public void createNewAccountGroup() {
         selectedAccount = new Account();
         selectedAccount.setNodetype("GROUP");
-        System.out.println("createNewAccountGroup: " + selectedNode.getData());
-        selectedAccount.setParentid((Account)selectedNode.getData());
-    }
-    
-    public void editAccountGroup(){
-        selectedAccount = (Account)selectedNode.getData();
+        selectedAccount.setParentid((Account) selectedNode.getData());
+        System.out.println("createNewAccountGroup: " + selectedAccount.getParentid());
+        //PrimeFaces.current().ajax().update(":AccountForm");
+        //PrimeFaces.current().executeScript("PF('AccountEditDialog').show()");
     }
 
-    public void createNewAccount(){
+    public void editAccountGroup() {
+        selectedAccount = (Account) selectedNode.getData();
+    }
+
+    public void createNewAccount() {
         selectedAccount = new Account();
         selectedAccount.setNodetype("ACCOUNT");
-        selectedAccount.setParentid((Account)selectedNode.getData());
+        selectedAccount.setParentid((Account) selectedNode.getData());
     }
-    
-    public void editAccount(){
-        selectedAccount = (Account)selectedNode.getData();
+
+    public void editAccount() {
+        selectedAccount = (Account) selectedNode.getData();
     }
-    
-    public void cloneAccount(){
+
+    public void cloneAccount() {
         selectedAccount = new Account();
-        Account acc = (Account)selectedNode.getData();
+        Account acc = (Account) selectedNode.getData();
         selectedAccount.setParentid(acc.getParentid());
         selectedAccount.setAccounttype(acc.getAccounttype());
         selectedAccount.setAccountname(acc.getAccountname());
         selectedAccount.setNodetype(acc.getNodetype());
     }
-    
+
     public boolean getNewGroupDisabled() {
         if (getSelectedNode() == null) {
             //System.out.println("getNewCategoryDisabled: " + getSelectedNode());

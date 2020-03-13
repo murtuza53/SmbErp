@@ -16,12 +16,14 @@
         <h:form id="mainform">
             <div class="ui-g">
                 <div class="ui-g-12">
+                    <p:messages id="messages" showDetail="true">
+                        <p:autoUpdate />
+                    </p:messages>
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
                             <p:commandButton title="New Account Group" icon="fas fa-folder-plus" 
                                              actionListener="#{chartOfAccountController.createNewAccountGroup()}"
-                                             disabled="#{chartOfAccountController.newGroupDisabled}"
-                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                                             disabled="#{chartOfAccountController.newGroupDisabled}" />
                             <p:commandButton title="Edit Account Group" icon="fa fa-edit"
                                              actionListener="#{chartOfAccountController.editAccountGroup()}"
                                              disabled="#{chartOfAccountController.editGroupDisabled}"/>

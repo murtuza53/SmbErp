@@ -7,11 +7,11 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-        <p:dialog id="AccountEditDlg" widgetVar="AccountEditDialog" modal="true" resizable="true"  appendTo="@(body)" header="Account" closeOnEscape="true">
+        <p:dialog id="AccountEditDlg" widgetVar="AccountEditDialog" modal="true" resizable="false"  appendTo="@(body)" 
+                  header="Account" closeOnEscape="true">
 
             <h:form id="AccountForm">
-
-                <h:panelGroup id="display">
+                <h:panelGroup id="display" rendered="#{chartOfAccountController.selectedAccount != null}">
                     <p:panelGrid  columns="4" columnClasses="column, ,column">
 
                         <h:outputLabel value="Account Id" for="accid" />
@@ -24,7 +24,8 @@
                         <p:inputText id="par" value="#{chartOfAccountController.selectedAccount.parentid}" title="Parent Group" size="40" maxlength="40" disabled="true"/>
 
                         <p:outputLabel value="Account Name" for="accname" />
-                        <p:inputText id="accname" value="#{chartOfAccountController.selectedAccount.accountname}" title="Category Symbol" size="40"/>
+                        <p:inputText id="accname" value="#{chartOfAccountController.selectedAccount.accountname}" title="Category Symbol" size="40"
+                                     required="true" requiredMessage="Name is required"/>
 
                         <p:outputLabel value="Account Type" for="acctype" />
                         <p:selectOneMenu id="acctype" value="#{chartOfAccountController.selectedAccount.accounttype}" effect="fold" style="width:90%"
@@ -45,9 +46,8 @@
                             </p:column>
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{chartOfAccountController.save}" value="Save" update=":mainform:cattree,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccountEditDialog'));">
-                        <p:confirm header="Confirmation" message="Sure you want to save?" icon="ui-icon-alert"/>
-                    </p:commandButton>
+                    <p:commandButton actionListener="#{chartOfAccountController.save}" value="Save" update=":mainform:cattree,:growl"
+                                     oncomplete="handleSubmit(xhr,status,args,PF('AccountEditDialog'));"/>
                     <p:commandButton value="Cancel" oncomplete="PF('AccountEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
                 </h:panelGroup>
 
