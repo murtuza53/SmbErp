@@ -26,5 +26,8 @@ public interface AccountRepository extends BaseRepository<Account, String> {
 
     @Query("SELECT a FROM Account as a WHERE a.parentid.accountid=:parentid ORDER BY a.accountid")
     List<Account> findAccountByParentBySearchCriteria(@Param("parentid") String parentid);
+
+    @Query("SELECT a FROM Account as a WHERE a.parentid.accountid=:parentid ORDER BY a.accountid DESC")
+    List<Account> findAccountByParentLast(@Param("parentid") String parentid);
     
 }

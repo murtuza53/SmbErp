@@ -64,10 +64,16 @@ public class ChartOfAccountController implements Serializable {
     }
 
     public void save() {
-        selectedAccount.setAccountid(accController.getAccountNextNo(selectedAccount.getParentid()));
-        System.out.println("Save_Account: " + selectedAccount.getAccountid());
-        accRepo.save(selectedAccount);
-        JsfUtil.addSuccessMessage("New Account added successfuly");
+        if (selectedAccount.getAccountid() == null) {
+            selectedAccount.setAccountid(accController.getAccountNextNo(selectedAccount.getParentid()));
+            //System.out.println("Save_Account: " + selectedAccount.getAccountid());
+            accRepo.save(selectedAccount);
+            JsfUtil.addSuccessMessage(selectedAccount + " added successfully");
+        } else {
+            accRepo.save(selectedAccount);
+            JsfUtil.addSuccessMessage(selectedAccount + " updated successfully");
+        }
+        reloadNode(selectedNode);
     }
 
     public void addNode(Account acc, TreeNode parent) {
@@ -90,6 +96,16 @@ public class ChartOfAccountController implements Serializable {
         }
     }
 
+    public void reloadNode(TreeNode parent){
+        parent.getChildren().clear();
+        List<Account> childrens = accRepo.findAccountByParentBySearchCriteria(((Account)parent.getData()).getAccountid());
+        if (childrens != null) {
+            for (Account a : childrens) {
+                addNode(a, parent);
+            }
+        }
+    }
+    
     public void onNodeSelect(NodeSelectEvent event) {
         //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         //FacesContext.getCurrentInstance().addMessage(null, message);
@@ -107,7 +123,7 @@ public class ChartOfAccountController implements Serializable {
         selectedAccount = new Account();
         selectedAccount.setNodetype("GROUP");
         selectedAccount.setParentid((Account) selectedNode.getData());
-        System.out.println("createNewAccountGroup: " + selectedAccount.getParentid());
+        //System.out.println("createNewAccountGroup: " + selectedAccount.getParentid());
         //PrimeFaces.current().ajax().update(":AccountForm");
         //PrimeFaces.current().executeScript("PF('AccountEditDialog').show()");
     }

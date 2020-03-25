@@ -13,7 +13,6 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -46,35 +45,35 @@ public class AccountController extends AbstractController<Account> {
         return repo.findAccountLeafBySearchCriteria(criteria);
     }
 
-    @Transactional
     public List findAccountsInLedger(String parentNo) {
         //return em.createNamedQuery("SELECT OBJECT(o) FROM Account o WHERE o.parent.accountNo=:parentNo ORDER BY o.accountName ASC").setParameter("parentNo", parentNo).getResultList();
         return repo.findAccountByParentBySearchCriteria(parentNo);
     }
 
-    @Transactional
     public Account findLastAccountInLedger(String parentNo) {
         List<Account> accounts = null;
 
         //Account parent = repo.getOne(parentNo);   //findAccountByNo(parentNo);
+        //System.out.println("findLastAccountInLedger: " + parentNo);
 
-        if (parentNo == null) {
+        if (parentNo != null) {
             accounts = em.createQuery(
-                    "SELECT OBJECT(a) FROM Account AS a WHERE " + "a.accountid=" + parentNo
+                    "SELECT OBJECT(a) FROM Account AS a WHERE a.parentid.accountid=" + parentNo
                     + " ORDER BY a.accountid DESC").setMaxResults(1).getResultList();
-            //accounts = repo.findAccountGroupBySearchCriteria("");
+
+            //accounts = em.createNamedQuery("SELECT * FROM account where parentid=" + parentNo + " order by accountid desc limit 1").getResultList();
+            //accounts = repo.findAccountByParentBySearchCriteria(parentNo);
         }
         if (accounts == null) {
             System.out.println("LAST ACCOUNTNO: null");
             return null;
-        } else if(accounts.isEmpty()){
+        } else if (accounts.isEmpty()) {
             return null;
         }
-        System.out.println("LAST ACCOUNTNO: " + accounts.get(0));
-        return accounts.get(0);
+        System.out.println("LAST ACCOUNTNO: " + accounts.get(accounts.size()-1));
+        return accounts.get(accounts.size()-1);
     }
 
-    @Transactional
     public String getAccountNextNo(Account parent) {
 
         String returnValue = "10";
@@ -117,11 +116,10 @@ public class AccountController extends AbstractController<Account> {
             }
         }
         //LAST_NO = returnValue;
-        System.out.println(parent.getAccountid() + "\t" + account.getAccountid() + "\t" + returnValue);
+        System.out.println("parent:" + parent + "\t" + "last:" + account + "\t" + "newid:" + returnValue);
         return returnValue;
     }
 
-    @Transactional
     private String nextValue(List<Account> accounts) {
         String value = "10";
         for (Account account : accounts) {
@@ -133,7 +131,6 @@ public class AccountController extends AbstractController<Account> {
         return getNextCount(value);
     }
 
-    @Transactional
     private String getNextCount(String count) {
         String retVal = "10";
         if (count == null) {
@@ -159,7 +156,6 @@ public class AccountController extends AbstractController<Account> {
         return retVal;
     }
 
-    @Transactional
     private String getNextCountOf4Digit(String count) {
         String retVal = "1000";
 
