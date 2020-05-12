@@ -63,7 +63,7 @@
                     <div class="route-bar">
                         <div class="route-bar-breadcrumb">
                             <i class="fa fa-home"></i> <span>/ </span>
-                            <ui:insert name="viewname" />
+                            <ui:insert name="breadcrumb" />
                         </div>
 
                         <ui:include src="./route-bar-menu_doc.xhtml" />
@@ -71,6 +71,16 @@
 
                     <div class="w3-container">
                         <div class="layout-main-content">
+                            <script type="text/javascript">
+                                var myEvent = window.attachEvent || window.addEventListener;
+                                var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+                                myEvent(chkevent, function (e) { // For >=IE7, Chrome, Firefox
+                                    var confirmationMessage = 'Are you sure to leave the page?';  // a space
+                                    (e || window.event).returnValue = confirmationMessage;
+                                    return confirmationMessage;
+                                });
+                            </script> 
                             <ui:insert name="content"/>
                         </div>
                     </div>

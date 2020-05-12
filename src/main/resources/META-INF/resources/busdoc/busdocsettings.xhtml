@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/california-layout/template.xhtml">
+    <ui:define name="title">
+        Business Document Settings
+    </ui:define>
+
+    <ui:define name="breadcrumb">
+        Business Document Settings
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="ui-g">
+                <div class="ui-g-12">
+
+                    <div class="ui-g-12 ui-lg-12">
+                        <p:dataTable id="bustable" var="bus" widgetVar="btable"
+                                     value="#{busDocInfoController.items}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selected}"
+                                     rowKey="#{bus.bdinfoid}"
+                                     reflow="true"
+                                     emptyMessage="No Document Definition found">
+                            <p:ajax event="rowSelect" update="btnedit"/>
+                            <f:facet name="header">
+                                List of Business Document
+                                <p:commandButton id="btnrefresh" style="float: right"
+                                                 actionListener="#{busDocInfoController.refresh()}"
+                                                 update="@form :growl" icon="fa fa-refresh" />
+
+                                <p:commandButton id="btnedit" title="Edit Business Document Definition" icon="fa fa-pencil" process="@this" 
+                                                 style="float: right"
+                                                 disabled="#{empty busDocInfoController.selected}" 
+                                                 actionListener="#{busDocInfoController.edit_in_tab()}"
+                                                 ajax="false" onclick="form.target = '_blank'"/>
+
+                                <p:commandButton id="btnnew" title="New Business Document Definition" icon="fa fa-plus" process="@this"
+                                                 style="float: right"
+                                                 actionListener="#{busDocInfoController.new_in_tab()}"
+                                                 ajax="false" onclick="form.target = '_blank'"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{bus.bdinfoid}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 20%">
+                                <h:outputText value="#{bus.docname}" />
+                            </p:column>
+
+                            <p:column headerText="Doc Type">
+                                <h:outputText value="#{bus.doctype}" />
+                            </p:column>
+
+                            <p:column headerText="Transaction Type">
+                                <h:outputText value="#{bus.transactiontype}" />
+                            </p:column>
+
+                            <p:column headerText="Prefix">
+                                <h:outputText value="#{bus.prefix}" />
+                            </p:column>
+
+                            <p:column headerText="Suffix">
+                                <h:outputText value="#{bus.suffix}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

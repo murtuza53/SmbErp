@@ -4,169 +4,237 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Objects;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * The persistent class for the busdocinfo database table.
- * 
+ *
  */
+//@MappedSuperclass
+//@EntityListeners(AuditingEntityListener.class)
 @Entity
-@NamedQuery(name="BusDocInfo.findAll", query="SELECT b FROM BusDocInfo b")
+@NamedQuery(name = "BusDocInfo.findAll", query = "SELECT b FROM BusDocInfo b")
 public class BusDocInfo implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int bdinfoid;
+    private static final long serialVersionUID = 1L;
 
-	private String abbreviation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer bdinfoid;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdon;
+    private String abbreviation;
 
-	private String docname;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdon;
 
-	private String doctype;
+    private String docname;
 
-	private String menuname;
+    private String doctype; //SALES, PURCHASE
 
-	private String transactiontype;
+    private String menuname;
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="busdocinfo")
-	private List<BusDoc> busdocs;
+    private String transactiontype; //NON_INVENTORY, INVENTORY_ONLY, INVENTORY_ACCOUNT //BusDocTransactionType.NON_INVENTORY.value()
 
-	//bi-directional many-to-one association to ConvertTo
-	@OneToMany(mappedBy="busdocinfo")
-	private List<ConvertTo> converttos;
+    private String prefix;
 
-	//bi-directional many-to-one association to DocConversion
-	@OneToMany(mappedBy="busdocinfo")
-	private List<DocConversion> docconversions;
+    private String suffix;
 
-	public BusDocInfo() {
-	}
+    //bi-directional many-to-one association to BusDoc
+    @OneToMany(mappedBy = "busdocinfo")
+    private List<BusDoc> busdocs;
 
-	public int getBdinfoid() {
-		return this.bdinfoid;
-	}
+    //bi-directional many-to-one association to ConvertTo
+    @OneToMany(mappedBy = "busdocinfo")
+    private List<ConvertTo> converttos;
 
-	public void setBdinfoid(int bdinfoid) {
-		this.bdinfoid = bdinfoid;
-	}
+    //bi-directional many-to-one association to DocConversion
+    @OneToMany(mappedBy = "busdocinfo")
+    private List<DocConversion> docconversions;
 
-	public String getAbbreviation() {
-		return this.abbreviation;
-	}
+    public BusDocInfo() {
+    }
 
-	public void setAbbreviation(String abbreviation) {
-		this.abbreviation = abbreviation;
-	}
+    public Integer getBdinfoid() {
+        return this.bdinfoid;
+    }
 
-	public Date getCreatedon() {
-		return this.createdon;
-	}
+    public void setBdinfoid(Integer bdinfoid) {
+        this.bdinfoid = bdinfoid;
+    }
 
-	public void setCreatedon(Date createdon) {
-		this.createdon = createdon;
-	}
+    public String getAbbreviation() {
+        return this.abbreviation;
+    }
 
-	public String getDocname() {
-		return this.docname;
-	}
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
 
-	public void setDocname(String docname) {
-		this.docname = docname;
-	}
+    public Date getCreatedon() {
+        return this.createdon;
+    }
 
-	public String getDoctype() {
-		return this.doctype;
-	}
+    public void setCreatedon(Date createdon) {
+        this.createdon = createdon;
+    }
 
-	public void setDoctype(String doctype) {
-		this.doctype = doctype;
-	}
+    public String getDocname() {
+        return this.docname;
+    }
 
-	public String getMenuname() {
-		return this.menuname;
-	}
+    public void setDocname(String docname) {
+        this.docname = docname;
+    }
 
-	public void setMenuname(String menuname) {
-		this.menuname = menuname;
-	}
+    public String getDoctype() {
+        return this.doctype;
+    }
 
-	public String getTransactiontype() {
-		return this.transactiontype;
-	}
+    public void setDoctype(String doctype) {
+        this.doctype = doctype;
+    }
 
-	public void setTransactiontype(String transactiontype) {
-		this.transactiontype = transactiontype;
-	}
+    public String getMenuname() {
+        return this.menuname;
+    }
 
-	public List<BusDoc> getBusdocs() {
-		return this.busdocs;
-	}
+    public void setMenuname(String menuname) {
+        this.menuname = menuname;
+    }
 
-	public void setBusdocs(List<BusDoc> busdocs) {
-		this.busdocs = busdocs;
-	}
+    public String getTransactiontype() {
+        return this.transactiontype;
+    }
 
-	public BusDoc addBusdoc(BusDoc busdoc) {
-		getBusdocs().add(busdoc);
-		busdoc.setBusdocinfo(this);
+    public void setTransactiontype(String transactiontype) {
+        this.transactiontype = transactiontype;
+    }
 
-		return busdoc;
-	}
+    public List<BusDoc> getBusdocs() {
+        return this.busdocs;
+    }
 
-	public BusDoc removeBusdoc(BusDoc busdoc) {
-		getBusdocs().remove(busdoc);
-		busdoc.setBusdocinfo(null);
+    public void setBusdocs(List<BusDoc> busdocs) {
+        this.busdocs = busdocs;
+    }
 
-		return busdoc;
-	}
+    public BusDoc addBusdoc(BusDoc busdoc) {
+        getBusdocs().add(busdoc);
+        busdoc.setBusdocinfo(this);
 
-	public List<ConvertTo> getConverttos() {
-		return this.converttos;
-	}
+        return busdoc;
+    }
 
-	public void setConverttos(List<ConvertTo> converttos) {
-		this.converttos = converttos;
-	}
+    public BusDoc removeBusdoc(BusDoc busdoc) {
+        getBusdocs().remove(busdoc);
+        busdoc.setBusdocinfo(null);
 
-	public ConvertTo addConvertto(ConvertTo convertto) {
-		getConverttos().add(convertto);
-		convertto.setBusdocinfo(this);
+        return busdoc;
+    }
 
-		return convertto;
-	}
+    public List<ConvertTo> getConverttos() {
+        return this.converttos;
+    }
 
-	public ConvertTo removeConvertto(ConvertTo convertto) {
-		getConverttos().remove(convertto);
-		convertto.setBusdocinfo(null);
+    public void setConverttos(List<ConvertTo> converttos) {
+        this.converttos = converttos;
+    }
 
-		return convertto;
-	}
+    public ConvertTo addConvertto(ConvertTo convertto) {
+        getConverttos().add(convertto);
+        convertto.setBusdocinfo(this);
 
-	public List<DocConversion> getDocconversions() {
-		return this.docconversions;
-	}
+        return convertto;
+    }
 
-	public void setDocconversions(List<DocConversion> docconversions) {
-		this.docconversions = docconversions;
-	}
+    public ConvertTo removeConvertto(ConvertTo convertto) {
+        getConverttos().remove(convertto);
+        convertto.setBusdocinfo(null);
 
-	public DocConversion addDocconversion(DocConversion docconversion) {
-		getDocconversions().add(docconversion);
-		docconversion.setBusdocinfo(this);
+        return convertto;
+    }
 
-		return docconversion;
-	}
+    public List<DocConversion> getDocconversions() {
+        return this.docconversions;
+    }
 
-	public DocConversion removeDocconversion(DocConversion docconversion) {
-		getDocconversions().remove(docconversion);
-		docconversion.setBusdocinfo(null);
+    public void setDocconversions(List<DocConversion> docconversions) {
+        this.docconversions = docconversions;
+    }
 
-		return docconversion;
-	}
+    public DocConversion addDocconversion(DocConversion docconversion) {
+        getDocconversions().add(docconversion);
+        docconversion.setBusdocinfo(this);
+
+        return docconversion;
+    }
+
+    public DocConversion removeDocconversion(DocConversion docconversion) {
+        getDocconversions().remove(docconversion);
+        docconversion.setBusdocinfo(null);
+
+        return docconversion;
+    }
+
+    @Override
+    public String toString() {
+        return "BusDocInfo{" + "bdinfoid=" + bdinfoid + ", abbreviation=" + abbreviation + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.bdinfoid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BusDocInfo other = (BusDocInfo) obj;
+        if (!Objects.equals(this.bdinfoid, other.bdinfoid)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return the prefix
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * @param prefix the prefix to set
+     */
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    /**
+     * @return the suffix
+     */
+    public String getSuffix() {
+        return suffix;
+    }
+
+    /**
+     * @param suffix the suffix to set
+     */
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
 
 }

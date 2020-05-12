@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/california-layout/template_busdoc.xhtml">
+
+    <ui:define name="title">
+        ${busDocInfoController.title}
+    </ui:define>
+
+    <ui:define name="breadcrumb">
+        ${busDocInfoController.title}
+    </ui:define>
+
+    <ui:define name="toolbar">
+        <li>
+            <p:commandButton title="Save" actionListener="#{busDocInfoController.save}" update=":mainform, :growl"
+                             icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
+        </li>
+        <li>
+            <p:commandButton title="Print" icon="fa fa-print" 
+                             styleClass="yellow-btn" style="margin: 2px;"/>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="ui-fluid">
+            <div class="ui-g">
+                <!-- Left Side -->
+                <div class="ui-g-12 ui-lg-6">
+                    <p:fieldset legend="Document Details">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Document Id:" for="docid" />
+                            <p:inputText id="docid" value="#{busDocInfoController.selected.bdinfoid}" disabled="true"/>
+
+                            <p:outputLabel value="Document Name:" for="name" />
+                            <p:inputText id="name" placeholder="Document Name" value="#{busDocInfoController.selected.docname}"/>
+
+                            <p:outputLabel value="Document Type:" for="dtype" />
+                            <p:selectOneMenu id="dtype" value="#{busDocInfoController.selected.doctype}" converter="#{entityConverter}" 
+                                             effect="fold" style="width:100%">
+                                <f:selectItems value="#{busDocInfoController.busDocTypes}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Transaction Type:" for="ttype" />
+                            <p:selectOneMenu id="ttype" value="#{busDocInfoController.selected.transactiontype}" converter="#{entityConverter}" 
+                                             effect="fold" style="width:100%">
+                                <f:selectItems value="#{busDocInfoController.busDocTransactionTypes}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Prefix:" for="pref" />
+                            <p:inputText id="pref" placeholder="Prefix" value="#{busDocInfoController.selected.prefix}"/>
+
+                            <p:outputLabel value="Suffix:" for="suf" />
+                            <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
+                        </p:panelGrid>
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-g-12 ui-lg-6">
+                    <!-- Right Side -->
+                    <p:fieldset legend="Account">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        </p:panelGrid>
+                    </p:fieldset>
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

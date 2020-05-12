@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.CreditLimit;
 import com.smb.erp.entity.VatBusinessRegister;
@@ -55,7 +56,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     TableKeyController keyController;
 
     private List<String> companyTypes;
-    
+
     private String companyTypeAll;
 
     private List<String> creditStatusTypes;
@@ -65,8 +66,6 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     private String criteria;
 
     private boolean local;
-
-    private DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
     private VatBusinessRegister selectedVatRegister;
 
@@ -112,8 +111,17 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
         }
     }
 
+    @Override
+    public List<BusinessPartner> getItems() {
+        if (items == null) {
+            //items = repo.findAll(Sort.by(Sort.Direction.ASC, "createdon"));
+            items = repo.findBusinessPartnerBySearchCriteria("");
+        }
+        return items;
+    }
+    
     @Transactional
-    public void saveBusiness(){
+    public void saveBusiness() {
         try {
             if (getSelected().getPartnerid() == null || getSelected().getPartnerid() == 0) {
                 getSelected().setPartnerid(keyController.getBusinessPartnerNextId());

@@ -16,10 +16,10 @@
     </ui:define>
 
     <ui:define name="toolbar">
-        <li>
+        <!--<li>
             <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
                              process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
-        </li>
+        </li>-->
         <li>
             <p:commandButton title="Save" update=":mainform, :growl"
                              icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
@@ -34,13 +34,52 @@
         <div class="ui-fluid">
             <div class="ui-g">
                 <div class="ui-g-12 ui-lg-12">
-                    <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
-                        <p:outputLabel value="Dodument No:" for="dno" />
-                        <p:inputText id="dno" value="#{busDocController.selected.docno}" disabled="true"/>
+                    <p:tabView dynamic="true" cache="true">
+                        <p:tab title="Document">
+                            <p:outputPanel>
+                                <p:fieldset legend="Details">
+                                    <p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5" layout="grid" 
+                                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                        <p:outputLabel value="Doc No:" for="dno"/>
+                                        <p:inputText id="dno" value="#{busDocController.selected.docno}" placeholder="Document No" disabled="true"/>
 
-                        <p:outputLabel value="Date:" for="ddate" />
-                        <p:datePicker id="ddate" placeholder="Doc Date" value="#{busDocController.selected.createdon}" showButtonBar="true"/>
-                    </p:panelGrid>
+                                        <p:outputLabel value="Date:" for="ddate"/>
+                                        <p:datePicker id="ddate" placeholder="Doc Date" value="#{busDocController.selected.createdon}" showIcon="true"
+                                                      monthNavigator="true" pattern="dd/MM/yyyy"/>
+
+                                        <p:outputLabel value="Company:" for="partner"/>
+                                        <p:selectOneMenu id="partner" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
+                                                          var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                            <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                                            <p:column style="width: 10%">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Id"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.partnerid}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.companyname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
+
+                                    </p:panelGrid>
+                                </p:fieldset>
+                                <br/>
+                                <p:fieldset legend="VAT">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                    </p:panelGrid>
+                                </p:fieldset>
+                            </p:outputPanel>
+                        </p:tab>
+
+                        <p:tab title="Products">
+
+                        </p:tab>                        
+                    </p:tabView>
                 </div>
             </div>
         </div>
@@ -74,7 +113,7 @@
                     <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
                         <p:outputLabel for="pcriteria" value="Search Criteria" />
                         <p:inputText id="pcriteria" placeholder="Criteria" value="#{productSearchController.criteria}" />
-                        <p:commandButton value="Send" actionListener="#{productSearchController.searchProducts()}" update="prodtable"/>
+                        <p:commandButton value="Search" actionListener="#{productSearchController.searchProducts()}" update="prodtable"/>
                     </p:panelGrid>
                     <p:panel styleClass="slide-product-panel">
                         <p:dataTable id="prodtable" var="prod"

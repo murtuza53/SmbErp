@@ -28,6 +28,8 @@ public abstract class AbstractController<T> implements Serializable {
     private BaseRepository repository;
     private Sort sortFields;
 
+    DocumentTab.MODE mode = DocumentTab.MODE.LIST;
+
     public AbstractController() {
     }
 

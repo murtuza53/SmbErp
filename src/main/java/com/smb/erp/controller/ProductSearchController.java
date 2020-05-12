@@ -7,6 +7,7 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.Product;
 import com.smb.erp.repo.ProductRepository;
+import com.smb.erp.service.ProductTransferable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -32,6 +33,8 @@ public class ProductSearchController extends AbstractController<Product> {
     private List<Product> selectedProducts;
 
     private LayoutOptions layoutOptions;
+    
+    private ProductTransferable productTransferable;
 
     @Autowired
     public ProductSearchController(ProductRepository repo) {
@@ -105,4 +108,8 @@ public class ProductSearchController extends AbstractController<Product> {
         this.selectedProducts = selectedProducts;
     }
 
+    public void setProductTransferable(ProductTransferable transferable){
+        this.productTransferable = transferable;
+    }
+    
 }

@@ -54,14 +54,24 @@
                                 <ui:include src="./route-bar-menu_doc.xhtml" />
                             </div>
 
-                            <div class="w3-container">
-                                <div class="layout-main-content">
+                            <div class="w3-container" style="padding:10px">
+                                <div class="layout-main-content" style="padding:0px">
+                                    <script type="text/javascript">
+                                        var myEvent = window.attachEvent || window.addEventListener;
+                                        var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+                                        myEvent(chkevent, function (e) { // For >=IE7, Chrome, Firefox
+                                            var confirmationMessage = 'Are you sure to leave the page?';  // a space
+                                            (e || window.event).returnValue = confirmationMessage;
+                                            return confirmationMessage;
+                                        });
+                                    </script> 
                                     <ui:insert name="content"/>
                                 </div>
                             </div>
 
                         </h:form>
-                        <ui:include src="/inventory/productsearchdialog.xhtml"/>
+                        <!--<ui:include src="/inventory/productsearchdialog.xhtml"/>-->
                     </div>
                 </div>
             </pe:layoutPane>
@@ -131,6 +141,8 @@
         </h:outputStylesheet>
 
         <h:outputStylesheet name="css/sidebar.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <h:outputStylesheet name="css/nanoscroller.css" library="california-layout" />
         <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="california-layout" />
     </h:body>
