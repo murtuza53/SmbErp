@@ -19,7 +19,7 @@ public class ProductTransaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String prodtransid;
+    private Integer prodtransid;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date ceatedon;
@@ -92,14 +92,17 @@ public class ProductTransaction implements Serializable {
     @OneToMany(mappedBy = "prodtransaction")
     private List<ProductTransactionExecutedTo> prodtransexecutedtos;
 
+    @Transient
+    private double lineqty;
+
     public ProductTransaction() {
     }
 
-    public String getProdtransid() {
+    public Integer getProdtransid() {
         return this.prodtransid;
     }
 
-    public void setProdtransid(String prodtransid) {
+    public void setProdtransid(Integer prodtransid) {
         this.prodtransid = prodtransid;
     }
 
@@ -279,7 +282,6 @@ public class ProductTransaction implements Serializable {
         this.unit = unit;
     }
 
-
     public Product getProduct() {
         return this.product;
     }
@@ -388,6 +390,38 @@ public class ProductTransaction implements Serializable {
      */
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    public double getLineTotal() {
+        return getLineqty() * getLineunitprice();
+    }
+
+    public double getTotal() {
+        return (getSold()+getReceived()) * getLineunitprice();
+    }
+
+    /**
+     * @return the lineqty
+     */
+    public double getLineqty() {
+        return lineqty;
+    }
+
+    /**
+     * @param lineqty the lineqty to set
+     */
+    public void setLineqty(double lineqty) {
+        this.lineqty = lineqty;
+    }
+    
+    public void calculateActualQtyFromLineQty(){
+        if(getBusdoc()!=null){
+            if(getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES")){
+                setLinesold(lineqty);
+            } else {
+                setLinereceived(lineqty);
+            }
+        }
     }
 
 }

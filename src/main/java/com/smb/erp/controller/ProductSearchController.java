@@ -8,6 +8,7 @@ package com.smb.erp.controller;
 import com.smb.erp.entity.Product;
 import com.smb.erp.repo.ProductRepository;
 import com.smb.erp.service.ProductTransferable;
+import com.smb.erp.util.JsfUtil;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -56,6 +57,17 @@ public class ProductSearchController extends AbstractController<Product> {
         LayoutOptions childCenterOptions = new LayoutOptions();
         center.setChildOptions(childCenterOptions);
 
+    }
+    
+    public void transfer(){
+        System.out.println("Transfer: " + getSelectedProducts());
+        if(getSelectedProducts()==null || getSelectedProducts().size()==0){
+            JsfUtil.addErrorMessage("Error", "No Products selected");
+        } else if(productTransferable==null){
+            JsfUtil.addErrorMessage("Error", "Document not set for transfer");
+        } else {
+            productTransferable.transfer(getSelectedProducts());
+        }
     }
 
     public void searchProducts() {

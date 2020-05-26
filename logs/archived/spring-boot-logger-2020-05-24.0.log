@@ -1,0 +1,1882 @@
+2020-05-24 15:07:01,522 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 2272 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 15:07:01,585 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 15:07:02,511 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 15:07:02,805 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 203ms. Found 21 JPA repository interfaces.
+2020-05-24 15:07:03,542 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:07:03,631 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:07:03,691 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:07:04,166 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 15:07:04,220 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:07:04,279 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 15:07:04,324 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 15:07:05,141 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 15:07:05,226 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 15:07:05,271 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3566 ms
+2020-05-24 15:07:07,723 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 2.1797103s
+2020-05-24 15:07:07,811 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 15:07:08,330 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 15:07:09,355 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 15:07:09,389 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 15:07:09,716 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 15:07:09,893 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 15:07:10,130 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 15:07:10,326 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 15:07:10,412 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 15:07:10,494 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 15:07:13,303 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 15:07:13,572 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 15:07:14,360 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 15:07:15,490 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 15:07:16,027 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:07:16,118 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 15:07:16,175 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 16.282 seconds (JVM running for 16.865)
+2020-05-24 15:09:55,966 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8008-exec-3] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 15:09:56,000 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8008-exec-3] Initializing Servlet 'dispatcherServlet'
+2020-05-24 15:09:56,041 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8008-exec-3] Completed initialization in 10 ms
+2020-05-24 15:10:44,457 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-9] Error Rendering View[/busdoc/busdoclist.xhtml]
+javax.el.ELException: //D:/Projects/SmbErp/target/classes/META-INF/resources/busdoc/busdoclist.xhtml @27,82 value="#{busDocController.items}": Error reading [items] on type [com.smb.erp.controller.BusDocController]
+	at com.sun.faces.facelets.el.TagValueExpression.getValue(TagValueExpression.java:77)
+	at javax.faces.component.ComponentStateHelper.eval(ComponentStateHelper.java:170)
+	at javax.faces.component.ComponentStateHelper.eval(ComponentStateHelper.java:157)
+	at javax.faces.component.UIData.getValue(UIData.java:736)
+	at org.primefaces.component.api.UIData.getDataModel(UIData.java:792)
+	at javax.faces.component.UIData.getRowCount(UIData.java:347)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1141)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.ELException: Error reading [items] on type [com.smb.erp.controller.BusDocController]
+	at javax.el.BeanELResolver.getValue(BeanELResolver.java:98)
+	at com.sun.faces.el.DemuxCompositeELResolver._getValue(DemuxCompositeELResolver.java:156)
+	at com.sun.faces.el.DemuxCompositeELResolver.getValue(DemuxCompositeELResolver.java:184)
+	at org.apache.el.parser.AstValue.getValue(AstValue.java:169)
+	at org.apache.el.ValueExpressionImpl.getValue(ValueExpressionImpl.java:190)
+	at com.sun.faces.facelets.el.TagValueExpression.getValue(TagValueExpression.java:73)
+	... 61 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at com.smb.erp.controller.BusDocController.getItems(BusDocController.java:100)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at javax.el.BeanELResolver.getValue(BeanELResolver.java:94)
+	... 66 common frames omitted
+2020-05-24 15:10:44,550 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-9] JSF1073: javax.el.ELException caught during processing of RENDER_RESPONSE 6 : UIComponent-ClientId=, Message=//D:/Projects/SmbErp/target/classes/META-INF/resources/busdoc/busdoclist.xhtml @27,82 value="#{busDocController.items}": Error reading [items] on type [com.smb.erp.controller.BusDocController]
+2020-05-24 15:10:44,583 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-9] //D:/Projects/SmbErp/target/classes/META-INF/resources/busdoc/busdoclist.xhtml @27,82 value="#{busDocController.items}": Error reading [items] on type [com.smb.erp.controller.BusDocController]
+javax.el.ELException: //D:/Projects/SmbErp/target/classes/META-INF/resources/busdoc/busdoclist.xhtml @27,82 value="#{busDocController.items}": Error reading [items] on type [com.smb.erp.controller.BusDocController]
+	at com.sun.faces.facelets.el.TagValueExpression.getValue(TagValueExpression.java:77)
+	at javax.faces.component.ComponentStateHelper.eval(ComponentStateHelper.java:170)
+	at javax.faces.component.ComponentStateHelper.eval(ComponentStateHelper.java:157)
+	at javax.faces.component.UIData.getValue(UIData.java:736)
+	at org.primefaces.component.api.UIData.getDataModel(UIData.java:792)
+	at javax.faces.component.UIData.getRowCount(UIData.java:347)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1141)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.el.ELException: Error reading [items] on type [com.smb.erp.controller.BusDocController]
+	at javax.el.BeanELResolver.getValue(BeanELResolver.java:98)
+	at com.sun.faces.el.DemuxCompositeELResolver._getValue(DemuxCompositeELResolver.java:156)
+	at com.sun.faces.el.DemuxCompositeELResolver.getValue(DemuxCompositeELResolver.java:184)
+	at org.apache.el.parser.AstValue.getValue(AstValue.java:169)
+	at org.apache.el.ValueExpressionImpl.getValue(ValueExpressionImpl.java:190)
+	at com.sun.faces.facelets.el.TagValueExpression.getValue(TagValueExpression.java:73)
+	... 61 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at com.smb.erp.controller.BusDocController.getItems(BusDocController.java:100)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at javax.el.BeanELResolver.getValue(BeanELResolver.java:94)
+	... 66 common frames omitted
+2020-05-24 15:42:58,573 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 4920 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 15:42:58,675 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 15:42:59,632 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 15:42:59,915 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 210ms. Found 21 JPA repository interfaces.
+2020-05-24 15:43:00,820 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:43:00,895 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:43:00,944 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:43:01,416 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 15:43:01,490 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:43:01,538 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 15:43:01,579 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 15:43:02,221 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 15:43:02,280 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 15:43:02,319 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3537 ms
+2020-05-24 15:43:04,477 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.9530139s
+2020-05-24 15:43:04,580 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 15:43:04,984 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 15:43:05,869 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 15:43:05,904 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 15:43:06,202 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 15:43:06,358 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 15:43:06,609 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 15:43:06,821 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 15:43:06,909 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 15:43:06,967 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 15:43:09,425 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 15:43:09,642 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 15:43:10,442 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 15:43:11,625 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 15:43:12,125 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:43:12,200 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 15:43:12,234 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 15.945 seconds (JVM running for 16.678)
+2020-05-24 15:43:19,843 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-7] Error Rendering View[/busdoc/editbusdoc.xhtml]
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression "transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:43:20,043 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-7] JSF1073: org.primefaces.expression.ComponentNotFoundException caught during processing of RENDER_RESPONSE 6 : UIComponent-ClientId=, Message=Cannot find component for expression "transtable" referenced from "psform:j_idt17".
+2020-05-24 15:43:20,087 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-7] Cannot find component for expression "transtable" referenced from "psform:j_idt17".
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression "transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:44:38,071 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-4] Error Rendering View[/busdoc/editbusdoc.xhtml]
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression ":mainform:transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:44:38,141 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-4] JSF1073: org.primefaces.expression.ComponentNotFoundException caught during processing of RENDER_RESPONSE 6 : UIComponent-ClientId=, Message=Cannot find component for expression ":mainform:transtable" referenced from "psform:j_idt17".
+2020-05-24 15:44:38,171 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-4] Cannot find component for expression ":mainform:transtable" referenced from "psform:j_idt17".
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression ":mainform:transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:45:16,830 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-2] Error Rendering View[/busdoc/editbusdoc.xhtml]
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression ":mainform:products:transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:45:16,953 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-2] JSF1073: org.primefaces.expression.ComponentNotFoundException caught during processing of RENDER_RESPONSE 6 : UIComponent-ClientId=, Message=Cannot find component for expression ":mainform:products:transtable" referenced from "psform:j_idt17".
+2020-05-24 15:45:17,001 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-2] Cannot find component for expression ":mainform:products:transtable" referenced from "psform:j_idt17".
+org.primefaces.expression.ComponentNotFoundException: Cannot find component for expression ":mainform:products:transtable" referenced from "psform:j_idt17".
+	at org.primefaces.expression.SearchExpressionFacade.cannotFindComponent(SearchExpressionFacade.java:720)
+	at org.primefaces.expression.SearchExpressionFacade.resolveClientIds(SearchExpressionFacade.java:259)
+	at org.primefaces.util.AjaxRequestBuilder.addExpressions(AjaxRequestBuilder.java:136)
+	at org.primefaces.util.AjaxRequestBuilder.update(AjaxRequestBuilder.java:129)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:412)
+	at org.primefaces.renderkit.CoreRenderer.buildAjaxRequest(CoreRenderer.java:399)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.buildRequest(CommandButtonRenderer.java:145)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeMarkup(CommandButtonRenderer.java:78)
+	at org.primefaces.component.commandbutton.CommandButtonRenderer.encodeEnd(CommandButtonRenderer.java:63)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridBody(PanelGridRenderer.java:274)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeGridLayout(PanelGridRenderer.java:100)
+	at org.primefaces.component.panelgrid.PanelGridRenderer.encodeEnd(PanelGridRenderer.java:50)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.component.panel.PanelRenderer.encodeContent(PanelRenderer.java:219)
+	at org.primefaces.component.panel.PanelRenderer.encodeMarkup(PanelRenderer.java:133)
+	at org.primefaces.component.panel.PanelRenderer.encodeEnd(PanelRenderer.java:67)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at org.primefaces.renderkit.CoreRenderer.renderChild(CoreRenderer.java:87)
+	at org.primefaces.renderkit.CoreRenderer.renderChildren(CoreRenderer.java:69)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeMarkup(SlideOutRenderer.java:94)
+	at org.primefaces.extensions.component.slideout.SlideOutRenderer.encodeEnd(SlideOutRenderer.java:51)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at javax.faces.render.Renderer.encodeChildren(Renderer.java:152)
+	at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:566)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1650)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:468)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:52:32,941 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-9] Error Rendering View[/busdoc/editbusdoc.xhtml]
+javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:52:32,977 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8008-exec-9] javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-05-24 15:55:12,424 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-6] Error Rendering View[/busdoc/editbusdoc.xhtml]
+javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:55:12,457 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8008-exec-6] javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-05-24 15:57:48,238 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 9964 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 15:57:48,322 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 15:57:48,910 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 15:57:49,112 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 159ms. Found 21 JPA repository interfaces.
+2020-05-24 15:57:49,715 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:57:49,765 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:57:49,798 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:57:50,106 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 15:57:50,167 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:57:50,205 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 15:57:50,253 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 15:57:50,702 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 15:57:50,743 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 15:57:50,774 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2330 ms
+2020-05-24 15:57:52,033 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.1307502s
+2020-05-24 15:57:52,098 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 15:57:52,330 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 15:57:52,822 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 15:57:52,858 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 15:57:53,055 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 15:57:53,146 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 15:57:53,302 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 15:57:53,425 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 15:57:53,506 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 15:57:53,581 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 15:57:55,120 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 15:57:55,266 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 15:57:55,820 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 15:57:56,437 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 15:57:56,734 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:57:56,791 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 15:57:56,847 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.196 seconds (JVM running for 10.646)
+2020-05-24 15:58:21,697 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-10] Error Rendering View[/busdoc/editbusdoc.xhtml]
+javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 15:58:21,739 ERROR com.sun.faces.context.AjaxExceptionHandlerImpl [http-nio-8008-exec-10] javax.faces.FacesException: DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled.
+	at org.primefaces.component.datatable.DataTable.getRowKeyFromModel(DataTable.java:827)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRow(DataTableRenderer.java:1304)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRows(DataTableRenderer.java:1244)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1171)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeTbody(DataTableRenderer.java:1120)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeRegularTable(DataTableRenderer.java:445)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeMarkup(DataTableRenderer.java:376)
+	at org.primefaces.component.datatable.DataTableRenderer.encodeEnd(DataTableRenderer.java:95)
+	at javax.faces.component.UIComponentBase.encodeEnd(UIComponentBase.java:595)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1654)
+	at com.sun.faces.context.PartialViewContextImpl$PhaseAwareVisitCallback.visit(PartialViewContextImpl.java:615)
+	at com.sun.faces.component.visit.PartialVisitContext.invokeVisitCallback(PartialVisitContext.java:159)
+	at org.primefaces.component.api.UIData.visitTree(UIData.java:874)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at org.primefaces.component.api.UITabPanel.visitTree(UITabPanel.java:931)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIForm.visitTree(UIForm.java:355)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at javax.faces.component.UIComponent.visitTree(UIComponent.java:1468)
+	at com.sun.faces.context.PartialViewContextImpl.processComponents(PartialViewContextImpl.java:400)
+	at com.sun.faces.context.PartialViewContextImpl.processPartial(PartialViewContextImpl.java:319)
+	at org.primefaces.context.PrimePartialViewContext.processPartial(PrimePartialViewContext.java:63)
+	at javax.faces.component.UIViewRoot.encodeChildren(UIViewRoot.java:1102)
+	at javax.faces.component.UIComponent.encodeAll(UIComponent.java:1647)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:442)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-05-24 15:59:30,955 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 1432 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 15:59:31,013 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 15:59:31,713 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 15:59:31,913 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 144ms. Found 21 JPA repository interfaces.
+2020-05-24 15:59:32,459 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:59:32,555 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:59:32,619 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 15:59:32,929 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 15:59:32,976 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:59:33,046 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 15:59:33,091 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 15:59:33,495 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 15:59:33,546 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 15:59:33,577 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2431 ms
+2020-05-24 15:59:34,858 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.1703243s
+2020-05-24 15:59:34,925 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 15:59:35,190 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 15:59:35,660 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 15:59:35,691 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 15:59:35,836 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 15:59:35,930 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 15:59:36,063 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 15:59:36,202 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 15:59:36,306 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 15:59:36,367 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 15:59:37,955 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 15:59:38,102 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 15:59:38,600 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 15:59:39,216 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 15:59:39,498 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 15:59:39,567 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 15:59:39,625 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.15 seconds (JVM running for 10.638)
+2020-05-24 16:04:53,639 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 11584 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 16:04:53,695 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 16:04:54,243 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 16:04:54,452 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 154ms. Found 21 JPA repository interfaces.
+2020-05-24 16:04:55,001 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:04:55,064 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:04:55,115 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:04:55,493 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 16:04:55,542 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:04:55,601 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 16:04:55,643 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 16:04:56,154 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 16:04:56,196 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 16:04:56,227 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2469 ms
+2020-05-24 16:04:57,576 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.2082006s
+2020-05-24 16:04:57,659 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 16:04:57,908 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 16:04:58,501 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 16:04:58,531 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 16:04:58,719 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 16:04:58,828 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 16:04:58,966 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 16:04:59,084 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 16:04:59,171 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 16:04:59,251 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 16:05:00,849 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 16:05:01,013 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 16:05:01,464 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 16:05:02,097 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 16:05:02,423 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:05:02,485 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 16:05:02,522 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.288 seconds (JVM running for 10.723)
+2020-05-24 16:05:52,486 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 14228 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 16:05:52,543 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 16:05:53,070 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 16:05:53,270 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 152ms. Found 21 JPA repository interfaces.
+2020-05-24 16:05:53,780 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:05:53,866 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:05:53,930 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:05:54,246 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 16:05:54,300 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:05:54,346 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 16:05:54,404 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 16:05:54,842 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 16:05:54,893 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 16:05:54,923 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2284 ms
+2020-05-24 16:05:56,273 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.2409714s
+2020-05-24 16:05:56,372 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 16:05:56,659 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 16:05:57,163 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 16:05:57,194 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 16:05:57,405 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 16:05:57,514 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 16:05:57,673 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 16:05:57,811 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 16:05:57,927 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 16:05:58,005 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 16:05:59,499 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 16:05:59,689 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 16:06:00,189 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 16:06:00,824 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 16:06:01,174 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:06:01,263 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 16:06:01,331 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.302 seconds (JVM running for 10.877)
+2020-05-24 16:21:51,324 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 6304 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 16:21:51,386 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 16:21:51,880 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 16:21:52,047 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 126ms. Found 21 JPA repository interfaces.
+2020-05-24 16:21:52,535 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:21:52,611 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:21:52,683 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:21:53,026 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 16:21:53,092 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:21:53,168 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 16:21:53,216 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 16:21:53,644 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 16:21:53,686 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 16:21:53,718 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2261 ms
+2020-05-24 16:21:55,101 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.2443216s
+2020-05-24 16:21:55,166 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 16:21:55,430 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 16:21:55,965 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 16:21:56,017 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 16:21:56,298 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 16:21:56,396 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 16:21:56,551 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 16:21:56,717 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 16:21:56,862 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 16:21:56,950 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 16:21:59,498 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 16:21:59,746 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 16:22:00,527 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 16:22:01,616 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 16:22:02,017 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:22:02,096 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 16:22:02,140 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 12.367 seconds (JVM running for 12.852)
+2020-05-24 16:33:18,879 ERROR com.sun.faces.util.Util [http-nio-8008-exec-1] JSF1007: Duplicate component ID mainform:tabsview:transtable:qty found in view.
+2020-05-24 16:33:18,916 ERROR com.sun.faces.util.Util [http-nio-8008-exec-1] +id: j_id1
+ type: javax.faces.component.UIViewRoot@441f9edd
+  +id: javax_faces_location_HEAD
+   type: com.sun.faces.component.ComponentResourceContainer@30d49670
+    +id: j_id2
+     type: javax.faces.component.UIOutput@c14424e
+    +id: j_id3
+     type: javax.faces.component.UIOutput@10fa9d87
+    +id: j_id4
+     type: javax.faces.component.UIOutput@3ca17819
+    +id: j_id5
+     type: javax.faces.component.UIOutput@28521eeb
+    +id: j_id6
+     type: javax.faces.component.UIOutput@67a2f9d
+    +id: j_id7
+     type: javax.faces.component.UIOutput@42a89c70
+    +id: j_id8
+     type: javax.faces.component.UIOutput@757e558c
+    +id: j_id9
+     type: javax.faces.component.UIOutput@4d63b88e
+    +id: j_id10
+     type: javax.faces.component.UIOutput@1ab26078
+    +id: j_id11
+     type: javax.faces.component.UIOutput@1c7f3442
+    +id: j_id12
+     type: javax.faces.component.UIOutput@1b2ac074
+    +id: layoutCSS
+     type: javax.faces.component.UIOutput@6c9453a
+      +id: j_idt101
+       type: 
+            body {
+            margin: 0px !important;
+            }
+
+            body > .ui-layout-resizer{
+            }
+
+            body > .ui-layout-resizer{
+            }
+
+            body > .ui-layout-north {
+            background: none;
+            border: none;
+            color: #000000;
+            padding: 0px;
+            overflow: hidden;
+            inset: 
+            }
+
+            body > .ui-layout-center{
+            border: none;
+            color: #000000;
+            padding: 0px;
+            overflow: auto;
+            }
+
+            body > .ui-layout-east{
+            border: none;
+            color: #000000;
+            padding: 0px;
+            overflow: auto;
+            }
+
+            /* Custom styles for the SlideOut */
+            .product-panel {
+            border-color: green;
+            border-width: 5px;
+            position: fixed;
+            z-index: 100 !important;
+            display: inline;
+            }
+            .product-handle {
+            padding: 8px;
+            font-size: 14px;
+            color: white !important;
+            background-color: green;
+            }
+
+            .slide-product-panel{
+            height: 450px !important;
+            overflow: auto;
+            z-index: 100 !important;
+            }
+
+        
+    +id: j_idt102
+     type: javax.faces.component.UIOutput@4644d853
+    +id: j_idt103
+     type: javax.faces.component.UIOutput@63c293c0
+    +id: j_idt104
+     type: javax.faces.component.UIOutput@2feeea17
+    +id: j_idt105
+     type: javax.faces.component.UIOutput@2c1b51a2
+    +id: j_idt106
+     type: javax.faces.component.UIOutput@4c7d9232
+  +id: j_idt1
+   type: <html xmlns="http://www.w3.org/1999/xhtml">
+
+    
+  +id: j_idt2
+   type: javax.faces.component.UIOutput@1c4f7453
+    +id: j_idt3
+     type: 
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        
+    +id: j_idt4
+     type: 
+        <title>
+    +id: j_idt5
+     type: 
+        Cash Memo
+    
+    +id: j_idt6
+     type: </title>
+        
+    +id: j_idt7
+     type: javax.faces.component.UIOutput@6b715ca9
+    +id: j_idt8
+     type: javax.faces.component.UIOutput@3122673a
+  +id: j_idt9
+   type: javax.faces.component.html.HtmlBody@5023929c
+    +id: j_idt10
+     type: org.primefaces.component.ajaxstatus.AjaxStatus@5ced18c4
+      +id: j_idt11
+       type: 
+                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"/>
+            
+      +id: j_idt12
+       type: javax.faces.component.html.HtmlOutputText@5455feff
+    +id: growl
+     type: org.primefaces.component.growl.Growl@19087b6b
+    +id: psform
+     type: javax.faces.component.html.HtmlForm@50277cc9
+      +id: slideoutContact
+       type: org.primefaces.extensions.component.slideout.SlideOut@2e10d419
+        +id: j_idt13
+         type: org.primefaces.component.panel.Panel@613d2c89
+          +id: j_idt14
+           type: org.primefaces.component.panelgrid.PanelGrid@21bf70ae
+            +id: j_idt15
+             type: org.primefaces.component.outputlabel.OutputLabel@76e61387
+            +id: pcriteria
+             type: org.primefaces.component.inputtext.InputText@668faa1
+            +id: j_idt16
+             type: org.primefaces.component.commandbutton.CommandButton@2fa9cce7
+            +id: j_idt17
+             type: org.primefaces.component.commandbutton.CommandButton@22281f47
+          +id: j_idt18
+           type: org.primefaces.component.panel.Panel@647d2738
+            +id: prodtable
+             type: org.primefaces.component.datatable.DataTable@5feb500e
+              +id: j_idt19
+               type: org.primefaces.component.column.Column@6119e230
+              +id: j_idt20
+               type: org.primefaces.component.column.Column@71539639
+                +id: j_idt21
+                 type: javax.faces.component.html.HtmlOutputText@aa21165
+              +id: j_idt22
+               type: org.primefaces.component.column.Column@24046a63
+                +id: j_idt23
+                 type: javax.faces.component.html.HtmlOutputText@6b014440
+              +id: j_idt24
+               type: org.primefaces.component.column.Column@68ef547
+                +id: j_idt25
+                 type: javax.faces.component.html.HtmlOutputText@1c3de5ca
+              +id: j_idt26
+               type: org.primefaces.component.column.Column@1b6dd35c
+                +id: j_idt27
+                 type: javax.faces.component.html.HtmlOutputText@7a2fa735
+              +id: j_idt28
+               type: org.primefaces.component.column.Column@b7a51fa
+                +id: j_idt29
+                 type: javax.faces.component.html.HtmlOutputText@781ae6ea
+    +id: j_idt30
+     type: org.primefaces.extensions.component.layout.Layout@484d0881
+      +id: j_idt31
+       type: org.primefaces.extensions.component.layout.LayoutPane@113e6f8c
+        +id: j_idt32
+         type: 
+                <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
+                    
+        +id: j_idt33
+         type: 
+
+    <div class="layout-topbar">
+        
+        +id: j_idt34
+         type: javax.faces.component.html.HtmlOutcomeTargetLink@cb97354
+          +id: j_idt35
+           type: org.primefaces.component.graphicimage.GraphicImage@21cc67af
+        +id: j_idt36
+         type: 
+
+    </div>
+
+        +id: j_idt37
+         type: 
+                </div>
+            
+      +id: j_idt38
+       type: org.primefaces.extensions.component.layout.LayoutPane@6e9f2573
+        +id: j_idt39
+         type: 
+                <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
+                    <div class="layout-main" style="padding-top: 0;">
+                        
+        +id: mainform
+         type: javax.faces.component.html.HtmlForm@15372967
+          +id: j_idt40
+           type: 
+
+                            <div class="route-bar">
+                                <div class="route-bar-breadcrumb">
+                                    <i class="fa fa-home"/> <span>/ </span>
+                                    
+          +id: j_idt41
+           type: 
+                                </div>
+
+                                
+          +id: j_idt42
+           type: 
+
+    <ul class="route-bar-menu">
+        
+          +id: j_idt43
+           type: 
+        <!--<li>
+            <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
+                             process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
+        </li>-->
+        <li>
+            
+          +id: j_idt44
+           type: org.primefaces.component.commandbutton.CommandButton@187bc320
+          +id: j_idt45
+           type: 
+        </li>
+        <li>
+            
+          +id: j_idt46
+           type: org.primefaces.component.commandbutton.CommandButton@f72b8b7
+          +id: j_idt47
+           type: 
+        </li>
+    
+          +id: j_idt48
+           type: 
+    </ul>
+
+    
+          +id: j_idt49
+           type: org.primefaces.component.tooltip.Tooltip@42bbc66e
+          +id: j_idt50
+           type: 
+                            </div>
+
+                            <div class="w3-container" style="padding:10px">
+                                <div class="layout-main-content" style="padding:0px">
+                                    <script type="text/javascript">
+                                        var myEvent = window.attachEvent || window.addEventListener;
+                                        var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+                                        myEvent(chkevent, function (e) { // For >=IE7, Chrome, Firefox
+                                            var confirmationMessage = 'Are you sure to leave the page?';  // a space
+                                            (e || window.event).returnValue = confirmationMessage;
+                                            return confirmationMessage;
+                                        });
+                                    </script> 
+                                    
+          +id: j_idt51
+           type: 
+        <div class="ui-fluid">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-lg-12">
+                    
+          +id: tabsview
+           type: org.primefaces.component.tabview.TabView@7717139c
+            +id: j_idt52
+             type: org.primefaces.component.tabview.Tab@190ad1cc
+              +id: j_idt53
+               type: org.primefaces.component.outputpanel.OutputPanel@757f687b
+                +id: j_idt54
+                 type: org.primefaces.component.fieldset.Fieldset@12540974
+                  +id: j_idt55
+                   type: org.primefaces.component.panelgrid.PanelGrid@2bd0780b
+                    +id: j_idt56
+                     type: org.primefaces.component.outputlabel.OutputLabel@197ddbac
+                    +id: dno
+                     type: org.primefaces.component.inputtext.InputText@5c0ceb
+                    +id: j_idt57
+                     type: org.primefaces.component.outputlabel.OutputLabel@6b787152
+                    +id: ddate
+                     type: org.primefaces.component.datepicker.DatePicker@29d524c3
+                    +id: j_idt58
+                     type: org.primefaces.component.outputlabel.OutputLabel@a6aa5d3
+                    +id: partner
+                     type: org.primefaces.component.selectonemenu.SelectOneMenu@973494a
+                      +id: j_idt59
+                       type: javax.faces.component.UISelectItems@3b147a9c
+                      +id: j_idt60
+                       type: org.primefaces.component.column.Column@13c2e2b2
+                        +id: j_idt61
+                         type: javax.faces.component.html.HtmlOutputText@42c7c1a
+                        +id: j_idt62
+                         type: javax.faces.component.html.HtmlOutputText@17864ccc
+                      +id: j_idt63
+                       type: org.primefaces.component.column.Column@f5e143a
+                        +id: j_idt64
+                         type: javax.faces.component.html.HtmlOutputText@b0db011
+                        +id: j_idt65
+                         type: javax.faces.component.html.HtmlOutputText@6c26c1c6
+                +id: j_idt66
+                 type: 
+                                <br/>
+                                
+                +id: j_idt67
+                 type: org.primefaces.component.fieldset.Fieldset@49e300a2
+                  +id: j_idt68
+                   type: org.primefaces.component.panelgrid.PanelGrid@36e33260
+            +id: products
+             type: org.primefaces.component.tabview.Tab@50889195
+              +id: transtable
+               type: org.primefaces.component.datatable.DataTable@afa42b3
+                +id: j_idt69
+                 type: org.primefaces.component.column.Column@5b4db55e
+                  +id: j_idt70
+                   type: javax.faces.component.html.HtmlOutputText@7492fc65
+                +id: j_idt71
+                 type: org.primefaces.component.column.Column@6082df5b
+                  +id: j_idt72
+                   type: javax.faces.component.html.HtmlOutputText@38b5f622
+                +id: j_idt73
+                 type: org.primefaces.component.column.Column@e64532f
+                  +id: j_idt74
+                   type: javax.faces.component.html.HtmlOutputText@6d76f752
+                  +id: j_idt75
+                   type: org.primefaces.component.celleditor.CellEditor@20baa392
+                    +id: j_idt76
+                     type: javax.faces.component.html.HtmlOutputText@7aac0cb0
+                    +id: j_idt77
+                     type: org.primefaces.component.inputtext.InputText@72ba30d3
+                +id: j_idt78
+                 type: org.primefaces.component.column.Column@7e9bb25
+                  +id: j_idt79
+                   type: javax.faces.component.html.HtmlOutputText@1dbafee4
+                +id: j_idt80
+                 type: org.primefaces.component.column.Column@a1596d0
+                  +id: j_idt81
+                   type: javax.faces.component.html.HtmlOutputText@6370a57e
+                  +id: j_idt82
+                   type: org.primefaces.component.celleditor.CellEditor@29773a2a
+                    +id: j_idt83
+                     type: javax.faces.component.html.HtmlOutputText@951b32
+                    +id: qty  <===============
+                     type: org.primefaces.component.inputtext.InputText@1b982136
+                +id: j_idt84
+                 type: org.primefaces.component.column.Column@29fe67bf
+                  +id: j_idt85
+                   type: javax.faces.component.html.HtmlOutputText@4afdeda9
+                  +id: j_idt86
+                   type: org.primefaces.component.celleditor.CellEditor@273c2250
+                    +id: j_idt87
+                     type: javax.faces.component.html.HtmlOutputText@7f9ac150
+                    +id: qty  <===============
+                     type: org.primefaces.component.inputtext.InputText@25838283
+                +id: j_idt88
+                 type: org.primefaces.component.column.Column@b6b33f
+                  +id: j_idt89
+                   type: javax.faces.component.html.HtmlOutputText@465e2fdb
+          +id: j_idt90
+           type: 
+                </div>
+            </div>
+        </div>
+
+    
+          +id: j_idt91
+           type: 
+                                </div>
+                            </div>
+
+                        
+        +id: j_idt92
+         type: 
+                        <!--<ui:include src="/inventory/productsearchdialog.xhtml"/>-->
+                    </div>
+                </div>
+            
+      +id: j_idt93
+       type: org.primefaces.extensions.component.layout.LayoutPane@6fe7f601
+        +id: j_idt94
+         type: 
+                <div class="layout-wrapper #{guestPreferences.busdocMenuLayout != 'static' ? guestPreferences.busdocMenuLayout : null}">
+                    
+        +id: historyform
+         type: javax.faces.component.html.HtmlForm@5649f6e4
+          +id: j_idt95
+           type: 
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        
+          +id: j_idt96
+           type: org.primefaces.component.panelgrid.PanelGrid@63539859
+            +id: j_idt97
+             type: org.primefaces.component.outputlabel.OutputLabel@54c4431f
+            +id: dno
+             type: org.primefaces.component.inputtext.InputText@4c3f078
+            +id: j_idt98
+             type: org.primefaces.component.outputlabel.OutputLabel@1d24c8d2
+            +id: ddate
+             type: org.primefaces.component.datepicker.DatePicker@14607192
+          +id: j_idt99
+           type: 
+                    </div>
+                </div>
+            </div>       
+        
+        +id: j_idt100
+         type: 
+                </div>
+            
+  +id: j_idt107
+   type: 
+
+</html>
+
+2020-05-24 16:33:18,994 ERROR com.sun.faces.application.view.FaceletViewHandlingStrategy [http-nio-8008-exec-1] Error Rendering View[/busdoc/editbusdoc.xhtml]
+java.lang.IllegalStateException: Component ID mainform:tabsview:transtable:qty has already been found in the view.  
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1288)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.application.view.FaceletPartialStateManagementStrategy.saveView(FaceletPartialStateManagementStrategy.java:453)
+	at com.sun.faces.application.StateManagerImpl.saveView(StateManagerImpl.java:64)
+	at com.sun.faces.application.view.WriteBehindStateWriter.getState(WriteBehindStateWriter.java:310)
+	at com.sun.faces.application.view.WriteBehindStateWriter.flushToWriter(WriteBehindStateWriter.java:204)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:484)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 16:33:19,149 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-1] JSF1073: java.lang.IllegalStateException caught during processing of RENDER_RESPONSE 6 : UIComponent-ClientId=, Message=Component ID mainform:tabsview:transtable:qty has already been found in the view.  
+2020-05-24 16:33:19,206 ERROR com.sun.faces.context.ExceptionHandlerImpl [http-nio-8008-exec-1] Component ID mainform:tabsview:transtable:qty has already been found in the view.  
+java.lang.IllegalStateException: Component ID mainform:tabsview:transtable:qty has already been found in the view.  
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1288)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.util.Util.checkIdUniqueness(Util.java:1272)
+	at com.sun.faces.application.view.FaceletPartialStateManagementStrategy.saveView(FaceletPartialStateManagementStrategy.java:453)
+	at com.sun.faces.application.StateManagerImpl.saveView(StateManagerImpl.java:64)
+	at com.sun.faces.application.view.WriteBehindStateWriter.getState(WriteBehindStateWriter.java:310)
+	at com.sun.faces.application.view.WriteBehindStateWriter.flushToWriter(WriteBehindStateWriter.java:204)
+	at com.sun.faces.application.view.FaceletViewHandlingStrategy.renderView(FaceletViewHandlingStrategy.java:484)
+	at com.sun.faces.application.view.MultiViewHandler.renderView(MultiViewHandler.java:170)
+	at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:102)
+	at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:76)
+	at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:199)
+	at javax.faces.webapp.FacesServlet.executeLifecyle(FacesServlet.java:708)
+	at javax.faces.webapp.FacesServlet.service(FacesServlet.java:451)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal(OpenEntityManagerInViewFilter.java:186)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2020-05-24 16:33:55,255 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 6856 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-05-24 16:33:55,326 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 16:33:55,918 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 16:33:56,110 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 138ms. Found 21 JPA repository interfaces.
+2020-05-24 16:33:56,670 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:33:56,722 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:33:56,773 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-24 16:33:57,078 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-05-24 16:33:57,137 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:33:57,201 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 16:33:57,259 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-05-24 16:33:57,625 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-24 16:33:57,695 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 16:33:57,730 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2279 ms
+2020-05-24 16:33:59,064 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.2139487s
+2020-05-24 16:33:59,132 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-05-24 16:33:59,371 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-05-24 16:33:59,875 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-05-24 16:33:59,907 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-05-24 16:34:00,081 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 16:34:00,189 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-05-24 16:34:00,346 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 16:34:00,494 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 16:34:00,565 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 16:34:00,612 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-05-24 16:34:02,187 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 16:34:02,337 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 16:34:02,846 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-05-24 16:34:03,565 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 16:34:03,943 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-05-24 16:34:04,038 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-05-24 16:34:04,118 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 10.243 seconds (JVM running for 10.713)

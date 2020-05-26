@@ -2,7 +2,6 @@ package com.smb.erp.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 /**

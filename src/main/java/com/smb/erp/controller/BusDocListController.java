@@ -31,9 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Burhani152
  */
-@Named(value = "busDocController")
+@Named(value = "busDocListController")
 @ViewScoped
-public class BusDocController extends AbstractController<BusDoc> implements ProductTransferable {
+public class BusDocListController extends AbstractController<BusDoc> {
 
     BusDocRepository repo;
 
@@ -43,21 +43,14 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     @Autowired
     BusinessPartnerRepository partnerRepo;
 
-    @Autowired
-    private ProductSearchController productSearchController;
-
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
     BusDocInfo docInfo;
 
     List<BusinessPartner> partnerList;
 
-    private List<ProductTransaction> prodTransactions = new LinkedList<>();
-    
-    private ProductTransaction selectedTransaction;
-
     @Autowired
-    public BusDocController(BusDocRepository repo) {
+    public BusDocListController(BusDocRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
         super(BusDoc.class, repo);
         this.repo = repo;
@@ -69,8 +62,6 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //setSelected(new BusDoc());
         //getSelected().setCreatedon(new Date());
 
-        getProductSearchController().setProductTransferable(this);
-
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         String m = req.getParameter("mode");
@@ -80,23 +71,6 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 String docinfo = req.getParameter("docinfoid");
                 docInfo = docinfoRepo.getOne(Integer.parseInt(docinfo));
                 mode = DocumentTab.MODE.LIST;
-            } else if (m.equalsIgnoreCase("n")) {   // new business document 
-                String docinfo = req.getParameter("docinfoid");
-                docInfo = docinfoRepo.getOne(Integer.parseInt(docinfo));
-                BusDoc doc = new BusDoc();
-                doc.setCreatedon(new Date());
-                doc.setBusdocinfo(docInfo);
-                setSelected(doc);
-                mode = DocumentTab.MODE.NEW;
-                doc.setProductTransactions(getProdTransactions());
-            } else {        //edit mode=e
-                String docno = req.getParameter("docno");
-                if (docno != null) {
-                    setSelected(repo.getOne(docno));
-                    docInfo = getSelected().getBusdocinfo();
-                    setProdTransactions(getSelected().getProductTransactions());
-                }
-                mode = DocumentTab.MODE.EDIT;
             }
         }
     }
@@ -130,16 +104,6 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=e&docno=" + getSelected().getDocno());
     }
 
-    @Override
-    public void transfer(List<Product> products) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if(products!=null){
-            for(Product p: products){
-                getProdTransactions().add(convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype()));
-            }
-        }
-    }
-
     public List<BusinessPartner> getPartnerList() {
         if (partnerList == null) {
             if (docInfo.getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
@@ -151,59 +115,4 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         return partnerList;
     }
 
-    public ProductTransaction convert(Product prod, String doctype, String transtype) {
-        ProductTransaction pt = new ProductTransaction();
-        pt.setProduct(prod);
-        pt.setUnit(prod.getUnit());
-        pt.setTransactiontype(transtype);
-        pt.setCustomizedname(prod.getProductname());
-        pt.setLineqty(1);
-        if (doctype.equalsIgnoreCase("SALES")) {
-            pt.setLinecost(0);
-            pt.setLinefcunitprice(0);
-            pt.setLinesold(1);
-            pt.setLinereceived(0);
-        } else {
-            pt.setLinecost(0);
-            pt.setLinefcunitprice(0);
-            pt.setLinesold(0);
-            pt.setLinereceived(1);
-        }
-        return pt;
-    }
-
-    /**
-     * @return the prodTransactions
-     */
-    public List<ProductTransaction> getProdTransactions() {
-        return prodTransactions;
-    }
-
-    /**
-     * @param prodTransactions the prodTransactions to set
-     */
-    public void setProdTransactions(List<ProductTransaction> prodTransactions) {
-        this.prodTransactions = prodTransactions;
-    }
-
-    /**
-     * @return the selectedTransaction
-     */
-    public ProductTransaction getSelectedTransaction() {
-        return selectedTransaction;
-    }
-
-    /**
-     * @param selectedTransaction the selectedTransaction to set
-     */
-    public void setSelectedTransaction(ProductTransaction selectedTransaction) {
-        this.selectedTransaction = selectedTransaction;
-    }
-
-    /**
-     * @return the productSearchController
-     */
-    public ProductSearchController getProductSearchController() {
-        return productSearchController;
-    }
 }

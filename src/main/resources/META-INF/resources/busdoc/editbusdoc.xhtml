@@ -34,7 +34,7 @@
         <div class="ui-fluid">
             <div class="ui-g">
                 <div class="ui-g-12 ui-lg-12">
-                    <p:tabView dynamic="true" cache="true">
+                    <p:tabView id="tabsview" dynamic="true" cache="true">
                         <p:tab title="Document">
                             <p:outputPanel>
                                 <p:fieldset legend="Details">
@@ -49,7 +49,7 @@
 
                                         <p:outputLabel value="Company:" for="partner"/>
                                         <p:selectOneMenu id="partner" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
-                                                          var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                                         var="t" effect="fade" filter="true" filterMatchMode="contains">
                                             <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
                                             <p:column style="width: 10%">
                                                 <f:facet name="header">
@@ -76,7 +76,99 @@
                             </p:outputPanel>
                         </p:tab>
 
-                        <p:tab title="Products">
+                        <p:tab id="products" title="Products">
+                            <p:toolbar id="btnbar">
+                                <f:facet name="left">
+                                    <p:commandButton id="deleteButton" icon="fa fa-fw fa-trash"
+                                                     update=":growl,transtable" disabled="#{empty busDocController.selectedTransaction}" 
+                                                     title="Delete selected Transaction" style="float: right">
+                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:toolbar>                
+
+                            <p:dataTable id="transtable" var="pt"
+                                         value="#{busDocController.prodTransactions}" widgetVar="pttable"
+                                         rowKey="#{pt.product.productid}"
+                                         selectionMode="single"
+                                         selection="#{busDocController.selectedTransaction}"
+                                         editable="true"
+                                         editMode="cell"
+                                         emptyMessage="No Transaction found">
+
+                                <p:ajax event="rowSelect"   update=":mainform:tabsview:deleteButton, :historyform"/>
+                                <p:ajax event="rowUnselect" update=":mainform:tabsview:deleteButton" />
+
+                                <p:column headerText="TransId" style="width: 75px">
+                                    <h:outputText value="#{pt.prodtransid}"/>
+                                </p:column>
+
+                                <p:column headerText="Stock No" style="width: 150px">
+                                    <h:outputText value="#{pt.product.productid}" />
+                                </p:column>
+
+                                <p:column headerText="Product" style="width: 40%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Product Name"/>
+                                    </f:facet>
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{pt.customizedname}" 
+                                                         style="border-left: 5px solid goldenrod;" label="Custom Name"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Unit">
+                                    <h:outputText value="#{pt.product.unit.unitsym}" />
+                                </p:column>
+
+                                <p:column style="text-align: right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Qty"/>
+                                    </f:facet>
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{pt.lineqty}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="unit" value="#{pt.lineqty}" style="width:96%; text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                                <p:ajax update="total" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Price" style="text-align:">
+                                    <f:facet name="header">
+                                        <h:outputText value="Price"/>
+                                    </f:facet>
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{pt.lineunitprice}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="price" value="#{pt.lineunitprice}" 
+                                                         style="width:96%; text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                                <p:ajax update="total" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Total" style="text-align: right">
+                                    <h:outputText id="total" value="#{pt.lineTotal}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
 
                         </p:tab>                        
                     </p:tabView>
@@ -112,13 +204,14 @@
                 <p:panel >
                     <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
                         <p:outputLabel for="pcriteria" value="Search Criteria" />
-                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{productSearchController.criteria}" />
-                        <p:commandButton value="Search" actionListener="#{productSearchController.searchProducts()}" update="prodtable"/>
+                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{busDocController.productSearchController.criteria}" />
+                        <p:commandButton value="Search" actionListener="#{busDocController.productSearchController.searchProducts()}" update="prodtable"/>
+                        <p:commandButton value="Transfer" actionListener="#{busDocController.productSearchController.transfer()}" update=":mainform:tabsview:transtable"/>
                     </p:panelGrid>
                     <p:panel styleClass="slide-product-panel">
                         <p:dataTable id="prodtable" var="prod"
-                                     value="#{productSearchController.productList}" widgetVar="ptable"
-                                     selection="#{productSearchController.selectedProducts}"
+                                     value="#{busDocController.productSearchController.productList}" widgetVar="ptable"
+                                     selection="#{busDocController.productSearchController.selectedProducts}"
                                      rowKey="#{prod.productid}"
                                      emptyMessage="No Products found">
                             <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>

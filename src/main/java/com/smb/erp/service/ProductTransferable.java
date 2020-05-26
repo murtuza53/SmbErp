@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface ProductTransferable {
     
-    public void transfer(List<Product> produts);
+    public void transfer(List<Product> products);
 }
