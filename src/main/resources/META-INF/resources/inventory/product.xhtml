@@ -75,7 +75,6 @@
                                                itemLabel="#{con.countryname}"
                                                />
                             </p:selectOneMenu>
-
                         </p:panelGrid>
                     </p:fieldset>
 
@@ -164,25 +163,52 @@
                         </p:panelGrid>
                     </p:fieldset>
 
+                    <p:fieldset legend="VAT">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Type" for="vattype"/>
+                            <p:selectOneMenu id="vattype" value="#{productController.selected.vatregisterid.producttype}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItem itemLabel="Products" itemValue="Products"/>
+                                <f:selectItem itemLabel="Service" itemValue="Service"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Category" for="vatcat"/>
+                            <p:selectOneMenu id="vatcat" value="#{productController.selected.vatregisterid.vatcategoryid}" 
+                                             style="width: 100%" converter="#{entityConverter}"
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{vatcategoryController.items}"
+                                               var="item"
+                                               itemValue="#{item}"
+                                               itemLabel="#{item.categoryname}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="WEF:" for="wef" />
+                            <p:datePicker id="wef" placeholder="With Effitive From" value="#{productController.selected.vatregisterid.wef}" showButtonBar="true"/>
+                        </p:panelGrid>
+                    </p:fieldset>
+
                     <p:fieldset legend="Barcode">
                         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4, ui-grid-col-4" layout="grid" 
                                      styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
                             <p:outputLabel value="Product No:" for="pno" />
                             <p:inputText id="pno" placeholder="Barcode1" value="#{productController.selected.productid}" disabled="true" />
                             <p:barcode id="prodimage" value="#{productController.selected.productid.toString()}" type="code128" 
-                                       format="svg" title="ProductId"/>
+                                       format="png" title="ProductId"/>
 
                             <p:outputLabel value="Barcode1:" for="barcode1" />
                             <p:inputText id="barcode1" placeholder="Barcode1" value="#{productController.selected.barcode1}" >
                                 <p:ajax event="blur" update="barcode1image" />
                             </p:inputText>
-                            <p:barcode id="barcode1image" value="#{productController.selected.barcode1}" type="code128" format="svg" title="Barcode1" />
+                            <p:barcode id="barcode1image" value="#{productController.selected.barcode1}" type="code128" format="png" title="Barcode1" />
 
                             <p:outputLabel value="Barcode2:" for="barcode2" />
                             <p:inputText id="barcode2" placeholder="Barcode2" value="#{productController.selected.barcode2}" >
                                 <p:ajax event="blur" update="barcode2image" />
                             </p:inputText>
-                            <p:barcode id="barcode2image" value="#{productController.selected.barcode2}" type="code128" format="svg" title="Barcode2"/>
+                            <p:barcode id="barcode2image" value="#{productController.selected.barcode2}" type="code128" format="png" title="Barcode2"/>
                         </p:panelGrid>
                     </p:fieldset>
                 </div>

@@ -76,4 +76,8 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
     public List<SystemDefaults> findAllData(){
         return systemRepo.findAll();
     }
+    
+    public SystemDefaults getByPropertyname(String propertyName){
+        return systemRepo.findByPropertyname(propertyName);
+    }
 }

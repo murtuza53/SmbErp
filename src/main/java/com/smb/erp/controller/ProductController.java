@@ -8,8 +8,10 @@ package com.smb.erp.controller;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductAccount;
 import com.smb.erp.entity.ProductCategory;
+import com.smb.erp.entity.VatProductRegister;
 import com.smb.erp.repo.ProductRepository;
 import com.smb.erp.util.JsfUtil;
+import java.util.Date;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -36,6 +38,9 @@ public class ProductController extends AbstractController<Product> {
     //DocumentTab<Product> docTab;
     @Autowired
     ProductTreeViewController ptvController;
+    
+    @Autowired
+    VatCategoryController vatcatController;
 
     @Autowired
     SystemDefaultsController systemController;
@@ -99,6 +104,14 @@ public class ProductController extends AbstractController<Product> {
             pa.setSalesAccount(systemController.getDefaultAccount("SalesAccount"));
             pa.setPurchaseAccount(systemController.getDefaultAccount("PurchaseAcount"));
             pa.setConsumptionAccount(systemController.getDefaultAccount("ConsumptionAccount"));
+        }
+        
+        if(getSelected().getVatregisterid()==null){
+            VatProductRegister vpr = new VatProductRegister();
+            vpr.setVatregisterid(0);
+            vpr.setWef(new Date());
+            vpr.setVatcategoryid(vatcatController.getItems().get(1));
+            getSelected().setVatregisterid(vpr);
         }
     }
     

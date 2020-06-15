@@ -58,9 +58,9 @@ public class AccountController extends AbstractController<Account> {
 
         //Account parent = repo.getOne(parentNo);   //findAccountByNo(parentNo);
 
-        if (parentNo == null) {
+        if (parentNo != null) {
             accounts = em.createQuery(
-                    "SELECT OBJECT(a) FROM Account AS a WHERE " + "a.accountid=" + parentNo
+                    "SELECT OBJECT(a) FROM Account AS a WHERE " + "a.parentid.accountid=" + parentNo
                     + " ORDER BY a.accountid DESC").setMaxResults(1).getResultList();
             //accounts = repo.findAccountGroupBySearchCriteria("");
         }

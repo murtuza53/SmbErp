@@ -5,9 +5,12 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.Account;
+import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.entity.VatCategory;
 import com.smb.erp.repo.VatCategoryRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +23,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ViewScoped
 public class VatCategoryController extends AbstractController<VatCategory> {
     
-    VatCategoryRepository catRepo;
+    VatCategoryRepository repo;
     
-    private List<VatCategory> catList;
+    @Autowired
+    SystemDefaultsController systemController;
+    
     
     @Autowired
     public VatCategoryController(VatCategoryRepository repo){
-        this.catRepo = repo;
+        this.repo = repo;
     }
     
-    public List<VatCategory> getVatCategoryAll(){
-        if(catList==null){
-            catList = catRepo.findAll();
+    @Override
+    public List<VatCategory> getItems(){
+        if(items==null){
+            items = repo.findAll();
         }
-        return catList;
+        return items;
+    }
+
+    public List<VatCategory> completeFilter(String criteria) {
+        return getItems().stream().filter(c->c.getCategoryname().contains(criteria)).collect(Collectors.toList());
+    }
+    
+    public VatCategory getDefaultProductVatCategory(){
+        VatCategory cat = null;
+        SystemDefaults def = systemController.getByPropertyname("DefaultProductVatCategory");
+        if(def!=null){
+            cat = repo.getOne(Integer.parseInt(def.getValue()));
+        }
+        
+        if(cat==null){
+            cat = repo.getOne(2);
+        }
+        return cat;
     }
 }

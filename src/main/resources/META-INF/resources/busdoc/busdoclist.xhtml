@@ -18,11 +18,11 @@
                 <div class="ui-g-12">
 
                     <div class="ui-g-12 ui-lg-12">
-                        <p:dataTable id="bustable" var="bus" widgetVar="btable"
+                        <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{busDocListController.items}"
+                                     rowKey="#{item.docno}"
                                      selectionMode="single"
                                      selection="#{busDocListController.selected}"
-                                     rowKey="#{bus.docno}"
                                      reflow="true"
                                      emptyMessage="No Document Definition found">
                             <p:ajax event="rowSelect" update="btnedit"/>
@@ -45,7 +45,7 @@
                             </f:facet>
 
                             <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
-                                <h:outputText value="#{bus.docno}" />
+                                <h:outputText value="#{item.docno}" />
                             </p:column>
 
                             <p:column sortBy="#{item.createdon}" filterBy="#{item.createdon}" filterMatchMode="contains">

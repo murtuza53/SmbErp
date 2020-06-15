@@ -14,7 +14,9 @@ import com.smb.erp.entity.ProductTransaction;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
+import com.smb.erp.repo.CompanyRepository;
 import com.smb.erp.service.ProductTransferable;
+import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
 import java.util.Date;
@@ -46,6 +48,12 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     @Autowired
     private ProductSearchController productSearchController;
 
+    @Autowired
+    TableKeyController keyCon;
+
+    @Autowired
+    CompanyRepository companyRepo;
+
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
     BusDocInfo docInfo;
@@ -53,8 +61,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     List<BusinessPartner> partnerList;
 
     private List<ProductTransaction> prodTransactions = new LinkedList<>();
-    
+
     private ProductTransaction selectedTransaction;
+
+    private boolean productTabDisabled = true;
 
     @Autowired
     public BusDocController(BusDocRepository repo) {
@@ -115,6 +125,38 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         getItems();
     }
 
+    public void save() {
+        if (mode == DocumentTab.MODE.NEW) {
+            getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getCreatedon())));
+        }
+        getSelected().setProductTransactions(getProdTransactions());
+        getSelected().setUpdatedon(new Date());
+        for (ProductTransaction pt : getProdTransactions()) {
+            pt.setCeatedon(getSelected().getCreatedon());
+            pt.setUpdatedon(getSelected().getUpdatedon());
+            pt.setBusdoc(getSelected());
+            pt.setUnitprice(pt.getLineunitprice());
+            pt.calculateActualQtyFromLineQty();
+            //if (getSelected().getBusdocinfo().getDoctype().equalsIgnoreCase("Sales")) {
+            //    pt.setLinesold(pt.getLineqty());
+            //    pt.setSold(pt.getLinesold());
+            //} else {
+            //    pt.setLinereceived(pt.getLineqty());
+            //    pt.setLinereceived(pt.getLinereceived());
+            //}
+        }
+        getSelected().setCompany(companyRepo.getOne(1));    //to be commented
+        repo.save(getSelected());
+        JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
+    }
+
+    public void deleteTransactions(){
+        if(getSelectedTransaction()!=null){
+            getProdTransactions().remove(getSelectedTransaction());
+            setSelectedTransaction(null);
+        }
+    }
+    
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=n&docinfoid=" + docInfo.getBdinfoid());
@@ -133,8 +175,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     @Override
     public void transfer(List<Product> products) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if(products!=null){
-            for(Product p: products){
+        if (products != null) {
+            for (Product p : products) {
                 getProdTransactions().add(convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype()));
             }
         }
@@ -157,19 +199,34 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.setUnit(prod.getUnit());
         pt.setTransactiontype(transtype);
         pt.setCustomizedname(prod.getProductname());
-        pt.setLineqty(1);
+        pt.setLineqty(1.0);
+        pt.setBusdoc(getSelected());
         if (doctype.equalsIgnoreCase("SALES")) {
-            pt.setLinecost(0);
-            pt.setLinefcunitprice(0);
-            pt.setLinesold(1);
-            pt.setLinereceived(0);
+            pt.setLinecost(0.0);
+            pt.setLinefcunitprice(0.0);
+            pt.setLinesold(1.0);
+            pt.setLinereceived(0.0);
         } else {
-            pt.setLinecost(0);
-            pt.setLinefcunitprice(0);
-            pt.setLinesold(0);
-            pt.setLinereceived(1);
+            pt.setLinecost(0.0);
+            pt.setLinefcunitprice(0.0);
+            pt.setLinesold(0.0);
+            pt.setLinereceived(1.0);
         }
         return pt;
+    }
+
+    public void businessPartnerSelected() {
+        if (getSelected().getBusinesspartner() != null) {
+            productTabDisabled = false;
+        }
+    }
+
+    public String getTabTitle() {
+        if (mode == DocumentTab.MODE.NEW) {
+            return "New - " + getSelected().getBusdocinfo().getDocname();
+        } else {
+            return "Edit - " + getSelected().getDocno();
+        }
     }
 
     /**
@@ -205,5 +262,20 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
      */
     public ProductSearchController getProductSearchController() {
         return productSearchController;
+    }
+
+    /**
+     * @return the productTabDisabled
+     */
+    public boolean isProductTabDisabled() {
+        businessPartnerSelected();
+        return productTabDisabled;
+    }
+
+    /**
+     * @param productTabDisabled the productTabDisabled to set
+     */
+    public void setProductTabDisabled(boolean productTabDisabled) {
+        this.productTabDisabled = productTabDisabled;
     }
 }

@@ -17,6 +17,7 @@ public class VatProductRegister implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     private Integer vatregisterid;
 
     private String producttype;
@@ -28,9 +29,9 @@ public class VatProductRegister implements Serializable {
     @JoinColumn(name = "vatcategoryid")
     private VatCategory vatcategoryid;
 
-    @ManyToOne
-    @JoinColumn(name = "productid")
-    private Product productid;
+    //@ManyToOne
+    //@JoinColumn(name = "productid")
+    //private Product productid;
 
     public VatProductRegister() {
     }
@@ -94,20 +95,23 @@ public class VatProductRegister implements Serializable {
     /**
      * @return the productid
      */
-    public Product getProductid() {
-        return productid;
-    }
+    //public Product getProductid() {
+    //    return productid;
+    //}
 
     /**
      * @param productid the productid to set
      */
-    public void setProductid(Product productid) {
-        this.productid = productid;
-    }
+    //public void setProductid(Product productid) {
+    //    this.productid = productid;
+    //}
 
     @Override
     public String toString() {
-        return "VatProductRegister{" + "vatregisterid=" + vatregisterid + ", producttype=" + producttype + ", wef=" + wef + '}';
+        if(vatcategoryid!=null){
+            return vatcategoryid.getCategoryname();
+        }
+        return "N/A";
     }
 
     @Override

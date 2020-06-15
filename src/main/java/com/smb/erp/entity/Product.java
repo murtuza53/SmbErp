@@ -54,6 +54,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "prodaccountid")
     private ProductAccount prodaccount;
 
+    @ManyToOne (cascade = CascadeType.MERGE)
+    @JoinColumn(name = "vatregisterid")
+    private VatProductRegister vatregisterid;
+
     //bi-directional many-to-one association to ProductTransaction
     @OneToMany(mappedBy = "product")
     private List<ProductTransaction> prodtransactions;
@@ -351,5 +355,19 @@ public class Product implements Serializable {
             p.getProdaccount().setProdaccountid(0);
         }
         return p;
+    }
+
+    /**
+     * @return the vatregisterid
+     */
+    public VatProductRegister getVatregisterid() {
+        return vatregisterid;
+    }
+
+    /**
+     * @param vatregisterid the vatregisterid to set
+     */
+    public void setVatregisterid(VatProductRegister vatregisterid) {
+        this.vatregisterid = vatregisterid;
     }
 }

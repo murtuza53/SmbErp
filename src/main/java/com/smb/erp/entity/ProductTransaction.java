@@ -5,6 +5,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the prodtransaction database table.
@@ -18,55 +21,60 @@ public class ProductTransaction implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer prodtransid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "prodtransid")
+    private Integer prodtransid = (int) new Date().getTime();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date ceatedon;
 
     private String code;
 
-    private double commission;
+    private Double commission = 0.0;
 
-    private double commissionpercentage;
+    private Double commissionpercentage = 0.0;
 
-    private double cost;
+    private Double cost = 0.0;
 
     private String customizedname;
 
-    private double discount;
+    private Double discount = 0.0;
 
-    private double discountpercentage;
+    private Double discountpercentage = 0.0;
 
-    private double executedqty;
+    private Double executedqty = 0.0;
 
-    private double fcunitprice;
+    private Double fcunitprice = 0.0;
 
-    private double linecost;
+    private Double linecost = 0.0;
 
-    private double linefcunitprice;
+    private Double linefcunitprice = 0.0;
 
-    private double linereceived;
+    private Double linereceived = 0.0;
 
-    private double linesold;
+    private Double linesold = 0.0;
 
-    private double lineunitprice;
+    private Double lineunitprice = 0.0;
 
-    private double location;
+    private String location;
 
-    private double received;
+    private Double received = 0.0;
 
-    private double sold;
+    private Double sold = 0.0;
 
     private String transactiontype;
 
-    private double unitprice;
+    private Double unitprice = 0.0;
+
+    private Double vatamount = 0.0;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
 
-    @ManyToOne
-    @JoinColumn(name = "busdocno")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "docno")
     private BusDoc busdoc;
 
     //bi-directional many-to-one association to Unit
@@ -86,14 +94,16 @@ public class ProductTransaction implements Serializable {
 
     //bi-directional many-to-one association to ProductTransactionExecutedFrom
     @OneToMany(mappedBy = "prodtransaction")
+    @Fetch(FetchMode.SUBSELECT)
     private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
 
     //bi-directional many-to-one association to ProductTransactionExecutedTo
     @OneToMany(mappedBy = "prodtransaction")
+    @Fetch(FetchMode.SUBSELECT)
     private List<ProductTransactionExecutedTo> prodtransexecutedtos;
 
     @Transient
-    private double lineqty;
+    private Double lineqty;
 
     public ProductTransaction() {
     }
@@ -122,27 +132,27 @@ public class ProductTransaction implements Serializable {
         this.code = code;
     }
 
-    public double getCommission() {
+    public Double getCommission() {
         return this.commission;
     }
 
-    public void setCommission(double commission) {
+    public void setCommission(Double commission) {
         this.commission = commission;
     }
 
-    public double getCommissionpercentage() {
+    public Double getCommissionpercentage() {
         return this.commissionpercentage;
     }
 
-    public void setCommissionpercentage(double commissionpercentage) {
+    public void setCommissionpercentage(Double commissionpercentage) {
         this.commissionpercentage = commissionpercentage;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return this.cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
@@ -154,99 +164,100 @@ public class ProductTransaction implements Serializable {
         this.customizedname = customizedname;
     }
 
-    public double getDiscount() {
+    public Double getDiscount() {
         return this.discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 
-    public double getDiscountpercentage() {
+    public Double getDiscountpercentage() {
         return this.discountpercentage;
     }
 
-    public void setDiscountpercentage(double discountpercentage) {
+    public void setDiscountpercentage(Double discountpercentage) {
         this.discountpercentage = discountpercentage;
     }
 
-    public double getExecutedqty() {
+    public Double getExecutedqty() {
         return this.executedqty;
     }
 
-    public void setExecutedqty(double executedqty) {
+    public void setExecutedqty(Double executedqty) {
         this.executedqty = executedqty;
     }
 
-    public double getFcunitprice() {
+    public Double getFcunitprice() {
         return this.fcunitprice;
     }
 
-    public void setFcunitprice(double fcunitprice) {
+    public void setFcunitprice(Double fcunitprice) {
         this.fcunitprice = fcunitprice;
     }
 
-    public double getLinecost() {
+    public Double getLinecost() {
         return this.linecost;
     }
 
-    public void setLinecost(double linecost) {
+    public void setLinecost(Double linecost) {
         this.linecost = linecost;
     }
 
-    public double getLinefcunitprice() {
+    public Double getLinefcunitprice() {
         return this.linefcunitprice;
     }
 
-    public void setLinefcunitprice(double linefcunitprice) {
+    public void setLinefcunitprice(Double linefcunitprice) {
         this.linefcunitprice = linefcunitprice;
     }
 
-    public double getLinereceived() {
+    public Double getLinereceived() {
         return this.linereceived;
     }
 
-    public void setLinereceived(double linereceived) {
+    public void setLinereceived(Double linereceived) {
         this.linereceived = linereceived;
     }
 
-    public double getLinesold() {
+    public Double getLinesold() {
         return this.linesold;
     }
 
-    public void setLinesold(double linesold) {
+    public void setLinesold(Double linesold) {
         this.linesold = linesold;
     }
 
-    public double getLineunitprice() {
+    public Double getLineunitprice() {
         return this.lineunitprice;
     }
 
-    public void setLineunitprice(double lineunitprice) {
+    public void setLineunitprice(Double lineunitprice) {
         this.lineunitprice = lineunitprice;
+        refreshTotals();
     }
 
-    public double getLocation() {
+    public String getLocation() {
         return this.location;
     }
 
-    public void setLocation(double location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
-    public double getReceived() {
+    public Double getReceived() {
         return this.received;
     }
 
-    public void setReceived(double received) {
+    public void setReceived(Double received) {
         this.received = received;
     }
 
-    public double getSold() {
+    public Double getSold() {
         return this.sold;
     }
 
-    public void setSold(double sold) {
+    public void setSold(Double sold) {
         this.sold = sold;
     }
 
@@ -258,11 +269,11 @@ public class ProductTransaction implements Serializable {
         this.transactiontype = transactiontype;
     }
 
-    public double getUnitprice() {
+    public Double getUnitprice() {
         return this.unitprice;
     }
 
-    public void setUnitprice(double unitprice) {
+    public void setUnitprice(Double unitprice) {
         this.unitprice = unitprice;
     }
 
@@ -392,36 +403,77 @@ public class ProductTransaction implements Serializable {
         this.branch = branch;
     }
 
-    public double getLineTotal() {
+    public Double getLineTotal() {
         return getLineqty() * getLineunitprice();
     }
 
-    public double getTotal() {
-        return (getSold()+getReceived()) * getLineunitprice();
+    public Double getTotal() {
+        return (getSold() + getReceived()) * getLineunitprice();
     }
 
     /**
      * @return the lineqty
      */
-    public double getLineqty() {
+    public Double getLineqty() {
+        if (lineqty == null) {
+            lineqty = linesold + linereceived;
+        }
         return lineqty;
     }
 
     /**
      * @param lineqty the lineqty to set
      */
-    public void setLineqty(double lineqty) {
+    public void setLineqty(Double lineqty) {
         this.lineqty = lineqty;
+        refreshTotals();
     }
-    
-    public void calculateActualQtyFromLineQty(){
-        if(getBusdoc()!=null){
-            if(getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES")){
+
+    public void refreshTotals() {
+        if(product.getVatregisterid()==null){
+            vatamount = 0.0;
+            //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
+        } else {
+            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineTotal();
+            //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
+        }
+        if (busdoc != null) {
+            busdoc.refreshTotal();
+        }
+    }
+
+    public void calculateActualQtyFromLineQty() {
+        if (getBusdoc() != null) {
+            if (getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES")) {
                 setLinesold(lineqty);
+                setSold(getLinesold());
             } else {
                 setLinereceived(lineqty);
+                setReceived(getLinereceived());
             }
         }
+    }
+    
+    public String getVatType(){
+        if(product.getVatregisterid()==null){
+            return "";
+        }
+        return product.getVatregisterid().getVatcategoryid().getCategoryname();
+    }
+
+    /**
+     * @return the vatamount
+     */
+    public Double getVatamount() {
+        //System.out.println("getVatamount: " + vatamount);
+        return vatamount;
+    }
+
+    /**
+     * @param vatamount the vatamount to set
+     */
+    public void setVatamount(Double vatamount) {
+        this.vatamount = vatamount;
     }
 
 }

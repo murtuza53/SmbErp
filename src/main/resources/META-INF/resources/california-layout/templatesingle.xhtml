@@ -69,7 +69,7 @@
                                     <ui:insert name="content"/>
                                 </div>
                             </div>
-
+                            <ui:include src="/confirmation.xhtml"/>
                         </h:form>
                         <!--<ui:include src="/inventory/productsearchdialog.xhtml"/>-->
                     </div>
@@ -119,14 +119,17 @@
 
             /* Custom styles for the SlideOut */
             .product-panel {
+            padded: 0px;
             border-color: green;
-            border-width: 5px;
+            border-width: 2px;
             position: fixed;
             z-index: 100 !important;
             display: inline;
             }
             .product-handle {
-            padding: 8px;
+            margin-left: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
             font-size: 14px;
             color: white !important;
             background-color: green;

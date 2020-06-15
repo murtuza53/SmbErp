@@ -60,7 +60,7 @@ public class ProductSearchController extends AbstractController<Product> {
     }
     
     public void transfer(){
-        System.out.println("Transfer: " + getSelectedProducts());
+        //System.out.println("Transfer: " + getSelectedProducts());
         if(getSelectedProducts()==null || getSelectedProducts().size()==0){
             JsfUtil.addErrorMessage("Error", "No Products selected");
         } else if(productTransferable==null){

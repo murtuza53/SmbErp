@@ -13,12 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductCategory;
+import com.smb.erp.entity.VatCategory;
+import com.smb.erp.entity.VatProductRegister;
+import com.smb.erp.repo.ProductRepository;
+import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.rest.ProductRestController;
+import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
 import org.springframework.web.context.annotation.SessionScope;
 
 @Named
@@ -33,6 +40,12 @@ public class ProductTreeViewController implements Serializable {
 
     @Autowired
     ProductRestController pdcontroller;
+    
+    @Autowired
+    VatCategoryRepository vatcatRepo;
+    
+    @Autowired
+    ProductRepository prodRepo;
 
     @Autowired
     TabViewController mainTabs;
@@ -48,10 +61,18 @@ public class ProductTreeViewController implements Serializable {
     private List<Product> prodList;
 
     private HashMap<String, DocumentTab<Product>> productMap = new HashMap<String, DocumentTab<Product>>();
+    
+    private DefaultMenuModel vatMenuModel = new DefaultMenuModel();
 
     @PostConstruct
     public void init() {
         refreshCategoryTree();
+        for(VatCategory cat: vatcatRepo.findAll()){
+            DefaultMenuItem item = new DefaultMenuItem(cat);
+            item.setCommand("#{productTreeViewController.registerProductVat("+cat.getVatcategoryid()+")}");
+            item.setUpdate("prodtable, growl");
+            getVatMenuModel().addElement(item);
+        }
     }
 
     public TreeNode getRoot() {
@@ -211,6 +232,23 @@ public class ProductTreeViewController implements Serializable {
         }
         return false;
     }
+    
+    public void registerProductVat(int vatcatid){
+        if(selectedProduct!=null){
+            VatCategory vc = vatcatRepo.getOne(vatcatid);
+            VatProductRegister vpr = new VatProductRegister();
+            if(selectedProduct.getVatregisterid()!=null){
+                vpr = selectedProduct.getVatregisterid();
+            }
+            vpr.setProducttype("Products");
+            vpr.setVatcategoryid(vc);
+            vpr.setWef(new Date());
+            selectedProduct.setVatregisterid(vpr);
+            prodRepo.save(selectedProduct);
+            System.out.println(selectedProduct + " updated with registerProductVat: " + vc);
+            JsfUtil.addSuccessMessage(selectedProduct + " registered with " + vc);
+        }
+    }
 
     public String getTreeName() {
         return treeName;
@@ -266,6 +304,20 @@ public class ProductTreeViewController implements Serializable {
             }
         }
         //System.out.println(new Date() + " => prepareCreateNewProduct: " + selectedProduct);
+    }
+
+    /**
+     * @return the vatMenuModel
+     */
+    public DefaultMenuModel getVatMenuModel() {
+        return vatMenuModel;
+    }
+
+    /**
+     * @param vatMenuModel the vatMenuModel to set
+     */
+    public void setVatMenuModel(DefaultMenuModel vatMenuModel) {
+        this.vatMenuModel = vatMenuModel;
     }
 
 }

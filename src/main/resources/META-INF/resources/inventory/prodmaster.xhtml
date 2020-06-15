@@ -27,7 +27,10 @@
                                              update="cattree"/>
                         </f:facet>
 
-                        <f:facet name="right">
+                        <f:facet name="right">                            
+                            <p:menuButton value="Register VAT" model="#{productTreeViewController.vatMenuModel}" 
+                                          disabled="#{productTreeViewController.productEditDisabled}" iconPos="right"/>
+
                             <p:commandButton title="New Product" icon="fa fa-plus" process="@this" 
                                              actionListener="#{productTreeViewController.newTab_In_newBtab()}"
                                              disabled="#{productTreeViewController.productNewDisabled}" 
@@ -85,6 +88,11 @@
                         <p:column headerText="Brand" sortBy="#{prod.brand.brandname}"
                                   filterBy="#{prod.brand.brandname}" filterMatchMode="contains">
                             <h:outputText value="#{prod.brand.brandname}" />
+                        </p:column>
+
+                        <p:column headerText="VAT" sortBy="#{prod.vatregisterid}"
+                                  filterBy="#{prod.vatregisterid}" filterMatchMode="contains">
+                            <h:outputText value="#{prod.vatregisterid}" />
                         </p:column>
                     </p:dataTable>
                 </div>

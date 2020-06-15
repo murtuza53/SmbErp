@@ -5,14 +5,12 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.Account;
 import com.smb.erp.entity.TableKey;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.TableKeyRepository;
 import java.util.HashMap;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.SessionScope;
 
 /**
@@ -55,6 +53,10 @@ public class TableKeyController extends AbstractController<TableKey> {
         }
     }
 
+    public synchronized String getDocNo(String prefix, int year){
+        return prefix + year + getNextKey(prefix+year);
+    }
+    
     public synchronized int getBusinessPartnerNextId(){
         return (int)getNextKey("businesspartner");
     }

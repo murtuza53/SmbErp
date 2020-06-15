@@ -8,11 +8,11 @@
                 template="/california-layout/templatesingle.xhtml">
 
     <ui:define name="title">
-        Cash Memo
+        #{busDocController.tabTitle}
     </ui:define>
 
     <ui:define name="breadcrumb">
-        <p:link outcome="/index">Home</p:link>
+        #{busDocController.tabTitle}
     </ui:define>
 
     <ui:define name="toolbar">
@@ -22,7 +22,8 @@
         </li>-->
         <li>
             <p:commandButton title="Save" update=":mainform, :growl"
-                             icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
+                             icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"
+                             actionListener="#{busDocController.save()}"/>
         </li>
         <li>
             <p:commandButton title="Print" icon="fa fa-print" 
@@ -50,7 +51,9 @@
                                         <p:outputLabel value="Company:" for="partner"/>
                                         <p:selectOneMenu id="partner" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
                                                          var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="#{!busDocController.productTabDisabled}"/>
                                             <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                                            <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="tabsview, :psform" />
                                             <p:column style="width: 10%">
                                                 <f:facet name="header">
                                                     <h:outputText value="Id"/>
@@ -76,12 +79,13 @@
                             </p:outputPanel>
                         </p:tab>
 
-                        <p:tab id="products" title="Products">
+                        <p:tab id="products" title="Products" disabled="#{busDocController.productTabDisabled}">
                             <p:toolbar id="btnbar">
                                 <f:facet name="left">
-                                    <p:commandButton id="deleteButton" icon="fa fa-fw fa-trash"
+                                    <p:commandButton id="deleteButton" icon="fa fa-trash"
                                                      update=":growl,transtable" disabled="#{empty busDocController.selectedTransaction}" 
-                                                     title="Delete selected Transaction" style="float: right">
+                                                     title="Delete selected Transaction" style="padding-right: 5px" 
+                                                     actionListener="#{busDocController.deleteTransactions()}">
                                         <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
                                     </p:commandButton>
                                 </f:facet>
@@ -98,6 +102,7 @@
 
                                 <p:ajax event="rowSelect"   update=":mainform:tabsview:deleteButton, :historyform"/>
                                 <p:ajax event="rowUnselect" update=":mainform:tabsview:deleteButton" />
+                                <p:ajax event="cellEdit" update=":mainform:tabsview:totalpanel" />
 
                                 <p:column headerText="TransId" style="width: 75px">
                                     <h:outputText value="#{pt.prodtransid}"/>
@@ -114,7 +119,7 @@
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
                                         <f:facet name="input">
-                                            <p:inputText value="#{pt.customizedname}" 
+                                            <p:inputText value="#{pt.customizedname}"
                                                          style="border-left: 5px solid goldenrod;" label="Custom Name"/>
                                         </f:facet>
                                     </p:cellEditor>
@@ -135,9 +140,9 @@
                                             </h:outputText>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:inputText id="unit" value="#{pt.lineqty}" style="width:96%; text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
+                                            <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
                                                 <f:convertNumber pattern="#,##0.000" />
-                                                <p:ajax update="total" />
+                                                <p:ajax update="total, vamount, namount" />
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -155,9 +160,9 @@
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:inputText id="price" value="#{pt.lineunitprice}" 
-                                                         style="width:96%; text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
+                                                         style="text-align:right; border-left: 5px solid goldenrod;" label="Quantity">
                                                 <f:convertNumber pattern="#,##0.000" />
-                                                <p:ajax update="total" />
+                                                <p:ajax update="total, vamount, namount" />
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -168,8 +173,62 @@
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
-                            </p:dataTable>
 
+                                <p:column headerText="VAT Type" style="text-align: center">
+                                    <h:outputText id="vattype" value="#{pt.vatType}"/>
+                                </p:column>
+
+                                <p:column headerText="VAT" style="text-align: right">
+                                    <h:outputText id="vamount" value="#{pt.vatamount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Net" style="text-align: right">
+                                    <h:outputText id="namount" value="#{pt.lineTotal+pt.vatamount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                            <p:panelGrid id="totalpanel" styleClass="nba-grid" style="font-weight: bold; width: 100%; text-align: right">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column>Total</p:column>
+                                        <p:column>Discount</p:column>
+                                        <p:column>Gross</p:column>
+                                        <p:column>VAT</p:column>
+                                        <p:column>Net</p:column>
+                                    </p:row>
+                                </f:facet>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="#{busDocController.selected.totalAmount}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{busDocController.selected.discount}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{busDocController.selected.grossamount}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{busDocController.selected.totalvat}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{busDocController.selected.netamount}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
                         </p:tab>                        
                     </p:tabView>
                 </div>
@@ -200,8 +259,8 @@
         <h:form id="psform">
             <pe:slideout id="slideoutContact" title="Products" icon="fa fa-search" location="top" widgetVar="slideout" 
                          handleStyleClass="product-handle" panelStyleClass="product-panel" offset="230px" bounceTimes="5"
-                         bounceDistance="100px">
-                <p:panel >
+                         bounceDistance="100px" rendered="#{!busDocController.productTabDisabled}" handleOffsetReverse="true" >
+                <p:panel>
                     <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
                         <p:outputLabel for="pcriteria" value="Search Criteria" />
                         <p:inputText id="pcriteria" placeholder="Criteria" value="#{busDocController.productSearchController.criteria}" />
@@ -241,5 +300,4 @@
             </pe:slideout>
         </h:form>
     </ui:define>
-
 </ui:composition>

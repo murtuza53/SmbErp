@@ -9,16 +9,11 @@ import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.BusinessPartner;
-import com.smb.erp.entity.Product;
-import com.smb.erp.entity.ProductTransaction;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
-import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -80,6 +75,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
         if (items == null) {
             //items = repo.findAll(Sort.by(Sort.Direction.ASC, "createdon"));
             items = repo.findByBusDocByPrefix(docInfo.getPrefix());
+            System.out.println(docInfo.getPrefix() + " List: " + items.size());
         }
         return items;
     }
