@@ -49,7 +49,7 @@
                                                       monthNavigator="true" pattern="dd/MM/yyyy"/>
 
                                         <p:outputLabel value="Company:" for="partner"/>
-                                        <p:selectOneMenu id="partner" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
+                                        <p:selectOneMenu id="contactperson" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
                                                          var="t" effect="fade" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="#{!busDocController.productTabDisabled}"/>
                                             <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
@@ -68,12 +68,53 @@
                                             </p:column>
                                         </p:selectOneMenu>
 
+                                        <p:outputLabel value="Attention To:" for="partner"/>
+                                        <p:selectOneMenu id="partner" value="#{busDocController.selected.contactperson}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade" filter="true" filterMatchMode="contains" disabled="">
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{busDocController.selected.businesspartner.contactpersons}" var="item" itemLabel="#{item.contactpersonname}" itemValue="#{item}"/>
+                                            <p:column style="width: 20%">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Mobile"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.mobile1}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.contactpersonname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
                                     </p:panelGrid>
                                 </p:fieldset>
                                 <br/>
-                                <p:fieldset legend="VAT">
-                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                <p:fieldset legend="Terms and Conditions">
+                                    <p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5" layout="grid"
                                                  styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                        <p:outputLabel value="Pay Type:" for="@next"/>
+                                        <p:selectOneMenu id="paytype" value="#{busDocController.selected.paytermsid.paytype}" editable="true">
+                                            <f:selectItem itemLabel="Select..." itemValue=""/>
+                                            <f:selectItems value="#{systemDefaultsController.getAsList('CreditStatus')}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Validity:" for="@next"/>
+                                        <p:selectOneMenu id="validity" value="#{busDocController.selected.paytermsid.validitydays}" editable="true">
+                                            <f:selectItem itemLabel="Select..." itemValue=""/>
+                                            <f:selectItems value="#{systemDefaultsController.getAsList('DocValidityTerms')}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Delivery Schedule:" for="@next"/>
+                                        <p:selectOneMenu id="dschedule" value="#{busDocController.selected.paytermsid.deliverydays}" editable="true">
+                                            <f:selectItem itemLabel="Select..." itemValue=""/>
+                                            <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryDays')}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Delivery Terms:" for="@next"/>
+                                        <p:selectOneMenu id="dterms" value="#{busDocController.selected.paytermsid.deliveryterms}" editable="true">
+                                            <f:selectItem itemLabel="Select..." itemValue=""/>
+                                            <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryTerms')}"/>
+                                        </p:selectOneMenu>
                                     </p:panelGrid>
                                 </p:fieldset>
                             </p:outputPanel>
@@ -169,7 +210,7 @@
                                 </p:column>
 
                                 <p:column headerText="Total" style="text-align: right">
-                                    <h:outputText id="total" value="#{pt.lineTotal}">
+                                    <h:outputText id="total" value="#{pt.totalamount}">
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
@@ -185,7 +226,7 @@
                                 </p:column>
 
                                 <p:column headerText="Net" style="text-align: right">
-                                    <h:outputText id="namount" value="#{pt.lineTotal+pt.vatamount}">
+                                    <h:outputText id="namount" value="#{pt.grandtotal}">
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
@@ -203,7 +244,7 @@
                                 </f:facet>
                                 <p:row>
                                     <p:column>
-                                        <h:outputText value="#{busDocController.selected.totalAmount}">
+                                        <h:outputText value="#{busDocController.selected.subtotal}">
                                             <f:convertNumber pattern="#,##0.000" />
                                         </h:outputText>
                                     </p:column>
@@ -213,7 +254,7 @@
                                         </h:outputText>
                                     </p:column>
                                     <p:column>
-                                        <h:outputText value="#{busDocController.selected.grossamount}">
+                                        <h:outputText value="#{busDocController.selected.totalamount}">
                                             <f:convertNumber pattern="#,##0.000" />
                                         </h:outputText>
                                     </p:column>
@@ -223,7 +264,7 @@
                                         </h:outputText>
                                     </p:column>
                                     <p:column>
-                                        <h:outputText value="#{busDocController.selected.netamount}">
+                                        <h:outputText value="#{busDocController.selected.grandtotal}">
                                             <f:convertNumber pattern="#,##0.000" />
                                         </h:outputText>
                                     </p:column>

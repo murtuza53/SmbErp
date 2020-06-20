@@ -9,6 +9,7 @@ import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.BusinessPartner;
+import com.smb.erp.entity.PayTerms;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
 import com.smb.erp.repo.BusDocInfoRepository;
@@ -18,6 +19,7 @@ import com.smb.erp.repo.CompanyRepository;
 import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
+import com.smb.erp.util.StringUtils;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -38,6 +40,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BusDocController extends AbstractController<BusDoc> implements ProductTransferable {
 
     BusDocRepository repo;
+
+    @Autowired
+    SystemDefaultsController systemController;
 
     @Autowired
     BusDocInfoRepository docinfoRepo;
@@ -79,6 +84,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //setSelected(new BusDoc());
         //getSelected().setCreatedon(new Date());
 
+        systemController.getAsList("BusinessPartnerType");
         getProductSearchController().setProductTransferable(this);
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -99,12 +105,21 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 setSelected(doc);
                 mode = DocumentTab.MODE.NEW;
                 doc.setProductTransactions(getProdTransactions());
+
+                PayTerms pt = new PayTerms();
+                doc.setPaytermsid(pt);
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
                 if (docno != null) {
                     setSelected(repo.getOne(docno));
                     docInfo = getSelected().getBusdocinfo();
                     setProdTransactions(getSelected().getProductTransactions());
+
+                    if (getSelected().getPaytermsid() == null) {
+                        PayTerms pt = new PayTerms();
+                        getSelected().setPaytermsid(pt);
+                    }
+                    getSelected().refreshTotal();
                 }
                 mode = DocumentTab.MODE.EDIT;
             }
@@ -150,13 +165,13 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
     }
 
-    public void deleteTransactions(){
-        if(getSelectedTransaction()!=null){
+    public void deleteTransactions() {
+        if (getSelectedTransaction() != null) {
             getProdTransactions().remove(getSelectedTransaction());
             setSelectedTransaction(null);
         }
     }
-    
+
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=n&docinfoid=" + docInfo.getBdinfoid());
@@ -227,6 +242,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         } else {
             return "Edit - " + getSelected().getDocno();
         }
+    }
+
+    public List<String> findAsList(String propertyname) {
+        return systemController.getAsList(propertyname);
     }
 
     /**

@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the businesspartner database table.
@@ -90,12 +92,14 @@ public class BusinessPartner implements Serializable {
     private CreditLimit creditlimit;
 
     //bi-directional many-to-one association to ContactPerson
-    //@OneToMany(mappedBy="businesspartner")
-    //private List<ContactPerson> contactpersons;
+    @OneToMany(mappedBy = "businesspartner", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ContactPerson> contactpersons;
     //bi-directional many-to-one association to PriceList
     //@OneToMany(mappedBy="businesspartner")
     //private List<PriceList> pricelists;
     @OneToMany(mappedBy = "partnerid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<VatBusinessRegister> businessRegisters;
 
     public BusinessPartner() {
@@ -302,29 +306,29 @@ public class BusinessPartner implements Serializable {
         this.creditlimit = creditlimit;
     }
 
-    /*public List<ContactPerson> getContactpersons() {
-		return this.contactpersons;
-	}
+    public List<ContactPerson> getContactpersons() {
+        return this.contactpersons;
+    }
 
-	public void setContactpersons(List<ContactPerson> contactpersons) {
-		this.contactpersons = contactpersons;
-	}
+    public void setContactpersons(List<ContactPerson> contactpersons) {
+        this.contactpersons = contactpersons;
+    }
 
-	public ContactPerson addContactperson(ContactPerson contactperson) {
-		getContactpersons().add(contactperson);
-		contactperson.setBusinesspartner(this);
+    public ContactPerson addContactperson(ContactPerson contactperson) {
+        getContactpersons().add(contactperson);
+        contactperson.setBusinesspartner(this);
 
-		return contactperson;
-	}
+        return contactperson;
+    }
 
-	public ContactPerson removeContactperson(ContactPerson contactperson) {
-		getContactpersons().remove(contactperson);
-		contactperson.setBusinesspartner(null);
+    public ContactPerson removeContactperson(ContactPerson contactperson) {
+        getContactpersons().remove(contactperson);
+        contactperson.setBusinesspartner(null);
 
-		return contactperson;
-	}
+        return contactperson;
+    }
 
-	public List<PriceList> getPricelists() {
+    /*public List<PriceList> getPricelists() {
 		return this.pricelists;
 	}
 
@@ -539,9 +543,9 @@ public class BusinessPartner implements Serializable {
         this.businessRegisters = businessRegisters;
     }
 
-    public VatBusinessRegister getCurrentVatRegister(){
-        if(getBusinessRegisters()!=null && getBusinessRegisters().size()>0){
-            return getBusinessRegisters().get(getBusinessRegisters().size()-1);
+    public VatBusinessRegister getCurrentVatRegister() {
+        if (getBusinessRegisters() != null && getBusinessRegisters().size() > 0) {
+            return getBusinessRegisters().get(getBusinessRegisters().size() - 1);
         }
         return null;
     }

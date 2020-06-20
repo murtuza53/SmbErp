@@ -12,6 +12,8 @@ import com.smb.erp.repo.SystemDefaultsRepository;
 import com.smb.erp.util.StringUtils;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,58 +28,79 @@ import org.springframework.web.context.annotation.SessionScope;
 public class SystemDefaultsController extends AbstractController<SystemDefaults> {
 
     SystemDefaultsRepository systemRepo;
-    
+
     HashMap<String, String> propertyTable;
 
     @Autowired
     AccountRepository accountRepo;
-    
+
     @Autowired
     public SystemDefaultsController(SystemDefaultsRepository repo) {
         super(SystemDefaults.class, repo);
         this.systemRepo = repo;
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         refresh();
     }
-    
-    public void refresh(){
+
+    public void refresh() {
         propertyTable = new HashMap<String, String>();
-        
+
         List<SystemDefaults> sds = findAllData();
         System.out.println("SystemDefaultsController:" + sds);
-        for(SystemDefaults sd: sds){
-            if(!propertyTable.containsKey(sd.getReferredclass() + "." + sd.getPropertyname())){
+        for (SystemDefaults sd : sds) {
+            if (!propertyTable.containsKey(sd.getReferredclass() + "." + sd.getPropertyname())) {
                 propertyTable.put(sd.getReferredclass() + "." + sd.getPropertyname(), sd.getValue());
             }
         }
         System.out.println("SystemDefaultsController: " + propertyTable);
     }
-    
-    public Account getDefaultAccount(String propertyname){
+
+    public Account getDefaultAccount(String propertyname) {
         return accountRepo.getOne(propertyTable.get("Account." + propertyname));
     }
-    
-    public String getDefaultList(String propertyname){
+
+    public String getDefaultList(String propertyname) {
         return propertyTable.get("List." + propertyname);
     }
-    
-    public List<String> getAsList(String propertyname){
+
+    public List<String> getAsList(String propertyname) {
         //System.out.println("getAsList => " + propertyname + " => " + propertyTable.get("List." + propertyname));
         return StringUtils.tokensToList(propertyTable.get("List." + propertyname));
+        /*SystemDefaults sd = systemRepo.findByPropertyname(propertyname);
+        if(sd!=null){
+            String type = sd.getValuetype();
+            if(type.equalsIgnoreCase("String")){
+                return StringUtils.tokensToList(sd.getValue());
+            } else {
+                return convertStringListToIntList(StringUtils.tokensToList(sd.getValue()), Integer::parseInt);
+            }
+        }*/
     }
-
-    public List<String> getAsList(String propertyname, String firstValue){
+    
+    public List<Integer> getAsListInteger(String propertyname) {
+        return convertStringListToIntList(StringUtils.tokensToList(propertyTable.get("List." + propertyname)), Integer::parseInt);
+    }    
+    
+    public List<String> getAsList(String propertyname, String firstValue) {
         return StringUtils.tokensToList(propertyTable.get("List." + propertyname), firstValue);
     }
-    
-    public List<SystemDefaults> findAllData(){
+
+    public List<SystemDefaults> findAllData() {
         return systemRepo.findAll();
     }
-    
-    public SystemDefaults getByPropertyname(String propertyName){
+
+    public SystemDefaults getByPropertyname(String propertyName) {
         return systemRepo.findByPropertyname(propertyName);
+    }
+
+    public static <T, U> List<U>
+            convertStringListToIntList(List<T> listOfString,
+                    Function<T, U> function) {
+        return listOfString.stream()
+                .map(function)
+                .collect(Collectors.toList());
     }
 }

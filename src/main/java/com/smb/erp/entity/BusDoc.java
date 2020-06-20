@@ -29,8 +29,6 @@ public class BusDoc implements Serializable {
 
     private String extra1;
 
-    private Double extra10=0.0;
-
     private String extra2;
 
     private String extra3;
@@ -39,13 +37,50 @@ public class BusDoc implements Serializable {
 
     private String extra5;
 
-    private Double extra6=0.0;
+    private String extra6;
 
-    private Double extra7=0.0;
+    private String extra7;
 
-    private Double extra8=0.0;
+    private String extra8;
 
-    private Double extra9=0.0;
+    private String extra9;
+
+    private String extra10;
+
+    private Double extra11 = 0.0;
+
+    private Double extra12 = 0.0;
+
+    private Double extra13 = 0.0;
+
+    private Double extra14 = 0.0;
+
+    private Double extra15 = 0.0;
+
+    private Double extra16 = 0.0;
+
+    private Double extra17 = 0.0;
+
+    private Double extra18 = 0.0;
+
+    private Double extra19 = 0.0;
+
+    private Double extra20 = 0.0;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date extra21;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date extra22;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date extra23;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date extra24;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date extra25;
 
     private String manualdocno;
 
@@ -53,15 +88,15 @@ public class BusDoc implements Serializable {
 
     private String refno;
 
-    private Double totalAmount = 0.0;
-    
+    private Double subtotal = 0.0;
+
     private Double discount = 0.0;
-    
-    private Double grossamount = 0.0;
-    
+
+    private Double totalamount = 0.0;
+
     private Double totalvat = 0.0;
-    
-    private Double netamount = 0.0;
+
+    private Double grandtotal = 0.0;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
@@ -85,6 +120,11 @@ public class BusDoc implements Serializable {
     @ManyToOne
     @JoinColumn(name = "fromdocno")
     private BusDoc busdoc;
+
+    //bi-directional many-to-one association to BusDoc
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "paytermsid")
+    private PayTerms paytermsid;
 
     //bi-directional many-to-one association to BusDoc
     //@OneToMany(mappedBy="busdoc")
@@ -158,14 +198,6 @@ public class BusDoc implements Serializable {
         this.extra1 = extra1;
     }
 
-    public Double getExtra10() {
-        return this.extra10;
-    }
-
-    public void setExtra10(Double extra10) {
-        this.extra10 = extra10;
-    }
-
     public String getExtra2() {
         return this.extra2;
     }
@@ -198,36 +230,254 @@ public class BusDoc implements Serializable {
         this.extra5 = extra5;
     }
 
-    public Double getExtra6() {
+    public String getExtra6() {
         return this.extra6;
     }
 
-    public void setExtra6(Double extra6) {
+    public void setExtra6(String extra6) {
         this.extra6 = extra6;
     }
 
-    public Double getExtra7() {
+    public String getExtra7() {
         return this.extra7;
     }
 
-    public void setExtra7(Double extra7) {
+    public void setExtra7(String extra7) {
         this.extra7 = extra7;
     }
 
-    public Double getExtra8() {
+    public String getExtra8() {
         return this.extra8;
     }
 
-    public void setExtra8(Double extra8) {
+    public void setExtra8(String extra8) {
         this.extra8 = extra8;
     }
 
-    public Double getExtra9() {
+    public String getExtra9() {
         return this.extra9;
     }
 
-    public void setExtra9(Double extra9) {
+    public void setExtra9(String extra9) {
         this.extra9 = extra9;
+    }
+
+    public String getExtra10() {
+        return this.extra10;
+    }
+
+    public void setExtra10(String extra10) {
+        this.extra10 = extra10;
+    }
+
+    /**
+     * @return the extra11
+     */
+    public Double getExtra11() {
+        return extra11;
+    }
+
+    /**
+     * @param extra11 the extra11 to set
+     */
+    public void setExtra11(Double extra11) {
+        this.extra11 = extra11;
+    }
+
+    /**
+     * @return the extra12
+     */
+    public Double getExtra12() {
+        return extra12;
+    }
+
+    /**
+     * @param extra12 the extra12 to set
+     */
+    public void setExtra12(Double extra12) {
+        this.extra12 = extra12;
+    }
+
+    /**
+     * @return the extra13
+     */
+    public Double getExtra13() {
+        return extra13;
+    }
+
+    /**
+     * @param extra13 the extra13 to set
+     */
+    public void setExtra13(Double extra13) {
+        this.extra13 = extra13;
+    }
+
+    /**
+     * @return the extra14
+     */
+    public Double getExtra14() {
+        return extra14;
+    }
+
+    /**
+     * @param extra14 the extra14 to set
+     */
+    public void setExtra14(Double extra14) {
+        this.extra14 = extra14;
+    }
+
+    /**
+     * @return the extra15
+     */
+    public Double getExtra15() {
+        return extra15;
+    }
+
+    /**
+     * @param extra15 the extra15 to set
+     */
+    public void setExtra15(Double extra15) {
+        this.extra15 = extra15;
+    }
+
+    /**
+     * @return the extra16
+     */
+    public Double getExtra16() {
+        return extra16;
+    }
+
+    /**
+     * @param extra16 the extra16 to set
+     */
+    public void setExtra16(Double extra16) {
+        this.extra16 = extra16;
+    }
+
+    /**
+     * @return the extra17
+     */
+    public Double getExtra17() {
+        return extra17;
+    }
+
+    /**
+     * @param extra17 the extra17 to set
+     */
+    public void setExtra17(Double extra17) {
+        this.extra17 = extra17;
+    }
+
+    /**
+     * @return the extra18
+     */
+    public Double getExtra18() {
+        return extra18;
+    }
+
+    /**
+     * @param extra18 the extra18 to set
+     */
+    public void setExtra18(Double extra18) {
+        this.extra18 = extra18;
+    }
+
+    /**
+     * @return the extra19
+     */
+    public Double getExtra19() {
+        return extra19;
+    }
+
+    /**
+     * @param extra19 the extra19 to set
+     */
+    public void setExtra19(Double extra19) {
+        this.extra19 = extra19;
+    }
+
+    /**
+     * @return the extra20
+     */
+    public Double getExtra20() {
+        return extra20;
+    }
+
+    /**
+     * @param extra20 the extra20 to set
+     */
+    public void setExtra20(Double extra20) {
+        this.extra20 = extra20;
+    }
+
+    /**
+     * @return the extra21
+     */
+    public Date getExtra21() {
+        return extra21;
+    }
+
+    /**
+     * @param extra21 the extra21 to set
+     */
+    public void setExtra21(Date extra21) {
+        this.extra21 = extra21;
+    }
+
+    /**
+     * @return the extra22
+     */
+    public Date getExtra22() {
+        return extra22;
+    }
+
+    /**
+     * @param extra22 the extra22 to set
+     */
+    public void setExtra22(Date extra22) {
+        this.extra22 = extra22;
+    }
+
+    /**
+     * @return the extra23
+     */
+    public Date getExtra23() {
+        return extra23;
+    }
+
+    /**
+     * @param extra23 the extra23 to set
+     */
+    public void setExtra23(Date extra23) {
+        this.extra23 = extra23;
+    }
+
+    /**
+     * @return the extra24
+     */
+    public Date getExtra24() {
+        return extra24;
+    }
+
+    /**
+     * @param extra24 the extra24 to set
+     */
+    public void setExtra24(Date extra24) {
+        this.extra24 = extra24;
+    }
+
+    /**
+     * @return the extra25
+     */
+    public Date getExtra25() {
+        return extra25;
+    }
+
+    /**
+     * @param extra25 the extra25 to set
+     */
+    public void setExtra25(Date extra25) {
+        this.extra25 = extra25;
     }
 
     public String getManualdocno() {
@@ -323,6 +573,20 @@ public class BusDoc implements Serializable {
         this.busdocinfo = busdocinfo;
     }
 
+    /**
+     * @return the paytermsid
+     */
+    public PayTerms getPaytermsid() {
+        return paytermsid;
+    }
+
+    /**
+     * @param paytermsid the paytermsid to set
+     */
+    public void setPaytermsid(PayTerms paytermsid) {
+        this.paytermsid = paytermsid;
+    }
+
     public BusinessPartner getBusinesspartner() {
         return this.businesspartner;
     }
@@ -337,20 +601,6 @@ public class BusDoc implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-        /**
-     * @return the totalAmount
-     */
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    /**
-     * @param totalAmount the totalAmount to set
-     */
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
     }
 
     /**
@@ -368,20 +618,6 @@ public class BusDoc implements Serializable {
     }
 
     /**
-     * @return the grossamount
-     */
-    public Double getGrossamount() {
-        return grossamount;
-    }
-
-    /**
-     * @param grossamount the grossamount to set
-     */
-    public void setGrossamount(Double grossamount) {
-        this.grossamount = grossamount;
-    }
-
-    /**
      * @return the totalvat
      */
     public Double getTotalvat() {
@@ -393,20 +629,6 @@ public class BusDoc implements Serializable {
      */
     public void setTotalvat(Double totalvat) {
         this.totalvat = totalvat;
-    }
-
-    /**
-     * @return the netamount
-     */
-    public Double getNetamount() {
-        return netamount;
-    }
-
-    /**
-     * @param netamount the netamount to set
-     */
-    public void setNetamount(Double netamount) {
-        this.netamount = netamount;
     }
 
     /*public List<PartialPaymentDetail> getPpdetails1() {
@@ -561,17 +783,59 @@ public class BusDoc implements Serializable {
     public String toString() {
         return docno;
     }
-    
-    public void refreshTotal(){
-        if(getProductTransactions()!=null){
-            totalAmount = getProductTransactions().stream().mapToDouble(x->x.getTotal()).sum();
-            if(totalAmount==0){
-                totalAmount = getProductTransactions().stream().mapToDouble(x->x.getLineTotal()).sum();
+
+    public void refreshTotal() {
+        if (getProductTransactions() != null) {
+            setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getSubtotal()).sum());
+            if (getSubtotal() == 0) {
+                setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getLineSubtotal()).sum());
             }
-            grossamount = totalAmount - discount;
-            totalvat = getProductTransactions().stream().mapToDouble(x->x.getVatamount()).sum();
-            netamount = grossamount + totalvat;
+            setTotalamount((Double) getSubtotal() - discount);
+            totalvat = getProductTransactions().stream().mapToDouble(x -> x.getVatamount()).sum();
+            setGrandtotal((Double) getTotalamount() + totalvat);
         }
+    }
+
+    /**
+     * @return the subtotal
+     */
+    public Double getSubtotal() {
+        return subtotal;
+    }
+
+    /**
+     * @param subtotal the subtotal to set
+     */
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    /**
+     * @return the totalamount
+     */
+    public Double getTotalamount() {
+        return totalamount;
+    }
+
+    /**
+     * @param totalamount the totalamount to set
+     */
+    public void setTotalamount(Double totalamount) {
+        this.totalamount = totalamount;
+    }
+
+    /**
+     * @return the grandtotal
+     */
+    public Double getGrandtotal() {
+        return grandtotal;
+    }
+
+    /**
+     * @param grandtotal the grandtotal to set
+     */
+    public void setGrandtotal(Double grandtotal) {
+        this.grandtotal = grandtotal;
     }
 
 }

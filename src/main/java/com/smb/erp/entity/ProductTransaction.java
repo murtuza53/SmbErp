@@ -103,7 +103,7 @@ public class ProductTransaction implements Serializable {
     private List<ProductTransactionExecutedTo> prodtransexecutedtos;
 
     @Transient
-    private Double lineqty;
+    private Double lineqty=0.0;
 
     public ProductTransaction() {
     }
@@ -403,19 +403,27 @@ public class ProductTransaction implements Serializable {
         this.branch = branch;
     }
 
-    public Double getLineTotal() {
+    public Double getLineSubtotal() {
         return getLineqty() * getLineunitprice();
     }
 
-    public Double getTotal() {
+    public Double getSubtotal() {
         return (getSold() + getReceived()) * getLineunitprice();
     }
 
+    public Double getTotalamount(){
+        return getLineSubtotal()-getDiscount();
+    }
+    
+    public Double getGrandtotal(){
+        return getTotalamount()+getVatamount();
+    }
+    
     /**
      * @return the lineqty
      */
     public Double getLineqty() {
-        if (lineqty == null) {
+        if (lineqty == 0.0) {
             lineqty = linesold + linereceived;
         }
         return lineqty;
@@ -430,11 +438,12 @@ public class ProductTransaction implements Serializable {
     }
 
     public void refreshTotals() {
+        calculateActualQtyFromLineQty();
         if(product.getVatregisterid()==null){
             vatamount = 0.0;
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         } else {
-            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineTotal();
+            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         }
         if (busdoc != null) {

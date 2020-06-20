@@ -3,129 +3,160 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the contactperson database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="ContactPerson.findAll", query="SELECT c FROM ContactPerson c")
+@NamedQuery(name = "ContactPerson.findAll", query = "SELECT c FROM ContactPerson c")
 public class ContactPerson implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String cpid;
+    private static final long serialVersionUID = 1L;
 
-	private String contactpersonname;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long cpid = 0l;
 
-	private String email1;
+    private String contactpersonname;
 
-	private String email2;
+    private String email1;
 
-	private String mobile1;
+    private String email2;
 
-	private String mobile2;
+    private String mobile1;
 
-	private String post;
+    private String mobile2;
 
-	//bi-directional many-to-one association to BusDoc
-	@OneToMany(mappedBy="contactperson")
-	private List<BusDoc> busdocs;
+    private String post;
 
-	//bi-directional many-to-one association to BusinessPartner
-	@ManyToOne
-	@JoinColumn(name="partnerid")
-	private BusinessPartner businesspartner;
+    //bi-directional many-to-one association to BusDoc
+    //@OneToMany(mappedBy = "contactperson")
+    //private List<BusDoc> busdocs;
 
-	public ContactPerson() {
-	}
+    //bi-directional many-to-one association to BusinessPartner
+    @ManyToOne
+    @JoinColumn(name = "partnerid")
+    private BusinessPartner businesspartner;
 
-	public String getCpid() {
-		return this.cpid;
-	}
+    public ContactPerson() {
+    }
 
-	public void setCpid(String cpid) {
-		this.cpid = cpid;
-	}
+    public Long getCpid() {
+        return this.cpid;
+    }
 
-	public String getContactpersonname() {
-		return this.contactpersonname;
-	}
+    public void setCpid(Long cpid) {
+        this.cpid = cpid;
+    }
 
-	public void setContactpersonname(String contactpersonname) {
-		this.contactpersonname = contactpersonname;
-	}
+    public String getContactpersonname() {
+        return this.contactpersonname;
+    }
 
-	public String getEmail1() {
-		return this.email1;
-	}
+    public void setContactpersonname(String contactpersonname) {
+        this.contactpersonname = contactpersonname;
+    }
 
-	public void setEmail1(String email1) {
-		this.email1 = email1;
-	}
+    public String getEmail1() {
+        return this.email1;
+    }
 
-	public String getEmail2() {
-		return this.email2;
-	}
+    public void setEmail1(String email1) {
+        this.email1 = email1;
+    }
 
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
+    public String getEmail2() {
+        return this.email2;
+    }
 
-	public String getMobile1() {
-		return this.mobile1;
-	}
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
 
-	public void setMobile1(String mobile1) {
-		this.mobile1 = mobile1;
-	}
+    public String getMobile1() {
+        return this.mobile1;
+    }
 
-	public String getMobile2() {
-		return this.mobile2;
-	}
+    public void setMobile1(String mobile1) {
+        this.mobile1 = mobile1;
+    }
 
-	public void setMobile2(String mobile2) {
-		this.mobile2 = mobile2;
-	}
+    public String getMobile2() {
+        return this.mobile2;
+    }
 
-	public String getPost() {
-		return this.post;
-	}
+    public void setMobile2(String mobile2) {
+        this.mobile2 = mobile2;
+    }
 
-	public void setPost(String post) {
-		this.post = post;
-	}
+    public String getPost() {
+        return this.post;
+    }
 
-	public List<BusDoc> getBusdocs() {
-		return this.busdocs;
-	}
+    public void setPost(String post) {
+        this.post = post;
+    }
 
-	public void setBusdocs(List<BusDoc> busdocs) {
-		this.busdocs = busdocs;
-	}
+    /*public List<BusDoc> getBusdocs() {
+        return this.busdocs;
+    }
 
-	public BusDoc addBusdoc(BusDoc busdoc) {
-		getBusdocs().add(busdoc);
-		busdoc.setContactperson(this);
+    public void setBusdocs(List<BusDoc> busdocs) {
+        this.busdocs = busdocs;
+    }
 
-		return busdoc;
-	}
+    public BusDoc addBusdoc(BusDoc busdoc) {
+        getBusdocs().add(busdoc);
+        busdoc.setContactperson(this);
 
-	public BusDoc removeBusdoc(BusDoc busdoc) {
-		getBusdocs().remove(busdoc);
-		busdoc.setContactperson(null);
+        return busdoc;
+    }
 
-		return busdoc;
-	}
+    public BusDoc removeBusdoc(BusDoc busdoc) {
+        getBusdocs().remove(busdoc);
+        busdoc.setContactperson(null);
 
-	public BusinessPartner getBusinesspartner() {
-		return this.businesspartner;
-	}
+        return busdoc;
+    }*/
 
-	public void setBusinesspartner(BusinessPartner businesspartner) {
-		this.businesspartner = businesspartner;
-	}
+    public BusinessPartner getBusinesspartner() {
+        return this.businesspartner;
+    }
+
+    public void setBusinesspartner(BusinessPartner businesspartner) {
+        this.businesspartner = businesspartner;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.cpid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ContactPerson other = (ContactPerson) obj;
+        if (!Objects.equals(this.cpid, other.cpid)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactPerson{" + "contactpersonname=" + contactpersonname + '}';
+    }
 
 }
