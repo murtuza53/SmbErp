@@ -193,4 +193,17 @@ public class AccountController extends AbstractController<Account> {
         return alpha[0];
     }
 
+    public List<Account> getInternalAccounts(){
+        return repo.findAccountByParentBySearchCriteria("INT1");
+    }
+    
+    public List<Account> getAccountAllLeaf(){
+        return repo.findAccountLeafBySearchCriteria("");
+    }
+    
+    public List<Account> getAccountInternalAndLeaf(){
+        List<Account> list = getInternalAccounts();
+        list.addAll(getAccountAllLeaf());
+        return list;
+    }
 }

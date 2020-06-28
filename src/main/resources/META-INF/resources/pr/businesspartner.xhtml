@@ -4,188 +4,185 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-                template="/california-layout/template_busdoc.xhtml">
+                template="/diamond-layout/template_simple.xhtml">
 
     <ui:define name="title">
         ${businessPartnerController.title}
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        <p:link outcome="/index">Home</p:link>
-    </ui:define>
+    <ui:param name="viewname" value="${businessPartnerController.title}" />
 
     <ui:define name="toolbar">
         <li>
             <p:commandButton title="Save" actionListener="#{businessPartnerController.saveBusiness}" update=":mainform, :growl"
-                             icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
+                             icon="fa fa-save" styleClass="secondary-button rounded-button"/>
         </li>
         <li>
             <p:commandButton title="Print" icon="fa fa-print" 
-                             styleClass="yellow-btn" style="margin: 2px;"/>
+                             styleClass="secondary-button rounded-button"/>
         </li>
     </ui:define>
 
     <ui:define name="content">
-        <div class="ui-fluid">
-            <div class="ui-g">
-                <!-- Left Side -->
-                <div class="ui-g-12 ui-lg-6">
-                    <p:fieldset legend="Business Partner Details">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Company Id:" for="comno" />
-                            <p:inputText id="comno" value="#{businessPartnerController.selected.partnerid}" disabled="true"/>
+        <div class="p-grid">
+            <!-- Left Side -->
+            <div class="p-col-12 p-md-6">
+                <p:fieldset legend="Business Partner Details" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Company Id:" for="comno" />
+                        <p:inputText id="comno" value="#{businessPartnerController.selected.partnerid}" disabled="true"/>
 
-                            <p:outputLabel value="Partner Name:" for="name" />
-                            <p:inputText id="name" placeholder="Business Partner Name" value="#{businessPartnerController.selected.companyname}"/>
+                        <p:outputLabel value="Partner Name:" for="name" />
+                        <p:inputText id="name" placeholder="Business Partner Name" value="#{businessPartnerController.selected.companyname}"/>
 
-                            <p:outputLabel value="Partner Type:" for="ptype" />
-                            <p:selectOneMenu id="ptype" value="#{businessPartnerController.selected.companytypes}" converter="#{entityConverter}" 
-                                             effect="fold" style="width:100%">
-                                <f:selectItem itemValue="#{businessPartnerController.companyTypeAll}" itemLabel="Both" />
-                                <f:selectItems value="#{businessPartnerController.companyTypes}" />
-                            </p:selectOneMenu>
+                        <p:outputLabel value="Partner Type:" for="ptype" />
+                        <p:selectOneMenu id="ptype" value="#{businessPartnerController.selected.companytypes}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItem itemValue="#{businessPartnerController.companyTypeAll}" itemLabel="Both" />
+                            <f:selectItems value="#{businessPartnerController.companyTypes}" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel value="LPO Required:" for="lporeq" />
-                            <p:selectBooleanCheckbox id="lporeq" value="#{businessPartnerController.selected.lporequired}" />
+                        <p:outputLabel value="LPO Required:" for="lporeq" />
+                        <p:selectBooleanCheckbox id="lporeq" value="#{businessPartnerController.selected.lporequired}" />
 
-                            <p:outputLabel value="Credit Status:" for="cstatus" />
-                            <p:selectOneMenu id="cstatus" value="#{businessPartnerController.selected.creditstatus}" converter="#{entityConverter}" 
-                                             effect="fold" style="width:100%">
-                                <f:selectItems value="#{businessPartnerController.creditStatusTypes}" />
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                    </p:fieldset>
+                        <p:outputLabel value="Credit Status:" for="cstatus" />
+                        <p:selectOneMenu id="cstatus" value="#{businessPartnerController.selected.creditstatus}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItems value="#{businessPartnerController.creditStatusTypes}" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:fieldset>
 
-                    <p:fieldset legend="Credit Limit">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Credit Limit No:" for="clno" />
-                            <p:inputText id="clno" placeholder="Credit Limit No" value="#{businessPartnerController.selected.creditlimit.creditlimitno}" disabled="true"/>
+                <br/>
 
-                            <p:outputLabel value="Amount No:" for="lcamt" />
-                            <p:inputNumber id="lcamt" value="#{businessPartnerController.selected.creditlimit.amountlc}" minValue="0" decimalPlaces="3"/>
+                <p:fieldset legend="Credit Limit" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Credit Limit No:" for="clno" />
+                        <p:inputText id="clno" placeholder="Credit Limit No" value="#{businessPartnerController.selected.creditlimit.creditlimitno}" disabled="true"/>
 
-                            <p:outputLabel value="Credit Days:" for="days" />
-                            <p:inputNumber id="days" value="#{businessPartnerController.selected.creditlimit.daysduration}" minValue="0" maxValue="90" decimalPlaces="0" />
-                        </p:panelGrid>
-                    </p:fieldset>
+                        <p:outputLabel value="Amount No:" for="lcamt" />
+                        <p:inputNumber id="lcamt" value="#{businessPartnerController.selected.creditlimit.amountlc}" minValue="0" decimalPlaces="3"/>
 
-                    <p:fieldset legend="VAT">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Registration Id:" for="regid" />
-                            <p:inputText id="regid" placeholder="Registration Id" value="#{businessPartnerController.selectedVatRegister.vatregisterid}" disabled="true"/>
+                        <p:outputLabel value="Credit Days:" for="days" />
+                        <p:inputNumber id="days" value="#{businessPartnerController.selected.creditlimit.daysduration}" minValue="0" maxValue="90" decimalPlaces="0" />
+                    </p:panelGrid>
+                </p:fieldset>
 
-                            <p:outputLabel value="State:" for="state" />
-                            <p:inputText id="state" value="#{businessPartnerController.selectedVatRegister.countryState}" />
+                <br/>
+                
+                <p:fieldset legend="VAT" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Registration Id:" for="regid" />
+                        <p:inputText id="regid" placeholder="Registration Id" value="#{businessPartnerController.selectedVatRegister.vatregisterid}" disabled="true"/>
 
-                            <p:outputLabel value="VAT Number:" for="trno" />
-                            <p:inputText id="trno" value="#{businessPartnerController.selectedVatRegister.trnno}" />
+                        <p:outputLabel value="State:" for="state" />
+                        <p:inputText id="state" value="#{businessPartnerController.selectedVatRegister.countryState}" />
 
-                            <p:outputLabel value="Vat Category:" for="vcat" />
-                            <p:selectOneMenu id="vcat" value="#{businessPartnerController.selectedVatRegister.vatcategoryid}" converter="#{entityConverter}" 
-                                             style="width:100%">
-                                <f:selectItems value="#{vatcategoryController.items}" var="vatcat" itemValue="#{vatcat}" itemLabel="#{vatcat.categoryname}">
-                                    <p:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Category Name"/>
-                                        </f:facet>
-                                        <h:outputText value="#{vatcat.categoryname}" />
-                                    </p:column>
+                        <p:outputLabel value="VAT Number:" for="trno" />
+                        <p:inputText id="trno" value="#{businessPartnerController.selectedVatRegister.trnno}" />
 
-                                    <p:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Vat %"/>
-                                        </f:facet>
-                                        <h:outputText value="#{vatcat.vatpercentage}" />
-                                    </p:column>
-                                </f:selectItems>
-                            </p:selectOneMenu>
+                        <p:outputLabel value="Vat Category:" for="vcat" />
+                        <p:selectOneMenu id="vcat" value="#{businessPartnerController.selectedVatRegister.vatcategoryid}" converter="#{entityConverter}" 
+                                         style="width:100%">
+                            <f:selectItems value="#{vatcategoryController.items}" var="vatcat" itemValue="#{vatcat}" itemLabel="#{vatcat.categoryname}">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Category Name"/>
+                                    </f:facet>
+                                    <h:outputText value="#{vatcat.categoryname}" />
+                                </p:column>
 
-                            <p:outputLabel value="Vat Account Type" for="vacc" />
-                            <p:selectOneMenu id="vacc" value="#{businessPartnerController.selectedVatRegister.vataccounttypeid}" converter="#{entityConverter}" 
-                                             style="width:100%">
-                                <f:selectItems value="#{vatacounttypeController.vatAccountTypeAll}" var="vatacc" itemValue="#{vatacc}" itemLabel="#{vatacc.accounttype}">
-                                    <p:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Account Type"/>
-                                        </f:facet>
-                                        <h:outputText value="#{vatacc.accounttype}" />
-                                    </p:column>
-                                </f:selectItems>
-                            </p:selectOneMenu>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Vat %"/>
+                                    </f:facet>
+                                    <h:outputText value="#{vatcat.vatpercentage}" />
+                                </p:column>
+                            </f:selectItems>
+                        </p:selectOneMenu>
 
-                        </p:panelGrid>
-                    </p:fieldset>
-                </div>
+                        <p:outputLabel value="Vat Account Type" for="vacc" />
+                        <p:selectOneMenu id="vacc" value="#{businessPartnerController.selectedVatRegister.vataccounttypeid}" converter="#{entityConverter}" 
+                                         style="width:100%">
+                            <f:selectItems value="#{vatacounttypeController.vatAccountTypeAll}" var="vatacc" itemValue="#{vatacc}" itemLabel="#{vatacc.accounttype}">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Account Type"/>
+                                    </f:facet>
+                                    <h:outputText value="#{vatacc.accounttype}" />
+                                </p:column>
+                            </f:selectItems>
+                        </p:selectOneMenu>
 
-                <div class="ui-g-12 ui-lg-6">
-                    <!-- Right Side -->
-                    <p:fieldset legend="Address">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Shop No:" for="shopno" />
-                            <p:inputText id="shopno" placeholder="Shop No" value="#{businessPartnerController.selected.shopno}"/>
+                    </p:panelGrid>
+                </p:fieldset>
+            </div>
 
-                            <p:outputLabel value="Building No:" for="buildingno" />
-                            <p:inputText id="buildingno" placeholder="Building No" value="#{businessPartnerController.selected.buildingno}"/>
+            <div class="ui-g-12 ui-lg-6">
+                <!-- Right Side -->
+                <p:fieldset legend="Address" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Shop No:" for="shopno" />
+                        <p:inputText id="shopno" placeholder="Shop No" value="#{businessPartnerController.selected.shopno}"/>
 
-                            <p:outputLabel value="Road No:" for="roadno" />
-                            <p:inputText id="roadno" placeholder="Road No" value="#{businessPartnerController.selected.roadno}"/>
+                        <p:outputLabel value="Building No:" for="buildingno" />
+                        <p:inputText id="buildingno" placeholder="Building No" value="#{businessPartnerController.selected.buildingno}"/>
 
-                            <p:outputLabel value="Block No:" for="blockno" />
-                            <p:inputText id="blockno" placeholder="Block No" value="#{businessPartnerController.selected.blockno}"/>
+                        <p:outputLabel value="Road No:" for="roadno" />
+                        <p:inputText id="roadno" placeholder="Road No" value="#{businessPartnerController.selected.roadno}"/>
 
-                            <p:outputLabel value="Town:" for="town" />
-                            <p:inputText id="town" placeholder="Town" value="#{businessPartnerController.selected.town}"/>
+                        <p:outputLabel value="Block No:" for="blockno" />
+                        <p:inputText id="blockno" placeholder="Block No" value="#{businessPartnerController.selected.blockno}"/>
 
-                            <p:outputLabel value="Area:" for="area" />
-                            <p:inputText id="area" placeholder="Area" value="#{businessPartnerController.selected.area}"/>
+                        <p:outputLabel value="Town:" for="town" />
+                        <p:inputText id="town" placeholder="Town" value="#{businessPartnerController.selected.town}"/>
 
-                            <p:outputLabel value="Country" for="country" />
-                            <p:selectOneMenu id="country" value="#{businessPartnerController.selected.country}" 
-                                             style="width: 100%" converter="#{entityConverter}"
-                                             filter="true" filterMatchMode="contains" >
-                                <f:selectItems value="#{countryController.countryAll}"
-                                               var="con"
-                                               itemValue="#{con}"
-                                               itemLabel="#{con.countryname}"
-                                               />
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                    </p:fieldset>
+                        <p:outputLabel value="Area:" for="area" />
+                        <p:inputText id="area" placeholder="Area" value="#{businessPartnerController.selected.area}"/>
 
-                    <p:fieldset legend="Contact">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Email1:" for="email1" />
-                            <p:inputText id="email1" placeholder="Email1" value="#{businessPartnerController.selected.email1}"/>
+                        <p:outputLabel value="Country" for="country" />
+                        <p:selectOneMenu id="country" value="#{businessPartnerController.selected.country}" 
+                                         style="width: 100%" converter="#{entityConverter}"
+                                         filter="true" filterMatchMode="contains" >
+                            <f:selectItems value="#{countryController.countryAll}"
+                                           var="con"
+                                           itemValue="#{con}"
+                                           itemLabel="#{con.countryname}"
+                                           />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:fieldset>
 
-                            <p:outputLabel value="Email2:" for="email2" />
-                            <p:inputText id="email2" placeholder="Email2" value="#{businessPartnerController.selected.email2}"/>
+                <br/>
 
-                            <p:outputLabel value="Phone1:" for="phone1" />
-                            <p:inputText id="phone1" placeholder="Phone1" value="#{businessPartnerController.selected.phone1}"/>
+                <p:fieldset legend="Contact" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Email1:" for="email1" />
+                        <p:inputText id="email1" placeholder="Email1" value="#{businessPartnerController.selected.email1}"/>
 
-                            <p:outputLabel value="Phone2:" for="pbone2" />
-                            <p:inputText id="pbone2" placeholder="Phone2" value="#{businessPartnerController.selected.pbone2}"/>
+                        <p:outputLabel value="Email2:" for="email2" />
+                        <p:inputText id="email2" placeholder="Email2" value="#{businessPartnerController.selected.email2}"/>
 
-                            <p:outputLabel value="Fax1:" for="fax1" />
-                            <p:inputText id="fax1" placeholder="Fax1" value="#{businessPartnerController.selected.fax1}"/>
+                        <p:outputLabel value="Phone1:" for="phone1" />
+                        <p:inputText id="phone1" placeholder="Phone1" value="#{businessPartnerController.selected.phone1}"/>
 
-                            <p:outputLabel value="Fax2:" for="fax2" />
-                            <p:inputText id="fax2" placeholder="Fax2" value="#{businessPartnerController.selected.fax2}"/>
+                        <p:outputLabel value="Phone2:" for="pbone2" />
+                        <p:inputText id="pbone2" placeholder="Phone2" value="#{businessPartnerController.selected.pbone2}"/>
 
-                            <p:outputLabel value="P O Box:" for="pobox" />
-                            <p:inputText id="pobox" placeholder="P O Box" value="#{businessPartnerController.selected.pobox}"/>
+                        <p:outputLabel value="Fax1:" for="fax1" />
+                        <p:inputText id="fax1" placeholder="Fax1" value="#{businessPartnerController.selected.fax1}"/>
 
-                            <p:outputLabel value="Website:" for="website" />
-                            <p:inputText id="website" placeholder="Website" value="#{businessPartnerController.selected.website}"/>
+                        <p:outputLabel value="Fax2:" for="fax2" />
+                        <p:inputText id="fax2" placeholder="Fax2" value="#{businessPartnerController.selected.fax2}"/>
 
-                        </p:panelGrid>
-                    </p:fieldset>
-                </div>
+                        <p:outputLabel value="P O Box:" for="pobox" />
+                        <p:inputText id="pobox" placeholder="P O Box" value="#{businessPartnerController.selected.pobox}"/>
+
+                        <p:outputLabel value="Website:" for="website" />
+                        <p:inputText id="website" placeholder="Website" value="#{businessPartnerController.selected.website}"/>
+
+                    </p:panelGrid>
+                </p:fieldset>
             </div>
         </div>
         <script type="text/javascript">

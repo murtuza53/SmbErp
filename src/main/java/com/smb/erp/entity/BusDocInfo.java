@@ -5,6 +5,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 
 /**
@@ -14,7 +16,7 @@ import org.springframework.data.annotation.CreatedDate;
 //@MappedSuperclass
 //@EntityListeners(AuditingEntityListener.class)
 @Entity
-@NamedQuery(name = "BusDocInfo.findAll", query = "SELECT b FROM BusDocInfo b")
+//@NamedQuery(name = "BusDocInfo.findAll", query = "SELECT b FROM BusDocInfo b")
 public class BusDocInfo implements Serializable {
 
     private static long serialVersionUID = 1L;
@@ -40,117 +42,125 @@ public class BusDocInfo implements Serializable {
     private String prefix;
 
     private String suffix;
-    
+
     private String extra1label;
-    
+
     private String extra1value;
-    
+
     private String extra2label;
-    
+
     private String extra2value;
-    
+
     private String extra3label;
-    
+
     private String extra3value;
-    
+
     private String extra4label;
-    
+
     private String extra4value;
-    
+
     private String extra5label;
-    
+
     private String extra5value;
-    
+
     private String extra6label;
-    
+
     private String extra6value;
-    
+
     private String extra7label;
-    
+
     private String extra7value;
-    
+
     private String extra8label;
-    
+
     private String extra8value;
-    
+
     private String extra9label;
-    
+
     private String extra9value;
-    
+
     private String extra10label;
-    
+
     private String extra10value;
-    
+
     private String extra11label;
-    
+
     private String extra11value;
-    
+
     private String extra12label;
-    
+
     private String extra12value;
-    
+
     private String extra13label;
-    
+
     private String extra13value;
-    
+
     private String extra14label;
-    
+
     private String extra14value;
-    
+
     private String extra15label;
-    
+
     private String extra15value;
-    
+
     private String extra16label;
-    
+
     private String extra16value;
-    
+
     private String extra17label;
-    
+
     private String extra17value;
-    
+
     private String extra18label;
-    
+
     private String extra18value;
-    
+
     private String extra19label;
-    
+
     private String extra19value;
-    
+
     private String extra20label;
-    
+
     private String extra20value;
-    
+
     private String extra21label;
-    
+
     private String extra21value;
 
     private String extra22label;
-    
+
     private String extra22value;
 
     private String extra23label;
-    
+
     private String extra23value;
 
     private String extra24label;
-    
+
     private String extra24value;
 
     private String extra25label;
-    
+
     private String extra25value;
 
     //bi-directional many-to-one association to BusDoc
     @OneToMany(mappedBy = "busdocinfo")
+    @Fetch(FetchMode.SUBSELECT)
     private List<BusDoc> busdocs;
+
+    //bi-directional many-to-one association to BusDoc
+    @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AccountTransactionType> transtypeid;
 
     //bi-directional many-to-one association to ConvertTo
     @OneToMany(mappedBy = "busdocinfo")
+    @Fetch(FetchMode.SUBSELECT)
     private List<ConvertTo> converttos;
 
     //bi-directional many-to-one association to DocConversion
     @OneToMany(mappedBy = "busdocinfo")
+    @Fetch(FetchMode.SUBSELECT)
     private List<DocConversion> docconversions;
 
     public BusDocInfo() {
@@ -194,6 +204,34 @@ public class BusDocInfo implements Serializable {
 
     public void setDoctype(String doctype) {
         this.doctype = doctype;
+    }
+
+    /**
+     * @return the transtypeid
+     */
+    public List<AccountTransactionType> getTranstypeid() {
+        return transtypeid;
+    }
+
+    /**
+     * @param transtypeid the transtypeid to set
+     */
+    public void setTranstypeid(List<AccountTransactionType> transtypeid) {
+        this.transtypeid = transtypeid;
+    }
+
+    public AccountTransactionType addTranstypeid(AccountTransactionType tti) {
+        getTranstypeid().add(tti);
+        tti.setBdinfoid(this);
+
+        return tti;
+    }
+
+    public AccountTransactionType removeTranstypeid(AccountTransactionType tti) {
+        getTranstypeid().remove(tti);
+        tti.setBdinfoid(null);
+
+        return tti;
     }
 
     public String getMenuname() {

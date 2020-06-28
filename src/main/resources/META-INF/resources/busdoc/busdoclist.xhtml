@@ -3,46 +3,43 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/california-layout/template.xhtml">
+                template="/diamond-layout/template.xhtml">
     <ui:define name="title">
         Business Document List
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        Business Document List
-    </ui:define>
+    <ui:param name="viewname" value="Business Document List" />
 
     <ui:define name="content">
         <h:form id="busform">
-            <div class="ui-g">
-                <div class="ui-g-12">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="doclist" header="List of Documents" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" title="New Business Document Definition" icon="fa fa-plus" process="@this"
+                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.new_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnedit" title="Edit Business Document Definition" icon="fa fa-pencil" process="@this" 
+                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocListController.selected}" 
+                                             actionListener="#{busDocListController.edit_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnrefresh" styleClass="secondary-button rounded-button"
+                                             actionListener="#{busDocListController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
 
-                    <div class="ui-g-12 ui-lg-12">
+                        </f:facet>
+                        
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{busDocListController.items}"
                                      rowKey="#{item.docno}"
                                      selectionMode="single"
                                      selection="#{busDocListController.selected}"
                                      reflow="true"
-                                     emptyMessage="No Document Definition found">
-                            <p:ajax event="rowSelect" update="btnedit"/>
-                            <f:facet name="header">
-                                List of Documents
-                                <p:commandButton id="btnrefresh" style="float: right"
-                                                 actionListener="#{busDocListController.refresh()}"
-                                                 update="@form :growl" icon="fa fa-refresh" />
-
-                                <p:commandButton id="btnedit" title="Edit Business Document Definition" icon="fa fa-pencil" process="@this" 
-                                                 style="float: right"
-                                                 disabled="#{empty busDocListController.selected}" 
-                                                 actionListener="#{busDocListController.edit_in_tab()}"
-                                                 ajax="false" onclick="form.target = '_blank'"/>
-
-                                <p:commandButton id="btnnew" title="New Business Document Definition" icon="fa fa-plus" process="@this"
-                                                 style="float: right"
-                                                 actionListener="#{busDocListController.new_in_tab()}"
-                                                 ajax="false" onclick="form.target = '_blank'"/>
-                            </f:facet>
+                                     emptyMessage="No Document Definition found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":busform:btnedit"/>
 
                             <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
                                 <h:outputText value="#{item.docno}" />
@@ -62,7 +59,7 @@
                                 <h:outputText value="#{item.businesspartner.companyname}" />
                             </p:column>
                         </p:dataTable>
-                    </div>
+                    </p:panel>
                 </div>
             </div>
         </h:form>

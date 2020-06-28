@@ -5,13 +5,17 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.AccountTransactionType;
+import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocTransactionType;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.util.JsfUtil;
+import com.smb.erp.util.ReflectionUtil;
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +38,8 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     BusDocInfoRepository repo;
 
+    private AccountTransactionType selectedTransaction;
+    
     @Autowired
     public BusDocInfoController(BusDocInfoRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
@@ -82,6 +88,25 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
             JsfUtil.addErrorMessage(ex, "Could not save due to error");
         }
     }
+    
+    public void createNewAccountTransaction(){
+        selectedTransaction = new AccountTransactionType();
+        selectedTransaction.setTranstypeid(0);
+        if(getSelected().getTranstypeid()==null){
+            getSelected().setTranstypeid(new LinkedList<AccountTransactionType>());
+        }
+        getSelected().addTranstypeid(selectedTransaction);
+    }
+    
+    public void deleteAccountTransaction(){
+        if(selectedTransaction==null){
+            JsfUtil.addErrorMessage("No Account Selected to Delete");
+            return;
+        } 
+        getSelected().removeTranstypeid(selectedTransaction);
+        selectedTransaction=null;
+        JsfUtil.addSuccessMessage("Deleted Successfuly");
+    }
 
     public String getTitle() {
         if (mode == DocumentTab.MODE.LIST) {
@@ -93,6 +118,10 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
             return "Edit Business Document";
         }
         return "Invalid";
+    }
+    
+    public List<String> getNumberFields(){
+        return ReflectionUtil.getNumberFields(BusDoc.class);
     }
 
     public void refresh() {
@@ -121,5 +150,19 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     public List<String> getBusDocTransactionTypes() {
         return BusDocTransactionType.TYPES;
+    }
+
+    /**
+     * @return the selectedTransaction
+     */
+    public AccountTransactionType getSelectedTransaction() {
+        return selectedTransaction;
+    }
+
+    /**
+     * @param selectedTransaction the selectedTransaction to set
+     */
+    public void setSelectedTransaction(AccountTransactionType selectedTransaction) {
+        this.selectedTransaction = selectedTransaction;
     }
 }

@@ -4,71 +4,151 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-                template="/california-layout/template_busdoc.xhtml">
+                template="/diamond-layout/template_simple.xhtml">
 
     <ui:define name="title">
         ${busDocInfoController.title}
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        ${busDocInfoController.title}
-    </ui:define>
+    <ui:param name="viewname" value="${busDocInfoController.title}" />
 
     <ui:define name="toolbar">
         <li>
             <p:commandButton title="Save" actionListener="#{busDocInfoController.save}" update=":mainform, :growl"
-                             icon="fa fa-save" styleClass="green-btn" style="margin: 2px;"/>
+                             icon="fa fa-save" styleClass="secondary-button rounded-button"/>
         </li>
         <li>
-            <p:commandButton title="Print" icon="fa fa-print" 
-                             styleClass="yellow-btn" style="margin: 2px;"/>
+            <p:commandButton title="Print" icon="fa fa-print" styleClass="secondary-button rounded-button"/>
         </li>
     </ui:define>
 
     <ui:define name="content">
-        <div class="ui-fluid">
-            <div class="ui-g">
-                <!-- Left Side -->
-                <div class="ui-g-12 ui-lg-6">
-                    <p:fieldset legend="Document Details">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel value="Document Id:" for="docid" />
-                            <p:inputText id="docid" value="#{busDocInfoController.selected.bdinfoid}" disabled="true"/>
+        <div class="p-grid">
+            <!-- Left Side -->
+            <div class="p-col-12 p-md-6">
+                <p:fieldset legend="Document Details" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        <p:outputLabel value="Document Id:" for="docid" />
+                        <p:inputText id="docid" value="#{busDocInfoController.selected.bdinfoid}" disabled="true"/>
 
-                            <p:outputLabel value="Document Name:" for="name" />
-                            <p:inputText id="name" placeholder="Document Name" value="#{busDocInfoController.selected.docname}"/>
+                        <p:outputLabel value="Document Name:" for="name" />
+                        <p:inputText id="name" placeholder="Document Name" value="#{busDocInfoController.selected.docname}"/>
 
-                            <p:outputLabel value="Document Type:" for="dtype" />
-                            <p:selectOneMenu id="dtype" value="#{busDocInfoController.selected.doctype}" converter="#{entityConverter}" 
-                                             effect="fold" style="width:100%">
-                                <f:selectItems value="#{busDocInfoController.busDocTypes}" />
-                            </p:selectOneMenu>
+                        <p:outputLabel value="Document Type:" for="dtype" />
+                        <p:selectOneMenu id="dtype" value="#{busDocInfoController.selected.doctype}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItems value="#{busDocInfoController.busDocTypes}" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel value="Transaction Type:" for="ttype" />
-                            <p:selectOneMenu id="ttype" value="#{busDocInfoController.selected.transactiontype}" converter="#{entityConverter}" 
-                                             effect="fold" style="width:100%">
-                                <f:selectItems value="#{busDocInfoController.busDocTransactionTypes}" />
-                            </p:selectOneMenu>
+                        <p:outputLabel value="Transaction Type:" for="ttype" />
+                        <p:selectOneMenu id="ttype" value="#{busDocInfoController.selected.transactiontype}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItems value="#{busDocInfoController.busDocTransactionTypes}" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel value="Prefix:" for="pref" />
-                            <p:inputText id="pref" placeholder="Prefix" value="#{busDocInfoController.selected.prefix}"/>
+                        <p:outputLabel value="Prefix:" for="pref" />
+                        <p:inputText id="pref" placeholder="Prefix" value="#{busDocInfoController.selected.prefix}"/>
 
-                            <p:outputLabel value="Suffix:" for="suf" />
-                            <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
-                        </p:panelGrid>
-                    </p:fieldset>
-                </div>
+                        <p:outputLabel value="Suffix:" for="suf" />
+                        <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
+                    </p:panelGrid>
+                </p:fieldset>
+            </div>
 
-                <div class="ui-g-12 ui-lg-6">
-                    <!-- Right Side -->
-                    <p:fieldset legend="Account">
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
-                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                        </p:panelGrid>
-                    </p:fieldset>
+            <div class="p-col-12 p-md-6">
+                <!-- Right Side -->
+                <p:fieldset legend="Account" styleClass="card ui-fluid">
+                    <p:panel id="doclist" header="Transaction Configuration">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" title="Add New" icon="fa fa-plus"
+                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             update="bustable" actionListener="#{busDocInfoController.createNewAccountTransaction()}"/>                            
 
-                </div>
+                            <p:commandButton id="btndelete" icon="fa fa-trash" update="bustable"
+                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocInfoController.selectedTransaction}"
+                                             actionListener="#{busDocInfoController.deleteAccountTransaction()}"/>
+                        </f:facet>
+
+                        <p:dataTable id="bustable" var="trans" widgetVar="btable"
+                                     value="#{busDocInfoController.selected.transtypeid}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selectedTransaction}"
+                                     rowKey="#{trans.transtypeid}"
+                                     reflow="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Transaction Definition found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":mainform:btndelete"/>
+
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{trans.transtypeid}" />
+                            </p:column>
+
+                            <p:column headerText="Type" style="width: 20%">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.transtype}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{trans.transtype}" style="width:100%">
+                                            <f:selectItem itemLabel="Select.." itemValue="" itemDisabled="true"/>
+                                            <f:selectItem itemLabel="Credit" itemValue="Credit"/>
+                                            <f:selectItem itemLabel="Debit" itemValue="Debit"/>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Referred A/c">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.accountid.accountname}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="acc" value="#{trans.accountid}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade" filter="true" filterMatchMode="contains" >
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                            <f:selectItems value="#{accountController.accountInternalAndLeaf}" var="item" 
+                                                           itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                            <p:column style="width: 20%">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Id"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.accountid}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.accountname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>                               
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Formula">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.formula}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="price" value="#{trans.formula}" 
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Formula"/>
+                                    </f:facet>
+                                </p:cellEditor>
+
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                        <b>Available Fields:</b>
+                        <br/>
+                        #{busDocInfoController.numberFields}
+                    </p:panel>
+                </p:fieldset>
             </div>
         </div>
     </ui:define>

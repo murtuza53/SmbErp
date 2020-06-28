@@ -3,14 +3,12 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/california-layout/template.xhtml">
+                template="/diamond-layout/template.xhtml">
     <ui:define name="title">
         Chart of Accounts
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        Chart of Accounts
-    </ui:define>
+    <ui:param name="viewname" value="Chart of Accounts" />
 
     <ui:define name="content">
         <h:form id="mainform">
@@ -18,47 +16,48 @@
                 <div class="ui-g-12">
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
-                            <p:commandButton title="New Account Group" icon="fas fa-folder-plus" 
+                            <p:commandButton title="New Account Group" icon="fas fa-folder-plus" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.createNewAccountGroup()}"
                                              disabled="#{chartOfAccountController.newGroupDisabled}"
                                              update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                            <p:commandButton title="Edit Account Group" icon="fa fa-edit"
+                            <p:commandButton title="Edit Account Group" icon="fa fa-edit" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.editAccountGroup()}"
                                              disabled="#{chartOfAccountController.editGroupDisabled}"/>
-                            <p:commandButton title="New Account" icon="fas fa-file-medical" 
+                            <p:commandButton title="New Account" icon="fas fa-file-medical" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.createNewAccount()}"
                                              disabled="#{chartOfAccountController.newAccountDisabled}"/>
-                            <p:commandButton title="Edit Account" icon="fa fa-file-signature"
+                            <p:commandButton title="Edit Account" icon="fa fa-file-signature" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.editAccount()}"
                                              disabled="#{chartOfAccountController.editAccountDisabled}"/>
-                            <p:commandButton title="Clone Account" icon="fa fa-copy"
+                            <p:commandButton title="Clone Account" icon="fa fa-copy" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.cloneAccount()}"
                                              disabled="#{chartOfAccountController.cloneAccountDisabled}"/>
-                            <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh"
+                            <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh" styleClass="secondary-button rounded-button"
                                              actionListener="#{chartOfAccountController.refreshCoa()}"
                                              update="cattree"/>
                         </f:facet>
 
                         <f:facet name="right">
-                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" 
+                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" styleClass="secondary-button rounded-button"
                                              actionListener="#{productTreeViewController.newTab_In_newBtab()}"
                                              disabled="#{productTreeViewController.productNewDisabled}" 
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Edit Product" icon="fa fa-pencil" 
+                            <p:commandButton title="Edit Product" icon="fa fa-pencil" styleClass="secondary-button rounded-button"
                                              disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.editTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" 
+                            <p:commandButton title="Duplicate" icon="fa fa-clone" styleClass="secondary-button rounded-button"
+                                             disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.cloneTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable"
+                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable" styleClass="secondary-button rounded-button"
                                              actionListener="#{productTreeViewController.refreshProductList()}"/>
                         </f:facet>
                     </p:toolbar>
                 </div>
                 <div class="ui-g-4">
                     <p:tree id="cattree" value="#{chartOfAccountController.root}" var="node" dynamic="true"
-                            style="width:100%; height:100%;" selectionMode="single"
+                            style="width:100%; height:100%;" selectionMode="single" styleClass="card"
                             selection="#{chartOfAccountController.selectedNode}">
                         <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
                                 listener="#{chartOfAccountController.onNodeSelect}" />
@@ -83,7 +82,8 @@
                                  value="#{productTreeViewController.prodList}" widgetVar="ptable"
                                  selection="#{productTreeViewController.selectedProduct}"
                                  selectionMode="single" rowKey="#{prod.productid}"
-                                 emptyMessage="No Products found">
+                                 emptyMessage="No Products found"
+                                 styleClass="card products-table ui-datatable-sm">
                         <p:ajax event="rowSelect" update=":mainform:toolbar" />
                         <p:column headerText="Stock No" sortBy="#{prod.productid}"
                                   filterBy="#{prod.productid}" filterMatchMode="contains">

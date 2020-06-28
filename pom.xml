@@ -92,15 +92,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-                
-        <dependency>
-            <groupId>com.primefaces.california</groupId>
-            <artifactId>primefaces-california</artifactId>
-            <version>2.0</version>
-        </dependency>
 
         <dependency>
-            <groupId>com.primefaces.daimond</groupId>
+            <groupId>com.primefaces.diamond</groupId>
             <artifactId>primefaces-diamond</artifactId>
             <version>1.0</version>
         </dependency>
@@ -117,6 +111,13 @@
             <groupId>net.glxn</groupId>
             <artifactId>qrgen</artifactId>
             <version>1.4</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
         </dependency>
 
     </dependencies>

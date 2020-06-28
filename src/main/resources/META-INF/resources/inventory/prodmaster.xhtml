@@ -3,53 +3,52 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/california-layout/template.xhtml">
+                template="/diamond-layout/template.xhtml">
     <ui:define name="title">
         Product Master
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        Product Master
-    </ui:define>
+    <ui:param name="viewname" value="Product Master" />
 
     <ui:define name="content">
         <h:form id="mainform">
-            <div class="ui-g">
-                <div class="ui-g-12">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
-                            <p:commandButton title="New Category" icon="fa fa-plus" 
+                            <p:commandButton title="New Category" icon="fa fa-plus" styleClass="secondary-button rounded-button"
                                              disabled="#{productTreeViewController.newCategoryDisabled}"/>
-                            <p:commandButton title="Edit Category" icon="fa fa-pencil"
+                            <p:commandButton title="Edit Category" icon="fa fa-pencil" styleClass="secondary-button rounded-button"
                                              disabled="#{productTreeViewController.editCategoryDisabled}"/>
-                            <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh"
+                            <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh" styleClass="secondary-button rounded-button"
                                              actionListener="#{productTreeViewController.refreshCategoryTree()}"
                                              update="cattree"/>
                         </f:facet>
 
                         <f:facet name="right">                            
-                            <p:menuButton value="Register VAT" model="#{productTreeViewController.vatMenuModel}" 
+                            <p:menuButton value="Register VAT" model="#{productTreeViewController.vatMenuModel}" styleClass="secondary-button rounded-button" 
                                           disabled="#{productTreeViewController.productEditDisabled}" iconPos="right"/>
 
-                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" 
+                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" styleClass="secondary-button rounded-button"
                                              actionListener="#{productTreeViewController.newTab_In_newBtab()}"
                                              disabled="#{productTreeViewController.productNewDisabled}" 
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Edit Product" icon="fa fa-pencil" 
+                            <p:commandButton title="Edit Product" icon="fa fa-pencil" styleClass="secondary-button rounded-button"
                                              disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.editTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Duplicate" icon="fa fa-clone" disabled="#{productTreeViewController.productEditDisabled}" 
+                            <p:commandButton title="Duplicate" icon="fa fa-clone" styleClass="secondary-button rounded-button"
+                                             disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.cloneTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable"
+                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable" styleClass="secondary-button rounded-button"
                                              actionListener="#{productTreeViewController.refreshProductList()}"/>
                         </f:facet>
                     </p:toolbar>
                 </div>
-                <div class="ui-g-3">
+                <div class="p-col-12 p-md-3">
                     <p:tree id="cattree" value="#{productTreeViewController.root}" var="node" dynamic="true"
-                            style="width:100%; height:100%;" selectionMode="single"
+                            style="width:100%; height:100%;" selectionMode="single" styleClass="card"
                             selection="#{productTreeViewController.selectedNode}">
                         <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
                                 listener="#{productTreeViewController.onNodeSelect}" />
@@ -62,12 +61,13 @@
                         </p:treeNode>
                     </p:tree>
                 </div>
-                <div class="ui-g-9">
+                <div class="p-col-12 p-md-9">
                     <p:dataTable id="prodtable" var="prod"
                                  value="#{productTreeViewController.prodList}" widgetVar="ptable"
                                  selection="#{productTreeViewController.selectedProduct}"
                                  selectionMode="single" rowKey="#{prod.productid}"
-                                 emptyMessage="No Products found">
+                                 emptyMessage="No Products found"
+                                 styleClass="card products-table ui-datatable-sm">
                         <p:ajax event="rowSelect" update=":mainform:toolbar" />
                         <p:column headerText="Stock No" sortBy="#{prod.productid}"
                                   filterBy="#{prod.productid}" filterMatchMode="contains">

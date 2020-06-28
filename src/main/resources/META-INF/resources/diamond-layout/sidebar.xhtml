@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:d="http://primefaces.org/diamond">
+
+    <div class="layout-sidebar">
+        <h:link class="logo" outcome="/dashboard">
+            <p:graphicImage id="app-logo" styleClass="logo-image" name="images/#{guestPreferences.logoColor eq 'white' ? 'logo-white.svg' : 'logo-dark.svg'}" library="diamond-layout" />
+            <span class="app-name">DIAMOND</span>
+        </h:link>
+
+        <div class="layout-menu-container">
+            <h:form id="sidebar-form">
+                <d:menu widgetVar="diamondMenuWidget">
+                    <p:submenu id="om_homepage" label="Favorites" icon="pi pi-home">
+                        <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" outcome="/dashboard" />
+                    </p:submenu>
+                    <p:separator />
+                    <p:submenu id="om_components" label="Master Data"
+                               icon="fa fa-fw fa-table">
+                        <p:menuitem id="hr_company" value="Company"
+                                    icon="far fa-building"
+                                    outcome="/hr/company.xhtml" />
+                        <p:menuitem id="pr_businesspartner" value="Business Partner"
+                                    icon="far fa-handshake"
+                                    outcome="/pr/businesspartnerlist.xhtml" />
+                        <p:menuitem id="inv_prodmaster" value="Product"
+                                    icon="fa fa-fw fa-sitemap" update=":mainform"
+                                    outcome="/inventory/prodmaster.xhtml" />
+                        <p:menuitem id="acc_accmaster" value="Accounts"
+                                    icon="fas fa-book" 
+                                    outcome="/accounts/coa.xhtml" />
+                        <p:menuitem id="busdoc_settings" value="Document Settings"
+                                    icon="fas fa-sliders-h" 
+                                    outcome="/busdoc/busdocsettings.xhtml" />
+                    </p:submenu>
+                    <p:separator />
+                    <p:submenu id="om_getstarted" label="Start" icon="pi pi-download">
+                        <p:menuitem id="om_buy" value="Buy Now" icon="pi pi-shopping-cart" url="https://www.primefaces.org/store" />
+                    </p:submenu>
+                    <p:separator />
+                </d:menu>
+            </h:form>
+        </div>        
+    </div>
+</ui:composition>

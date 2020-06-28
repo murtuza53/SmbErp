@@ -3,65 +3,63 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/california-layout/template.xhtml">
+                template="/diamond-layout/template.xhtml">
     <ui:define name="title">
         Business Partner
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        Business Partner
-    </ui:define>
-
+    <ui:param name="viewname" value="Business Partner" />
+    
     <ui:define name="content">
         <h:form id="busform">
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="ui-g-12 ui-lg-12">
-                        <p:panel id="companydetails" header="Business Parners" collapsed="false" toggleable="true">
-                            <f:facet name="actions">
-                                <p:commandButton id="btnrefresh" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                                                 actionListener="#{businessPartnerController.refresh()}" 
-                                                 update="@form :growl" icon="fa fa-refresh" />
-                            </f:facet>
-                            <p:panelGrid columns="5" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" 
-                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                                <p:outputLabel value="Search Criteria:" for="criteria" />
-                                <p:inputText id="criteria" value="#{businessPartnerController.criteria}" style="width: 100% !important"/>
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="companydetails" header="Business Parners" 
+                             collapsed="false" toggleable="true" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="secondary-button rounded-button"
+                                             actionListener="#{businessPartnerController.refresh()}" 
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+                        <p:panelGrid columns="5" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel value="Search Criteria:" for="criteria" />
+                            <p:inputText id="criteria" value="#{businessPartnerController.criteria}" style="width: 100% !important"/>
 
-                                <p:outputLabel value="Partner Type:" for="ptype" />
-                                <p:selectOneMenu id="ptype" value="#{businessPartnerController.selectedType}" converter="#{entityConverter}" 
-                                                 effect="fold" style="width:90%">
-                                    <f:selectItem itemValue="Both" itemLabel="Both" />
-                                    <f:selectItems value="#{businessPartnerController.companyTypes}" />
-                                </p:selectOneMenu>
+                            <p:outputLabel value="Partner Type:" for="ptype" />
+                            <p:selectOneMenu id="ptype" value="#{businessPartnerController.selectedType}" converter="#{entityConverter}" 
+                                             effect="fold" style="width:90%">
+                                <f:selectItem itemValue="Both" itemLabel="Both" />
+                                <f:selectItems value="#{businessPartnerController.companyTypes}" />
+                            </p:selectOneMenu>
 
-                            </p:panelGrid>
-                        </p:panel>
-                    </div>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
 
-                    <div class="ui-g-12 ui-lg-12">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="companylist" header="List of Business Partners" styleClass="card ui-fluid">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
+                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             actionListener="#{businessPartnerController.newTab_In_newBtab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
+                                             styleClass="secondary-button rounded-button"
+                                             disabled="#{businessPartnerController.companyDisabled}" 
+                                             actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                        </f:facet>
+
                         <p:dataTable id="bustable" var="bus" widgetVar="btable"
                                      value="#{businessPartnerController.items}"
                                      selectionMode="single"
                                      selection="#{businessPartnerController.selected}"
                                      rowKey="#{bus.partnerid}"
-                                     emptyMessage="No Business Partner found">
-                            <p:ajax event="rowSelect" update="btnedit"/>
-                            <f:facet name="header">
-                                List of Business Partners
-
-                                <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
-                                                 style="float: right"
-                                                 disabled="#{businessPartnerController.companyDisabled}" 
-                                                 actionListener="#{businessPartnerController.editTab_In_newBtab()}"
-                                                 ajax="false" onclick="form.target = '_blank'"/>
-
-                                <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
-                                                 style="float: right"
-                                                 actionListener="#{businessPartnerController.newTab_In_newBtab()}"
-                                                 ajax="false" onclick="form.target = '_blank'"/>
-                            </f:facet>
-
+                                     emptyMessage="No Business Partner found"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-striped"
+                                     style="font-size: small">
+                            <p:ajax event="rowSelect" update=":busform:btnedit"/>
                             <p:column headerText="Id" style="width: 20px; text-align: center">
                                 <h:outputText value="#{bus.partnerid}" />
                             </p:column>
@@ -97,8 +95,8 @@
                             <p:column headerText="Vat Type">
                                 <h:outputText value="#{bus.currentVatRegister.vataccounttypeid}" />
                             </p:column>
-                        </p:dataTable>
-                    </div>
+                        </p:dataTable>    
+                    </p:panel>
                 </div>
             </div>
         </h:form>

@@ -16,111 +16,232 @@
 package com.smb.erp;
 
 import java.io.Serializable;
-import javax.faces.view.ViewScoped;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.primefaces.PrimeFaces;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class GuestPreferences implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private String layout = "static";
 
-    private String layout = "moody";
+    private String componentTheme = "blue";
 
-    private String theme = "noir";
+    private String menuTheme = "darkgray";
 
-    private boolean darkMenu = true;
+    private String logoColor = "white";
 
-    private boolean gradientMenu = true;
+    private String scheme = "light";
 
-    private boolean darkMegaMenu = true;
+    private List<MenuTheme> menuThemes;
 
-    private boolean gradientMegaMenu = true;
+    private List<ComponentTheme> componentThemes;
+    
+    @PostConstruct
+    public void init() {
+        menuThemes = new ArrayList<MenuTheme>();
+        menuThemes.add(new MenuTheme("white", "#ffffff", "dark", null));
+        menuThemes.add(new MenuTheme("darkgray", "#343a40", "white", null));
+        menuThemes.add(new MenuTheme("blue", "#1976d2", "white", "blue"));
+        menuThemes.add(new MenuTheme("bluegray", "#455a64", "white", "lightgreen"));
+        menuThemes.add(new MenuTheme("brown", "#5d4037", "white", "cyan"));
+        menuThemes.add(new MenuTheme("cyan", "#0097a7", "white", "cyan"));
+        menuThemes.add(new MenuTheme("green", "#388e3C", "white", "green"));
+        menuThemes.add(new MenuTheme("indigo", "#303f9f", "white", "indigo"));
+        menuThemes.add(new MenuTheme("deeppurple", "#512da8", "white", "deeppurple"));
+        menuThemes.add(new MenuTheme("orange", "#F57c00", "dark", "orange"));
+        menuThemes.add(new MenuTheme("pink", "#c2185b", "white", "pink"));
+        menuThemes.add(new MenuTheme("purple", "#7b1fa2", "white", "purple"));
+        menuThemes.add(new MenuTheme("teal", "#00796b", "white", "teal"));
 
-    private String menuLayout = "layout-wrapper-slim-sidebar";	//layout-wrapper-slim-sidebar	//static
-
-    private String busdocMenuLayout = "layout-wrapper-overlay-sidebar";  //"layout-wrapper-horizontal-sidebar";    //"layout-wrapper-overlay-sidebar"
-
-    private String profileMode = "inline";
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
+        componentThemes = new ArrayList<ComponentTheme>();
+        componentThemes.add(new ComponentTheme("blue", "#42A5F5"));
+        componentThemes.add(new ComponentTheme("green", "#66BB6A"));
+        componentThemes.add(new ComponentTheme("lightgreen", "#9CCC65"));
+        componentThemes.add(new ComponentTheme("purple", "#AB47BC"));
+        componentThemes.add(new ComponentTheme("deeppurple", "#7E57C2"));
+        componentThemes.add(new ComponentTheme("indigo", "#5C6BC0"));
+        componentThemes.add(new ComponentTheme("orange", "#FFA726"));
+        componentThemes.add(new ComponentTheme("cyan", "#26C6DA"));
+        componentThemes.add(new ComponentTheme("pink", "#EC407A"));
+        componentThemes.add(new ComponentTheme("teal", "#26A69A"));
     }
 
     public String getLayout() {
-        return layout;
+        return this.layout;
     }
 
     public void setLayout(String layout) {
         this.layout = layout;
     }
 
-    public boolean isDarkMenu() {
-        return this.darkMenu;
+    public String getComponentTheme() {
+        return this.componentTheme;
     }
 
-    public boolean isGradientMenu() {
-        return this.gradientMenu;
+    public void setComponentTheme(String componentTheme) {
+        this.componentTheme = componentTheme;
     }
 
-    public boolean isDarkMegaMenu() {
-        return this.darkMegaMenu;
-    }
-
-    public boolean isGradientMegaMenu() {
-        return this.gradientMegaMenu;
-    }
-
-    public void setMenuMode(boolean dark, boolean gradient, String theme) {
-        this.darkMenu = dark;
-        this.gradientMenu = gradient;
-        this.theme = theme;
-    }
-
-    public void setMegaMenuMode(boolean dark, boolean gradient) {
-        this.darkMegaMenu = dark;
-        this.gradientMegaMenu = gradient;
-    }
-
-    public String getMenuLayout() {
-        return menuLayout;
-    }
-
-    public void setMenuLayout(String menuLayout) {
-        this.menuLayout = menuLayout;
-
-        if (this.menuLayout.equals("layout-wrapper-horizontal-sidebar")) {
-            this.profileMode = "topbar";
+    public String getMenuTheme() {
+        if (this.scheme.equals("light")) {
+            return menuTheme; 
+        }
+        else {
+            return this.scheme;
         }
     }
 
-    public String getProfileMode() {
-        return profileMode;
+    public void setMenuTheme(String menuTheme) {
+        this.menuTheme = menuTheme;
     }
 
-    public void setProfileMode(String profileMode) {
-        if (this.menuLayout.equals("layout-wrapper-horizontal-sidebar")) {
-            this.profileMode = "topbar";
-        } else {
-            this.profileMode = profileMode;
+    public String getLayoutClass() {
+        return "layout-" + this.layout;
+    }
+
+    public String getSidebarThemeClass() {
+        if (this.scheme.equals("light")) {
+            return "layout-sidebar-" + this.menuTheme; 
+        }
+        else {
+            return "layout-sidebar-" + this.scheme;
+        } 
+    }
+
+    public String getLogoColor() {
+        return logoColor;
+    }
+
+    public void setLogoColor(String logoColor) {
+        this.logoColor = logoColor;
+    }
+
+    public List<MenuTheme> getMenuThemes() {
+        return this.menuThemes;
+    }
+
+    public List<ComponentTheme> getComponentThemes() {
+        return this.componentThemes;
+    }
+
+    public void changeMenuTheme(MenuTheme menuTheme) {
+        this.menuTheme = menuTheme.getName();
+        this.logoColor = menuTheme.getLogoColor();
+
+        if (menuTheme.getComponentTheme() != null) {
+            this.componentTheme = menuTheme.getComponentTheme();
         }
     }
 
-    /**
-     * @return the busdocMenuLayout
-     */
-    public String getBusdocMenuLayout() {
-        return busdocMenuLayout;
+    public String getScheme() {
+        return this.scheme;
     }
 
-    /**
-     * @param busdocMenuLayout the busdocMenuLayout to set
-     */
-    public void setBusdocMenuLayout(String busdocMenuLayout) {
-        this.busdocMenuLayout = busdocMenuLayout;
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    public void onLayoutChange() {
+        PrimeFaces.current().executeScript("PrimeFaces.DiamondConfigurator.changeLayout('" + layout + "')");
+    }
+
+    public void onSchemeChange() {
+        if (this.scheme.equals("light")) {
+            String _logoColor = menuTheme.equals("white") || menuTheme.equals("orange") ? "dark" : "white";
+            PrimeFaces.current().executeScript("PrimeFaces.DiamondConfigurator.changeMenuTheme('" + menuTheme + "', '" + _logoColor +"')");
+        }
+        else {
+            PrimeFaces.current().executeScript("PrimeFaces.DiamondConfigurator.changeMenuTheme('" + scheme + "', 'white')");
+        }
+
+        PrimeFaces.current().executeScript("PrimeFaces.DiamondConfigurator.changeScheme('" + scheme + "')");
+    }
+
+    public class MenuTheme {
+
+        private String name;
+
+        private String color;
+        
+        private String logoColor;
+        
+        private String componentTheme;
+    
+        public MenuTheme() {}
+    
+        public MenuTheme(String name, String color, String logoColor, String componentTheme) {
+            this.name = name;
+            this.color = color;
+            this.logoColor = logoColor;
+            this.componentTheme = componentTheme;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    
+        public String getColor() {
+            return color;
+        }
+    
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public String getLogoColor() {
+            return logoColor;
+        }
+
+        public void setLogoColor(String logoColor) {
+            this.logoColor = logoColor;
+        }
+
+        public String getComponentTheme() {
+            return componentTheme;
+        }
+
+        public void setComponentTheme(String componentTheme) {
+            this.componentTheme = componentTheme;
+        }
+    }
+
+    public class ComponentTheme {
+
+        private String name;
+
+        private String color;
+    
+        public ComponentTheme() {}
+    
+        public ComponentTheme(String name, String color) {
+            this.name = name;
+            this.color = color;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    
+        public String getColor() {
+            return color;
+        }
+    
+        public void setColor(String color) {
+            this.color = color;
+        }
     }
 }
+
