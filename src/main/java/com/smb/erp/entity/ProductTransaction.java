@@ -418,7 +418,7 @@ public class ProductTransaction implements Serializable {
     public Double getGrandtotal(){
         return getTotalamount()+getVatamount();
     }
-    
+        
     /**
      * @return the lineqty
      */

@@ -43,10 +43,10 @@ public class Asset implements Serializable {
 	@JoinColumn(name="createdby")
 	private Emp emp;
 
-	//bi-directional many-to-one association to LederLine
+	//bi-directional many-to-one association to LedgerLine
 	@ManyToOne
 	@JoinColumn(name="ledgerlineno")
-	private LederLine ledline;
+	private LedgerLine ledline;
 
 	public Asset() {
 	}
@@ -123,11 +123,11 @@ public class Asset implements Serializable {
 		this.emp = emp;
 	}
 
-	public LederLine getLedline() {
+	public LedgerLine getLedline() {
 		return this.ledline;
 	}
 
-	public void setLedline(LederLine ledline) {
+	public void setLedline(LedgerLine ledline) {
 		this.ledline = ledline;
 	}
 

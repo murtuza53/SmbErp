@@ -12,6 +12,7 @@ import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.PayTerms;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.repo.BranchRepository;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
@@ -19,7 +20,6 @@ import com.smb.erp.repo.CompanyRepository;
 import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
-import com.smb.erp.util.StringUtils;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -58,6 +58,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     CompanyRepository companyRepo;
+
+    @Autowired
+    BranchRepository branchRepo;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -160,7 +163,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             //    pt.setLinereceived(pt.getLinereceived());
             //}
         }
-        getSelected().setCompany(companyRepo.getOne(1));    //to be commented
+        //getSelected().setCompany(companyRepo.getOne(1));    //to be commented
+        getSelected().setBranch(branchRepo.getOne(1));
         repo.save(getSelected());
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
     }

@@ -26,9 +26,10 @@ public class AccDoc implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date docdate;
 
-    private String extra1;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedon;
 
-    private double extra10;
+    private String extra1;
 
     private byte extra11;
 
@@ -42,13 +43,15 @@ public class AccDoc implements Serializable {
 
     private String extra5;
 
-    private double extra6;
+    private Double extra6 = 0.0;
 
-    private double extra7;
+    private Double extra7 = 0.0;
 
-    private double extra8;
+    private Double extra8 = 0.0;
 
-    private double extra9;
+    private Double extra9 = 0.0;
+
+    private Double extra10 = 0.0;
 
     private String manualno;
 
@@ -74,9 +77,9 @@ public class AccDoc implements Serializable {
     @JoinColumn(name = "empno")
     private Emp emp;
 
-    //bi-directional many-to-one association to LederLine
+    //bi-directional many-to-one association to LedgerLine
     @OneToMany(mappedBy = "accdoc")
-    private List<LederLine> ledlines;
+    private List<LedgerLine> ledlines;
 
     public AccDoc() {
     }
@@ -121,11 +124,11 @@ public class AccDoc implements Serializable {
         this.extra1 = extra1;
     }
 
-    public double getExtra10() {
+    public Double getExtra10() {
         return this.extra10;
     }
 
-    public void setExtra10(double extra10) {
+    public void setExtra10(Double extra10) {
         this.extra10 = extra10;
     }
 
@@ -177,35 +180,35 @@ public class AccDoc implements Serializable {
         this.extra5 = extra5;
     }
 
-    public double getExtra6() {
+    public Double getExtra6() {
         return this.extra6;
     }
 
-    public void setExtra6(double extra6) {
+    public void setExtra6(Double extra6) {
         this.extra6 = extra6;
     }
 
-    public double getExtra7() {
+    public Double getExtra7() {
         return this.extra7;
     }
 
-    public void setExtra7(double extra7) {
+    public void setExtra7(Double extra7) {
         this.extra7 = extra7;
     }
 
-    public double getExtra8() {
+    public Double getExtra8() {
         return this.extra8;
     }
 
-    public void setExtra8(double extra8) {
+    public void setExtra8(Double extra8) {
         this.extra8 = extra8;
     }
 
-    public double getExtra9() {
+    public Double getExtra9() {
         return this.extra9;
     }
 
-    public void setExtra9(double extra9) {
+    public void setExtra9(Double extra9) {
         this.extra9 = extra9;
     }
 
@@ -257,22 +260,22 @@ public class AccDoc implements Serializable {
         this.emp = emp;
     }
 
-    public List<LederLine> getLedlines() {
+    public List<LedgerLine> getLedlines() {
         return this.ledlines;
     }
 
-    public void setLedlines(List<LederLine> ledlines) {
+    public void setLedlines(List<LedgerLine> ledlines) {
         this.ledlines = ledlines;
     }
 
-    public LederLine addLedline(LederLine ledline) {
+    public LedgerLine addLedline(LedgerLine ledline) {
         getLedlines().add(ledline);
         ledline.setAccdoc(this);
 
         return ledline;
     }
 
-    public LederLine removeLedline(LederLine ledline) {
+    public LedgerLine removeLedline(LedgerLine ledline) {
         getLedlines().remove(ledline);
         ledline.setAccdoc(null);
 
@@ -281,7 +284,7 @@ public class AccDoc implements Serializable {
 
     @Override
     public String toString() {
-        return "AccDoc{" + "docno=" + docno + '}';
+        return docno;
     }
 
     @Override
@@ -307,6 +310,20 @@ public class AccDoc implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the updatedon
+     */
+    public Date getUpdatedon() {
+        return updatedon;
+    }
+
+    /**
+     * @param updatedon the updatedon to set
+     */
+    public void setUpdatedon(Date updatedon) {
+        this.updatedon = updatedon;
     }
 
 }

@@ -69,10 +69,17 @@
                                     collapsedIcon="fa fa-folder">
                             <h:outputText value="#{node}" />
                         </p:treeNode>
+                        <p:treeNode type="INTERNAL_GROUP" expandedIcon="far fa-folder-open"
+                                    collapsedIcon="far fa-folder">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
                         <p:treeNode type="ACCOUNT" icon="fa fa-file-contract">
                             <h:outputText value="#{node}" />
                         </p:treeNode>
-                        <p:treeNode icon="fa fa-file-alt">
+                        <p:treeNode type="INTERNAL_ACCOUNT" icon="far fa-file">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode icon="far fa-file">
                             <h:outputText value="#{node}" />
                         </p:treeNode>
                     </p:tree>

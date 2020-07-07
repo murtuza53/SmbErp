@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "ledline")
 @NamedQuery(name = "LederLine.findAll", query = "SELECT l FROM LederLine l")
-public class LederLine implements Serializable {
+public class LedgerLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public class LederLine implements Serializable {
     @OneToMany(mappedBy = "ledline")
     private List<PartialPaymentDetail> ppdetails;
 
-    public LederLine() {
+    public LedgerLine() {
     }
 
     public String getLlno() {
@@ -288,7 +288,7 @@ public class LederLine implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final LederLine other = (LederLine) obj;
+        final LedgerLine other = (LedgerLine) obj;
         if (!Objects.equals(this.llno, other.llno)) {
             return false;
         }

@@ -97,6 +97,8 @@ public class BusDoc implements Serializable {
     private Double totalvat = 0.0;
 
     private Double grandtotal = 0.0;
+    
+    private Double totalcost = 0.0;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
@@ -144,9 +146,12 @@ public class BusDoc implements Serializable {
     private BusinessPartner businesspartner;
 
     //bi-directional many-to-one association to Company
+    //@ManyToOne
+    //@JoinColumn(name = "companyid")
+    //private Company company;
     @ManyToOne
-    @JoinColumn(name = "companyid")
-    private Company company;
+    @JoinColumn(name = "branchno")
+    private Branch branch;
 
     //bi-directional many-to-one association to PartialPaymentDetail
     //@OneToMany(mappedBy="busdoc1")
@@ -595,13 +600,13 @@ public class BusDoc implements Serializable {
         this.businesspartner = businesspartner;
     }
 
-    public Company getCompany() {
+    /*public Company getCompany() {
         return this.company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
-    }
+    }*/
 
     /**
      * @return the discount
@@ -836,6 +841,34 @@ public class BusDoc implements Serializable {
      */
     public void setGrandtotal(Double grandtotal) {
         this.grandtotal = grandtotal;
+    }
+
+    /**
+     * @return the totalcost
+     */
+    public Double getTotalcost() {
+        return totalcost;
+    }
+
+    /**
+     * @param totalcost the totalcost to set
+     */
+    public void setTotalcost(Double totalcost) {
+        this.totalcost = totalcost;
+    }
+
+    /**
+     * @return the branch
+     */
+    public Branch getBranch() {
+        return branch;
+    }
+
+    /**
+     * @param branch the branch to set
+     */
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
 }

@@ -44,10 +44,10 @@ public class PartialPaymentDetail implements Serializable {
 	@JoinColumn(name="jclpino")
 	private BusDoc busdoc3;
 
-	//bi-directional many-to-one association to LederLine
+	//bi-directional many-to-one association to LedgerLine
 	@ManyToOne
 	@JoinColumn(name="llno")
-	private LederLine ledline;
+	private LedgerLine ledline;
 
 	//bi-directional many-to-one association to BusDoc
 	@ManyToOne
@@ -126,11 +126,11 @@ public class PartialPaymentDetail implements Serializable {
 		this.busdoc3 = busdoc3;
 	}
 
-	public LederLine getLedline() {
+	public LedgerLine getLedline() {
 		return this.ledline;
 	}
 
-	public void setLedline(LederLine ledline) {
+	public void setLedline(LedgerLine ledline) {
 		this.ledline = ledline;
 	}
 
