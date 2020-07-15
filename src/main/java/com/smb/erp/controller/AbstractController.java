@@ -147,7 +147,7 @@ public abstract class AbstractController<T> implements Serializable {
             try {
                 repository.save(selected);
                 setItems(null);
-                JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " saved");
+                //JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " saved");
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, "Could not save due to error");
@@ -160,7 +160,7 @@ public abstract class AbstractController<T> implements Serializable {
             try {
                 repository.delete(selected);
                 setItems(null);
-                JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " deleted");
+                //JsfUtil.addSuccessMessage(itemClass.getSimpleName() + " deleted");
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, "Could not deleted due to error");

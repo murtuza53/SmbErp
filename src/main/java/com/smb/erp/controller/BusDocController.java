@@ -12,11 +12,13 @@ import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.PayTerms;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.entity.VatCategory;
 import com.smb.erp.repo.BranchRepository;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CompanyRepository;
+import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
@@ -61,6 +63,12 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     BranchRepository branchRepo;
+
+    @Autowired
+    AccDocController accdocController;
+
+    @Autowired
+    VatCategoryRepository vatcatRepo;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -166,6 +174,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //getSelected().setCompany(companyRepo.getOne(1));    //to be commented
         getSelected().setBranch(branchRepo.getOne(1));
         repo.save(getSelected());
+
+        accdocController.createBusDocJV(getSelected());
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
     }
 
@@ -220,6 +230,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.setCustomizedname(prod.getProductname());
         pt.setLineqty(1.0);
         pt.setBusdoc(getSelected());
+        if (prod.getVatregisterid() != null) {
+            pt.setVatcategoryid(prod.getVatregisterid().getVatcategoryid());
+        }
         if (doctype.equalsIgnoreCase("SALES")) {
             pt.setLinecost(0.0);
             pt.setLinefcunitprice(0.0);
@@ -300,5 +313,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
      */
     public void setProductTabDisabled(boolean productTabDisabled) {
         this.productTabDisabled = productTabDisabled;
+    }
+
+    public List<VatCategory> getVatCatogories() {
+        return vatcatRepo.findAll();
     }
 }

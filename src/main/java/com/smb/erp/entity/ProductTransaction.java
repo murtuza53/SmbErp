@@ -92,6 +92,10 @@ public class ProductTransaction implements Serializable {
     @JoinColumn(name = "productid")
     private Product product;
 
+        @ManyToOne
+    @JoinColumn(name = "vatcategoryid")
+    private VatCategory vatcategoryid;
+
     //bi-directional many-to-one association to ProductTransactionExecutedFrom
     @OneToMany(mappedBy = "prodtransaction")
     @Fetch(FetchMode.SUBSELECT)
@@ -418,6 +422,13 @@ public class ProductTransaction implements Serializable {
     public Double getGrandtotal(){
         return getTotalamount()+getVatamount();
     }
+    
+    public Double getTotalcost(){
+        if(getCost()==0){
+            return getSubtotal();
+        }
+        return getLinefcunitprice() * getCost();
+    }
         
     /**
      * @return the lineqty
@@ -439,11 +450,13 @@ public class ProductTransaction implements Serializable {
 
     public void refreshTotals() {
         calculateActualQtyFromLineQty();
-        if(product.getVatregisterid()==null){
-            vatamount = 0.0;
+        if(getVatcategoryid()!=null){
+            vatamount = getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
+        }else if(product.getVatregisterid()!=null){
+            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         } else {
-            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
+            vatamount = 0.0;
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         }
         if (busdoc != null) {
@@ -462,13 +475,6 @@ public class ProductTransaction implements Serializable {
             }
         }
     }
-    
-    public String getVatType(){
-        if(product.getVatregisterid()==null){
-            return "";
-        }
-        return product.getVatregisterid().getVatcategoryid().getCategoryname();
-    }
 
     /**
      * @return the vatamount
@@ -483,6 +489,20 @@ public class ProductTransaction implements Serializable {
      */
     public void setVatamount(Double vatamount) {
         this.vatamount = vatamount;
+    }
+
+    /**
+     * @return the vatcategoryid
+     */
+    public VatCategory getVatcategoryid() {
+        return vatcategoryid;
+    }
+
+    /**
+     * @param vatcategoryid the vatcategoryid to set
+     */
+    public void setVatcategoryid(VatCategory vatcategoryid) {
+        this.vatcategoryid = vatcategoryid;
     }
 
 }

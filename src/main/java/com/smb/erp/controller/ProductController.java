@@ -101,9 +101,9 @@ public class ProductController extends AbstractController<Product> {
             ProductAccount pa = new ProductAccount();
             pa.setProdaccountid(0);
             getSelected().setProdaccount(pa);
-            pa.setSalesAccount(systemController.getDefaultAccount("SalesAccount"));
-            pa.setPurchaseAccount(systemController.getDefaultAccount("PurchaseAcount"));
-            pa.setConsumptionAccount(systemController.getDefaultAccount("ConsumptionAccount"));
+            pa.setSalesAccount(systemController.getDefaultAccount("DefSalesAccount"));
+            pa.setPurchaseAccount(systemController.getDefaultAccount("DefPurchaseAccount"));
+            pa.setConsumptionAccount(systemController.getDefaultAccount("DefConsumptionAccount"));
         }
         
         if(getSelected().getVatregisterid()==null){

@@ -1,8 +1,10 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the brand database table.
@@ -15,12 +17,14 @@ public class VatCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer vatcategoryid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
+    private Integer vatcategoryid = (int) new Date().getTime();
 
     private String categoryname;
 
-    private Double vatpercentage;
+    private Double vatpercentage = 0.0;
     
     private String description;
 

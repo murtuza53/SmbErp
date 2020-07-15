@@ -6,6 +6,7 @@ import java.util.Date;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the ledline database table.
@@ -13,30 +14,32 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "ledline")
-@NamedQuery(name = "LederLine.findAll", query = "SELECT l FROM LederLine l")
+@NamedQuery(name = "LedgerLine.findAll", query = "SELECT l FROM LedgerLine l")
 public class LedgerLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String llno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
+    private Integer llno = (int) new Date().getTime();;
 
-    private double credit;
+    private Double credit=0.0;
 
-    private double debit;
+    private Double debit=0.0;
 
     private String description;
 
-    private double fccredit;
+    private Double fccredit=0.0;
 
-    private double fcdebit;
+    private Double fcdebit=0.0;
 
     private String processedref;
 
     private String processedrefback;
 
-    private double rate;
+    private Double rate=1.0;
 
     private String reflink1;
 
@@ -56,7 +59,7 @@ public class LedgerLine implements Serializable {
     private List<Asset> assets;
 
     //bi-directional many-to-one association to Account
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "accountno")
     private Account account;
 
@@ -66,7 +69,7 @@ public class LedgerLine implements Serializable {
     private Branch branch;
 
     //bi-directional many-to-one association to AccDoc
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "docno")
     private AccDoc accdoc;
 
@@ -77,27 +80,27 @@ public class LedgerLine implements Serializable {
     public LedgerLine() {
     }
 
-    public String getLlno() {
+    public Integer getLlno() {
         return this.llno;
     }
 
-    public void setLlno(String llno) {
+    public void setLlno(Integer llno) {
         this.llno = llno;
     }
 
-    public double getCredit() {
+    public Double getCredit() {
         return this.credit;
     }
 
-    public void setCredit(double credit) {
+    public void setCredit(Double credit) {
         this.credit = credit;
     }
 
-    public double getDebit() {
+    public Double getDebit() {
         return this.debit;
     }
 
-    public void setDebit(double debit) {
+    public void setDebit(Double debit) {
         this.debit = debit;
     }
 
@@ -109,19 +112,19 @@ public class LedgerLine implements Serializable {
         this.description = description;
     }
 
-    public double getFccredit() {
+    public Double getFccredit() {
         return this.fccredit;
     }
 
-    public void setFccredit(double fccredit) {
+    public void setFccredit(Double fccredit) {
         this.fccredit = fccredit;
     }
 
-    public double getFcdebit() {
+    public Double getFcdebit() {
         return this.fcdebit;
     }
 
-    public void setFcdebit(double fcdebit) {
+    public void setFcdebit(Double fcdebit) {
         this.fcdebit = fcdebit;
     }
 
@@ -141,11 +144,11 @@ public class LedgerLine implements Serializable {
         this.processedrefback = processedrefback;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return this.rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 

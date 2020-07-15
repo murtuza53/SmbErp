@@ -130,7 +130,7 @@
                                  selection="#{busDocController.selectedTransaction}"
                                  editable="true"
                                  editMode="cell"
-                                 emptyMessage="No Transaction found"
+                                 emptyMessage="No Products found"
                                  styleClass="products-table ui-datatable-sm"
                                  style="font-size: small">
 
@@ -182,7 +182,7 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column headerText="Price" style="text-align:">
+                        <p:column headerText="Price" style="text-align:right">
                             <f:facet name="header">
                                 <h:outputText value="Price"/>
                             </f:facet>
@@ -209,7 +209,27 @@
                         </p:column>
 
                         <p:column headerText="VAT Type" style="text-align: center">
-                            <h:outputText id="vattype" value="#{pt.vatType}"/>
+                            <f:facet name="header">
+                                <h:outputText value="VAT Type"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pt.vatcategoryid.categoryname}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
+                                                     var="t" effect="fade">
+                                        <f:selectItems value="#{busDocController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                        <p:ajax listener="#{pt.refreshTotals()}" update="total, vamount, namount" />
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Name"/>
+                                            </f:facet>
+                                            <h:outputText value="#{t.categoryname}"/>
+                                        </p:column>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
 
                         <p:column headerText="VAT" style="text-align: right">

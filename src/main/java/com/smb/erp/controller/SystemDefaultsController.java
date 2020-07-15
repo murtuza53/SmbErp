@@ -62,6 +62,13 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
         return accountRepo.getOne(propertyTable.get("Account." + propertyname));
     }
 
+    public Account resolveAccount(Account account){
+        if(account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT")){
+            return getDefaultAccount(account.getAccountname());
+        } 
+        return resolveAccount(account);
+    }
+    
     public String getDefaultList(String propertyname) {
         return propertyTable.get("List." + propertyname);
     }

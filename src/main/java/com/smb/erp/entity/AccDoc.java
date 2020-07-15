@@ -78,7 +78,7 @@ public class AccDoc implements Serializable {
     private Emp emp;
 
     //bi-directional many-to-one association to LedgerLine
-    @OneToMany(mappedBy = "accdoc")
+    @OneToMany(mappedBy = "accdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<LedgerLine> ledlines;
 
     public AccDoc() {
