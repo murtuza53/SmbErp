@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DefaultDlg" widgetVar="DefaultDialog" modal="true" resizable="false" appendTo="@(body)" header="Add New Conversion" closeOnEscape="true">
+            <h:form id="dialogform">
+                <h:panelGroup id="display">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Document Name" for="catid" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="catid" value="#{busDocInfoController.selectedConvertFrom}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains" >
+                                    <f:selectItems value="#{busDocInfoController.items}" var="item" 
+                                                   itemLabel="#{item.docname}" itemValue="#{item}"/>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Prefix"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.prefix}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.docname}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Type"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.doctype}"/>
+                                    </p:column>
+                                </p:selectOneMenu>   
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{busDocInfoController.addNewConvertTo()}" value="Save" update=":mainform:conlist, :growl"
+                                     oncomplete="handleSubmit(xhr,status,args,PF('DefaultDialog'));"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('DefaultDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+                <ui:include src="/confirmation.xhtml"/>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

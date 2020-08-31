@@ -16,7 +16,9 @@ public enum BusDocTransactionType {
 
     NON_INVENTORY("Non_Inventory"),
     INVENTORY_ONLY("Inventory_Only"),
-    INVENTORY_ACCOUNT("Inventory_Account");
+    INVENTORY_ACCOUNT("Inventory_Account"),
+    ACCOUNTS_PAYABLE("Accounts_Payable"),
+    ACCOUNTS_RECEIVABLE("Accounts_Receivable");
 
     public static List<String> TYPES = new LinkedList<>();
 

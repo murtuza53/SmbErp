@@ -17,7 +17,7 @@
                     <p:panel id="companydetails" header="Business Parners" 
                              collapsed="false" toggleable="true" styleClass="card">
                         <f:facet name="actions">
-                            <p:commandButton id="btnrefresh" styleClass="secondary-button rounded-button"
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{businessPartnerController.refresh()}" 
                                              update="@form :growl" icon="fa fa-refresh" />
                         </f:facet>
@@ -41,11 +41,11 @@
                     <p:panel id="companylist" header="List of Business Partners" styleClass="card ui-fluid">
                         <f:facet name="actions">
                             <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{businessPartnerController.newTab_In_newBtab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
                             <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
-                                             styleClass="secondary-button rounded-button"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              disabled="#{businessPartnerController.companyDisabled}" 
                                              actionListener="#{businessPartnerController.editTab_In_newBtab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>

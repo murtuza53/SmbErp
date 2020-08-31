@@ -14,18 +14,17 @@ import java.util.StringTokenizer;
  * @author Burhani152
  */
 public class StringUtils {
-   
-    
-    public static boolean isEmpty(String value){
-        if(value==null){
+
+    public static boolean isEmpty(String value) {
+        if (value == null) {
             return true;
-        } else if(value.trim().length()==0){
+        } else if (value.trim().length() == 0) {
             return true;
         }
         return false;
     }
-    
-    public static List<String> tokensToList(String commaDelimitedString){
+
+    public static List<String> tokensToList(String commaDelimitedString) {
         StringTokenizer tokens = new StringTokenizer(commaDelimitedString, ",");
         List<String> list = new LinkedList<>();
         while (tokens.hasMoreTokens()) {
@@ -36,8 +35,8 @@ public class StringUtils {
         }
         return list;
     }
-    
-    public static List<String> tokensToList(String commaDelimitedString, String firstToken){
+
+    public static List<String> tokensToList(String commaDelimitedString, String firstToken) {
         StringTokenizer tokens = new StringTokenizer(commaDelimitedString, ",");
         List<String> list = new LinkedList<>();
         list.add(firstToken);
@@ -49,4 +48,13 @@ public class StringUtils {
         }
         return list;
     }
+
+    public static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
 }

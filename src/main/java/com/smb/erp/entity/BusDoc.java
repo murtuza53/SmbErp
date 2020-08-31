@@ -23,6 +23,9 @@ public class BusDoc implements Serializable {
     private String docno;
 
     @Temporal(TemporalType.TIMESTAMP)
+    private Date docdate;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdon;
 
     private String description;
@@ -869,6 +872,21 @@ public class BusDoc implements Serializable {
      */
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    /**
+     * @return the docdate
+     */
+    public Date getDocdate() {
+        return docdate;
+    }
+
+    /**
+     * @param docdate the docdate to set
+     */
+    public void setDocdate(Date docdate) {
+        this.docdate = docdate;
+        System.out.println(docno + ": " + this.docdate);
     }
 
 }

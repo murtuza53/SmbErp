@@ -3,19 +3,22 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                template="/california-layout/template.xhtml">
-
+                template="/diamond-layout/template.xhtml">
     <ui:define name="title">
-        Dashboard
+        SMB ERP
     </ui:define>
 
-    <ui:define name="breadcrumb">
-        Dashboard
-    </ui:define>
+    <ui:param name="viewname" value="SMB ERP" />
 
     <ui:define name="content">
-        Page Body
+        <h:form id="busform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    Home Page
+                </div>
+            </div>
+        </h:form>
+
     </ui:define>
 
 </ui:composition>

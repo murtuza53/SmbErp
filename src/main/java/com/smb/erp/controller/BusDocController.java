@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.UserSession;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
@@ -31,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -44,6 +46,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     BusDocRepository repo;
 
     @Autowired
+    UserSession userSession;
+
+    @Autowired
     SystemDefaultsController systemController;
 
     @Autowired
@@ -53,7 +58,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     BusinessPartnerRepository partnerRepo;
 
     @Autowired
-    private ProductSearchController productSearchController;
+    ProductSearchController productSearchController;
+
+    @Autowired
+    ProductTransactionController productTransactionController;
 
     @Autowired
     TableKeyController keyCon;
@@ -82,6 +90,21 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     private boolean productTabDisabled = true;
 
+    private List<ProductTransaction> salesPT;
+
+    private List<ProductTransaction> purchasePT;
+
+    private List<ProductTransaction> stockPT;
+
+    private BusDocInfo selectedConvertFromDocument;
+
+    private List<BusDoc> convertFromDocumentList;
+
+    private BusDoc selectedFromDocument;
+
+    private List<ProductTransaction> selectedFromProductTransactions;
+
+    //private Date docdate;
     @Autowired
     public BusDocController(BusDocRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
@@ -111,7 +134,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 String docinfo = req.getParameter("docinfoid");
                 docInfo = docinfoRepo.getOne(Integer.parseInt(docinfo));
                 BusDoc doc = new BusDoc();
-                doc.setCreatedon(new Date());
+                doc.setDocdate(new Date());
+                doc.setCreatedon(doc.getDocdate());
                 doc.setBusdocinfo(docInfo);
                 setSelected(doc);
                 mode = DocumentTab.MODE.NEW;
@@ -119,6 +143,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
                 PayTerms pt = new PayTerms();
                 doc.setPaytermsid(pt);
+
+                //docdate = getSelected().getDocdate();
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
                 if (docno != null) {
@@ -133,6 +159,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                     getSelected().refreshTotal();
                 }
                 mode = DocumentTab.MODE.EDIT;
+                //docdate = getSelected().getDocdate();
             }
         }
     }
@@ -157,12 +184,16 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         }
         getSelected().setProductTransactions(getProdTransactions());
         getSelected().setUpdatedon(new Date());
+        //getSelected().setDocdate(getDocdate());
         for (ProductTransaction pt : getProdTransactions()) {
-            pt.setCeatedon(getSelected().getCreatedon());
+            pt.setTransdate(getSelected().getDocdate());
+            pt.setCreatedon(getSelected().getCreatedon());
             pt.setUpdatedon(getSelected().getUpdatedon());
             pt.setBusdoc(getSelected());
+            pt.setFcunitprice(pt.getLinefcunitprice());
             pt.setUnitprice(pt.getLineunitprice());
-            pt.calculateActualQtyFromLineQty();
+            //pt.calculateActualQtyFromLineQty();
+            pt.refreshTotals();
             //if (getSelected().getBusdocinfo().getDoctype().equalsIgnoreCase("Sales")) {
             //    pt.setLinesold(pt.getLineqty());
             //    pt.setSold(pt.getLinesold());
@@ -171,12 +202,19 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             //    pt.setLinereceived(pt.getLinereceived());
             //}
         }
+        getSelected().refreshTotal();
         //getSelected().setCompany(companyRepo.getOne(1));    //to be commented
-        getSelected().setBranch(branchRepo.getOne(1));
+        getSelected().setBranch(userSession.getLoggedInBranch());      //to be changed later
         repo.save(getSelected());
 
         accdocController.createBusDocJV(getSelected());
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
+        mode = DocumentTab.MODE.EDIT;
+    }
+
+    public void refreshTotal(ProductTransaction pt) {
+        pt.refreshTotals();
+        pt.getBusdoc().refreshTotal();
     }
 
     public void deleteTransactions() {
@@ -203,7 +241,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Override
     public void transfer(List<Product> products) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //System.out.println("Product_Transfer: " + products);
         if (products != null) {
             for (Product p : products) {
                 getProdTransactions().add(convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype()));
@@ -230,6 +268,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.setCustomizedname(prod.getProductname());
         pt.setLineqty(1.0);
         pt.setBusdoc(getSelected());
+        pt.setBranch(userSession.getLoggedInBranch());     //to be changed later
         if (prod.getVatregisterid() != null) {
             pt.setVatcategoryid(prod.getVatregisterid().getVatcategoryid());
         }
@@ -261,8 +300,52 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         }
     }
 
+    public BusDocInfo getDocInfo() {
+        return docInfo;
+    }
+
     public List<String> findAsList(String propertyname) {
         return systemController.getAsList(propertyname);
+    }
+
+    public void refreshHistoryPanel() {
+        salesPT = null;
+        getSalesProductTransactions();
+        purchasePT = null;
+        getPurchaseProductTransactions();
+    }
+
+    public List<ProductTransaction> getSalesProductTransactions() {
+        if (getSelectedTransaction() != null) {
+            if (salesPT == null) {
+                salesPT = productTransactionController.getSalesTransactions(getSelectedTransaction().getProduct().getProductid(),
+                        getSelected().getDocdate(), userSession.getLoggedInCompany().getCompanyid());
+                salesPT.forEach(f -> f.setReference("Sales History"));
+            }
+        }
+        return salesPT;
+    }
+
+    public List<ProductTransaction> getPurchaseProductTransactions() {
+        if (getSelectedTransaction() != null) {
+            if (purchasePT == null) {
+                purchasePT = productTransactionController.getPurchaseTransactions(getSelectedTransaction().getProduct().getProductid(),
+                        getSelected().getDocdate(), userSession.getLoggedInCompany().getCompanyid());
+                purchasePT.forEach(f -> f.setReference("Purchase History"));
+            }
+        }
+        return purchasePT;
+    }
+
+    public List<ProductTransaction> getStockBalances() {
+        if (getSelectedTransaction() != null) {
+            if (stockPT == null) {
+                stockPT = productTransactionController.getStockBalances(getSelectedTransaction().getProduct().getProductid(),
+                        getSelected().getDocdate(), userSession.getLoggedInCompany().getCompanyid());
+                //purchasePT.forEach(f -> f.setReference("Purchase History"));
+            }
+        }
+        return stockPT;
     }
 
     /**
@@ -318,4 +401,91 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     public List<VatCategory> getVatCatogories() {
         return vatcatRepo.findAll();
     }
+
+    public void docdateChange(SelectEvent event) {
+        //FacesContext facesContext = FacesContext.getCurrentInstance();
+        //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        //facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
+        getSelected().setDocdate((Date) event.getObject());
+    }
+
+    public List<BusDocInfo> getConvertFromDocument() {
+        List<BusDocInfo> list = getSelected().getBusdocinfo().getConvertfrom();
+        if (list == null || list.size() == 0) {
+            return new LinkedList<BusDocInfo>();
+        }
+
+        selectedConvertFromDocument = list.get(0);
+        refreshConvertFromDocumentList();
+        return list;
+    }
+
+    public void refreshConvertFromDocumentList() {
+        System.out.println("refreshConvertFromDocumentList: " + getSelected().getBusinesspartner());
+        if (getSelected().getBusinesspartner() != null) {
+            convertFromDocumentList = repo.findByBusDocByPrefixAndBusinessPartner(getSelected().getBusdocinfo().getPrefix(), getSelected().getBusinesspartner().getPartnerid());
+            System.out.println("refreshConvertFromDocumentList: " + convertFromDocumentList);
+            if(convertFromDocumentList!=null & convertFromDocumentList.size()>0){
+                selectedFromDocument = convertFromDocumentList.get(0);
+            }
+        }
+    }
+
+    /**
+     * @return the selectedConvertFromDocument
+     */
+    public BusDocInfo getSelectedConvertFromDocument() {
+        return selectedConvertFromDocument;
+    }
+
+    /**
+     * @param selectedConvertFromDocument the selectedConvertFromDocument to set
+     */
+    public void setSelectedConvertFromDocument(BusDocInfo selectedConvertFromDocument) {
+        this.selectedConvertFromDocument = selectedConvertFromDocument;
+    }
+
+    /**
+     * @return the convertFromDocumentList
+     */
+    public List<BusDoc> getConvertFromDocumentList() {
+        return convertFromDocumentList;
+    }
+
+    /**
+     * @param convertFromDocumentList the convertFromDocumentList to set
+     */
+    public void setConvertFromDocumentList(List<BusDoc> convertFromDocumentList) {
+        this.convertFromDocumentList = convertFromDocumentList;
+    }
+
+    /**
+     * @return the selectedFromDocument
+     */
+    public BusDoc getSelectedFromDocument() {
+        return selectedFromDocument;
+    }
+
+    /**
+     * @param selectedFromDocument the selectedFromDocument to set
+     */
+    public void setSelectedFromDocument(BusDoc selectedFromDocument) {
+        this.selectedFromDocument = selectedFromDocument;
+    }
+
+    /**
+     * @return the selectedFromProductTransactions
+     */
+    public List<ProductTransaction> getSelectedFromProductTransactions() {
+        return selectedFromProductTransactions;
+    }
+
+    /**
+     * @param selectedFromProductTransactions the
+     * selectedFromProductTransactions to set
+     */
+    public void setSelectedFromProductTransactions(List<ProductTransaction> selectedFromProductTransactions) {
+        this.selectedFromProductTransactions = selectedFromProductTransactions;
+    }
+
 }

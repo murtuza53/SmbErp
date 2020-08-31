@@ -5,39 +5,39 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/diamond-layout/template.xhtml">
     <ui:define name="title">
-        Business Document List
+        #{busDocController.docInfo.docname} List
     </ui:define>
 
-    <ui:param name="viewname" value="Business Document List" />
+    <ui:param name="viewname" value="#{busDocController.docInfo.docname} List" />
 
     <ui:define name="content">
         <h:form id="busform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
-                    <p:panel id="doclist" header="List of Documents" styleClass="card">
+                    <p:panel id="doclist" header="" styleClass="card">
                         <f:facet name="actions">
-                            <p:commandButton id="btnnew" title="New Business Document Definition" icon="fa fa-plus" process="@this"
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                            <p:commandButton id="btnnew" title="New #{busDocController.docInfo.docname}" icon="fa fa-plus" process="@this"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{busDocListController.new_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton id="btnedit" title="Edit Business Document Definition" icon="fa fa-pencil" process="@this" 
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                            <p:commandButton id="btnedit" title="Edit #{busDocController.docInfo.docname}" icon="fa fa-pencil" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{empty busDocListController.selected}" 
                                              actionListener="#{busDocListController.edit_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton id="btnrefresh" styleClass="secondary-button rounded-button"
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{busDocListController.refresh()}"
                                              update="@form :growl" icon="fa fa-refresh" />
 
                         </f:facet>
-                        
+
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{busDocListController.items}"
                                      rowKey="#{item.docno}"
                                      selectionMode="single"
                                      selection="#{busDocListController.selected}"
                                      reflow="true"
-                                     emptyMessage="No Document Definition found"
+                                     emptyMessage="No #{busDocController.docInfo.docname} found"
                                      styleClass="products-table ui-datatable-sm">
                             <p:ajax event="rowSelect" update=":busform:btnedit"/>
 
@@ -45,11 +45,11 @@
                                 <h:outputText value="#{item.docno}" />
                             </p:column>
 
-                            <p:column sortBy="#{item.createdon}" filterBy="#{item.createdon}" filterMatchMode="contains">
+                            <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Date"/>
                                 </f:facet>
-                                <h:outputText value="#{item.createdon}">
+                                <h:outputText value="#{item.docdate}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </h:outputText>
                             </p:column>
@@ -57,6 +57,33 @@
                             <p:column headerText="Business Partner" sortBy="#{item.businesspartner.companyname}" 
                                       filterBy="#{item.businesspartner.companyname}" filterMatchMode="contains">
                                 <h:outputText value="#{item.businesspartner.companyname}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalamount}" filterBy="#{item.totalamount}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Total Amount"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalvat}" filterBy="#{item.totalvat}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Total VAT"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalvat}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.grandtotal}" filterBy="#{item.grandtotal}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Grand Amount"/>
+                                </f:facet>
+                                <h:outputText value="#{item.grandtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

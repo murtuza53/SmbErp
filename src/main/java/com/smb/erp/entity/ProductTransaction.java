@@ -28,7 +28,10 @@ public class ProductTransaction implements Serializable {
     private Integer prodtransid = (int) new Date().getTime();
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date ceatedon;
+    private Date transdate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdon;
 
     private String code;
 
@@ -70,6 +73,8 @@ public class ProductTransaction implements Serializable {
 
     private Double vatamount = 0.0;
 
+    private Double exchangerate = 1.0;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
 
@@ -92,7 +97,7 @@ public class ProductTransaction implements Serializable {
     @JoinColumn(name = "productid")
     private Product product;
 
-        @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "vatcategoryid")
     private VatCategory vatcategoryid;
 
@@ -107,7 +112,13 @@ public class ProductTransaction implements Serializable {
     private List<ProductTransactionExecutedTo> prodtransexecutedtos;
 
     @Transient
-    private Double lineqty=0.0;
+    private Double lineqty = 0.0;
+
+    @Transient
+    private Double balance;
+
+    @Transient
+    private String reference;
 
     public ProductTransaction() {
     }
@@ -118,14 +129,6 @@ public class ProductTransaction implements Serializable {
 
     public void setProdtransid(Integer prodtransid) {
         this.prodtransid = prodtransid;
-    }
-
-    public Date getCeatedon() {
-        return this.ceatedon;
-    }
-
-    public void setCeatedon(Date ceatedon) {
-        this.ceatedon = ceatedon;
     }
 
     public String getCode() {
@@ -214,6 +217,7 @@ public class ProductTransaction implements Serializable {
 
     public void setLinefcunitprice(Double linefcunitprice) {
         this.linefcunitprice = linefcunitprice;
+        this.lineunitprice = linefcunitprice * exchangerate;
     }
 
     public Double getLinereceived() {
@@ -365,7 +369,7 @@ public class ProductTransaction implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductTransaction{" + "prodtransid=" + prodtransid + '}';
+        return prodtransid + "\t" + busdoc.getDocno() + "\t" + product.getProductid() + "\t" + getReceived() + "\t" + getSold();
     }
 
     @Override
@@ -415,21 +419,21 @@ public class ProductTransaction implements Serializable {
         return (getSold() + getReceived()) * getLineunitprice();
     }
 
-    public Double getTotalamount(){
-        return getLineSubtotal()-getDiscount();
+    public Double getTotalamount() {
+        return getLineSubtotal() - getDiscount();
     }
-    
-    public Double getGrandtotal(){
-        return getTotalamount()+getVatamount();
+
+    public Double getGrandtotal() {
+        return getTotalamount() + getVatamount();
     }
-    
-    public Double getTotalcost(){
-        if(getCost()==0){
+
+    public Double getTotalcost() {
+        if (getCost() == 0) {
             return getSubtotal();
         }
         return getLinefcunitprice() * getCost();
     }
-        
+
     /**
      * @return the lineqty
      */
@@ -450,18 +454,18 @@ public class ProductTransaction implements Serializable {
 
     public void refreshTotals() {
         calculateActualQtyFromLineQty();
-        if(getVatcategoryid()!=null){
-            vatamount = getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
-        }else if(product.getVatregisterid()!=null){
-            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage()*0.01*getLineSubtotal();
+        if (getVatcategoryid() != null) {
+            vatamount = getVatcategoryid().getVatpercentage() * 0.01 * getLineSubtotal();
+        } else if (product.getVatregisterid() != null) {
+            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage() * 0.01 * getLineSubtotal();
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         } else {
             vatamount = 0.0;
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         }
-        if (busdoc != null) {
-            busdoc.refreshTotal();
-        }
+        //if (busdoc != null) {
+        //    busdoc.refreshTotal();
+        //}
     }
 
     public void calculateActualQtyFromLineQty() {
@@ -476,6 +480,17 @@ public class ProductTransaction implements Serializable {
         }
     }
 
+    public void refreshExecutedQty(){
+        if(getProdtransexecutedtos()==null || getProdtransexecutedtos().size()==0){
+            return;
+        }
+        double total = 0.0;
+        for(ProductTransactionExecutedTo pt: getProdtransexecutedtos()){
+            total = total + pt.getExecutedqty();
+        }
+        setExecutedqty(total);
+    }
+    
     /**
      * @return the vatamount
      */
@@ -503,6 +518,76 @@ public class ProductTransaction implements Serializable {
      */
     public void setVatcategoryid(VatCategory vatcategoryid) {
         this.vatcategoryid = vatcategoryid;
+    }
+
+    /**
+     * @return the transdate
+     */
+    public Date getTransdate() {
+        return transdate;
+    }
+
+    /**
+     * @param transdate the transdate to set
+     */
+    public void setTransdate(Date transdate) {
+        this.transdate = transdate;
+    }
+
+    /**
+     * @return the createdon
+     */
+    public Date getCreatedon() {
+        return createdon;
+    }
+
+    /**
+     * @param createdon the createdon to set
+     */
+    public void setCreatedon(Date createdon) {
+        this.createdon = createdon;
+    }
+
+    /**
+     * @return the exchangerate
+     */
+    public Double getExchangerate() {
+        return exchangerate;
+    }
+
+    /**
+     * @param exchangerate the exchangerate to set
+     */
+    public void setExchangerate(Double exchangerate) {
+        this.exchangerate = exchangerate;
+    }
+
+    /**
+     * @return the reference
+     */
+    public String getReference() {
+        return reference;
+    }
+
+    /**
+     * @param reference the reference to set
+     */
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    /**
+     * @return the balance
+     */
+    public Double getBalance() {
+        return balance;
+    }
+
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
 }

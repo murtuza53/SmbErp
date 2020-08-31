@@ -18,7 +18,7 @@
                     <p:panel id="companylist" header="Company List" styleClass="card ui-fluid">
                         <f:facet name="actions">
                             <p:commandButton id="btnedit" actionListener="#{companyController.createNewCompany()}"
-                                             update=":comedit" styleClass="secondary-button rounded-button"
+                                             update=":comedit" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              icon="fa fa-plus"/>
                         </f:facet>
 
@@ -58,7 +58,7 @@
                     <p:panel id="companydetails" header="#{companyController.companyHeader}" rendered="#{companyController.selectedCompany ne null}"
                               styleClass="card ui-fluid">
                         <f:facet name="actions">
-                            <p:commandButton id="btnsave" styleClass="secondary-button rounded-button"
+                            <p:commandButton id="btnsave" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{companyController.saveCompany()}" 
                                              update=":comlist, :growl" icon="fa fa-save" />
                         </f:facet>
@@ -90,7 +90,7 @@
                     <p:panel id="branchlist" header="Branch List for #{companyController.selectedCompany.companyname}" styleClass="card ui-fluid">
                         <f:facet name="actions">
                                 <p:commandButton id="btnbedit" actionListener="#{companyController.createNewBranch()}"
-                                                 update=":branchedit" styleClass="secondary-button rounded-button"
+                                                 update=":branchedit" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                                  icon="fa fa-plus" style="float: right;"/>
                         </f:facet>
 
@@ -133,7 +133,7 @@
                     <p:panel id="branchdetails" header="#{companyController.branchHeader}" rendered="#{companyController.selectedBranch ne null}"
                               styleClass="card ui-fluid">
                         <f:facet name="actions">
-                            <p:commandButton id="btnsave" styleClass="secondary-button rounded-button"
+                            <p:commandButton id="btnsave" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{companyController.saveBranch()}" 
                                              update=":branchlist, :growl" icon="fa fa-save" />
                         </f:facet>

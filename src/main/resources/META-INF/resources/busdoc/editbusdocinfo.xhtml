@@ -15,10 +15,10 @@
     <ui:define name="toolbar">
         <li>
             <p:commandButton title="Save" actionListener="#{busDocInfoController.save}" update=":mainform, :growl"
-                             icon="fa fa-save" styleClass="secondary-button rounded-button"/>
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
         <li>
-            <p:commandButton title="Print" icon="fa fa-print" styleClass="secondary-button rounded-button"/>
+            <p:commandButton title="Print" icon="fa fa-print" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
     </ui:define>
 
@@ -54,6 +54,51 @@
                         <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
                     </p:panelGrid>
                 </p:fieldset>
+                <br/>
+                <p:fieldset legend="Conversion" styleClass="card ui-fluid">
+                    <p:panel id="conlist" header="Document Convert From">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnconnew" title="Add New" icon="fa fa-plus"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             update=":dialogform" oncomplete="PF('DefaultDialog').show()" 
+                                             actionListener="#{busDocInfoController.createNewConvertFrom()}"/>                            
+
+                            <p:commandButton id="btncondelete" icon="fa fa-trash" update="contable"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocInfoController.selectedConvertFrom}"
+                                             actionListener="#{busDocInfoController.deleteConvertFrom()}"/>
+                        </f:facet>
+
+                        <p:dataTable id="contable" var="trans" widgetVar="btable"
+                                     value="#{busDocInfoController.selected.convertfrom}"
+                                     rowKey="#{trans.bdinfoid}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selectedConvertFrom}"
+                                     reflow="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Conversion Definition found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":mainform:btncondelete"/>
+
+                            <p:column headerText="Id" style="width: 10px; text-align: center">
+                                #{index+1}
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <p:outputLabel value="#{trans.docname}" />
+                            </p:column>
+
+                            <p:column headerText="Prefix">
+                                <p:outputLabel value="#{trans.prefix}" />
+                            </p:column>
+
+                            <p:column headerText="Type">
+                                <p:outputLabel value="#{trans.doctype}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:fieldset>
             </div>
 
             <div class="p-col-12 p-md-6">
@@ -62,11 +107,11 @@
                     <p:panel id="doclist" header="Transaction Configuration">
                         <f:facet name="actions">
                             <p:commandButton id="btnnew" title="Add New" icon="fa fa-plus"
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              update="bustable" actionListener="#{busDocInfoController.createNewAccountTransaction()}"/>                            
 
                             <p:commandButton id="btndelete" icon="fa fa-trash" update="bustable"
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{empty busDocInfoController.selectedTransaction}"
                                              actionListener="#{busDocInfoController.deleteAccountTransaction()}"/>
                         </f:facet>
@@ -152,5 +197,7 @@
             </div>
         </div>
     </ui:define>
-
+    <ui:define name="dialogpanel">
+        <ui:include src="/busdoc/conversionform.xhtml"/>
+    </ui:define>
 </ui:composition>

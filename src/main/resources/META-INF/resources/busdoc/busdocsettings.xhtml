@@ -17,17 +17,17 @@
                     <p:panel id="doclist" header="List of Documents Type" styleClass="card">
                         <f:facet name="actions">
                             <p:commandButton id="btnnew" title="New Business Document Definition" icon="fa fa-plus" process="@this"
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{busDocInfoController.new_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>                            
 
                             <p:commandButton id="btnedit" title="Edit Business Document Definition" icon="fa fa-pencil" process="@this" 
-                                             styleClass="secondary-button rounded-button p-mr-2 p-mb-2"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{empty busDocInfoController.selected}" 
                                              actionListener="#{busDocInfoController.edit_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
 
-                            <p:commandButton id="btnrefresh" styleClass="secondary-button rounded-button"
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{busDocInfoController.refresh()}"
                                              update="@form :growl" icon="fa fa-refresh" />
                         </f:facet>

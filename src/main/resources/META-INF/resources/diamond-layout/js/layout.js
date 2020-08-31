@@ -7,7 +7,7 @@ PrimeFaces.widget.Diamond = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.wrapper = $(document.body).children('.layout-wrapper');
         this.contentWrapper = this.wrapper.children('.layout-content-wrapper');
-        this.topbar = this.contentWrapper.children('.layout-topbar');
+        this.topbar = this.contentWrapper.find('.layout-topbar');
         this.menuButton = this.topbar.find('> .topbar-left > .menu-button');
         this.sidebar = this.wrapper.children('.layout-sidebar');
         this.sidebarRight = this.wrapper.children('.layout-sidebar-right');
@@ -15,8 +15,10 @@ PrimeFaces.widget.Diamond = PrimeFaces.widget.BaseWidget.extend({
         this.menuContainer = this.sidebar.children('.layout-menu-container');
         this.menulinks = this.menu.find('a');
         this.layoutSearch = this.wrapper.children('.layout-search');
+        this.layoutSearchContainer = this.layoutSearch.children('.search-container');
+        this.layoutSearchInput = this.layoutSearchContainer.find('input:first');
 
-        this.topbarMenu = this.topbar.find('> .topbar-right > .topbar-menu');
+        this.topbarMenu = this.topbar.find('.topbar-right > .topbar-menu');
         this.topbarItems = this.topbarMenu.children('li');
         this.topbarLinks = this.topbarItems.children('a');
 
@@ -68,8 +70,17 @@ PrimeFaces.widget.Diamond = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.layoutSearch.children('.search-container').off('click').on('click', function(e) {
+        this.layoutSearchContainer.off('click').on('click', function(e) {
             $this.searchClick = true;
+        });
+
+        this.layoutSearchInput.off('keydown.search').on('keydown.search', function() {
+            var key = event.which;
+            
+            //escape, tab and enter
+            if (key === 27 || key === 9 || key === 13) {
+                $this.hideSearch();
+            }
         });
 
         this.menu.find('> li').off('mouseenter.menu').on('mouseenter.menu', function(e) {    
@@ -170,6 +181,7 @@ PrimeFaces.widget.Diamond = PrimeFaces.widget.BaseWidget.extend({
             if (item.hasClass('search-item')) {
                 $this.searchClick = true;
                 $this.layoutSearch.addClass('layout-search-active');
+                $this.layoutSearchInput.trigger('focus');
             }
             else if (item.hasClass('right-sidebar-item')) {
                 $this.sidebarRightClick = true;
@@ -492,7 +504,7 @@ PrimeFaces.DiamondConfigurator = {
         this.changeLogos(scheme);
     },
 
-    changeLogos(scheme) {
+    changeLogos: function(scheme) {
         var logo = $('#footer-logo,#logo-mobile,#invoice-logo');
         
         if (scheme === 'light')
@@ -555,6 +567,13 @@ PrimeFaces.DiamondConfigurator = {
     
     isIE: function() {
         return /(MSIE|Trident\/|Edge\/)/i.test(navigator.userAgent);
+    },
+
+    updateInputStyle: function(value) {
+        if (value === 'filled')
+            $(document.body).addClass('ui-input-filled');
+        else
+            $(document.body).removeClass('ui-input-filled');
     }
 };
 

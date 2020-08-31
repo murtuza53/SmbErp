@@ -16,32 +16,33 @@
                 <div class="p-col-12 p-md-12">
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
-                            <p:commandButton title="New Category" icon="fa fa-plus" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="New Category" icon="fa fa-plus" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{productTreeViewController.newCategoryDisabled}"/>
-                            <p:commandButton title="Edit Category" icon="fa fa-pencil" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="Edit Category" icon="fa fa-pencil" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{productTreeViewController.editCategoryDisabled}"/>
-                            <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{productTreeViewController.refreshCategoryTree()}"
                                              update="cattree"/>
                         </f:facet>
 
                         <f:facet name="right">                            
-                            <p:menuButton value="Register VAT" model="#{productTreeViewController.vatMenuModel}" styleClass="secondary-button rounded-button" 
+                            <p:menuButton value="Register VAT" model="#{productTreeViewController.vatMenuModel}" 
+                                          styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" 
                                           disabled="#{productTreeViewController.productEditDisabled}" iconPos="right"/>
 
-                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{productTreeViewController.newTab_In_newBtab()}"
                                              disabled="#{productTreeViewController.productNewDisabled}" 
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Edit Product" icon="fa fa-pencil" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="Edit Product" icon="fa fa-pencil" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.editTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Duplicate" icon="fa fa-clone" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="Duplicate" icon="fa fa-clone" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{productTreeViewController.productEditDisabled}" 
                                              actionListener="#{productTreeViewController.cloneTab_In_newBtab()}"
                                              update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable" styleClass="secondary-button rounded-button"
+                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{productTreeViewController.refreshProductList()}"/>
                         </f:facet>
                     </p:toolbar>

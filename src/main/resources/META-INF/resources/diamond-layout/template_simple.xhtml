@@ -17,6 +17,7 @@
         </f:facet>
         <title><ui:insert name="title">SMB ERP</ui:insert></title>
         <h:outputScript name="js/layout.js" library="diamond-layout" />
+        <h:outputScript name="js/pfcrud.js"/>
         <ui:insert name="head"/>
     </h:head>
 
@@ -50,6 +51,7 @@
             </p:ajaxStatus>
 
             <ui:include src="./search.xhtml"></ui:include>
+            <ui:insert name="dialogpanel"></ui:insert>
             <div class="layout-mask modal-in"></div>
         </div>
 

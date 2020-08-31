@@ -23,9 +23,9 @@ public class ConvertTo implements Serializable {
 	private BusDocInfo busdocinfo;
 
 	//bi-directional many-to-one association to DocConversion
-	@ManyToOne
-	@JoinColumn(name="docconid")
-	private DocConversion docconversion;
+	//@ManyToOne
+	//@JoinColumn(name="docconid")
+	//private DocConversion docconversion;
 
 	public ConvertTo() {
 	}
@@ -46,12 +46,12 @@ public class ConvertTo implements Serializable {
 		this.busdocinfo = busdocinfo;
 	}
 
-	public DocConversion getDocconversion() {
+	/*public DocConversion getDocconversion() {
 		return this.docconversion;
 	}
 
 	public void setDocconversion(DocConversion docconversion) {
 		this.docconversion = docconversion;
-	}
+	}*/
 
 }

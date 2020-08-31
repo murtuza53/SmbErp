@@ -40,6 +40,8 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     private AccountTransactionType selectedTransaction;
     
+    private BusDocInfo selectedConvertFrom;
+    
     @Autowired
     public BusDocInfoController(BusDocInfoRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
@@ -144,6 +146,22 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=1&bdid=" + getSelected().getBdinfoid());
     }
 
+    public void createNewConvertFrom(){
+        //selectedConvertTo = new BusDocInfo();
+        //selectedConvertTo.setCreatedon(new Date());
+        //getSelected().addConvertTo(selectedConvertFrom);
+        //System.out.println("createNewConvertTo: " + getSelected().getConvertto());
+    }
+    
+    public void addNewConvertTo(){
+        getSelected().addConvertFrom(getSelectedConvertFrom());
+        //System.out.println("addNewConvertTo: " + getSelected().getConvertto());
+    }
+    
+    public void deleteConvertFrom(){
+        
+    }
+    
     public List<String> getBusDocTypes() {
         return BusDocType.TYPES;
     }
@@ -151,7 +169,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     public List<String> getBusDocTransactionTypes() {
         return BusDocTransactionType.TYPES;
     }
-
+    
     /**
      * @return the selectedTransaction
      */
@@ -165,4 +183,19 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     public void setSelectedTransaction(AccountTransactionType selectedTransaction) {
         this.selectedTransaction = selectedTransaction;
     }
+
+    /**
+     * @return the selectedConvertFrom
+     */
+    public BusDocInfo getSelectedConvertFrom() {
+        return selectedConvertFrom;
+    }
+
+    /**
+     * @param selectedConvertFrom the selectedConvertFrom to set
+     */
+    public void setSelectedConvertFrom(BusDocInfo selectedConvertFrom) {
+        this.selectedConvertFrom = selectedConvertFrom;
+    }
+
 }

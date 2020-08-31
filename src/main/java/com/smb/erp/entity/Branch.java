@@ -70,6 +70,11 @@ public class Branch implements Serializable {
     public Branch() {
     }
 
+    public Branch(String abbreviation, String branchname) {
+        this.abbreviation = abbreviation;
+        this.branchname = branchname;
+    }
+
     public Integer getBranchid() {
         return this.branchid;
     }

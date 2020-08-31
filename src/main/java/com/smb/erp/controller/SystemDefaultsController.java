@@ -9,7 +9,10 @@ import com.smb.erp.entity.Account;
 import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.SystemDefaultsRepository;
+import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.StringUtils;
+import com.smb.erp.util.SystemConfig;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
@@ -109,5 +112,17 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
         return listOfString.stream()
                 .map(function)
                 .collect(Collectors.toList());
+    }
+            
+    public String getSystemButtonStyle(){
+        return systemRepo.findByPropertyname("SystemButtonStyle").getValue();
+    }
+
+    public String getToolbarButtonStyle(){
+        return systemRepo.findByPropertyname("ToolbarButtonStyle").getValue();
+    }
+    
+    public String formatDate(Date date){
+        return SystemConfig.DATE_FORMAT.format(date);
     }
 }

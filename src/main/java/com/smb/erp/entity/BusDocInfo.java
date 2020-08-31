@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import org.hibernate.annotations.Fetch;
@@ -23,7 +24,7 @@ public class BusDocInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bdinfoid;
+    private Integer bdinfoid = (int)new Date().getTime();
 
     private String abbreviation;
 
@@ -144,24 +145,34 @@ public class BusDocInfo implements Serializable {
     private String extra25value;
 
     //bi-directional many-to-one association to BusDoc
-    @OneToMany(mappedBy = "busdocinfo")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<BusDoc> busdocs;
-
+    //@OneToMany(mappedBy = "busdocinfo")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<BusDoc> busdocs;
     //bi-directional many-to-one association to BusDoc
     @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<AccountTransactionType> transtypeid;
 
     //bi-directional many-to-one association to ConvertTo
-    @OneToMany(mappedBy = "busdocinfo")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<ConvertTo> converttos;
-
+    //@OneToMany(mappedBy = "busdocinfo")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<ConvertTo> converttos;
     //bi-directional many-to-one association to DocConversion
-    @OneToMany(mappedBy = "busdocinfo")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<DocConversion> docconversions;
+    //@OneToMany(mappedBy = "busdocinfo")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<DocConversion> docconversions;
+    //@Nullable
+    @ManyToMany(mappedBy = "convertfrom", fetch = FetchType.EAGER)
+    private List<BusDocInfo> convertto = new LinkedList<>();
+
+    //@Nullable
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "docconversion",
+            joinColumns = {
+                @JoinColumn(name = "convertto")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "convertfrom")})
+    private List<BusDocInfo> convertfrom = new LinkedList<>();
 
     public BusDocInfo() {
     }
@@ -206,16 +217,10 @@ public class BusDocInfo implements Serializable {
         this.doctype = doctype;
     }
 
-    /**
-     * @return the transtypeid
-     */
     public List<AccountTransactionType> getTranstypeid() {
         return transtypeid;
     }
 
-    /**
-     * @param transtypeid the transtypeid to set
-     */
     public void setTranstypeid(List<AccountTransactionType> transtypeid) {
         this.transtypeid = transtypeid;
     }
@@ -250,6 +255,7 @@ public class BusDocInfo implements Serializable {
         this.transactiontype = transactiontype;
     }
 
+    /*
     public List<BusDoc> getBusdocs() {
         return this.busdocs;
     }
@@ -315,7 +321,7 @@ public class BusDocInfo implements Serializable {
 
         return docconversion;
     }
-
+     */
     @Override
     public String toString() {
         return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getAbbreviation() + '}';
@@ -1086,6 +1092,38 @@ public class BusDocInfo implements Serializable {
      */
     public void setExtra25value(String extra25value) {
         this.extra25value = extra25value;
+    }
+
+    /**
+     * @return the converto
+     */
+    public List<BusDocInfo> getConvertto() {
+        return convertto;
+    }
+
+    /**
+     * @param converto the converto to set
+     */
+    public void setConverto(List<BusDocInfo> converto) {
+        this.convertto = convertto;
+    }
+
+    public void addConvertFrom(BusDocInfo docinfo) {
+        convertfrom.add(docinfo);
+    }
+
+    /**
+     * @return the convertfrom
+     */
+    public List<BusDocInfo> getConvertfrom() {
+        return convertfrom;
+    }
+
+    /**
+     * @param convertfrom the convertfrom to set
+     */
+    public void setConvertfrom(List<BusDocInfo> convertfrom) {
+        this.convertfrom = convertfrom;
     }
 
 }

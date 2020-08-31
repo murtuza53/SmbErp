@@ -53,7 +53,7 @@ public class AccDocController extends AbstractController<AccDoc> {
         if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
             createBusDocSalesJV(busdoc);
         } else {
-
+            createBusDocSalesJV(busdoc);
         }
     }
 
@@ -91,7 +91,7 @@ public class AccDocController extends AbstractController<AccDoc> {
             }
 
             //ledgerline table is ready now but may contain ledgerline with credit & debit value
-            System.out.println("JV Entries for " + busdoc.getDocno());
+            //System.out.println("JV Entries for " + busdoc.getDocno());
             for (LedgerLine line : accdoc.getLedlines()) {
                 line.setRefno(busdoc.getDocno());
                 line.setReftype(busdoc.getBusdocinfo().getTransactiontype());

@@ -19,6 +19,8 @@ public class Company implements Serializable {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer companyid = 0;
 
+    private String abbreviation;
+    
     private String addresss;
 
     private String companyname;
@@ -246,6 +248,20 @@ public class Company implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the abbreviation
+     */
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    /**
+     * @param abbreviation the abbreviation to set
+     */
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
 }

@@ -15,10 +15,10 @@
     <ui:define name="toolbar">
         <li>
             <p:commandButton title="Save" actionListener="#{productController.save}" update=":mainform, :growl"
-                             icon="fa fa-save" styleClass="secondary-button rounded-button"/>
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
         <li>
-            <p:commandButton title="Print" icon="fa fa-print" styleClass="secondary-button rounded-button"/>
+            <p:commandButton title="Print" icon="fa fa-print" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
     </ui:define>
 

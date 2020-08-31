@@ -1,0 +1,32 @@
+2020-07-24 14:16:10,683 INFO org.springframework.boot.StartupInfoLogger [main] Starting SmbErpApplication on FatemaLaptop with PID 18532 (D:\Projects\SmbErp\target\classes started by FatemaLaptop in D:\Projects\SmbErp)
+2020-07-24 14:16:10,788 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-24 14:16:11,601 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-07-24 14:16:11,798 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 157ms. Found 24 JPA repository interfaces.
+2020-07-24 14:16:12,362 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-24 14:16:12,413 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration$Jsf2_3AutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-24 14:16:12,446 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration' of type [org.joinfaces.autoconfigure.javaxfaces.JsfBeansAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-24 14:16:12,791 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8008 (http)
+2020-07-24 14:16:12,909 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8008"]
+2020-07-24 14:16:12,946 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-07-24 14:16:12,980 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-07-24 14:16:13,315 INFO org.apache.juli.logging.DirectJDKLog [main] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-07-24 14:16:13,365 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-07-24 14:16:13,414 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2545 ms
+2020-07-24 14:16:14,901 INFO org.joinfaces.autoconfigure.servlet.initializer.ServletContainerInitializerRegistrationBean [main] Resolving classes for com.sun.faces.config.FacesInitializer took 1.3247714s
+2020-07-24 14:16:14,972 INFO com.sun.faces.config.ConfigureListener [main] Initializing Mojarra |version.string| for context ''
+2020-07-24 14:16:15,263 INFO com.sun.faces.spi.InjectionProviderFactory [main] JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2020-07-24 14:16:15,791 INFO org.primefaces.webapp.PostConstructApplicationEventListener [main] Running on PrimeFaces 7.0
+2020-07-24 14:16:15,822 INFO org.primefaces.extensions.application.PostConstructApplicationEventListener [main] Running on PrimeFaces Extensions 7.0.3
+2020-07-24 14:16:16,091 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-07-24 14:16:16,195 INFO org.hibernate.Version [main] HHH000412: Hibernate Core {5.4.10.Final}
+2020-07-24 14:16:16,349 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-07-24 14:16:16,484 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-07-24 14:16:16,555 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-07-24 14:16:16,606 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-07-24 14:16:18,628 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-07-24 14:16:18,775 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-07-24 14:16:19,308 WARN org.hibernate.dialect.function.TemplateRenderer [main] HHH000174: Function template anticipated 4 arguments, but 1 arguments encountered
+2020-07-24 14:16:20,030 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-24 14:16:20,313 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8008"]
+2020-07-24 14:16:20,369 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8008 (http) with context path ''
+2020-07-24 14:16:20,401 INFO org.springframework.boot.StartupInfoLogger [main] Started SmbErpApplication in 11.426 seconds (JVM running for 11.953)
