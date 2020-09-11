@@ -6,6 +6,9 @@
 package com.smb.erp.repo;
 
 import com.smb.erp.entity.VatSalesPurchaseType;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +17,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface VatSalesPurchaseTypeRepository extends BaseRepository<VatSalesPurchaseType, Integer> {
-    
+
+    @Query("SELECT a FROM VatSalesPurchaseType as a WHERE a.category = :category")
+    List<VatSalesPurchaseType> findByCategory(@Param("category") String category);
+
 }

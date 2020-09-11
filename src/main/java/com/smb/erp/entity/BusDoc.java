@@ -87,7 +87,7 @@ public class BusDoc implements Serializable {
 
     private String manualdocno;
 
-    private byte markdeleted;
+    private boolean markdeleted;
 
     private String refno;
 
@@ -496,11 +496,11 @@ public class BusDoc implements Serializable {
         this.manualdocno = manualdocno;
     }
 
-    public byte getMarkdeleted() {
+    public boolean getMarkdeleted() {
         return this.markdeleted;
     }
 
-    public void setMarkdeleted(byte markdeleted) {
+    public void setMarkdeleted(boolean markdeleted) {
         this.markdeleted = markdeleted;
     }
 

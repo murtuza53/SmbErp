@@ -15,6 +15,7 @@ import com.smb.erp.entity.LedgerLine;
 import com.smb.erp.entity.ProductAccount;
 import com.smb.erp.entity.ProductTransaction;
 import com.smb.erp.repo.AccDocRepository;
+import com.smb.erp.repo.VatMappingRepository;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.EvaluateExpression;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class AccDocController extends AbstractController<AccDoc> {
             accdoc.setUpdatedon(new Date());
             accdoc.setRefno(busdoc.getDocno());
             if (accdoc.getLedlines() != null) {
-                while(accdoc.getLedlines().size()>0) {      //remove all current ledgerlines
+                while (accdoc.getLedlines().size() > 0) {      //remove all current ledgerlines
                     LedgerLine line = accdoc.getLedlines().get(0);
                     accdoc.removeLedline(line);
                 }
@@ -99,7 +100,7 @@ public class AccDocController extends AbstractController<AccDoc> {
                 correctLedgerLine(line);
                 System.out.println(line.getTransdate() + "\t" + line.getDebit() + "\t" + line.getCredit() + "\t" + line.getAccount().getAccountname());
             }
-            
+
             //accdoc.setDocno(keyCon.getDocNo("JV", DateUtil.getYear(busdoc.getCreatedon())));
             repo.save(accdoc);
         }
@@ -108,14 +109,14 @@ public class AccDocController extends AbstractController<AccDoc> {
     public void createBusDocPurchaseJV(BusDoc busdoc) {
 
     }
-    
+
     //correct Credit and Debit if both amount is present
-    public void correctLedgerLine(LedgerLine line){
-        if(line.getCredit()>line.getDebit()){
-            line.setCredit(line.getCredit()-line.getDebit());
+    public void correctLedgerLine(LedgerLine line) {
+        if (line.getCredit() > line.getDebit()) {
+            line.setCredit(line.getCredit() - line.getDebit());
             line.setDebit(0.0);
         } else {
-            line.setDebit(line.getDebit()-line.getCredit());
+            line.setDebit(line.getDebit() - line.getCredit());
             line.setCredit(0.0);
         }
     }

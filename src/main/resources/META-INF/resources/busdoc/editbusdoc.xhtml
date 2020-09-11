@@ -19,20 +19,20 @@
                              process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
         </li>-->
         <li>
-            <p:commandButton title="Save" update=":mainform, :growl"
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl"
                              icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
                              actionListener="#{busDocController.save()}"/>
         </li>
 
         <li>
-            <p:commandButton title="Print" icon="fa fa-print" 
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
                              styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
 
         <li>
-            <p:commandButton title="Add From Document" icon="fas fa-file-import" 
+            <p:commandButton id="btnfromdoc" title="Add From Document" icon="fas fa-file-import" 
                              styleClass="#{systemDefaultsController.toolbarButtonStyle}"
-                             onclick="PF('docslideout').toggle();"
+                             onclick="PF('ConvertFromDialog').show()" disabled="#{busDocController.productTabDisabled}"
                              actionListener="#{busDocController.refreshConvertFromDocumentList()}"
                              update=":busexeform"/>
         </li>
@@ -59,7 +59,7 @@
                                              var="t" effect="fade" filter="true" filterMatchMode="contains">
                                 <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="#{!busDocController.productTabDisabled}"/>
                                 <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
-                                <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="tabsview, :psform" />
+                                <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="tabsview, :psform, :busexeform, :toolbarform" />
                                 <p:column style="width: 10%">
                                     <f:facet name="header">
                                         <h:outputText value="Id"/>
@@ -128,7 +128,7 @@
                     <div class="card-header">
                         <h5>Products</h5>
                         <p:commandButton id="deleteButton" icon="fa fa-trash"
-                                         update=":growl,transtable" disabled="#{empty busDocController.selectedTransaction}" 
+                                         update=":growl,transtable, :mainform:totalpanel" disabled="#{empty busDocController.selectedTransaction}" 
                                          title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
                                          actionListener="#{busDocController.deleteTransactions()}">
                             <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
@@ -148,7 +148,7 @@
                         <p:ajax event="rowSelect" listener="#{busDocController.refreshHistoryPanel()}" 
                                 update=":mainform:deleteButton, :historyform, :historyform"/>
                         <p:ajax event="rowUnselect" update=":mainform:deleteButton" />
-                        <p:ajax event="cellEdit" update=":mainform:totalpanel" listener="#{busDocController.selected.refreshTotal()}"/>
+                        <p:ajax event="cellEdit"/>
 
                         <p:column headerText="TransId" style="width: 50px">
                             <h:outputText value="#{pt.prodtransid}"/>
@@ -188,7 +188,7 @@
                                 <f:facet name="input">
                                     <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Quantity">
                                         <f:convertNumber pattern="#,##0.000" />
-                                        <p:ajax update="total, vamount, namount" />
+                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel" />
                                     </p:inputText>
                                 </f:facet>
                             </p:cellEditor>
@@ -208,7 +208,7 @@
                                     <p:inputText id="price" value="#{pt.linefcunitprice}" 
                                                  style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="UnitPrice">
                                         <f:convertNumber pattern="#,##0.000" />
-                                        <p:ajax update="total, vamount, namount" />
+                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel" />
                                     </p:inputText>
                                 </f:facet>
                             </p:cellEditor>
@@ -220,9 +220,33 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="VAT Type" style="text-align: center">
+                        <p:column headerText="VAT Type" style="text-align: center; width: 10%">
                             <f:facet name="header">
                                 <h:outputText value="VAT Type"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pt.vatsptypeid.typename}" style="font-size: smaller"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu id="vatsptype" style="width:100%" value="#{pt.vatsptypeid}" converter="#{entityConverter}" 
+                                                     var="t" effect="fade">
+                                        <f:selectItems value="#{busDocController.vatSalesPurchaseType}" var="item" itemLabel="#{item.typename}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel" />
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Name"/>
+                                            </f:facet>
+                                            <h:outputText value="#{t.typename}"/>
+                                        </p:column>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="VAT %" style="text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="VAT %"/>
                             </f:facet>
                             <p:cellEditor>
                                 <f:facet name="output">
@@ -232,7 +256,7 @@
                                     <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
                                                      var="t" effect="fade">
                                         <f:selectItems value="#{busDocController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
-                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount" />
+                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel" />
                                         <p:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Name"/>

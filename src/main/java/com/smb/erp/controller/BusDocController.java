@@ -13,13 +13,18 @@ import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.PayTerms;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.entity.VatBusinessRegister;
 import com.smb.erp.entity.VatCategory;
+import com.smb.erp.entity.VatMapping;
+import com.smb.erp.entity.VatSalesPurchaseType;
 import com.smb.erp.repo.BranchRepository;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CompanyRepository;
 import com.smb.erp.repo.VatCategoryRepository;
+import com.smb.erp.repo.VatMappingRepository;
+import com.smb.erp.repo.VatSalesPurchaseTypeRepository;
 import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
@@ -27,6 +32,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -77,6 +83,15 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     VatCategoryRepository vatcatRepo;
+
+    @Autowired
+    VatMappingRepository vatmappingRepo;
+
+    @Autowired
+    VatSalesPurchaseTypeRepository vatsalespurRepo;
+
+    @Autowired
+    VatSalesPurchaseTypeController vatsalespurchaseController;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -222,6 +237,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             getProdTransactions().remove(getSelectedTransaction());
             setSelectedTransaction(null);
         }
+        getSelected().refreshTotal();
     }
 
     public void new_in_tab() throws IOException {
@@ -269,6 +285,26 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.setLineqty(1.0);
         pt.setBusdoc(getSelected());
         pt.setBranch(userSession.getLoggedInBranch());     //to be changed later
+
+        //find vat sales or purchase type
+        VatBusinessRegister vbr = getSelected().getBusinesspartner().getBusinessRegisters().get(0);
+        List<VatMapping> vatmaps = vatmappingRepo.findByVatSalesPurchaseType(vbr.getVataccounttypeid().getVataccounttypeid(),
+                vbr.getVatcategoryid().getVatcategoryid(), prod.getVatregisterid().getProducttype(), doctype);
+        System.out.println("VAT_MAPPING: " + vatmaps);
+        if (vatmaps != null && vatmaps.size() > 0) {
+            VatMapping vm = vatmaps.get(0);
+            pt.setVatsptypeid(vm.getVatsptypeid());
+        } else {
+            if (doctype.equalsIgnoreCase("Sales")) {
+                Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1);
+                if (vt.isPresent()) {
+                    pt.setVatsptypeid(vt.get());
+                }
+            } else {
+
+            }
+        }
+
         if (prod.getVatregisterid() != null) {
             pt.setVatcategoryid(prod.getVatregisterid().getVatcategoryid());
         }
@@ -290,6 +326,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         if (getSelected().getBusinesspartner() != null) {
             productTabDisabled = false;
         }
+        refreshConvertFromDocumentList();
     }
 
     public String getTabTitle() {
@@ -402,6 +439,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         return vatcatRepo.findAll();
     }
 
+    public List<VatSalesPurchaseType> getVatSalesPurchaseType(){
+        return vatsalespurRepo.findByCategory(getSelected().getBusdocinfo().getDoctype());
+    }
+    
     public void docdateChange(SelectEvent event) {
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -410,22 +451,21 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     }
 
     public List<BusDocInfo> getConvertFromDocument() {
-        List<BusDocInfo> list = getSelected().getBusdocinfo().getConvertfrom();
-        if (list == null || list.size() == 0) {
-            return new LinkedList<BusDocInfo>();
-        }
-
-        selectedConvertFromDocument = list.get(0);
-        refreshConvertFromDocumentList();
-        return list;
+        return getSelected().getBusdocinfo().getConvertfrom();
     }
 
     public void refreshConvertFromDocumentList() {
-        System.out.println("refreshConvertFromDocumentList: " + getSelected().getBusinesspartner());
-        if (getSelected().getBusinesspartner() != null) {
-            convertFromDocumentList = repo.findByBusDocByPrefixAndBusinessPartner(getSelected().getBusdocinfo().getPrefix(), getSelected().getBusinesspartner().getPartnerid());
+        selectedConvertFromDocument = null;
+        if (getConvertFromDocument() != null && getConvertFromDocument().size() > 0) {
+            selectedConvertFromDocument = getConvertFromDocument().get(0);
+        }
+
+        //System.out.println(selectedConvertFromDocument.getPrefix() + " => refreshConvertFromDocumentList: " + getSelected().getBusinesspartner());
+        //selectedFromDocument = null;
+        if (getSelected().getBusinesspartner() != null && selectedConvertFromDocument != null) {
+            convertFromDocumentList = repo.findByBusDocByPrefixAndBusinessPartner(selectedConvertFromDocument.getPrefix(), getSelected().getBusinesspartner().getPartnerid());
             System.out.println("refreshConvertFromDocumentList: " + convertFromDocumentList);
-            if(convertFromDocumentList!=null & convertFromDocumentList.size()>0){
+            if (convertFromDocumentList != null & convertFromDocumentList.size() > 0) {
                 selectedFromDocument = convertFromDocumentList.get(0);
             }
         }

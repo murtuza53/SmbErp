@@ -101,6 +101,10 @@ public class ProductTransaction implements Serializable {
     @JoinColumn(name = "vatcategoryid")
     private VatCategory vatcategoryid;
 
+    @ManyToOne
+    @JoinColumn(name = "vatsptypeid")
+    private VatSalesPurchaseType vatsptypeid;
+
     //bi-directional many-to-one association to ProductTransactionExecutedFrom
     @OneToMany(mappedBy = "prodtransaction")
     @Fetch(FetchMode.SUBSELECT)
@@ -588,6 +592,20 @@ public class ProductTransaction implements Serializable {
      */
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    /**
+     * @return the vatsptypeid
+     */
+    public VatSalesPurchaseType getVatsptypeid() {
+        return vatsptypeid;
+    }
+
+    /**
+     * @param vatsptypeid the vatsptypeid to set
+     */
+    public void setVatsptypeid(VatSalesPurchaseType vatsptypeid) {
+        this.vatsptypeid = vatsptypeid;
     }
 
 }

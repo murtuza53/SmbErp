@@ -35,4 +35,16 @@ public class VatSalesPurchaseTypeController extends AbstractController<VatSalesP
         }
         return list;
     }
+    
+    public List<VatSalesPurchaseType> findVatSalesPurchaseType(String type){
+        return spRepo.findByCategory(type);
+    }
+    
+    public List<VatSalesPurchaseType> findVatSalesType(){
+        return spRepo.findByCategory("Sales");
+    }
+    
+    public List<VatSalesPurchaseType> findVatPurchaseType(){
+        return spRepo.findByCategory("Purchase");
+    }
 }

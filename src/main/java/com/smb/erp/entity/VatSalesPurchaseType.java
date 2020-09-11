@@ -16,7 +16,7 @@ public class VatSalesPurchaseType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer vatsptypeid;
+    private Integer vatsptypeid = 0;
 
     private String typename;
 

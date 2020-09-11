@@ -8,9 +8,10 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:pe="http://primefaces.org/ui/extensions">
 
-    <p:dialog header="Convert From Document" id="ConvertFromDlg" widgetVar="ConvertFromDialog" dynamic="true" responsive="true"
-              modal="true" resizable="false" appendTo="@(body)" closeOnEscape="true">
-        <h:form id="busexeform">
+    <h:form id="busexeform">
+        <pe:slideout id="docexeSlideout" location="top" widgetVar="docslideout"
+                     offset="430px" title="Convert From" rendered="#{!busDocController.productTabDisabled}"
+                     handleStyleClass="fromdoc-handle" panelStyleClass="fromdoc-panel" handleOffsetReverse="false">
             <p:panel>
                 <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
                     <p:outputLabel for="busdocinfo" value="Add From Document" />
@@ -23,7 +24,6 @@
                                      effect="fold" style="width:100%" filter="true" filterMatchMode="contains"
                                      var="t">
                         <f:selectItems value="#{busDocController.convertFromDocumentList}" var="item" itemLabel="#{item.docno}" itemValue="#{item}"/>
-                        <p:ajax update="busdoctable" />
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Doc No"/>
@@ -72,6 +72,6 @@
                     </p:dataTable>
                 </p:panel>
             </p:panel>
-        </h:form>
-    </p:dialog>
+        </pe:slideout>
+    </h:form>
 </ui:composition>

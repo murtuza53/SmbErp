@@ -5,8 +5,9 @@
  */
 package com.smb.erp.repo;
 
-import com.smb.erp.entity.VatCategory;
 import com.smb.erp.entity.VatProductRegister;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +16,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface VatProductRegisterRepository extends BaseRepository<VatProductRegister, Integer> {
-    
+
+    @Query("SELECT a FROM VatProductRegister as a WHERE a.vatregisterid = :vatregisterid")
+    VatProductRegister findById(@Param("vatregisterid") String vatregisterid);
+
 }

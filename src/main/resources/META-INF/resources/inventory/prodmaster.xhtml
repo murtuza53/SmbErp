@@ -47,7 +47,7 @@
                         </f:facet>
                     </p:toolbar>
                 </div>
-                <div class="p-col-12 p-md-3">
+                <div class="p-col-12 p-md-4">
                     <p:tree id="cattree" value="#{productTreeViewController.root}" var="node" dynamic="true"
                             style="width:100%; height:100%;" selectionMode="single" styleClass="card"
                             selection="#{productTreeViewController.selectedNode}">
@@ -62,7 +62,7 @@
                         </p:treeNode>
                     </p:tree>
                 </div>
-                <div class="p-col-12 p-md-9">
+                <div class="p-col-12 p-md-8">
                     <p:dataTable id="prodtable" var="prod"
                                  value="#{productTreeViewController.prodList}" widgetVar="ptable"
                                  selection="#{productTreeViewController.selectedProduct}"

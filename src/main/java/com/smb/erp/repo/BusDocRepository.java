@@ -18,10 +18,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BusDocRepository extends BaseRepository<BusDoc, String> {
 
-    @Query("SELECT a FROM BusDoc as a WHERE a.docno LIKE :prefix% ORDER by a.createdon desc")
+    @Query("SELECT a FROM BusDoc as a WHERE a.docno LIKE %:prefix% ORDER by a.docdate desc")
     List<BusDoc> findByBusDocByPrefix(@Param("prefix") String prefix);
 
-    @Query("SELECT a FROM BusDoc as a WHERE a.docno LIKE :prefix% AND a.businesspartner.partnerid = :partnerid ORDER by a.createdon desc")
+    @Query("SELECT a FROM BusDoc as a WHERE a.docno LIKE %:prefix% AND a.businesspartner.partnerid = :partnerid ORDER by a.docdate desc")
     List<BusDoc> findByBusDocByPrefixAndBusinessPartner(@Param("prefix") String prefix, @Param("partnerid") int partnerid);
     
 }
