@@ -45,7 +45,7 @@
                             </p:column>
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{chartOfAccountController.save}" value="Save" update=":mainform:cattree,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccountEditDialog'));">
+                    <p:commandButton actionListener="#{chartOfAccountController.save}" value="Save" update=":mainform:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccountEditDialog'));">
                         <p:confirm header="Confirmation" message="Sure you want to save?" icon="ui-icon-alert"/>
                     </p:commandButton>
                     <p:commandButton value="Cancel" oncomplete="PF('AccountEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>

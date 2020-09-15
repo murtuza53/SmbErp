@@ -35,7 +35,7 @@
     <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
         <connectionSource
             class="ch.qos.logback.core.db.DriverManagerConnectionSource">
-            <driverClass>com.mysql.jdbc.Driver</driverClass>
+            <driverClass>com.mysql.cj.jdbc.Driver</driverClass>
             <url>jdbc:mysql://localhost:3306/ejms</url>
             <user>root</user>
             <password>admin52</password> <!-- no password -->

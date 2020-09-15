@@ -19,6 +19,7 @@ import org.springframework.web.context.annotation.SessionScope;
  * @author FatemaLaptop
  */
 @Named
+//@ViewScoped
 @SessionScope
 public class UserSession implements Serializable {
 
@@ -33,7 +34,7 @@ public class UserSession implements Serializable {
 
     @PostConstruct
     public void init(){
-        loggedInBranch = branchRepo.getOne(1);
+        loggedInBranch = branchRepo.findById(1).get();
     }
     
     public Branch getLoggedInBranch(){

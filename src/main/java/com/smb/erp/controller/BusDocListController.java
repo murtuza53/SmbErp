@@ -9,11 +9,14 @@ import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.BusinessPartner;
+import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.entity.ProductTransactionExecution;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -21,6 +24,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -37,6 +41,9 @@ public class BusDocListController extends AbstractController<BusDoc> {
 
     @Autowired
     BusinessPartnerRepository partnerRepo;
+
+    @Autowired
+    ProductTransactionExecutionController pteController;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -76,6 +83,13 @@ public class BusDocListController extends AbstractController<BusDoc> {
             //items = repo.findAll(Sort.by(Sort.Direction.ASC, "createdon"));
             items = repo.findByBusDocByPrefix(docInfo.getPrefix());
             System.out.println(docInfo.getPrefix() + " List: " + items.size());
+            for (BusDoc bd : items) {
+                System.out.println("----------" + bd.getDocno() + "----------");
+                for (ProductTransaction pt : bd.getProductTransactions()) {
+                    System.out.println(pt.getProdtransid() + " => " + pt.getProduct() + " => FROM:" + pt.getFromprodtransaction() + " => TO:" + pt.getToprodtransaction());
+                }
+                System.out.println("\n");
+            }
         }
         return items;
     }
@@ -83,6 +97,42 @@ public class BusDocListController extends AbstractController<BusDoc> {
     public void refresh() {
         items = null;
         getItems();
+    }
+
+    @Transactional
+    public void delete() {
+        System.out.println("Document Delete: " + getSelected());
+        String errMsg = null;
+        if (getSelected() != null) {
+
+            for (ProductTransaction pt : getSelected().getProductTransactions()) {
+                if (pt.getFromprodtransaction() != null && pt.getFromprodtransaction().size()>0) {
+                    errMsg = "Cannot delete linked document";
+                    break;
+                }
+            }
+
+            if(errMsg!=null){
+                JsfUtil.addErrorMessage("Error", errMsg);
+                return;
+            }
+            
+            for (ProductTransaction pt : getSelected().getProductTransactions()) {
+                System.out.println("ToProdTransaction: " + pt.getToprodtransaction());
+                if (pt.getToprodtransaction() != null) {
+                    pteController.deleteToProductTransactionExe(pt.getToprodtransaction());
+                    //for(ProductTransactionExecution pte: pt.getToprodtransaction()){
+                    //    pt.removeToprodtransaction(pte);
+                    //}
+                    //pt.removeAllToprodtransaction();
+                }
+            }
+            repo.delete(getSelected());
+
+            JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " deleted successfuly");
+            setSelected(null);
+            items = null;
+        }
     }
 
     public void new_in_tab() throws IOException {

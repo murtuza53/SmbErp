@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Chart of Accounts
+    </ui:define>
+
+    <ui:param name="viewname" value="Chart of Accounts" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="left">
+                            <p:commandButton title="New Account Group" icon="fas fa-folder-plus" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.createNewAccountGroup()}"
+                                             disabled="#{chartOfAccountController.newGroupDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Edit Account Group" icon="fa fa-edit" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.editAccountGroup()}"
+                                             disabled="#{chartOfAccountController.editGroupDisabled}"/>
+                            <p:commandButton title="New Account" icon="fas fa-file-medical" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.createNewAccount()}"
+                                             disabled="#{chartOfAccountController.newAccountDisabled}"/>
+                            <p:commandButton title="Edit Account" icon="fa fa-file-signature" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.editAccount()}"
+                                             disabled="#{chartOfAccountController.editAccountDisabled}"/>
+                            <p:commandButton title="Clone Account" icon="fa fa-copy" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.cloneAccount()}"
+                                             disabled="#{chartOfAccountController.cloneAccountDisabled}"/>
+                            <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.refreshCoa()}"
+                                             update="cattree"/>
+                        </f:facet>
+
+                        <f:facet name="right">
+                            <p:commandButton title="New Product" icon="fa fa-plus" process="@this" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{productTreeViewController.newTab_In_newBtab()}"
+                                             disabled="#{productTreeViewController.productNewDisabled}" 
+                                             update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton title="Edit Product" icon="fa fa-pencil" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{productTreeViewController.productEditDisabled}" 
+                                             actionListener="#{productTreeViewController.editTab_In_newBtab()}"
+                                             update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton title="Duplicate" icon="fa fa-clone" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{productTreeViewController.productEditDisabled}" 
+                                             actionListener="#{productTreeViewController.cloneTab_In_newBtab()}"
+                                             update="tabsview" ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton title="Refresh Products" icon="fa fa-refresh" update="prodtable" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{productTreeViewController.refreshProductList()}"/>
+                        </f:facet>
+                    </p:toolbar>
+                </div>
+                <div class="ui-g-4">
+                    <p:tree id="cattree" value="#{chartOfAccountController.root}" var="node" dynamic="true"
+                            style="width:100%; height:100%;" selectionMode="single" styleClass="card"
+                            selection="#{chartOfAccountController.selectedNode}">
+                        <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
+                                listener="#{chartOfAccountController.onNodeSelect}" />
+                        <p:treeNode type="ROOT" expandedIcon="fa fa-book-open"
+                                    collapsedIcon="fa fa-book">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode type="GROUP" expandedIcon="fa fa-folder-open"
+                                    collapsedIcon="fa fa-folder">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode type="INTERNAL_GROUP" expandedIcon="far fa-folder-open"
+                                    collapsedIcon="far fa-folder">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode type="ACCOUNT" icon="fa fa-file-contract">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode type="INTERNAL_ACCOUNT" icon="far fa-file">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                        <p:treeNode icon="far fa-file">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                    </p:tree>
+                </div>
+                <div class="ui-g-8">
+                    <p:dataTable id="prodtable" var="prod"
+                                 value="#{productTreeViewController.prodList}" widgetVar="ptable"
+                                 selection="#{productTreeViewController.selectedProduct}"
+                                 selectionMode="single" rowKey="#{prod.productid}"
+                                 emptyMessage="No Products found"
+                                 styleClass="card products-table ui-datatable-sm">
+                        <p:ajax event="rowSelect" update=":mainform:toolbar" />
+                        <p:column headerText="Stock No" sortBy="#{prod.productid}"
+                                  filterBy="#{prod.productid}" filterMatchMode="contains">
+                            <h:outputText value="#{prod.productid}" />
+                        </p:column>
+
+                        <p:column headerText="Product Name" sortBy="#{prod.productname}"
+                                  filterBy="#{prod.productname}" filterMatchMode="contains"
+                                  style="width: 50%">
+                            <h:outputText value="#{prod.productname}" />
+                        </p:column>
+
+                        <p:column headerText="Sup Code" sortBy="#{prod.supplierscode}"
+                                  filterBy="#{prod.supplierscode}" filterMatchMode="contains">
+                            <h:outputText value="#{prod.supplierscode}" />
+                        </p:column>
+
+                        <p:column headerText="Brand" sortBy="#{prod.brand.brandname}"
+                                  filterBy="#{prod.brand.brandname}" filterMatchMode="contains">
+                            <h:outputText value="#{prod.brand.brandname}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+        <ui:include src="/accounts/accountedit.xhtml"/>
+    </ui:define>
+
+</ui:composition>

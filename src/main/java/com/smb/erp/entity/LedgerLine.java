@@ -77,9 +77,18 @@ public class LedgerLine implements Serializable {
     @OneToMany(mappedBy = "ledline")
     private List<PartialPaymentDetail> ppdetails;
 
+    @Transient
+    private Double cumulative = 0.0; 
+    
     public LedgerLine() {
     }
 
+    public LedgerLine(Double debit, Double credit, Double balance){
+        this.debit = debit;
+        this.credit = credit;
+        this.cumulative = balance;
+    }
+    
     public Integer getLlno() {
         return this.llno;
     }
@@ -296,6 +305,20 @@ public class LedgerLine implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the cumulative
+     */
+    public Double getCumulative() {
+        return cumulative;
+    }
+
+    /**
+     * @param cumulative the cumulative to set
+     */
+    public void setCumulative(Double cumulative) {
+        this.cumulative = cumulative;
     }
 
 }

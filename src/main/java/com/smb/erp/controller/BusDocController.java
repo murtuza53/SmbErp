@@ -13,6 +13,7 @@ import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.PayTerms;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.entity.ProductTransactionExecution;
 import com.smb.erp.entity.VatBusinessRegister;
 import com.smb.erp.entity.VatCategory;
 import com.smb.erp.entity.VatMapping;
@@ -22,6 +23,7 @@ import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CompanyRepository;
+import com.smb.erp.repo.ProductTransactionExecutionRepository;
 import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.repo.VatMappingRepository;
 import com.smb.erp.repo.VatSalesPurchaseTypeRepository;
@@ -80,6 +82,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     AccDocController accdocController;
+    
+    @Autowired
+    ProductTransactionExecutionRepository pteRepo;
 
     @Autowired
     VatCategoryRepository vatcatRepo;
@@ -216,6 +221,15 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             //    pt.setLinereceived(pt.getLineqty());
             //    pt.setLinereceived(pt.getLinereceived());
             //}
+
+            if (pt.getToprodtransaction() != null) {
+                for (ProductTransactionExecution pte : pt.getToprodtransaction()) {
+                    if (pte.getToprodtransid().getProdtransid() == pt.getProdtransid()) {
+                        pte.setExecutionqty(pt.getLineqty());
+                        pte.setCreatedon(new Date());
+                    }
+                }
+            }
         }
         getSelected().refreshTotal();
         //getSelected().setCompany(companyRepo.getOne(1));    //to be commented
@@ -235,6 +249,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     public void deleteTransactions() {
         if (getSelectedTransaction() != null) {
             getProdTransactions().remove(getSelectedTransaction());
+            
+            //getSelectedTransaction().removeAllFromprodtransaction();
+            //getSelectedTransaction().removeAllToprodtransaction();
+
             setSelectedTransaction(null);
         }
         getSelected().refreshTotal();
@@ -263,6 +281,17 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 getProdTransactions().add(convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype()));
             }
         }
+    }
+
+    public void transferProductTransaction() {
+        if (selectedFromProductTransactions != null) {
+            for (ProductTransaction pt : selectedFromProductTransactions) {
+                ProductTransaction prodtra = cloneFrom(pt);
+                prodtra.refreshTotals();
+                getProdTransactions().add(prodtra);
+            }
+        }
+        getSelected().refreshTotal();
     }
 
     public List<BusinessPartner> getPartnerList() {
@@ -320,6 +349,38 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             pt.setLinereceived(1.0);
         }
         return pt;
+    }
+
+    public ProductTransaction cloneFrom(ProductTransaction pt) {
+        ProductTransaction clone = new ProductTransaction();
+
+        clone.setProduct(pt.getProduct());
+        clone.setUnit(pt.getUnit());
+        clone.setTransactiontype(pt.getTransactiontype());
+        clone.setCustomizedname(pt.getCustomizedname());
+        clone.setLineqty(pt.getBalance());
+        clone.setBusdoc(getSelected());
+        clone.setBranch(userSession.getLoggedInBranch());     //to be changed later
+        clone.setVatsptypeid(pt.getVatsptypeid());
+
+        clone.setVatcategoryid(pt.getVatcategoryid());
+
+        clone.setLinecost(pt.getLinecost());
+        clone.setLinefcunitprice(pt.getLinefcunitprice());
+        clone.setLinesold(pt.getLinesold());
+        clone.setLinereceived(pt.getLinereceived());
+        clone.setLinecost(pt.getLinecost());
+
+        ProductTransactionExecution pte = new ProductTransactionExecution();
+        pte.setFromprodtransid(pt);
+        pte.setCreatedon(new Date());
+        pte.setToprodtransid(clone);
+        pte.setExecutionqty(clone.getLineqty());
+
+        clone.addToprodtransaction(pte);
+        //pt.addToprodtransaction(pte);
+
+        return clone;
     }
 
     public void businessPartnerSelected() {
@@ -439,10 +500,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         return vatcatRepo.findAll();
     }
 
-    public List<VatSalesPurchaseType> getVatSalesPurchaseType(){
+    public List<VatSalesPurchaseType> getVatSalesPurchaseType() {
         return vatsalespurRepo.findByCategory(getSelected().getBusdocinfo().getDoctype());
     }
-    
+
     public void docdateChange(SelectEvent event) {
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -467,6 +528,20 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             System.out.println("refreshConvertFromDocumentList: " + convertFromDocumentList);
             if (convertFromDocumentList != null & convertFromDocumentList.size() > 0) {
                 selectedFromDocument = convertFromDocumentList.get(0);
+                refreshProdTransExe();
+            }
+        }
+    }
+    
+    public void refreshProdTransExe(){
+        if(getSelectedFromDocument()!=null){
+            for(ProductTransaction pt: getSelectedFromDocument().getProductTransactions()){
+                List<ProductTransactionExecution> frompte = pteRepo.findByFromProductTransaction(pt.getProdtransid());
+                pt.setFromprodtransaction(frompte);
+                if(pt.getBalance().doubleValue()==0){
+                   //remove pt from document if flagged
+                   
+                }
             }
         }
     }

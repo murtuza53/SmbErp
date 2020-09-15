@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
@@ -106,20 +107,29 @@ public class ProductTransaction implements Serializable {
     private VatSalesPurchaseType vatsptypeid;
 
     //bi-directional many-to-one association to ProductTransactionExecutedFrom
-    @OneToMany(mappedBy = "prodtransaction")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
-
+    //@OneToMany(mappedBy = "prodtransaction")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
     //bi-directional many-to-one association to ProductTransactionExecutedTo
-    @OneToMany(mappedBy = "prodtransaction")
+    //@OneToMany(mappedBy = "prodtransaction")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<ProductTransactionExecutedTo> prodtransexecutedtos;
+    //bi-directional many-to-one association to ProductTransactionExecutedTo
+    
+    
+    @OneToMany(mappedBy = "fromprodtransid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<ProductTransactionExecutedTo> prodtransexecutedtos;
+    private List<ProductTransactionExecution> fromprodtransaction;
+
+    @OneToMany(mappedBy = "toprodtransid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProductTransactionExecution> toprodtransaction;
 
     @Transient
     private Double lineqty = 0.0;
 
     @Transient
-    private Double balance;
+    private Double balance = 0.0;
 
     @Transient
     private String reference;
@@ -192,7 +202,14 @@ public class ProductTransaction implements Serializable {
     }
 
     public Double getExecutedqty() {
-        return this.executedqty;
+        System.out.println("getExecutedqty: " + getProdtransid() + " => " + getProduct() + " => " + getFromprodtransaction());
+        executedqty = 0.0;
+        if (getFromprodtransaction() != null) {
+            for (ProductTransactionExecution pt : getFromprodtransaction()) {
+                executedqty = executedqty + pt.getExecutionqty();
+            }
+        }
+        return executedqty;
     }
 
     public void setExecutedqty(Double executedqty) {
@@ -313,7 +330,7 @@ public class ProductTransaction implements Serializable {
         this.product = product;
     }
 
-    public List<ProductTransactionExecutedFrom> getProdtransexecutedfroms() {
+    /*public List<ProductTransactionExecutedFrom> getProdtransexecutedfroms() {
         return this.prodtransexecutedfroms;
     }
 
@@ -356,7 +373,7 @@ public class ProductTransaction implements Serializable {
 
         return prodtransexecutedto;
     }
-
+     */
     /**
      * @return the busdoc
      */
@@ -379,7 +396,7 @@ public class ProductTransaction implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.prodtransid);
+        hash = 71 * hash + Objects.hashCode(this.prodtransid);
         return hash;
     }
 
@@ -484,17 +501,18 @@ public class ProductTransaction implements Serializable {
         }
     }
 
-    public void refreshExecutedQty(){
-        if(getProdtransexecutedtos()==null || getProdtransexecutedtos().size()==0){
+    public void refreshExecutedQty() {
+        System.out.println("refreshExecutedQty: " + getProdtransid() + " => " + getProduct() + " => " + getFromprodtransaction());
+        if (getFromprodtransaction() == null || getFromprodtransaction().size() == 0) {
             return;
         }
         double total = 0.0;
-        for(ProductTransactionExecutedTo pt: getProdtransexecutedtos()){
-            total = total + pt.getExecutedqty();
+        for (ProductTransactionExecution pt : getFromprodtransaction()) {
+            total = total + pt.getExecutionqty();
         }
         setExecutedqty(total);
     }
-    
+
     /**
      * @return the vatamount
      */
@@ -584,7 +602,7 @@ public class ProductTransaction implements Serializable {
      * @return the balance
      */
     public Double getBalance() {
-        return balance;
+        return getLineqty() - getExecutedqty();
     }
 
     /**
@@ -606,6 +624,84 @@ public class ProductTransaction implements Serializable {
      */
     public void setVatsptypeid(VatSalesPurchaseType vatsptypeid) {
         this.vatsptypeid = vatsptypeid;
+    }
+
+    /**
+     * @return the fromprodtransaction
+     */
+    public List<ProductTransactionExecution> getFromprodtransaction() {
+        return fromprodtransaction;
+    }
+
+    /**
+     * @param fromprodtransaction the fromprodtransaction to set
+     */
+    public void setFromprodtransaction(List<ProductTransactionExecution> fromprodtransaction) {
+        this.fromprodtransaction = fromprodtransaction;
+    }
+
+    public void addFromprodtransaction(ProductTransactionExecution pt) {
+        if (fromprodtransaction == null) {
+            fromprodtransaction = new LinkedList();
+        }
+        fromprodtransaction.add(pt);
+    }
+
+    public ProductTransactionExecution removeFromprodtransaction(ProductTransactionExecution pt) {
+        fromprodtransaction.remove(pt);
+        pt.setFromprodtransid(null);
+        pt.setToprodtransid(null);
+
+        return pt;
+    }
+
+    public void removeAllFromprodtransaction(){
+        if(fromprodtransaction!=null){
+            for(ProductTransactionExecution pte: fromprodtransaction){
+                pte.setFromprodtransid(null);
+                pte.setToprodtransid(null);
+            }
+            fromprodtransaction.clear();
+        }
+    }
+    
+    public void addToprodtransaction(ProductTransactionExecution pt) {
+        if (toprodtransaction == null) {
+            toprodtransaction = new LinkedList();
+        }
+        toprodtransaction.add(pt);
+    }
+
+    public ProductTransactionExecution removeToprodtransaction(ProductTransactionExecution pt) {
+        toprodtransaction.remove(pt);
+        pt.setFromprodtransid(null);
+        pt.setToprodtransid(null);
+
+        return pt;
+    }
+
+    public void removeAllToprodtransaction(){
+        if(toprodtransaction!=null){
+            for(ProductTransactionExecution pte: toprodtransaction){
+                pte.setFromprodtransid(null);
+                pte.setToprodtransid(null);
+            }
+            toprodtransaction.clear();
+        }
+    }
+
+    /**
+     * @return the toprodtransaction
+     */
+    public List<ProductTransactionExecution> getToprodtransaction() {
+        return toprodtransaction;
+    }
+
+    /**
+     * @param toprodtransaction the toprodtransaction to set
+     */
+    public void setToprodtransaction(List<ProductTransactionExecution> toprodtransaction) {
+        this.toprodtransaction = toprodtransaction;
     }
 
 }

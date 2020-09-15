@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @Entity
 @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a ORDER BY a.accountname")
-public class Account implements Serializable {
+public class Account implements Serializable, Comparable<Account> {
 
     private static final long serialVersionUID = 1L;
 
@@ -259,6 +259,12 @@ public class Account implements Serializable {
      */
     public void setAccounttype(AccountType accounttype) {
         this.accounttype = accounttype;
+    }
+
+    @Override
+    public int compareTo(Account o) {
+        return accountname.compareTo(o.getAccountname());
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

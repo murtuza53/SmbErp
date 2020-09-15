@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        General Ledger
+    </ui:define>
+
+    <ui:param name="viewname" value="General Ledger" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="ledgerdetails" header="Search Criteria" 
+                             collapsed="false" toggleable="true" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             actionListener="#{ledgerlineController.refresh()}" 
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="fromdate" value="From Date" />
+                                <p:calendar id="fromdate" value="#{ledgerlineController.fromDate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:calendar id="todate" value="#{ledgerlineController.toDate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
+                            </div>
+
+                            <div class="p-field p-col-12">
+                                <p:outputLabel for="accounts" value="Accounts" />
+                                <p:selectCheckboxMenu id="accounts" value="#{ledgerlineController.selectedAccounts}" label="Accounts" multiple="true"
+                                                      filter="true" filterMatchMode="contains">
+                                    <p:ajax listener="#{ledgerlineController.refresh()}" />
+                                    <f:selectItems value="#{ledgerlineController.accountList}" />
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+
+                <div class="p-col-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="Ledger"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="Ledger"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="Ledger"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class="card">
+                        <p:dataTable id="datalist" var="item"
+                                     value="#{ledgerlineController.items}" widgetVar="btable"
+                                     selection="#{ledgerlineController.selected}"
+                                     rowKey="#{item.llno}"
+                                     sortBy="#{item.account}" 
+                                     expandableRowGroups="true"
+                                     emptyMessage="No Transactions found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     style="font-size: small">
+
+                            <p:headerRow>
+                                <p:column colspan="6">
+                                    <h:outputText value="#{item.account}" />
+                                </p:column>
+                            </p:headerRow>
+
+                            <p:column headerText="TransNo#" sortBy="#{item.llno}" filterBy="#{item.llno}" filterMatchMode="contains"
+                                      style="width: 50px">
+                                <h:outputText value="#{item.llno}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.transdate}" filterBy="#{item.transdate}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.transdate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Document" sortBy="#{item.accdoc.docno}" filterBy="#{item.accdoc.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.accdoc.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Ref No" sortBy="#{item.refno}" filterBy="#{item.refno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.refno}" />
+                            </p:column>
+
+                            <p:column headerText="Description" sortBy="#{item.description}" filterBy="#{item.description}" filterMatchMode="contains">
+                                <h:outputText value="#{item.description}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.debit}" filterBy="#{item.debit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Debit"/>
+                                </f:facet>
+                                <h:outputText value="#{item.debit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.credit}" filterBy="#{item.credit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Credit"/>
+                                </f:facet>
+                                <h:outputText value="#{item.credit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.cumulative}" filterBy="#{item.cumulative}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Balance"/>
+                                </f:facet>
+                                <h:outputText value="#{item.cumulative}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

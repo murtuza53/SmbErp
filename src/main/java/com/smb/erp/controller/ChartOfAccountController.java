@@ -6,12 +6,10 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.entity.Account;
-import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import org.primefaces.event.NodeSelectEvent;
