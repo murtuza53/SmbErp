@@ -10,6 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "accountgroup")
 @NamedQuery(name = "AccountGroup.findAll", query = "SELECT a FROM AccountGroup a")
 public class AccountGroup implements Serializable {
 

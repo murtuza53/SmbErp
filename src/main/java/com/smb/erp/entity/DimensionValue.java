@@ -10,6 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name = "dimensionvalue")
 @NamedQuery(name="DimensionValue.findAll", query="SELECT d FROM DimensionValue d")
 public class DimensionValue implements Serializable {
 	private static final long serialVersionUID = 1L;

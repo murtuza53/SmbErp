@@ -15,6 +15,7 @@ import org.hibernate.annotations.FetchMode;
  *
  */
 @Entity
+@Table(name = "businesspartner")
 @NamedQuery(name = "BusinessPartner.findAll", query = "SELECT b FROM BusinessPartner b ORDER BY b.companyname")
 public class BusinessPartner implements Serializable {
 

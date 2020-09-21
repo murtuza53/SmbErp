@@ -9,6 +9,7 @@ import java.util.List;
  *
  */
 @Entity
+@Table(name = "producttype")
 @NamedQuery(name = "ProductType.findAll", query = "SELECT p FROM ProductType p")
 public class ProductType implements Serializable {
 

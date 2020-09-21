@@ -2,13 +2,13 @@ package com.smb.erp.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * The persistent class for the accounttype database table.
  *
  */
 @Entity
+@Table(name = "accounttype")
 @NamedQuery(name = "AccountType.findAll", query = "SELECT a FROM AccountType a")
 public class AccountType implements Serializable {
 

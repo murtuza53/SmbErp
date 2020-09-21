@@ -11,6 +11,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "companygroup")
 @NamedQuery(name = "CompanyGroup.findAll", query = "SELECT c FROM CompanyGroup c ORDER BY c.groupname")
 public class CompanyGroup implements Serializable {
 

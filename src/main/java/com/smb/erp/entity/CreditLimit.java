@@ -10,6 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "creditlimit")
 @NamedQuery(name = "CreditLimit.findAll", query = "SELECT c FROM CreditLimit c")
 public class CreditLimit implements Serializable {
 

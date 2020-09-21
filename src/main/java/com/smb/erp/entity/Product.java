@@ -12,6 +12,7 @@ import org.apache.commons.lang3.SerializationUtils;
  *
  */
 @Entity
+@Table(name = "product")
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p ORDER BY p.productname")
 public class Product implements Serializable {
 

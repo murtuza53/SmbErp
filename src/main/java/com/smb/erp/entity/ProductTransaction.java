@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,7 +23,6 @@ public class ProductTransaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "prodtransid")
     private Integer prodtransid = (int) new Date().getTime();
 
@@ -134,6 +132,9 @@ public class ProductTransaction implements Serializable {
     @Transient
     private String reference;
 
+    @Transient
+    private Double cumulative = 0.0;
+    
     public ProductTransaction() {
     }
 
@@ -702,6 +703,20 @@ public class ProductTransaction implements Serializable {
      */
     public void setToprodtransaction(List<ProductTransactionExecution> toprodtransaction) {
         this.toprodtransaction = toprodtransaction;
+    }
+
+    /**
+     * @return the cumulative
+     */
+    public Double getCumulative() {
+        return cumulative;
+    }
+
+    /**
+     * @param cumulative the cumulative to set
+     */
+    public void setCumulative(Double cumulative) {
+        this.cumulative = cumulative;
     }
 
 }

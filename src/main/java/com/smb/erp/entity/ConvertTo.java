@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name = "converto")
 @NamedQuery(name="ConvertTo.findAll", query="SELECT c FROM ConvertTo c")
 public class ConvertTo implements Serializable {
 	private static final long serialVersionUID = 1L;

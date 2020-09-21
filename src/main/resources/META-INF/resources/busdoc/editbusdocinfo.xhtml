@@ -69,7 +69,7 @@
                                              actionListener="#{busDocInfoController.deleteConvertFrom()}"/>
                         </f:facet>
 
-                        <p:dataTable id="contable" var="trans" widgetVar="btable"
+                        <p:dataTable id="contable" var="trans"
                                      value="#{busDocInfoController.selected.convertfrom}"
                                      rowKey="#{trans.bdinfoid}"
                                      selectionMode="single"
@@ -118,10 +118,9 @@
 
                         <p:dataTable id="bustable" var="trans" widgetVar="btable"
                                      value="#{busDocInfoController.selected.transtypeid}"
+                                     rowKey="#{trans.transtypeid}"
                                      selectionMode="single"
                                      selection="#{busDocInfoController.selectedTransaction}"
-                                     rowKey="#{trans.transtypeid}"
-                                     reflow="true"
                                      editable="true"
                                      editMode="cell"
                                      emptyMessage="No Transaction Definition found"

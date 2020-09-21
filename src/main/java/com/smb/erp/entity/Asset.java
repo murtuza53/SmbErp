@@ -11,6 +11,7 @@ import java.math.BigInteger;
  * 
  */
 @Entity
+@Table(name = "asset")
 @NamedQuery(name="Asset.findAll", query="SELECT a FROM Asset a")
 public class Asset implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -11,6 +11,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "accdoc")
 @NamedQuery(name = "AccDoc.findAll", query = "SELECT a FROM AccDoc a")
 public class AccDoc implements Serializable {
 
@@ -326,4 +327,19 @@ public class AccDoc implements Serializable {
         this.updatedon = updatedon;
     }
 
+    public Double getTotalDebit(){
+        Double t = 0.0;
+        if(getLedlines()!=null){
+            t = getLedlines().stream().mapToDouble(x -> x.getDebit()).sum();
+        }
+        return t;
+    }
+    
+    public Double getTotalCredit(){
+        Double t = 0.0;
+        if(getLedlines()!=null){
+            t = getLedlines().stream().mapToDouble(x -> x.getCredit()).sum();
+        }
+        return t;
+    }
 }

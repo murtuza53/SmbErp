@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name = "printformat")
 @NamedQuery(name="PrintFormat.findAll", query="SELECT p FROM PrintFormat p")
 public class PrintFormat implements Serializable {
 	private static final long serialVersionUID = 1L;

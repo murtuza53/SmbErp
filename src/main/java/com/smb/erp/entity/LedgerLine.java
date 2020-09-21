@@ -6,7 +6,6 @@ import java.util.Date;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the ledline database table.
@@ -22,7 +21,6 @@ public class LedgerLine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     private Integer llno = (int) new Date().getTime();;
 
     private Double credit=0.0;

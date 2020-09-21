@@ -11,6 +11,7 @@ import java.util.Objects;
 //@MappedSuperclass
 //@EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "accounttransactiontype")
 public class AccountTransactionType implements Serializable {
 
     private static long serialVersionUID = 1L;

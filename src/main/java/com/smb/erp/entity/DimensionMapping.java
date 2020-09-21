@@ -11,6 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name = "dimensionmapping")
 @NamedQuery(name="DimensionMapping.findAll", query="SELECT d FROM DimensionMapping d")
 public class DimensionMapping implements Serializable {
 	private static final long serialVersionUID = 1L;

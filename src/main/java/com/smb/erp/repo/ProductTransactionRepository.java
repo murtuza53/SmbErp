@@ -26,6 +26,14 @@ public interface ProductTransactionRepository extends BaseRepository<ProductTran
                 + "ORDER BY mov.transdate DESC")
     List<ProductTransaction> findStockMovement(@Param("productid") long productid, 
             @Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("transactiontype") String transactiontype);
+
+    @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
+                + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND "
+                + "(mov.transactiontype=:transactiontype1 OR mov.transactiontype=:transactiontype2)"
+                + "ORDER BY mov.transdate DESC")
+    List<ProductTransaction> findStockMovement(@Param("productid") long productid, 
+            @Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("transactiontype1") String transactiontype1, 
+            @Param("transactiontype2") String transactiontype2);
     
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov WHERE mov.busdoc.docno LIKE %:doctype% " 
             + "AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate")

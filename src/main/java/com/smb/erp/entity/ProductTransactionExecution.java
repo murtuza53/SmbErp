@@ -3,7 +3,6 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the prodtransexecution database table.
@@ -18,8 +17,6 @@ public class ProductTransactionExecution implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-
     private Integer executionid = (int)new Date().getTime();
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -10,6 +10,7 @@ import java.math.BigInteger;
  * 
  */
 @Entity
+@Table(name = "dimensionmapvalue")
 @NamedQuery(name="DimensionMapValue.findAll", query="SELECT d FROM DimensionMapValue d")
 public class DimensionMapValue implements Serializable {
 	private static final long serialVersionUID = 1L;

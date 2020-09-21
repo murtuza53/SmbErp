@@ -156,7 +156,7 @@
 
                         <p:ajax event="rowSelect" listener="#{busDocController.refreshHistoryPanel()}" 
                                 update=":mainform:deleteButton, :historyform"/>
-                        <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
+                        <p:ajax event="rowUnselect" update=":mainform:deleteButton" />
                         <p:ajax event="cellEdit"/>
 
                         <p:column headerText="TransId" style="width: 50px">
@@ -297,7 +297,7 @@
                             <p:column></p:column>
                             <p:column></p:column>
                             <p:column style="text-align:right">
-                                <h:outputText value="#{busDocController.selected.totalamount}">
+                                <h:outputText value="#{busDocController.totalAmount}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>

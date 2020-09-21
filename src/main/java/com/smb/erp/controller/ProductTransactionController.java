@@ -7,12 +7,14 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.Branch;
 import com.smb.erp.entity.BusDocInfo;
+import com.smb.erp.entity.BusDocTransactionType;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.Company;
+import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
-import com.smb.erp.helper.StockBalanceHelper;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.CompanyRepository;
+import com.smb.erp.repo.ProductRepository;
 import com.smb.erp.repo.ProductTransactionRepository;
 import com.smb.erp.report.NativeQueryReportObject;
 import com.smb.erp.report.NativeQueryTableModel;
@@ -45,13 +47,48 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
     @Autowired
     CompanyRepository companyRepo;
+    
+    @Autowired
+    ProductRepository productRepo;
 
     private NativeQueryTableModel nqModel = new NativeQueryTableModel();
+
+    private Date fromDate = DateUtil.startOfYear(new Date());
+
+    private Date toDate = DateUtil.endOfDay(new Date());
+
+    private Product selectProduct;
 
     @Autowired
     public ProductTransactionController(ProductTransactionRepository repo) {
         super(ProductTransaction.class, repo);
         this.repo = repo;
+    }
+
+    @Override
+    public List<ProductTransaction> getItems() {
+        if (items == null) {
+            if (getSelectProduct() == null) {
+                items = new LinkedList<ProductTransaction>();
+            } else {
+                items = repo.findStockMovement(getSelectProduct().getProductid(), getFromDate(), getToDate(), BusDocTransactionType.INVENTORY_ACCOUNT.getValue());
+            }
+        }
+        return items;
+    }
+
+    public void refresh() {
+        items = null;
+        getItems();
+    }
+
+    public List<Product> completeFilter(String criteria) {
+        System.out.println("completeFilter: " + criteria);
+
+        //return ejbFacade.findRange(0, 10, "firstName", "ASC",
+        //        ejbFacade.createFilters(new String[]{"itsNo", "firstName"}, criteria));
+        //Page<ItsMaster> page = itsFacade.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "firstName")));
+        return productRepo.findByCriteria(criteria);
     }
 
     public List<ProductTransaction> getSalesTransactions(long productid, Date toDate, int companyid) {
@@ -127,10 +164,10 @@ public class ProductTransactionController extends AbstractController<ProductTran
         //        + "ORDER BY p.productname asc";
 
         nqModel.resetModel();
-         nqModel.addColumns(new String[]{"Stock#", "Product Name", "Avg Price"},
+        nqModel.addColumns(new String[]{"Stock#", "Product Name", "Avg Price"},
                 new Class[]{String.class, String.class, Double.class},
                 new String[]{"", "", ""});
-        
+
         String q = "SELECT pt.productid, p.productname, avg(pt.unitprice) as price,";
 
         String qtotal = null;
@@ -146,20 +183,20 @@ public class ProductTransactionController extends AbstractController<ProductTran
         q = q + "sum(if(" + qtotal + ", pt.received-pt.sold, 0)) as TOTAL "
                 + "FROM prodtransaction as pt, product as p "
                 + "WHERE pt.productid=p.productid AND p.inactive=0 AND (pt.transactiontype='Inventory_Account' or pt.transactiontype = 'Inventory_Only') "
-                + "AND (TRIM(p.productid) LIKE '%"+criteria+"%' OR p.productname LIKE '%"+criteria+"%' OR p.supplierscode LIKE '%"+criteria+"%' "
-                + "OR p.stockid LIKE '%"+criteria+"%' OR p.barcode1 LIKE '%"+criteria+"%' OR p.barcode2 LIKE '%"+criteria+"%') "
+                + "AND (TRIM(p.productid) LIKE '%" + criteria + "%' OR p.productname LIKE '%" + criteria + "%' OR p.supplierscode LIKE '%" + criteria + "%' "
+                + "OR p.stockid LIKE '%" + criteria + "%' OR p.barcode1 LIKE '%" + criteria + "%' OR p.barcode2 LIKE '%" + criteria + "%') "
                 + " AND pt.transdate<=:toDate "
                 + "GROUP BY pt.productid";
         nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
-        
+
         System.out.println("findStockBalances: " + q);
-        
+
         Query query = ds.createNativeQuery(q);
         query.setParameter("toDate", todate);
         nqModel.setData(NativeQueryReportObject.asReportObjectList(query.getResultList()));
         return nqModel;
     }
-    
+
     public NativeQueryTableModel findStockBalances(long productid, int companyid, Date todate) {
         Company com = companyRepo.getOne(companyid);
         //String query = "SELECT OBJECT(p) FROM Product as p "
@@ -168,7 +205,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         //        + "ORDER BY p.productname asc";
 
         nqModel.resetModel();
-        
+
         String q = "SELECT ";
 
         String qtotal = null;
@@ -188,10 +225,52 @@ public class ProductTransactionController extends AbstractController<ProductTran
                 + "GROUP BY pt.productid";
         nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
         //System.out.println("findStockBalances: " + q);
-        
+
         Query query = ds.createNativeQuery(q);
         query.setParameter("toDate", todate).setParameter("productid", productid);
         nqModel.setData(NativeQueryReportObject.asReportObjectList(query.getResultList()));
         return nqModel;
+    }
+
+    /**
+     * @return the fromDate
+     */
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    /**
+     * @param fromDate the fromDate to set
+     */
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    /**
+     * @return the toDate
+     */
+    public Date getToDate() {
+        return toDate;
+    }
+
+    /**
+     * @param toDate the toDate to set
+     */
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    /**
+     * @return the selectProduct
+     */
+    public Product getSelectProduct() {
+        return selectProduct;
+    }
+
+    /**
+     * @param selectProduct the selectProduct to set
+     */
+    public void setSelectProduct(Product selectProduct) {
+        this.selectProduct = selectProduct;
     }
 }

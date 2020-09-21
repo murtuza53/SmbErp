@@ -888,5 +888,14 @@ public class BusDoc implements Serializable {
         this.docdate = docdate;
         System.out.println(docno + ": " + this.docdate);
     }
+    
+    public String getTitleBadge(){
+        if(getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())){
+            return "status-instock";
+        } else if (getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())){
+            return "status-outofstock";
+        }
+        return "status-lowstock";
+    }
 
 }

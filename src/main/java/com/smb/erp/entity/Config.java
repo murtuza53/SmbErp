@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name = "config")
 @NamedQuery(name="Config.findAll", query="SELECT c FROM Config c")
 public class Config implements Serializable {
 	private static final long serialVersionUID = 1L;

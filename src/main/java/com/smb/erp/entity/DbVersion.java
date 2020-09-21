@@ -10,6 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name = "dbversion")
 @NamedQuery(name="DbVersion.findAll", query="SELECT d FROM DbVersion d")
 public class DbVersion implements Serializable {
 	private static final long serialVersionUID = 1L;

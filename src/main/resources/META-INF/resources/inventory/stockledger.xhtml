@@ -1,0 +1,187 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Stock Ledger
+    </ui:define>
+
+    <ui:param name="viewname" value="Stock Ledger" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="ledgerdetails" header="Search Criteria" 
+                             collapsed="false" toggleable="true" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             actionListener="#{producttransactionController.refresh()}" 
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="fromdate" value="From Date" />
+                                <p:calendar id="fromdate" value="#{producttransactionController.fromDate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:calendar id="todate" value="#{producttransactionController.toDate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
+                            </div>
+
+                            <div class="p-field p-col-12">
+                                <p:outputLabel for="product" value="Select Product" />
+                                <p:autoComplete id="product" value="#{producttransactionController.selectProduct}" dynamic="true"
+                                                converter="#{entityConverter}" completeMethod="#{producttransactionController.completeFilter}"
+                                                panelStyle="font-size: smaller"
+                                                var="prodItem" itemValue="#{prodItem}" itemLabel="#{prodItem.productname} [#{prodItem.productid}]"
+                                                minQueryLength="3" dropdown="true" forceSelection="true" scrollHeight="250"
+                                                required="true" requiredMessage="Product is required">
+                                    <p:ajax event="itemSelect" listener="#{producttransactionController.refresh()}" 
+                                            update="@form" />
+                                    <p:column style="width:50px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Stock#"/>
+                                        </f:facet>
+                                        <h:outputText value="#{prodItem.productid}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Product Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{prodItem.productname}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Category"/>
+                                        </f:facet>
+                                        <h:outputText value="#{prodItem.prodcategory}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+
+                <div class="p-col-12">
+                    <div class="card table-demo">
+                        <p:dataTable id="datalist" widgetVar="btable" var="item"
+                                     value="#{producttransactionController.items}"
+                                     selection="#{producttransactionController.selected}"
+                                     rowKey="#{item.prodtransid}"
+                                     emptyMessage="No Transactions found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
+                                     style="font-size: smaller">
+
+                            <f:facet name="header">
+                                <div class="customers-table-header">
+                                    <div>
+                                        <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                            <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                            <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="StockLedger"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                            <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                            <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="StockLedger"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                            <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                            <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="StockLedger"/>
+                                        </p:commandButton>
+                                    </div>
+
+                                    <div>
+                                        <span class="ui-input-icon-left filter-container">
+                                            <i class="pi pi-search"></i>
+                                            <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="No" filterBy="#{item.prodtransid}" filterMatchMode="contains"
+                                      style="width: 50px">
+                                <h:outputText value="#{item.prodtransid}" />
+                            </p:column>
+
+                            <p:column filterBy="#{item.transdate}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.transdate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Document" filterBy="#{item.busdoc.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.busdoc.docno}" styleClass="product-badge #{item.busdoc.titleBadge}"/>
+                            </p:column>
+
+                            <p:column headerText="Company" filterBy="#{item.busdoc.businesspartner.companyname}" 
+                                      filterMatchMode="contains" style="width: 250px;">
+                                <h:outputText value="#{item.busdoc.businesspartner.companyname}" />
+                            </p:column>
+
+                            <p:column headerText="Unit" filterBy="#{item.unit.unitsym}" style="width: 50px;" filterMatchMode="contains">
+                                <h:outputText value="#{item.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column filterBy="#{item.linereceived}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="In"/>
+                                </f:facet>
+                                <h:outputText value="#{item.linereceived}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column filterBy="#{item.linesold}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Out"/>
+                                </f:facet>
+                                <h:outputText value="#{item.linesold}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column filterBy="#{item.lineunitprice}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <h:outputText value="#{item.lineunitprice}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column filterBy="#{item.cumulative}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Balance"/>
+                                </f:facet>
+                                <h:outputText value="#{item.cumulative}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Branch" filterBy="#{item.branch.abbreviation}" style="width: 50px;" filterMatchMode="contains">
+                                <h:outputText value="#{item.branch.abbreviation}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -42,7 +42,19 @@
                                 <p:selectCheckboxMenu id="accounts" value="#{ledgerlineController.selectedAccounts}" label="Accounts" multiple="true"
                                                       filter="true" filterMatchMode="contains">
                                     <p:ajax listener="#{ledgerlineController.refresh()}" />
-                                    <f:selectItems value="#{ledgerlineController.accountList}" />
+                                    <f:selectItems value="#{ledgerlineController.accountList}" var="item" itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.accountname}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Ledger"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.parentid.accountname}"/>
+                                    </p:column>
                                 </p:selectCheckboxMenu>
                             </div>
                         </div>

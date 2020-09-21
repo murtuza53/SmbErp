@@ -9,6 +9,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@Table(name = "systemdefaults")
 @NamedQuery(name = "SystemDefaults.findAll", query = "SELECT a FROM SystemDefaults a ORDER BY a.propertyname")
 public class SystemDefaults implements Serializable {
 

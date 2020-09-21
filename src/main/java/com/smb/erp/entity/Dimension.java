@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name = "dimension")
 @NamedQuery(name="Dimension.findAll", query="SELECT d FROM Dimension d")
 public class Dimension implements Serializable {
 	private static final long serialVersionUID = 1L;

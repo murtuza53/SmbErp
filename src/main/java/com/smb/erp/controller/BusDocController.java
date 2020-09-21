@@ -6,6 +6,7 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.UserSession;
+import com.smb.erp.entity.AccDoc;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
@@ -82,7 +83,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     AccDocController accdocController;
-    
+
     @Autowired
     ProductTransactionExecutionRepository pteRepo;
 
@@ -123,6 +124,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     private BusDoc selectedFromDocument;
 
     private List<ProductTransaction> selectedFromProductTransactions;
+
+    private AccDoc accdoc;
 
     //private Date docdate;
     @Autowired
@@ -198,9 +201,19 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         getItems();
     }
 
+    //public Double getTotalAmount(){
+    //    System.out.println("prodTransaction: getTotalAmount: " + getSelected().getProductTransactions());
+    //    Double t = 0.0;
+    //    if(getProdTransactions()!=null){
+    //        t = getSelected().getTotalamount();
+    //    }
+    //    System.out.println("prodTransaction: getTotalAmount: " + t);
+    //    return t;
+    //}
     public void save() {
         if (mode == DocumentTab.MODE.NEW) {
             getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getCreatedon())));
+            //getSelected().setEmp1();
         }
         getSelected().setProductTransactions(getProdTransactions());
         getSelected().setUpdatedon(new Date());
@@ -249,10 +262,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     public void deleteTransactions() {
         if (getSelectedTransaction() != null) {
             getProdTransactions().remove(getSelectedTransaction());
-            
+
             //getSelectedTransaction().removeAllFromprodtransaction();
             //getSelectedTransaction().removeAllToprodtransaction();
-
             setSelectedTransaction(null);
         }
         getSelected().refreshTotal();
@@ -515,6 +527,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         return getSelected().getBusdocinfo().getConvertfrom();
     }
 
+    public void openJVViewer() {
+        accdoc = accdocController.prepareJVViewwer(getSelected());
+    }
+
     public void refreshConvertFromDocumentList() {
         selectedConvertFromDocument = null;
         if (getConvertFromDocument() != null && getConvertFromDocument().size() > 0) {
@@ -532,15 +548,15 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             }
         }
     }
-    
-    public void refreshProdTransExe(){
-        if(getSelectedFromDocument()!=null){
-            for(ProductTransaction pt: getSelectedFromDocument().getProductTransactions()){
+
+    public void refreshProdTransExe() {
+        if (getSelectedFromDocument() != null) {
+            for (ProductTransaction pt : getSelectedFromDocument().getProductTransactions()) {
                 List<ProductTransactionExecution> frompte = pteRepo.findByFromProductTransaction(pt.getProdtransid());
                 pt.setFromprodtransaction(frompte);
-                if(pt.getBalance().doubleValue()==0){
-                   //remove pt from document if flagged
-                   
+                if (pt.getBalance().doubleValue() == 0) {
+                    //remove pt from document if flagged
+
                 }
             }
         }
@@ -601,6 +617,20 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
      */
     public void setSelectedFromProductTransactions(List<ProductTransaction> selectedFromProductTransactions) {
         this.selectedFromProductTransactions = selectedFromProductTransactions;
+    }
+
+    /**
+     * @return the accdoc
+     */
+    public AccDoc getAccdoc() {
+        return accdoc;
+    }
+
+    /**
+     * @param accdoc the accdoc to set
+     */
+    public void setAccdoc(AccDoc accdoc) {
+        this.accdoc = accdoc;
     }
 
 }

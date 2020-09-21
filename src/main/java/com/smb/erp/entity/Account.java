@@ -9,6 +9,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "account")
 @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a ORDER BY a.accountname")
 public class Account implements Serializable, Comparable<Account> {
 

@@ -10,6 +10,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "vatmapping")
 @NamedQuery(name = "VatMapping.findAll", query = "SELECT v FROM VatMapping v ORDER BY v.vatmappingid")
 public class VatMapping implements Serializable {
 

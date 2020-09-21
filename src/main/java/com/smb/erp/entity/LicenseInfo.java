@@ -10,6 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name = "licenseinfo")
 @NamedQuery(name="LicenseInfo.findAll", query="SELECT l FROM LicenseInfo l")
 public class LicenseInfo implements Serializable {
 	private static final long serialVersionUID = 1L;

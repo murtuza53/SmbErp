@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the brand database table.
  *
  */
 @Entity
+@Table(name = "vatcategory")
 @NamedQuery(name = "VatCategory.findAll", query = "SELECT v FROM VatCategory v ORDER BY v.categoryname")
 public class VatCategory implements Serializable {
 
@@ -19,7 +19,6 @@ public class VatCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     private Integer vatcategoryid = (int) new Date().getTime();
 
     private String categoryname;

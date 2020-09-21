@@ -50,19 +50,43 @@ public class AccDocController extends AbstractController<AccDoc> {
         this.repo = repo;
     }
 
-    public void createBusDocJV(BusDoc busdoc) {
-        if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
-            createBusDocSalesJV(busdoc);
-        } else {
-            createBusDocSalesJV(busdoc);
+    public AccDoc prepareJVViewwer(BusDoc busdoc) {
+        AccDoc accdoc = repo.findByRefno(busdoc.getDocno());
+        if(accdoc==null){
+            accdoc = prepareBusDocJV(busdoc);
         }
+        return accdoc;
     }
 
-    public void createBusDocSalesJV(BusDoc busdoc) {
+    public AccDoc prepareBusDocJV(BusDoc busdoc) {
+        if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
+            return prepareBusDocSalesJV(busdoc);
+        } else {
+            //createBusDocSalesJV(busdoc);
+        }
+        return null;
+    }
+
+    public AccDoc createBusDocJV(BusDoc busdoc) {
+        if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
+            return createBusDocSalesJV(busdoc);
+        } else {
+            //createBusDocSalesJV(busdoc);
+        }
+        return null;
+    }
+
+    public AccDoc createBusDocSalesJV(BusDoc busdoc) {
+        AccDoc accdoc = prepareBusDocSalesJV(busdoc);
+        repo.save(accdoc);
+        return accdoc;
+    }
+
+    public AccDoc prepareBusDocSalesJV(BusDoc busdoc) {
         BusDocInfo info = busdoc.getBusdocinfo();
 
+        AccDoc accdoc = repo.findByRefno(busdoc.getDocno());
         if (info.getTranstypeid() != null) {
-            AccDoc accdoc = repo.findByRefno(busdoc.getDocno());
             if (accdoc == null) {
                 accdoc = new AccDoc();
                 accdoc.setDocno(keyCon.getDocNo("JV", DateUtil.getYear(busdoc.getCreatedon())));
@@ -102,8 +126,8 @@ public class AccDocController extends AbstractController<AccDoc> {
             }
 
             //accdoc.setDocno(keyCon.getDocNo("JV", DateUtil.getYear(busdoc.getCreatedon())));
-            repo.save(accdoc);
         }
+        return accdoc;
     }
 
     public void createBusDocPurchaseJV(BusDoc busdoc) {

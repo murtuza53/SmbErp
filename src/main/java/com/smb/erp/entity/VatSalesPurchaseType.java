@@ -9,6 +9,7 @@ import java.util.Objects;
  *
  */
 @Entity
+@Table(name = "vatsalespurchasetype")
 @NamedQuery(name = "VatSalesPurchaseType.findAll", query = "SELECT v FROM VatSalesPurchaseType v ORDER BY v.typename")
 public class VatSalesPurchaseType implements Serializable {
 

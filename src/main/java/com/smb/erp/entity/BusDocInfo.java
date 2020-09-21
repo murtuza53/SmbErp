@@ -17,6 +17,7 @@ import org.springframework.data.annotation.CreatedDate;
 //@MappedSuperclass
 //@EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "busdocinfo")
 //@NamedQuery(name = "BusDocInfo.findAll", query = "SELECT b FROM BusDocInfo b")
 public class BusDocInfo implements Serializable {
 

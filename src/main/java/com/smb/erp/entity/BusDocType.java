@@ -15,7 +15,8 @@ import java.util.List;
 public enum BusDocType {
     
     SALES("Sales"),
-    PURCHASE("Purchase");
+    PURCHASE("Purchase"),
+    INVENTORY("Inventory");
 
     public static List<String> TYPES = new LinkedList<>();
     

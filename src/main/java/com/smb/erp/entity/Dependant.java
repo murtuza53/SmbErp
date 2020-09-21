@@ -11,6 +11,7 @@ import java.math.BigInteger;
  * 
  */
 @Entity
+@Table(name = "dependant")
 @NamedQuery(name="Dependant.findAll", query="SELECT d FROM Dependant d")
 public class Dependant implements Serializable {
 	private static final long serialVersionUID = 1L;
