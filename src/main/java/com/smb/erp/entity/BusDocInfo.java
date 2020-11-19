@@ -25,7 +25,7 @@ public class BusDocInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bdinfoid = (int)new Date().getTime();
+    private Integer bdinfoid = (int) new Date().getTime();
 
     private String abbreviation;
 
@@ -44,6 +44,10 @@ public class BusDocInfo implements Serializable {
     private String prefix;
 
     private String suffix;
+    
+    private String doclisturl;
+    
+    private String docediturl;
 
     private String extra1label;
 
@@ -154,6 +158,10 @@ public class BusDocInfo implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<AccountTransactionType> transtypeid;
 
+    @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<CashRegister> cashregiserid;
+
     //bi-directional many-to-one association to ConvertTo
     //@OneToMany(mappedBy = "busdocinfo")
     //@Fetch(FetchMode.SUBSELECT)
@@ -164,10 +172,12 @@ public class BusDocInfo implements Serializable {
     //private List<DocConversion> docconversions;
     //@Nullable
     @ManyToMany(mappedBy = "convertfrom", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<BusDocInfo> convertto = new LinkedList<>();
 
     //@Nullable
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "docconversion",
             joinColumns = {
                 @JoinColumn(name = "convertto")},
@@ -325,7 +335,7 @@ public class BusDocInfo implements Serializable {
      */
     @Override
     public String toString() {
-        return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getAbbreviation() + '}';
+        return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getPrefix()+ '}';
     }
 
     @Override
@@ -1125,6 +1135,69 @@ public class BusDocInfo implements Serializable {
      */
     public void setConvertfrom(List<BusDocInfo> convertfrom) {
         this.convertfrom = convertfrom;
+    }
+
+    /**
+     * @return the cashregiserid
+     */
+    public List<CashRegister> getCashregiserid() {
+        return cashregiserid;
+    }
+
+    /**
+     * @param cashregiserid the cashregiserid to set
+     */
+    public void setCashregiserid(List<CashRegister> cashregiserid) {
+        this.cashregiserid = cashregiserid;
+    }
+
+    public CashRegister addCashregisterid(CashRegister cr) {
+        getCashregiserid().add(cr);
+        cr.setBdinfoid(this);
+
+        return cr;
+    }
+
+    public CashRegister removeCashregisterid(CashRegister cr) {
+        getCashregiserid().remove(cr);
+        cr.setBdinfoid(null);
+
+        return cr;
+    }
+    
+    public boolean hasCashRegister(){
+        if(getCashregiserid()==null || getCashregiserid().isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return the doclisturl
+     */
+    public String getDoclisturl() {
+        return doclisturl;
+    }
+
+    /**
+     * @param doclisturl the doclisturl to set
+     */
+    public void setDoclisturl(String doclisturl) {
+        this.doclisturl = doclisturl;
+    }
+
+    /**
+     * @return the docediturl
+     */
+    public String getDocediturl() {
+        return docediturl;
+    }
+
+    /**
+     * @param docediturl the docediturl to set
+     */
+    public void setDocediturl(String docediturl) {
+        this.docediturl = docediturl;
     }
 
 }

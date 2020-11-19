@@ -19,7 +19,7 @@
                              process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
         </li>-->
         <li>
-            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl"
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl, :toolbarform" ajax="false"
                              icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
                              actionListener="#{busDocController.save()}"/>
         </li>
@@ -47,322 +47,373 @@
     </ui:define>
 
     <ui:define name="content">
-        <div class="p-grid">
-            <div class="p-col-12 p-md-12">
-                <p:tabView id="tabsview" dynamic="true" cache="true" styleClass="card ui-fluid">
-                    <p:tab title="Document Details">
-                        <p:panelGrid columns="4" layout="grid"
-                                     columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
-                            <p:outputLabel value="Doc No:" for="dno"/>
-                            <p:inputText id="dno" value="#{busDocController.selected.docno}" placeholder="Document No" disabled="true"/>
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:tabView id="tabsview" dynamic="true" cache="true" styleClass="card ui-fluid">
+                        <p:tab title="Document Details">
+                            <p:panelGrid columns="4" layout="grid"
+                                         columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
+                                <p:outputLabel value="Doc No:" for="dno"/>
+                                <p:inputText id="dno" value="#{busDocController.selected.docno}" placeholder="Document No" disabled="true"/>
 
-                            <p:outputLabel value="Date:" for="ddate"/>
-                            <p:calendar id="ddate" value="#{busDocController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
-                                        showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" listener="#{busDocController.docdateChange}"/>
-                            </p:calendar>
+                                <p:outputLabel value="Date:" for="ddate"/>
+                                <p:calendar id="ddate" value="#{busDocController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
 
-                            <p:outputLabel value="Company:" for="partner"/>
-                            <p:selectOneMenu id="contactperson" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
-                                             var="t" effect="fade" filter="true" filterMatchMode="contains">
-                                <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="#{!busDocController.productTabDisabled}"/>
-                                <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
-                                <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="tabsview, :psform, :busexeform, :toolbarform" />
-                                <p:column style="width: 10%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Id"/>
+                                <p:outputLabel value="Company:" for="partner"/>
+                                <p:selectOneMenu id="contactperson" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="#{!busDocController.productTabDisabled}"/>
+                                    <f:selectItems value="#{busDocController.partnerList}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                                    <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="tabsview, :psform, :busexeform, :toolbarform" />
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.partnerid}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.companyname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Attention To:" for="partner"/>
+                                <p:selectOneMenu id="partner" value="#{busDocController.selected.contactperson}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains" disabled="">
+                                    <f:selectItem itemLabel="Select..." itemValue="#{null}"/>
+                                    <f:selectItems value="#{busDocController.selected.businesspartner.contactpersons}" var="item" itemLabel="#{item.contactpersonname}" itemValue="#{item}"/>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Mobile"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.mobile1}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.contactpersonname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab id="products" title="Terms and Conditions">
+                            <p:panelGrid columns="4" layout="grid"
+                                         columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
+                                <p:outputLabel value="Pay Type:" for="@next"/>
+                                <p:selectOneMenu id="paytype" value="#{busDocController.selected.paytermsid.paytype}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('CreditStatus')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Validity:" for="@next"/>
+                                <p:selectOneMenu id="validity" value="#{busDocController.selected.paytermsid.validitydays}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DocValidityTerms')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Delivery Schedule:" for="@next"/>
+                                <p:selectOneMenu id="dschedule" value="#{busDocController.selected.paytermsid.deliverydays}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryDays')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Delivery Terms:" for="@next"/>
+                                <p:selectOneMenu id="dterms" value="#{busDocController.selected.paytermsid.deliveryterms}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryTerms')}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:tab>                        
+                    </p:tabView>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Products</h5>
+                            <p:commandButton id="deleteButton" icon="fa fa-trash"
+                                             update=":growl,transtable, :mainform:totalpanel" disabled="#{empty busDocController.selectedTransaction}" 
+                                             title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                             actionListener="#{busDocController.deleteTransactions()}">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+                        </div>
+                        <p:remoteCommand name="onCellEdit" update="transtable, :mainform:totalpanel" />
+                        <p:dataTable id="transtable" var="pt"
+                                     value="#{busDocController.prodTransactions}" widgetVar="pttable"
+                                     rowKey="#{pt.product.productid}"
+                                     selectionMode="single"
+                                     selection="#{busDocController.selectedTransaction}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Products found"
+                                     sortBy="#{pt.busdoc.docno}"
+                                     styleClass="products-table ui-datatable-sm"
+                                     style="font-size: small">
+
+                            <p:ajax event="rowSelect" listener="#{busDocController.refreshHistoryPanel()}" 
+                                    update=":mainform:deleteButton, :historyform"/>
+                            <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
+                            <p:ajax event="cellEdit"/>
+
+                            <p:column headerText="TransId" style="width: 50px">
+                                <h:outputText value="#{pt.prodtransid}"/>
+                            </p:column>
+
+                            <p:column headerText="Stock No" style="width: 75px">
+                                <h:outputText value="#{pt.product.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="Product Name"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{pt.customizedname}"
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Custom Name"/>
                                     </f:facet>
-                                    <h:outputText value="#{t.partnerid}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Name"/>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Unit">
+                                <h:outputText value="#{pt.product.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Qty"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.lineqty}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
                                     </f:facet>
-                                    <h:outputText value="#{t.companyname}"/>
-                                </p:column>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel value="Attention To:" for="partner"/>
-                            <p:selectOneMenu id="partner" value="#{busDocController.selected.contactperson}" converter="#{entityConverter}" 
-                                             var="t" effect="fade" filter="true" filterMatchMode="contains" disabled="">
-                                <f:selectItem itemLabel="Select..." itemValue="#{null}"/>
-                                <f:selectItems value="#{busDocController.selected.businesspartner.contactpersons}" var="item" itemLabel="#{item.contactpersonname}" itemValue="#{item}"/>
-                                <p:column style="width: 20%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Mobile"/>
+                                    <f:facet name="input">
+                                        <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Quantity">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{busDocController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                        </p:inputText>
                                     </f:facet>
-                                    <h:outputText value="#{t.mobile1}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Name"/>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Price" style="text-align:right">
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.linefcunitprice}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
                                     </f:facet>
-                                    <h:outputText value="#{t.contactpersonname}"/>
+                                    <f:facet name="input">
+                                        <p:inputText id="price" value="#{pt.linefcunitprice}" 
+                                                     style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="UnitPrice">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{busDocController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Total" style="text-align: right">
+                                <h:outputText id="total" value="#{pt.totalamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="VAT Type" style="text-align: center; width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="VAT Type"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.vatsptypeid.typename}" style="font-size: smaller"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="vatsptype" style="width:100%" value="#{pt.vatsptypeid}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade">
+                                            <f:selectItems value="#{busDocController.vatSalesPurchaseType}" var="item" itemLabel="#{item.typename}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                            <p:ajax listener="#{busDocController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.typename}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="VAT %" style="text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="VAT %"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.vatcategoryid.categoryname}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade">
+                                            <f:selectItems value="#{busDocController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                            <p:ajax listener="#{busDocController.refreshTotal(pt)}" oncomplete="onCellEdit()" />
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.categoryname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="VAT" style="text-align: right">
+                                <h:outputText id="vamount" value="#{pt.vatamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Net" style="text-align: right">
+                                <h:outputText id="namount" value="#{pt.grandtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:summaryRow id="tablesummary">
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{busDocController.selected.totalamount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
                                 </p:column>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                    </p:tab>
-                    <p:tab id="products" title="Terms and Conditions">
-                        <p:panelGrid columns="4" layout="grid"
-                                     columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
-                            <p:outputLabel value="Pay Type:" for="@next"/>
-                            <p:selectOneMenu id="paytype" value="#{busDocController.selected.paytermsid.paytype}" editable="true">
-                                <f:selectItem itemLabel="Select..." itemValue=""/>
-                                <f:selectItems value="#{systemDefaultsController.getAsList('CreditStatus')}"/>
-                            </p:selectOneMenu>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{busDocController.selected.totalvat}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{busDocController.selected.grandtotal}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:summaryRow>
 
-                            <p:outputLabel value="Validity:" for="@next"/>
-                            <p:selectOneMenu id="validity" value="#{busDocController.selected.paytermsid.validitydays}" editable="true">
-                                <f:selectItem itemLabel="Select..." itemValue=""/>
-                                <f:selectItems value="#{systemDefaultsController.getAsList('DocValidityTerms')}"/>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel value="Delivery Schedule:" for="@next"/>
-                            <p:selectOneMenu id="dschedule" value="#{busDocController.selected.paytermsid.deliverydays}" editable="true">
-                                <f:selectItem itemLabel="Select..." itemValue=""/>
-                                <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryDays')}"/>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel value="Delivery Terms:" for="@next"/>
-                            <p:selectOneMenu id="dterms" value="#{busDocController.selected.paytermsid.deliveryterms}" editable="true">
-                                <f:selectItem itemLabel="Select..." itemValue=""/>
-                                <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryTerms')}"/>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                    </p:tab>                        
-                </p:tabView>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Products</h5>
-                        <p:commandButton id="deleteButton" icon="fa fa-trash"
-                                         update=":growl,transtable, :mainform:totalpanel" disabled="#{empty busDocController.selectedTransaction}" 
-                                         title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
-                                         actionListener="#{busDocController.deleteTransactions()}">
-                            <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
-                        </p:commandButton>
+                        </p:dataTable>
                     </div>
-                    <p:dataTable id="transtable" var="pt"
-                                 value="#{busDocController.prodTransactions}" widgetVar="pttable"
-                                 rowKey="#{pt.product.productid}"
-                                 selectionMode="single"
-                                 selection="#{busDocController.selectedTransaction}"
-                                 editable="true"
-                                 editMode="cell"
-                                 emptyMessage="No Products found"
-                                 sortBy="#{pt.busdoc.docno}"
-                                 styleClass="products-table ui-datatable-sm"
-                                 style="font-size: small">
 
-                        <p:ajax event="rowSelect" listener="#{busDocController.refreshHistoryPanel()}" 
-                                update=":mainform:deleteButton, :historyform"/>
-                        <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
-                        <p:ajax event="cellEdit"/>
-
-                        <p:column headerText="TransId" style="width: 50px">
-                            <h:outputText value="#{pt.prodtransid}"/>
-                        </p:column>
-
-                        <p:column headerText="Stock No" style="width: 75px">
-                            <h:outputText value="#{pt.product.productid}" />
-                        </p:column>
-
-                        <p:column headerText="Product" style="width: 30%">
-                            <f:facet name="header">
-                                <h:outputText value="Product Name"/>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{pt.customizedname}"
-                                                 style="border-left: 5px solid goldenrod; width: 100%;" label="Custom Name"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="Unit">
-                            <h:outputText value="#{pt.product.unit.unitsym}" />
-                        </p:column>
-
-                        <p:column style="text-align: right">
-                            <f:facet name="header">
-                                <h:outputText value="Qty"/>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{pt.lineqty}" style="float: right;">
-                                        <f:convertNumber pattern="#,##0.000" />
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Quantity">
-                                        <f:convertNumber pattern="#,##0.000" />
-                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel, tablesummary"/>
-                                    </p:inputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="Price" style="text-align:right">
-                            <f:facet name="header">
-                                <h:outputText value="Price"/>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{pt.linefcunitprice}" style="float: right;">
-                                        <f:convertNumber pattern="#,##0.000" />
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="price" value="#{pt.linefcunitprice}" 
-                                                 style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="UnitPrice">
-                                        <f:convertNumber pattern="#,##0.000" />
-                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel, tablesummary" />
-                                    </p:inputText>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="Total" style="text-align: right">
-                            <h:outputText id="total" value="#{pt.totalamount}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="VAT Type" style="text-align: center; width: 10%">
-                            <f:facet name="header">
-                                <h:outputText value="VAT Type"/>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{pt.vatsptypeid.typename}" style="font-size: smaller"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:selectOneMenu id="vatsptype" style="width:100%" value="#{pt.vatsptypeid}" converter="#{entityConverter}" 
-                                                     var="t" effect="fade">
-                                        <f:selectItems value="#{busDocController.vatSalesPurchaseType}" var="item" itemLabel="#{item.typename}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
-                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel, tablesummary" />
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Name"/>
-                                            </f:facet>
-                                            <h:outputText value="#{t.typename}"/>
-                                        </p:column>
-                                    </p:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="VAT %" style="text-align: center">
-                            <f:facet name="header">
-                                <h:outputText value="VAT %"/>
-                            </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{pt.vatcategoryid.categoryname}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
-                                                     var="t" effect="fade">
-                                        <f:selectItems value="#{busDocController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
-                                        <p:ajax listener="#{busDocController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel, tablesummary" />
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Name"/>
-                                            </f:facet>
-                                            <h:outputText value="#{t.categoryname}"/>
-                                        </p:column>
-                                    </p:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="VAT" style="text-align: right">
-                            <h:outputText id="vamount" value="#{pt.vatamount}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="Net" style="text-align: right">
-                            <h:outputText id="namount" value="#{pt.grandtotal}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:summaryRow id="tablesummary">
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column style="text-align:right">
+                    <p:panelGrid id="totalpanel" styleClass="nba-grid" style="font-weight: bold; width: 100%; text-align: right">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>Total</p:column>
+                                <p:column>Discount</p:column>
+                                <p:column>Gross</p:column>
+                                <p:column>VAT</p:column>
+                                <p:column>Net</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="#{busDocController.selected.subtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{busDocController.selected.discount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
                                 <h:outputText value="#{busDocController.selected.totalamount}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column style="text-align:right">
+                            <p:column>
                                 <h:outputText value="#{busDocController.selected.totalvat}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                            <p:column style="text-align:right">
+                            <p:column>
                                 <h:outputText value="#{busDocController.selected.grandtotal}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                        </p:summaryRow>
-
-                    </p:dataTable>
-                </div>
-
-                <p:panelGrid id="totalpanel" styleClass="nba-grid" style="font-weight: bold; width: 100%; text-align: right">
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column>Total</p:column>
-                            <p:column>Discount</p:column>
-                            <p:column>Gross</p:column>
-                            <p:column>VAT</p:column>
-                            <p:column>Net</p:column>
                         </p:row>
-                    </f:facet>
-                    <p:row>
-                        <p:column>
-                            <h:outputText value="#{busDocController.selected.subtotal}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{busDocController.selected.discount}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{busDocController.selected.totalamount}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{busDocController.selected.totalvat}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{busDocController.selected.grandtotal}">
-                                <f:convertNumber pattern="#,##0.000" />
-                            </h:outputText>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                    </p:panelGrid>
+                    <p:panel id="cashregpanel" styleClass="card" style="padding-top: 1em" rendered="#{busDocController.selected.busdocinfo.hasCashRegister()}">
+                        <f:facet name="header">Cash Register</f:facet>
+                        <p:dataTable id="regtable" var="acc"
+                                     value="#{busDocController.cashRegisterAccounts}" widgetVar="regtable"
+                                     rowKey="#{acc.accountid}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Transaction found"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-gridlines"
+                                     style="font-size: small">
+
+                            <p:ajax event="rowUnselect" update="regtable" listener="#{busDocController.refreshRegisterTotal()}"/>
+                            <p:ajax event="cellEdit"/>
+
+                            <p:column headerText="Account" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''}">
+                                <h:outputText value="#{acc.accountname}" />
+                            </p:column>
+
+                            <p:column headerText="Amount" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''};width:100px;">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{acc.amount}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{acc.amount}" disabled="#{acc.accountname.equalsIgnoreCase('Total')?true:false}"
+                                                     style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Amount">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{busDocController.refreshRegisterTotal()}" update="regtable" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Details" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''};">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{acc.description}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{acc.description}" disabled="#{acc.accountname.equalsIgnoreCase('Total')?true:false}"
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Details"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                </div>
             </div>
-        </div>
+        </p:outputPanel>
     </ui:define>
 
     <ui:define name="history">
         <h:form id="historyform">
-            <div class="p-col-12 p-md-12">
+            <div class="p-col-12 p-md-12 vless_padding">
                 <p:panel>
                     <p:dataTable id="saleslist"
                                  value="#{busDocController.salesProductTransactions}"
@@ -388,7 +439,6 @@
                         </p:column>
                     </p:dataTable>
                 </p:panel>
-                <br/>
                 <p:panel>
                     <p:dataTable id="purchaselist"
                                  value="#{busDocController.purchaseProductTransactions}"
@@ -413,7 +463,6 @@
                         </p:column>
                     </p:dataTable>
                 </p:panel>
-                <br/>
                 <p:panel>
                     <p:dataTable id="stocklist"
                                  value="#{busDocController.stockBalances}"

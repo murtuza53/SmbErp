@@ -10,6 +10,7 @@ import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocTransactionType;
 import com.smb.erp.entity.BusDocType;
+import com.smb.erp.entity.CashRegister;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.util.JsfUtil;
 import com.smb.erp.util.ReflectionUtil;
@@ -39,6 +40,8 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     BusDocInfoRepository repo;
 
     private AccountTransactionType selectedTransaction;
+    
+    private CashRegister selectedCashRegister;
     
     private BusDocInfo selectedConvertFrom;
     
@@ -84,7 +87,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
                 getSelected().setCreatedon(new Date());
             }
             super.save();
-            JsfUtil.addSuccessMessage("Business Document Definition saved");
+            JsfUtil.addSuccessMessage(getSelected().getDocname()+ " Definition saved");
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage(ex, "Could not save due to error");
@@ -99,7 +102,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         }
         getSelected().addTranstypeid(selectedTransaction);
     }
-    
+
     public void deleteAccountTransaction(){
         if(selectedTransaction==null){
             JsfUtil.addErrorMessage("No Account Selected to Delete");
@@ -109,15 +112,34 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         selectedTransaction=null;
         JsfUtil.addSuccessMessage("Deleted Successfuly");
     }
+    
+    public void createNewCashRegister(){
+        selectedCashRegister = new CashRegister();
+        selectedCashRegister.setCashregisterid(0);
+        if(getSelected().getCashregiserid()==null){
+            getSelected().setCashregiserid(new LinkedList<CashRegister>());
+        }
+        getSelected().addCashregisterid(selectedCashRegister);
+    }
+
+    public void deleteCashRegister(){
+        if(selectedCashRegister==null){
+            JsfUtil.addErrorMessage("No Account Selected to Delete");
+            return;
+        } 
+        getSelected().removeCashregisterid(selectedCashRegister);
+        selectedCashRegister=null;
+        JsfUtil.addSuccessMessage("Deleted Successfuly");
+    }
 
     public String getTitle() {
         if (mode == DocumentTab.MODE.LIST) {
-            return "Business Document List";
+            return getSelected().getDocname()+ " List";
         } else if (mode == DocumentTab.MODE.NEW) {
-            return "New Business Document";
+            return "New "+getSelected().getDocname();
         }
         if (getSelected() != null) {
-            return "Edit Business Document";
+            return "Edit "+getSelected().getDocname();
         }
         return "Invalid";
     }
@@ -130,20 +152,29 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         items = null;
         getItems();
     }
+    
+    public void findDocumentListLink() throws IOException{
+        String link = getSelected().getDoclisturl() + "?mode=l&docinfoid=" + getSelected().getBdinfoid();
+        if(getSelected().getDoctype().equalsIgnoreCase(BusDocType.ACCOUNT.toString())){
+            link = getSelected().getDoclisturl() + "?docinfoid=" + getSelected().getBdinfoid();
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().redirect(link);
+    }
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=0");
+        facesContext.getExternalContext().redirect(getSelected().getDocediturl() + "?mode=0");
     }
 
     public void edit_in_tab() throws IOException {
         if (getSelected() == null) {
-            JsfUtil.addErrorMessage("Error", "No Business Document selected to edit");
+            JsfUtil.addErrorMessage("Error", "No "+getSelected().getDocname()+" selected to edit");
             return;
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=1&bdid=" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect(getSelected().getDocediturl() + "?mode=1&bdid=" + getSelected().getBdinfoid());
     }
 
     public void createNewConvertFrom(){
@@ -196,6 +227,20 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
      */
     public void setSelectedConvertFrom(BusDocInfo selectedConvertFrom) {
         this.selectedConvertFrom = selectedConvertFrom;
+    }
+
+    /**
+     * @return the selectedCashRegister
+     */
+    public CashRegister getSelectedCashRegister() {
+        return selectedCashRegister;
+    }
+
+    /**
+     * @param selectedCashRegister the selectedCashRegister to set
+     */
+    public void setSelectedCashRegister(CashRegister selectedCashRegister) {
+        this.selectedCashRegister = selectedCashRegister;
     }
 
 }

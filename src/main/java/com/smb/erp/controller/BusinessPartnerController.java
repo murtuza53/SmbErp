@@ -44,7 +44,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     SystemDefaultsController defaultsController;
 
     @Autowired
-    AccountRepository accRepo;
+    AccountController accController;
 
     @Autowired
     SystemDefaultsController defaultController;
@@ -128,7 +128,8 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
             }
             super.save();
             setSelected(repo.getOne(getSelected().getPartnerid()));
-            JsfUtil.addSuccessMessage(criteria);
+            accController.saveAccount(getSelected());
+            JsfUtil.addSuccessMessage("Success", getSelected().getCompanyname() + " saved successfuly");
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage(ex, "Could not save due to error");

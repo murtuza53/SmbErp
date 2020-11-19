@@ -14,7 +14,45 @@
         <h:form id="busform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
-                    <p:panel id="doclist" header="" styleClass="card">
+                    <p:panel id="doclist" header="" toggleable="true">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+                            
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <p:dataExporter type="xls" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                        </f:facet>
+
+                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
+
+                            <p:outputLabel value="From Date" for="fromdate" />
+                            <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
+                                        title="From Date"  showOn="button"
+                                        required="true" requiredMessage="Please select Date"/>
+
+                            <p:outputLabel value="To Date" for="todate" />
+                            <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
+                                        title="To Date"  showOn="button"
+                                        required="true" requiredMessage="Please select Date"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br/>
+                    <br/>
+                    <p:panel id="tablelist" header="" styleClass="card">
                         <f:facet name="actions">
                             <p:commandButton id="btnnew" title="New #{busDocController.docInfo.docname}" icon="fa fa-plus" process="@this"
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
@@ -32,10 +70,6 @@
                                              update="@form :growl">
                                 <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
                             </p:commandButton>
-                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
-                                             actionListener="#{busDocListController.refresh()}"
-                                             update="@form :growl" icon="fa fa-refresh" />
-
                         </f:facet>
 
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
@@ -48,10 +82,6 @@
                                      styleClass="products-table ui-datatable-sm">
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
 
-                            <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
-                                <h:outputText value="#{item.docno}" />
-                            </p:column>
-
                             <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Date"/>
@@ -59,6 +89,10 @@
                                 <h:outputText value="#{item.docdate}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.docno}" />
                             </p:column>
 
                             <p:column headerText="Business Partner" sortBy="#{item.businesspartner.companyname}" 
@@ -91,6 +125,13 @@
                                 <h:outputText value="#{item.grandtotal}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.docstatus}" filterBy="#{item.docstatus}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:outputText value="#{item.docstatus}" styleClass="customer-badge status-#{item.getStatusCss(item.docstatus)}"/>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

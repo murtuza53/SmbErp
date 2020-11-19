@@ -1,0 +1,414 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_accdoc.xhtml">
+
+    <ui:define name="title">
+        #{accountVoucherEditController.tabTitle}
+    </ui:define>
+
+    <ui:param name="viewname" value="#{accountVoucherEditController.tabTitle}" />
+
+    <ui:define name="toolbar">
+        <!--<li>
+            <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
+                             process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
+        </li>-->
+        <li>
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl, :toolbarform" ajax="false"
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{accountVoucherEditController.save()}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
+        </li>
+
+    </ui:define>
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:tabView id="tabsview" dynamic="true" cache="true" styleClass="card ui-fluid">
+                        <p:ajax event="tabChange" update="transtable"/>
+                        <p:tab title="Details">
+                            <div class="ui-fluid p-formgrid p-grid">
+                                <div class="p-field p-col-12 p-md-4">
+                                    <p:outputLabel value="Doc No" for="dno" style="font-size: smaller"/>
+                                    <p:inputText id="dno" value="#{accountVoucherEditController.selected.docno}" placeholder="Document No" disabled="true"/>
+                                </div>
+                                <div class="p-field p-col-12 p-md-4">
+                                    <p:outputLabel value="Date" for="ddate" style="font-size: smaller"/>
+                                    <p:calendar id="ddate" value="#{accountVoucherEditController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
+                                                showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                    </p:calendar>
+                                </div>
+                                <div class="p-field p-col-12 p-md-4">
+                                    <p:outputLabel value="Created By" for="createdby" style="font-size: smaller"/>
+                                    <p:inputText id="createdby" value="#{accountVoucherEditController.selected.extra1}" placeholder="Created By"/>
+                                </div>
+                                <div class="p-field p-col-12">
+                                    <p:outputLabel value="Description" for="description" style="font-size: smaller"/>
+                                    <p:inputText id="description" value="#{accountVoucherEditController.selected.description}" placeholder="Description"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <p:panel header="Transactions">
+                                <p:remoteCommand name="onCellEditMain" update="transtable"/>
+                                <f:facet name="actions">
+                                    <p:commandButton id="deleteButton" icon="fa fa-trash"
+                                                     update=":growl,:mainform:tabsview" disabled="#{empty accountVoucherEditController.selectedLedgerLine}" 
+                                                     title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                     actionListener="#{accountVoucherEditController.deleteTransactions()}" oncomplete="resizeLayout()">
+                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                    </p:commandButton>
+                                </f:facet>
+                                <p:dataTable id="transtable" var="led"
+                                             value="#{accountVoucherEditController.selected.ledlines}" widgetVar="ledtable"
+                                             rowKey="#{led.llno}"
+                                             selectionMode="single"
+                                             selection="#{accountVoucherEditController.selectedLedgerLine}"
+                                             editable="true"
+                                             editMode="cell"
+                                             emptyMessage="No Transactions found"
+                                             styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                             style="font-size: small"
+                                             sortBy="#{led.accdoc.docno}">
+
+                                    <p:ajax event="rowSelect" update=":mainform:tabsview:deleteButton"/>
+                                    <p:ajax event="rowUnselect" update=":mainform:tabsview:deleteButton"/>
+
+                                    <p:column headerText="TransId" style="width: 100px">
+                                        <h:outputText value="#{led.llno}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Account" style="width: 30%">
+                                        <h:outputText value="#{led.account.accountname}" />
+                                    </p:column>
+
+                                    <p:column headerText="Remarks" style="width: 30%">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{led.description}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{led.description}"
+                                                             style="border-left: 5px solid goldenrod; width: 100%;" label="Remarks"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Debit" style="text-align: right">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{led.debit}" style="float: right;">
+                                                    <f:convertNumber pattern="#,##0.000" />
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText id="debit" value="#{led.debit}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" 
+                                                             label="Debit">
+                                                    <f:convertNumber pattern="#,##0.000" />
+                                                    <p:ajax oncomplete="onCellEditMain()"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Credit" style="text-align: right">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{led.credit}" style="float: right;">
+                                                    <f:convertNumber pattern="#,##0.000" />
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText id="credit" value="#{led.credit}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Credit">
+                                                    <f:convertNumber pattern="#,##0.000" />
+                                                    <p:ajax oncomplete="onCellEditMain()"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:summaryRow id="tablesummary">
+                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                            Total
+                                        </p:column>
+                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                            <h:outputText value="#{accountVoucherEditController.selected.totalDebit}">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                            <h:outputText value="#{accountVoucherEditController.selected.totalCredit}">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:summaryRow>
+                                </p:dataTable>
+                            </p:panel>
+                        </p:tab>                   
+
+                        <!--Dynamic tabs for Customer and Supplier starts here -->
+                        <c:forEach items="#{accountVoucherEditController.tabs}" var="tab">
+                            <p:tab title="#{tab.title}">
+                                <p:layout style="min-width:400px;min-height:600px;" widgetVar="layoutVar">
+                                    <p:layoutUnit position="west" resizable="true" size="600">
+                                        <p:panel id="pendingpanel" header="Pending Invoices">
+                                            <f:facet name="actions">
+                                                <p:commandButton id="ptransferButton" icon="fa fa-arrow-right"
+                                                                 update=":growl, @widgetVar(paidtable)" disabled="#{empty tab.selectedPendingDocs}" 
+                                                                 title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                                 actionListener="#{tab.transferSelectedPendingInvoice()}" oncomplete="resizeLayout()"/>
+                                            </f:facet>
+                                            <p:dataTable id="pendingtable" var="item"
+                                                         value="#{tab.pendingDocs}" widgetVar="pendtable"
+                                                         rowKey="#{item.docno}"
+                                                         selection="#{tab.selectedPendingDocs}"
+                                                         emptyMessage="No Documents found"
+                                                         styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                                         style="font-size: small"
+                                                         sortBy="#{item.businesspartner.partnerid}">
+
+                                                <p:ajax event="rowSelect" update="@parent:ptransferButton"/>
+                                                <p:ajax event="rowUnselect" update="@parent:ptransferButton"/>
+                                                <p:ajax event="cellEdit"/>
+
+                                                <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+
+                                                <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Date"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.docdate}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
+                                                    <h:outputText value="#{item.docno}" />
+                                                </p:column>
+
+                                                <p:column sortBy="#{item.grandtotal}" style="text-align: right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Invoiced"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.grandtotal}">
+                                                        <f:convertNumber pattern="#,##0.000" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:column sortBy="#{item.totalPaid}" style="text-align: right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Paid"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.totalPaid}">
+                                                        <f:convertNumber pattern="#,##0.000" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:column sortBy="#{item.totalPending}" style="text-align: right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Pending"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.totalPending}">
+                                                        <f:convertNumber pattern="#,##0.000" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:summaryRow id="tablesummary">
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                                        Total
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.totalInvoiced_Pending}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.totalPaid_Pending}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.totalPending_Pending}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                </p:summaryRow>
+                                            </p:dataTable>
+                                        </p:panel>
+                                    </p:layoutUnit>
+
+                                    <p:layoutUnit position="center">
+                                        <p:panel id="paidpanel" header="Paid Invoices">
+                                            <p:remoteCommand name="onCellEdit" actionListener="#{tab.updateLedgerValue()}" update="paidtable" />
+                                            <f:facet name="actions">
+                                                <p:commandButton id="pdeleteButton" icon="fa fa-trash"
+                                                                 update=":growl, paidtable" disabled="#{empty tab.paymentList}" 
+                                                                 title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                                 actionListener="#{tab.deleteSelectedInvoice()}">
+                                                    <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                                </p:commandButton>
+                                            </f:facet>
+                                            <p:dataTable id="paidtable" var="item"
+                                                         value="#{tab.paymentList}" widgetVar="paidtable"
+                                                         rowKey="#{item.pplineno}"
+                                                         selection="#{tab.selectedPaymentDetails}"
+                                                         selectionMode="single"
+                                                         editable="true"
+                                                         editMode="cell"
+                                                         emptyMessage="No Documents found"
+                                                         styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                                         style="font-size: small"
+                                                         sortBy="#{item.position}">
+
+                                                <p:ajax event="rowSelect" update="@parent:pdeleteButton"/>
+                                                <p:ajax event="rowUnselect" update="@parent:pdeleteButton"/>
+                                                <p:ajax event="cellEdit" />
+
+                                                <p:column headerText="Trans No">
+                                                    <h:outputText value="#{item.pplineno}" />
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Date"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.busdoc.docdate}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:column headerText="Doc No" sortBy="#{item.busdoc.docno}" filterBy="#{item.busdoc.docno}" filterMatchMode="contains">
+                                                    <h:outputText value="#{item.busdoc.docno}" />
+                                                </p:column>
+
+                                                <p:column style="text-align: right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Pending"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.busdoc.totalPending}">
+                                                        <f:convertNumber pattern="#,##0.000" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:column headerText="Amount" style="text-align:right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Amount"/>
+                                                    </f:facet>
+                                                    <p:cellEditor>
+                                                        <f:facet name="output">
+                                                            <h:outputText value="#{item.amount}" style="float: right;">
+                                                                <f:convertNumber pattern="#,##0.000" />
+                                                            </h:outputText>
+                                                        </f:facet>
+                                                        <f:facet name="input">
+                                                            <p:inputText id="price" value="#{item.amount}" 
+                                                                         style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Amount">
+                                                                <f:convertNumber pattern="#,##0.000" />
+                                                                <p:ajax oncomplete="onCellEdit()"/>
+                                                            </p:inputText>
+                                                        </f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column id="balance" style="text-align: right">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Balance"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.balanceAmount}">
+                                                        <f:convertNumber pattern="#,##0.000" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                <p:summaryRow id="tablesummary">
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                                        Total
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.totalPending_Paid}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.totalAmount_Paid}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                        <h:outputText value="#{tab.balanceAmount_Paid}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                </p:summaryRow>
+                                            </p:dataTable>
+                                        </p:panel>
+                                    </p:layoutUnit>
+                                </p:layout>
+                            </p:tab>
+                        </c:forEach>
+                    </p:tabView>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:define>
+
+    <ui:define name="productsearch">
+        <h:form id="psform">
+            <pe:slideout id="slideoutProduct" title="Accounts" icon="fa fa-search" location="top" widgetVar="slideout" 
+                         handleStyleClass="product-handle" panelStyleClass="product-panel" offset="230px" bounceTimes="5"
+                         bounceDistance="100px" handleOffsetReverse="false" >
+                <p:panel>
+                    <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
+                        <p:outputLabel for="pcriteria" value="Search Criteria" />
+                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{accountVoucherEditController.criteria}" />
+                        <p:commandButton value="Search" actionListener="#{accountVoucherEditController.searchAccounts()}" update="prodtable"/>
+                        <p:commandButton value="Transfer" actionListener="#{accountVoucherEditController.transfer()}" update=":mainform:tabsview"
+                                         oncomplete="resizeLayout()"/>
+                    </p:panelGrid>
+                    <p:panel styleClass="slide-product-panel">
+                        <p:dataTable id="prodtable" var="acc"
+                                     value="#{accountVoucherEditController.accountList}" widgetVar="ptable"
+                                     selection="#{accountVoucherEditController.selectedAccountList}"
+                                     rowKey="#{acc.accountid}"
+                                     emptyMessage="No Accounts found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     style="font-size: small">
+                            <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                            <p:column headerText="Account#" sortBy="#{acc.accountid}" filterMatchMode="contains"
+                                      style="width: 70px">
+                                <h:outputText value="#{acc.accountid}" />
+                            </p:column>
+
+                            <p:column headerText="Account Name" sortBy="#{acc.accountname}" filterBy="#{acc.accountname}" filterMatchMode="contains"
+                                      style="width: 35%">
+                                <h:outputText value="#{acc.accountname}" />
+                            </p:column>
+
+                            <p:column headerText="Parent" sortBy="#{acc.parentid.accountname}" filterBy="#{acc.parentid.accountname}" filterMatchMode="contains"
+                                      style="width: 35%">
+                                <h:outputText value="#{acc.parentid.accountname}" />
+                            </p:column>
+
+                            <p:column headerText="Type" sortBy="#{acc.accounttype.name}" filterBy="#{acc.accounttype.name}" filterMatchMode="contains">
+                                <h:outputText value="#{acc.accounttype.name}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:panel>
+            </pe:slideout>
+        </h:form>
+    </ui:define>
+</ui:composition>

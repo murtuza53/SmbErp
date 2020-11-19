@@ -81,27 +81,27 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
             opening.setTransdate(fromDate);
             opening.setDescription("Opening Balance");
             Double bal = repo.findBalanceByAccountByDate(a.getAccountid(), DateUtil.startOfDay(fromDate));
-            if(bal==null){
+            if (bal == null) {
                 bal = 0.0;
             }
-            if(bal>=0){
+            if (bal >= 0) {
                 opening.setDebit(bal);
-            } else{
-                opening.setCredit(bal*-1);
+            } else {
+                opening.setCredit(bal * -1);
             }
             list.add(0, opening);
-            
+
             bal = 0.0;
             Double dt = 0.0;
             Double ct = 0.0;
-            for(LedgerLine line: list){
-               bal = bal + line.getDebit() - line.getCredit();
-               line.setCumulative(bal);
-               
-               dt = dt + line.getDebit();
-               ct = ct + line.getCredit();
+            for (LedgerLine line : list) {
+                bal = bal + line.getDebit() - line.getCredit();
+                line.setCumulative(bal);
+
+                dt = dt + line.getDebit();
+                ct = ct + line.getCredit();
             }
-            
+
             LedgerLine closing = new LedgerLine();
             closing.setLlno(0);
             closing.setAccount(a);
@@ -132,6 +132,81 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
             accountList.add(0, all);
         }
         return accountList;
+    }
+
+    public Double findAccountBalance(String accountNo, Date toDate) {
+        return repo.findAccountBalance(accountNo, DateUtil.endOfDay(toDate));
+    }
+
+    public Double findAccountBalance(String accountNo, Date fromDate, Date toDate) {
+        return repo.findAccountBalance(accountNo, DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
+                                        DateUtil.endOfDay(toDate));
+    }
+
+    public Double findAccountLikeBalance(String accountNo, Date toDate) {
+        return repo.findAccountBalance(accountNo + "%", DateUtil.endOfDay(toDate));
+    }
+
+    public Double findAccountLikeBalance(String accountNo, Date fromDate, Date toDate) {
+        return repo.findAccountBalance(accountNo + "%", DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
+                                        DateUtil.endOfDay(toDate));
+    }
+
+    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date toDate) {
+        List<Double[]> res = repo.findAccountBalanceDrCr(accountNo + "%", DateUtil.endOfDay(toDate));
+        //System.out.println("findAccountLikeBalanceDrCr2: " + accountNo + " => " + res.size() + " => " + ((Double[])res.get(0))[0] + "," + ((Double[])res.get(0))[1]);
+
+        List<Double> ret = new LinkedList<>();
+
+        if (res == null) {
+            ret.add(new Double(0.0));
+            ret.add(new Double(0.0));
+        } else {
+            ret = new LinkedList(Arrays.asList(res.get(0)));
+            if (ret.get(0) == null) {
+                ret.remove(0);
+                ret.add(0, new Double(0.0));
+            }
+            if (ret.get(1) == null) {
+                ret.remove(1);
+                ret.add(1, new Double(0.0));
+            }
+        }
+        if (ret.size() < 2) {
+            ret.clear();
+            ret.add(new Double(0.0));
+            ret.add(new Double(0.0));
+        }
+        return ret;
+    }
+
+    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date fromDate, Date toDate) {
+        List<Double[]> res = repo.findAccountBalanceDrCr(accountNo + "%", DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
+                                                    DateUtil.endOfDay(toDate));
+        //System.out.println("findAccountLikeBalanceDrCr2: " + accountNo + " => " + res.size() + " => " + ((Double[])res.get(0))[0] + "," + ((Double[])res.get(0))[1]);
+
+        List<Double> ret = new LinkedList<>();
+
+        if (res == null) {
+            ret.add(new Double(0.0));
+            ret.add(new Double(0.0));
+        } else {
+            ret = new LinkedList(Arrays.asList(res.get(0)));
+            if (ret.get(0) == null) {
+                ret.remove(0);
+                ret.add(0, new Double(0.0));
+            }
+            if (ret.get(1) == null) {
+                ret.remove(1);
+                ret.add(1, new Double(0.0));
+            }
+        }
+        if (ret.size() < 2) {
+            ret.clear();
+            ret.add(new Double(0.0));
+            ret.add(new Double(0.0));
+        }
+        return ret;
     }
 
     /**

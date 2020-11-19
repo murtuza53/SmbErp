@@ -48,7 +48,7 @@
             <pe:layoutPane position="center">
                 <div class="layout-slim #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
                     <div class="layout-content-wrapper">
-                        <div class="layout-content">
+                        <div class="layout-content less_padding">
                             <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
                                         return false;
                                     }">
@@ -67,6 +67,14 @@
         </pe:layout>
 
         <h:outputStylesheet id="layoutCSS">
+            .less_padding{
+                padding: 1em !important;
+            }
+
+            .vless_padding{
+                padding: 0.5em !important;
+            }
+            
             body {
             margin: 0px !important;
             }
@@ -151,6 +159,7 @@
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <h:outputStylesheet name="css/nanoscroller.css"/>
+        <h:outputStylesheet name="css/custom.css"/>
         <h:outputStylesheet name="css/primeflex.min.css" library="diamond-layout" />
         <h:outputStylesheet id="layout-scheme" name="css/layout-#{guestPreferences.scheme}.css" library="diamond-layout" />
         <h:outputStylesheet name="css/primeicons.css" library="diamond-layout" />

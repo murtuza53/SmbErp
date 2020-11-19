@@ -16,7 +16,7 @@ public class AccountType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int acctypeid;
+    private Integer acctypeid;
 
     private String description;
 
@@ -29,11 +29,11 @@ public class AccountType implements Serializable {
     public AccountType() {
     }
 
-    public int getAcctypeid() {
+    public Integer getAcctypeid() {
         return this.acctypeid;
     }
 
-    public void setAcctypeid(int acctypeid) {
+    public void setAcctypeid(Integer acctypeid) {
         this.acctypeid = acctypeid;
     }
 

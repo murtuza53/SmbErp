@@ -11,6 +11,7 @@ import com.smb.erp.repo.TableKeyRepository;
 import java.util.HashMap;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.SessionScope;
 
 /**
@@ -34,6 +35,7 @@ public class TableKeyController extends AbstractController<TableKey> {
         this.tableRepo = repo;
     }
     
+    @Transactional
     protected synchronized long getNextKey(String tableName){
         TableKey key = tableRepo.findByTablename(tableName);
         
@@ -53,34 +55,42 @@ public class TableKeyController extends AbstractController<TableKey> {
         }
     }
 
+    @Transactional
     public synchronized String getDocNo(String prefix, int year){
         return prefix + year + getNextKey(prefix+year);
     }
     
+    @Transactional
     public synchronized int getBusinessPartnerNextId(){
         return (int)getNextKey("businesspartner");
     }
 
+    @Transactional
     public synchronized int getCompanyNextId(){
         return (int)getNextKey("company");
     }
 
+    @Transactional
     public synchronized int getBranchNextId(){
         return (int)getNextKey("branch");
     }
     
+    @Transactional
     public synchronized long getUnitNextId(){
         return getNextKey("unit");
     }
     
+    @Transactional
     public synchronized int getBrandNextId(){
         return (int)getNextKey("brand");
     }
     
+    @Transactional
     public synchronized long getGroupNextId(){
         return getNextKey("groups");
     }
     
+    @Transactional
     public synchronized long getProductNextId(){
         return getNextKey("product");
     }

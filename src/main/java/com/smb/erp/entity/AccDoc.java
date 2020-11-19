@@ -3,6 +3,8 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +31,9 @@ public class AccDoc implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdon;
 
     private String extra1;
 
@@ -78,8 +83,14 @@ public class AccDoc implements Serializable {
     @JoinColumn(name = "empno")
     private Emp emp;
 
+    //bi-directional many-to-one association to BusDocInfo
+    @ManyToOne
+    @JoinColumn(name = "busdocinfoid")
+    private BusDocInfo busdocinfo;
+
     //bi-directional many-to-one association to LedgerLine
     @OneToMany(mappedBy = "accdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    //@Fetch(FetchMode.SUBSELECT)
     private List<LedgerLine> ledlines;
 
     public AccDoc() {
@@ -270,6 +281,9 @@ public class AccDoc implements Serializable {
     }
 
     public LedgerLine addLedline(LedgerLine ledline) {
+        if(getLedlines()==null){
+            setLedlines(new LinkedList<>());
+        }
         getLedlines().add(ledline);
         ledline.setAccdoc(this);
 
@@ -327,19 +341,63 @@ public class AccDoc implements Serializable {
         this.updatedon = updatedon;
     }
 
-    public Double getTotalDebit(){
+    public Double getTotalDebit() {
         Double t = 0.0;
-        if(getLedlines()!=null){
+        if (getLedlines() != null) {
             t = getLedlines().stream().mapToDouble(x -> x.getDebit()).sum();
         }
         return t;
     }
-    
-    public Double getTotalCredit(){
+
+    public Double getTotalCredit() {
         Double t = 0.0;
-        if(getLedlines()!=null){
+        if (getLedlines() != null) {
             t = getLedlines().stream().mapToDouble(x -> x.getCredit()).sum();
         }
         return t;
     }
+
+    public String getCompanyName() {
+        HashSet<String> result = new HashSet<String>();
+        if (getLedlines() != null) {
+            for (LedgerLine ll : getLedlines()) {
+                if (ll.getAccount().getBusinesspartner() != null) {
+                    result.add(ll.getAccount().toString());
+                }
+            }
+        }
+        if (result.isEmpty()) {
+            return "";
+        }
+        return result.toString();
+    }
+
+    /**
+     * @return the busdocinfo
+     */
+    public BusDocInfo getBusdocinfo() {
+        return busdocinfo;
+    }
+
+    /**
+     * @param busdocinfo the busdocinfo to set
+     */
+    public void setBusdocinfo(BusDocInfo busdocinfo) {
+        this.busdocinfo = busdocinfo;
+    }
+
+    /**
+     * @return the createdon
+     */
+    public Date getCreatedon() {
+        return createdon;
+    }
+
+    /**
+     * @param createdon the createdon to set
+     */
+    public void setCreatedon(Date createdon) {
+        this.createdon = createdon;
+    }
+
 }

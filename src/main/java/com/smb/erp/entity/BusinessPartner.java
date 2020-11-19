@@ -77,8 +77,9 @@ public class BusinessPartner implements Serializable {
     //@OneToMany(mappedBy="businesspartner")
     //private List<AccDoc> accdocs;
     //bi-directional many-to-one association to Account
-    //@OneToMany(mappedBy = "businesspartner")
-    //private List<Account> accounts;
+    @OneToMany(mappedBy = "businesspartner", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Account> accounts;
     //bi-directional many-to-one association to BusDoc
     //@OneToMany(mappedBy="businesspartner")
     //private List<BusDoc> busdocs;
@@ -549,5 +550,19 @@ public class BusinessPartner implements Serializable {
             return getBusinessRegisters().get(getBusinessRegisters().size() - 1);
         }
         return null;
+    }
+
+    /**
+     * @return the accounts
+     */
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }

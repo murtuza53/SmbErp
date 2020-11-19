@@ -37,6 +37,8 @@ public class GuestPreferences implements Serializable {
 
     private String scheme = "light";
 
+    private String inputStyle = "outlined";
+
     private List<MenuTheme> menuThemes;
 
     private List<ComponentTheme> componentThemes;
@@ -113,12 +115,24 @@ public class GuestPreferences implements Serializable {
         } 
     }
 
+    public String getInputStyleClass() {
+        return this.inputStyle.equals("filled") ? "ui-input-filled" : "";
+    }
+
     public String getLogoColor() {
         return logoColor;
     }
 
     public void setLogoColor(String logoColor) {
         this.logoColor = logoColor;
+    }
+
+    public String getInputStyle() {
+        return inputStyle;
+    }
+
+    public void setInputStyle(String inputStyle) {
+        this.inputStyle = inputStyle;
     }
 
     public List<MenuTheme> getMenuThemes() {
@@ -244,4 +258,3 @@ public class GuestPreferences implements Serializable {
         }
     }
 }
-

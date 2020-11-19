@@ -6,7 +6,10 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.entity.Account;
+import com.smb.erp.entity.AccountType;
+import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.repo.AccountRepository;
+import com.smb.erp.repo.AccountTypeRepository;
 import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -26,6 +29,12 @@ public class AccountController extends AbstractController<Account> {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired
+    SystemDefaultsController defaultController;
+
+    @Autowired
+    AccountTypeRepository accountTypeRepo;
+
     AccountRepository repo;
 
     protected final static char[] alpha = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -39,6 +48,65 @@ public class AccountController extends AbstractController<Account> {
         this.repo = repo;
     }
 
+    public Account saveAccount(String accountName, Account parent) {
+        return null;
+    }
+
+    public void saveAccount(BusinessPartner partner) {
+        //Account last = findLastAccountInLedger(parent.getAccountid());
+        Account parent = null;
+        AccountType accountType = null;
+        if (partner.isCustomer()) {
+            accountType = accountTypeRepo.findByName("Debtors");
+            Account acc = null;
+            if (partner.isLocalCompany()) {
+                parent = defaultController.getDefaultAccount("LocalCustomerGroup");
+            } else {
+                parent = defaultController.getDefaultAccount("ForeignCustomerGroup");
+            }
+            List<Account> list = repo.findAccountByBusinessPartnerIdAndParent(partner.getPartnerid(), parent.getAccountid());
+            System.out.println("saveAccount:Customer: " + partner.getCompanyname() + "\t" + parent + "\t" + list);
+            if (list == null || list.size() == 0) {
+                acc = prepareNewAccount(parent, partner, accountType);
+                acc.setAccountid(getAccountNextNo(parent));
+            } else {
+                acc = list.get(0);
+                acc.setAccountname(partner.getCompanyname());
+            }
+            repo.save(acc);
+        } 
+        if(partner.isSupplier()){
+            accountType = accountTypeRepo.findByName("Creditors");
+            Account acc = null;
+            if (partner.isLocalCompany()) {
+                parent = defaultController.getDefaultAccount("LocalSupplierGroup");
+            } else {
+                parent = defaultController.getDefaultAccount("ForeignSupplierGroup");
+            }
+            List<Account> list = repo.findAccountByBusinessPartnerIdAndParent(partner.getPartnerid(), parent.getAccountid());
+            System.out.println("saveAccount:Supplier: " + partner.getCompanyname() + "\t" + parent + "\t" + list);
+            if (list == null || list.size() == 0) {
+                acc = prepareNewAccount(parent, partner, accountType);
+                acc.setAccountid(getAccountNextNo(parent));
+            } else {
+                acc = list.get(0);
+                acc.setAccountname(partner.getCompanyname());
+            }
+            repo.save(acc);
+        }
+    }
+
+    public Account prepareNewAccount(Account parent, BusinessPartner partner, AccountType accountType) {
+        Account acc = new Account();
+        acc.setParentid(parent);
+        acc.setAccountname(partner.getCompanyname());
+        acc.setNodetype("ACCOUNT");
+        acc.setAccounttype(accountType);
+        acc.setBusinesspartner(partner);
+
+        return acc;
+    }
+
     public List<Account> completeFilterLeaf(String criteria) {
         System.out.println("completeFilterLeaf_Account: " + criteria);
 
@@ -49,7 +117,7 @@ public class AccountController extends AbstractController<Account> {
     @Transactional
     public List findAccountsInLedger(String parentNo) {
         //return em.createNamedQuery("SELECT OBJECT(o) FROM Account o WHERE o.parent.accountNo=:parentNo ORDER BY o.accountName ASC").setParameter("parentNo", parentNo).getResultList();
-        return repo.findAccountByParentBySearchCriteria(parentNo);
+        return repo.findAccountByParent(parentNo);
     }
 
     @Transactional
@@ -57,7 +125,6 @@ public class AccountController extends AbstractController<Account> {
         List<Account> accounts = null;
 
         //Account parent = repo.getOne(parentNo);   //findAccountByNo(parentNo);
-
         if (parentNo != null) {
             accounts = em.createQuery(
                     "SELECT OBJECT(a) FROM Account AS a WHERE a.parentid.accountid=" + parentNo
@@ -67,7 +134,7 @@ public class AccountController extends AbstractController<Account> {
         if (accounts == null) {
             System.out.println("LAST ACCOUNTNO: null");
             return null;
-        } else if(accounts.isEmpty()){
+        } else if (accounts.isEmpty()) {
             return null;
         }
         System.out.println("LAST ACCOUNTNO: " + accounts.get(0));
@@ -117,7 +184,7 @@ public class AccountController extends AbstractController<Account> {
             }
         }
         //LAST_NO = returnValue;
-        System.out.println(parent.getAccountid() + "\t" + account.getAccountid() + "\t" + returnValue);
+        System.out.println(parent + "\t" + account + "\t" + returnValue);
         return returnValue;
     }
 
@@ -193,15 +260,15 @@ public class AccountController extends AbstractController<Account> {
         return alpha[0];
     }
 
-    public List<Account> getInternalAccounts(){
-        return repo.findAccountByParentBySearchCriteria("INT1");
+    public List<Account> getInternalAccounts() {
+        return repo.findAccountByParent("INT1");
     }
-    
-    public List<Account> getAccountAllLeaf(){
+
+    public List<Account> getAccountAllLeaf() {
         return repo.findAccountLeafBySearchCriteria("");
     }
-    
-    public List<Account> getAccountInternalAndLeaf(){
+
+    public List<Account> getAccountInternalAndLeaf() {
         List<Account> list = getInternalAccounts();
         list.addAll(getAccountAllLeaf());
         System.out.println("getAccountInternalAndLeaf: " + list.size());

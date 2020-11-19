@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,7 +25,7 @@ public class ProductTransaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "prodtransid")
-    private Integer prodtransid = (int) new Date().getTime();
+    private Integer prodtransid = new Random().nextInt(Integer.MAX_VALUE);
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date transdate;
@@ -203,7 +204,7 @@ public class ProductTransaction implements Serializable {
     }
 
     public Double getExecutedqty() {
-        System.out.println("getExecutedqty: " + getProdtransid() + " => " + getProduct() + " => " + getFromprodtransaction());
+        //System.out.println("getExecutedqty: " + getProdtransid() + " => " + getProduct() + " => " + getFromprodtransaction());
         executedqty = 0.0;
         if (getFromprodtransaction() != null) {
             for (ProductTransactionExecution pt : getFromprodtransaction()) {
@@ -450,10 +451,11 @@ public class ProductTransaction implements Serializable {
     }
 
     public Double getTotalcost() {
-        if (getCost() == 0) {
-            return getSubtotal();
-        }
-        return getLinefcunitprice() * getCost();
+        //if (getCost() == 0) {
+        //    return getSubtotal();
+        //}
+        //return getLinefcunitprice() * getCost();
+        return (getSold() + getReceived()) * getLinecost();
     }
 
     /**
@@ -640,7 +642,14 @@ public class ProductTransaction implements Serializable {
     public void setFromprodtransaction(List<ProductTransactionExecution> fromprodtransaction) {
         this.fromprodtransaction = fromprodtransaction;
     }
-
+    
+    public String getFromProdTranstionDocNo(){
+        if(fromprodtransaction==null || fromprodtransaction.isEmpty()){
+            return "";
+        }
+        return fromprodtransaction.get(0).getFromprodtransid().getBusdoc().getDocno();
+    }
+    
     public void addFromprodtransaction(ProductTransactionExecution pt) {
         if (fromprodtransaction == null) {
             fromprodtransaction = new LinkedList();
@@ -666,6 +675,13 @@ public class ProductTransaction implements Serializable {
         }
     }
     
+    public String getToProdTranstionDocNo(){
+        if(toprodtransaction==null || toprodtransaction.isEmpty()){
+            return "";
+        }
+        return toprodtransaction.get(0).getFromprodtransid().getBusdoc().getDocno();
+    }
+
     public void addToprodtransaction(ProductTransactionExecution pt) {
         if (toprodtransaction == null) {
             toprodtransaction = new LinkedList();

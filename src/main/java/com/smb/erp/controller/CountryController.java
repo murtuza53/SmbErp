@@ -36,7 +36,18 @@ public class CountryController extends AbstractController<Country>{
         return countryList;
     }
     
+    public List<Country> getCountryAllDefaultFirst(){
+        if(countryList==null){
+            countryList = countryRepo.findByOrderByCountrynameAscDefaultFirst();
+        }
+        return countryList;
+    }
+
     public List<Country> getCurrencyAll(){
         return countryRepo.findByOrderByCurrencysymAsc();
+    }
+    
+    public Country findCountryDefault(){
+        return countryRepo.findCountryDefault();
     }
 }

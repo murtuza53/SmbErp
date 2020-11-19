@@ -1,0 +1,716 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_busdoc.xhtml">
+
+    <ui:define name="title">
+        #{foreignPurchaseController.tabTitle}
+    </ui:define>
+
+    <ui:param name="viewname" value="#{foreignPurchaseController.tabTitle}" />
+
+    <ui:define name="toolbar">
+        <!--<li>
+            <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
+                             process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
+        </li>-->
+        <li>
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl, :toolbarform" ajax="false"
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{foreignPurchaseController.save()}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnfromdoc" title="Add From Document" icon="fas fa-file-import" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             oncomplete="PF('ConvertFromDialog').show()"
+                             actionListener="#{foreignPurchaseController.refreshConvertFromDocumentList()}"
+                             update=":busexeform"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnaccviewer" title="View JV" icon="fas fa-book-open" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}" 
+                             oncomplete="PF('JVViewerDialog').show()" disabled="#{foreignPurchaseController.productTabDisabled}"
+                             actionListener="#{foreignPurchaseController.openJVViewer()}"
+                             update=":jvviewerform"/>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:tabView id="tabsview" dynamic="true" cache="true" styleClass="card ui-fluid">
+                        <p:tab title="Document Details">
+                            <p:panelGrid columns="4" layout="grid"
+                                         columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
+                                <p:outputLabel value="Doc No:" for="dno"/>
+                                <p:inputText id="dno" value="#{foreignPurchaseController.selected.docno}" placeholder="Document No" disabled="true"/>
+
+                                <p:outputLabel value="Prepared By:" for="preparedby"/>
+                                <p:inputText id="preparedby" value="Prepard By" placeholder="" disabled="true"/>
+
+                                <p:outputLabel value="Offload In:" for="branch"/>
+                                <p:selectOneMenu id="branch" value="#{foreignPurchaseController.selected.branch}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{branchController.allBranchByLoggedInCompany}" var="item" itemLabel="#{item.branchname}" itemValue="#{item}"/>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Sym"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.abbreviation}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.branchname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>   
+
+                                <p:outputLabel value="Date:" for="ddate"/>
+                                <p:calendar id="ddate" value="#{foreignPurchaseController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
+                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:calendar>
+
+                                <p:outputLabel value="Currency:" for="currency"/>
+                                <p:selectOneMenu id="currency" value="#{foreignPurchaseController.selected.country}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{countryController.countryAllDefaultFirst}" var="item" itemLabel="#{item.currencysym} - #{item.countryname}" itemValue="#{item}"/>
+                                    <p:ajax listener="#{foreignPurchaseController.currencySelected()}" update="rate" />
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Sym"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.currencysym}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.countryname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Rate:" for="rate"/>
+                                <p:inputNumber id="rate" value="#{foreignPurchaseController.selected.rate}" inputStyle="text-align:right;" label="Rate" decimalPlaces="7"/>
+
+                                <p:outputLabel value="Total Expense (LC):" for="explc"/>
+                                <p:inputNumber id="explc" widgetVar="expenselc" value="#{foreignPurchaseController.totalExpenseInLc}" inputStyle="text-align:right;" 
+                                               label="Total Expense (LC)" decimalPlaces="3" disabled="true"/>
+
+                                <p:outputLabel value="Ratio:" for="ratio"/>
+                                <p:inputNumber id="ratio" widgetVar="ratio" value="#{foreignPurchaseController.ratio}" inputStyle="text-align:right;" 
+                                               label="Landing Ratio" decimalPlaces="7" disabled="true"/>
+
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab id="tc" title="Terms and Conditions">
+                            <p:panelGrid columns="4" layout="grid"
+                                         columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
+                                <p:outputLabel value="Pay Type:" for="@next"/>
+                                <p:selectOneMenu id="paytype" value="#{foreignPurchaseController.selected.paytermsid.paytype}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('CreditStatus')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Validity:" for="@next"/>
+                                <p:selectOneMenu id="validity" value="#{foreignPurchaseController.selected.paytermsid.validitydays}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DocValidityTerms')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Delivery Schedule:" for="@next"/>
+                                <p:selectOneMenu id="dschedule" value="#{foreignPurchaseController.selected.paytermsid.deliverydays}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryDays')}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Delivery Terms:" for="@next"/>
+                                <p:selectOneMenu id="dterms" value="#{foreignPurchaseController.selected.paytermsid.deliveryterms}" editable="true">
+                                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                                    <f:selectItems value="#{systemDefaultsController.getAsList('DeliveryTerms')}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab id="expenses" title="Expenses">
+                            <p:toolbar>
+                                <f:facet name="right">
+                                    <p:commandButton id="newExpButton" icon="fa fa-plus"
+                                                     update=":growl,exptable" 
+                                                     title="new Expense" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" 
+                                                     actionListener="#{foreignPurchaseController.newExpense()}"/>
+                                    <p:commandButton id="deleteExpButton" icon="fa fa-trash"
+                                                     update=":growl,exptable" disabled="#{empty foreignPurchaseController.selectedExpense}" 
+                                                     title="Delete selected Expense" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                     actionListener="#{foreignPurchaseController.deletedExpense()}">
+                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:toolbar>
+                            <p:dataTable id="exptable" var="exp"
+                                         value="#{foreignPurchaseController.selected.expenses}"
+                                         rowKey="#{exp.expenseid}"
+                                         selectionMode="single"
+                                         selection="#{foreignPurchaseController.selectedExpense}"
+                                         editable="true"
+                                         editMode="cell"
+                                         emptyMessage="No Expense found"
+                                         sortBy="#{exp.country.currencysym}"
+                                         expandableRowGroups="true"
+                                         styleClass="products-table ui-datatable-sm ui-datatable-gridlines"
+                                         style="font-size: small">
+
+                                <p:ajax event="rowSelect" listener="#{foreignPurchaseController.refreshHistoryPanel()}" 
+                                        update="@previous:deleteExpButton"/>
+                                <p:ajax event="rowUnselect" update="@previous:deleteExpButton"/>
+                                <p:ajax event="cellEdit"/>
+
+                                <p:headerRow>
+                                    <p:column colspan="6" style=" border-bottom-width: 0px" styleClass="ui-panel ui-panel-titlebar">
+                                        <h:outputText value="#{exp.country.currencysym}"/>
+                                    </p:column>
+                                    <p:column style="text-align:right; border-bottom-width: 0px" styleClass="ui-panel ui-panel-titlebar">
+                                        <h:outputText value="#{foreignPurchaseController.calculateExpense(exp.country.currencysym)}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                </p:headerRow>
+
+                                <p:column headerText="Id" style="width: 70px">
+                                    <h:outputText value="#{exp.expenseid}"/>
+                                </p:column>
+
+                                <p:column headerText="Currency">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{exp.country.currencysym}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu id="curline" value="#{exp.country}" converter="#{entityConverter}" 
+                                                             var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                                <p:ajax event="change" listener="#{foreignPurchaseController.currencySelected()}" update="exptable, @widgetVar(expenselc)" />
+                                                <f:selectItems value="#{countryController.countryAllDefaultFirst}" var="item" itemLabel="#{item.currencysym}" itemValue="#{item}"/>
+                                                <p:column style="width: 20%">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Sym"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{t.currencysym}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Name"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{t.countryname}"/>
+                                                </p:column>
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Rate">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{exp.rate}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.0000000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="rateline" value="#{exp.rate}" 
+                                                         style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Rate">
+                                                <f:convertNumber pattern="#,##0.0000000" />
+                                                <p:ajax update="exptable, @widgetVar(expenselc)" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Expense Type" style="width: 20%">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{exp.expensetype}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu id="etline" value="#{exp.expensetype}" effect="fade" filter="true" filterMatchMode="contains">
+                                                <f:selectItems value="#{foreignPurchaseController.costingExpenses}"/>
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Credit Account" style="width: 20%">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{exp.account.accountname}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu id="accline" value="#{exp.account}" converter="#{entityConverter}" 
+                                                             var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                                <p:ajax event="change" update="exptable" />
+                                                <f:selectItems value="#{accountController.accountAllLeaf}" var="item" itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                                <p:column style="width: 20%">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="AccNo"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{t.accountid}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Name"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{t.accountname}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Parent"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{t.parentid.accountname}"/>
+                                                </p:column>
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Description" style="width: 20%">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{exp.description}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="desline" value="#{exp.description}" 
+                                                         style="text-align:left; border-left: 5px solid goldenrod; width: 100%;" label="Description">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Amount">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{exp.amount}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="amountline" value="#{exp.amount}" 
+                                                         style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Rate">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                                <p:ajax update="exptable, @widgetVar(expenselc)" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Products</h5>
+                            <p:commandButton id="deleteButton" icon="fa fa-trash"
+                                             update=":growl,transtable, :mainform:totalpanel" disabled="#{empty foreignPurchaseController.selectedTransaction}" 
+                                             title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                             actionListener="#{foreignPurchaseController.deleteTransactions()}">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+                        </div>
+                        <p:remoteCommand name="onCellEdit" update="transtable, :mainform:totalpanel" />
+                        <p:dataTable id="transtable" var="pt"
+                                     value="#{foreignPurchaseController.prodTransactions}" widgetVar="pttable"
+                                     rowKey="#{pt.product.productid}"
+                                     selectionMode="single"
+                                     selection="#{foreignPurchaseController.selectedTransaction}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Products found"
+                                     sortBy="#{pt.busdoc.docno} - #{pt.toProdTranstionDocNo} - #{pt.busdoc.businesspartner.companyname}"
+                                     expandableRowGroups="true"
+                                     styleClass="products-table ui-datatable-sm"
+                                     style="font-size: small">
+
+                            <p:ajax event="rowSelect" listener="#{foreignPurchaseController.refreshHistoryPanel()}" 
+                                    update=":mainform:deleteButton, :historyform"/>
+                            <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
+                            <p:ajax event="cellEdit"/>
+
+                            <p:headerRow>
+                                <p:column colspan="11" style="border-bottom-width: 0px" styleClass="ui-panel ui-panel-titlebar">
+                                    <h:outputText value="#{pt.busdoc.docno} - #{pt.toProdTranstionDocNo} - #{pt.busdoc.businesspartner.companyname}"/>
+                                </p:column>
+                            </p:headerRow>
+
+                            <p:column headerText="TransId" style="width: 50px">
+                                <h:outputText value="#{pt.prodtransid}"/>
+                            </p:column>
+
+                            <p:column headerText="Stock No" style="width: 75px">
+                                <h:outputText value="#{pt.product.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="Product Name"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{pt.customizedname}"
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Custom Name"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Unit">
+                                <h:outputText value="#{pt.product.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Qty"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.lineqty}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Quantity">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Price" style="text-align:right">
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.linefcunitprice}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="price" value="#{pt.linefcunitprice}" 
+                                                     style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="UnitPrice">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Total" style="text-align: right">
+                                <h:outputText id="total" value="#{pt.totalamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="VAT Type" style="text-align: center; width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="VAT Type"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.vatsptypeid.typename}" style="font-size: smaller"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="vatsptype" style="width:100%" value="#{pt.vatsptypeid}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade">
+                                            <f:selectItems value="#{foreignPurchaseController.vatSalesPurchaseType}" var="item" itemLabel="#{item.typename}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.typename}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="VAT %" style="text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="VAT %"/>
+                                </f:facet>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.vatcategoryid.categoryname}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
+                                                         var="t" effect="fade">
+                                            <f:selectItems value="#{foreignPurchaseController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()" />
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{t.categoryname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="VAT" style="text-align: right">
+                                <h:outputText id="vamount" value="#{pt.vatamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Net" style="text-align: right">
+                                <h:outputText id="namount" value="#{pt.grandtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:summaryRow id="tablesummary">
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{foreignPurchaseController.selected.totalamount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column></p:column>
+                                <p:column></p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{foreignPurchaseController.selected.totalvat}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{foreignPurchaseController.selected.grandtotal}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:summaryRow>
+
+                        </p:dataTable>
+                    </div>
+
+                    <p:panelGrid id="totalpanel" styleClass="nba-grid" style="font-weight: bold; width: 100%; text-align: right">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>Total</p:column>
+                                <p:column>Discount</p:column>
+                                <p:column>Gross</p:column>
+                                <p:column>VAT</p:column>
+                                <p:column>Net</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="#{foreignPurchaseController.selected.subtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{foreignPurchaseController.selected.discount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{foreignPurchaseController.selected.totalamount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{foreignPurchaseController.selected.totalvat}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{foreignPurchaseController.selected.grandtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panel id="cashregpanel" styleClass="card" style="padding-top: 1em" rendered="#{foreignPurchaseController.selected.busdocinfo.hasCashRegister()}">
+                        <f:facet name="header">Cash Register</f:facet>
+                        <p:dataTable id="regtable" var="acc"
+                                     value="#{foreignPurchaseController.cashRegisterAccounts}" widgetVar="regtable"
+                                     rowKey="#{acc.accountid}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Transaction found"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-gridlines"
+                                     style="font-size: small">
+
+                            <p:ajax event="rowUnselect" update="regtable" listener="#{foreignPurchaseController.refreshRegisterTotal()}"/>
+                            <p:ajax event="cellEdit"/>
+
+                            <p:column headerText="Account" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''}">
+                                <h:outputText value="#{acc.accountname}" />
+                            </p:column>
+
+                            <p:column headerText="Amount" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''};width:100px;">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{acc.amount}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{acc.amount}" disabled="#{acc.accountname.equalsIgnoreCase('Total')?true:false}"
+                                                     style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Amount">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshRegisterTotal()}" update="regtable" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Details" style="#{acc.accountname.equalsIgnoreCase('Total')?'font-weight: bold':''};">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{acc.description}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{acc.description}" disabled="#{acc.accountname.equalsIgnoreCase('Total')?true:false}"
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Details"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:define>
+
+    <ui:define name="history">
+        <h:form id="historyform">
+            <div class="p-col-12 p-md-12 vless_padding">
+                <p:panel header="Stock" toggleable="true" style="padding: 0px !important">
+                    <p:dataTable id="stocklist"
+                                 value="#{foreignPurchaseController.stockBalances}"
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Stock Balances found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:spacer height="5px" width="1px"/>
+                <p:panel header="Sales" toggleable="true">
+                    <p:dataTable id="saleslist"
+                                 value="#{foreignPurchaseController.salesProductTransactions}"
+                                 style="width: 100%"
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Sales History found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="scol1" value="#{trans.busdoc.docno}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="scol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="scol2" value="#{trans.fcunitprice}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="scol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:spacer height="5px" width="1px"/>
+                <p:panel header="Purchase" toggleable="true">
+                    <p:dataTable id="purchaselist"
+                                 value="#{foreignPurchaseController.purchaseProductTransactions}"
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Purchase History found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="pcol1" value="#{trans.busdoc.docno}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
+        <ui:include src="/busdoc/fpfromdocument.xhtml"/>
+        <ui:include src="/accounts/fpjvviewer.xhtml"/>
+    </ui:define>
+
+    <ui:define name="productsearch">
+        <h:form id="psform">
+            <pe:slideout id="slideoutProduct" title="Products" icon="fa fa-search" location="top" widgetVar="slideout" 
+                         handleStyleClass="product-handle" panelStyleClass="product-panel" offset="230px" bounceTimes="5"
+                         bounceDistance="100px" rendered="#{!foreignPurchaseController.productTabDisabled}" handleOffsetReverse="false" >
+                <p:panel>
+                    <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
+                        <p:outputLabel for="pcriteria" value="Search Criteria" />
+                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{foreignPurchaseController.productSearchController.criteria}" />
+                        <p:commandButton value="Search" actionListener="#{foreignPurchaseController.productSearchController.searchProducts()}" update="prodtable"/>
+                        <p:commandButton value="Transfer" actionListener="#{foreignPurchaseController.productSearchController.transfer()}" update=":mainform:transtable"/>
+                    </p:panelGrid>
+                    <p:panel styleClass="slide-product-panel">
+                        <p:dataTable id="prodtable" var="prod"
+                                     value="#{foreignPurchaseController.productSearchController.productStocks}" widgetVar="ptable"
+                                     selection="#{foreignPurchaseController.productSearchController.selectedProductStock}"
+                                     rowKey="#{prod.productid}"
+                                     emptyMessage="No Products found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     style="font-size: small">
+                            <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                            <p:column headerText="Stock#" sortBy="#{prod.productid}" filterMatchMode="contains"
+                                      style="width: 70px">
+                                <h:outputText value="#{prod.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" sortBy="#{prod.product.productname}" filterBy="#{prod.product.productname}" filterMatchMode="contains"
+                                      style="width: 250px">
+                                <h:outputText value="#{prod.product.productname}" />
+                            </p:column>
+
+                            <p:column headerText="Unit" sortBy="#{prod.product.unit.unitsym}" filterBy="#{prod.product.unit.unitsym}" filterMatchMode="contains" style="width: 70px">
+                                <h:outputText value="#{prod.product.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column headerText="SupCode" sortBy="#{prod.product.supplierscode}" filterBy="#{prod.product.supplierscode}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.product.supplierscode}" />
+                            </p:column>
+
+                            <p:column headerText="Brand" sortBy="#{prod.product.brand.brandname}" filterBy="#{prod.product.brand.brandname}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.product.brand.brandname}" />
+                            </p:column>
+
+                            <p:columns value="#{foreignPurchaseController.productSearchController.branchList}" var="branch" 
+                                       headerText="#{branch}" style="text-align: right">
+                                <h:outputText value="#{prod.findStock(branch)}">
+                                    <f:convertNumber pattern="#{systemConfig.decimalFormatString}" />
+                                </h:outputText>
+                            </p:columns> 
+                        </p:dataTable>
+                    </p:panel>
+                </p:panel>
+            </pe:slideout>
+        </h:form>
+    </ui:define>
+</ui:composition>

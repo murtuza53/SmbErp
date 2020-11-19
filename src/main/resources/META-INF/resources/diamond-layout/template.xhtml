@@ -21,7 +21,15 @@
     </h:head>
 
     <h:body>
-        <div class="layout-wrapper #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
+            <p:ajaxStatus styleClass="layout-ajax-loader">
+                <f:facet name="start">
+                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>        <div class="layout-wrapper #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
             <ui:include src="./sidebar.xhtml"></ui:include>
             <ui:include src="./sidebar-right.xhtml"></ui:include>
             <ui:include src="./config.xhtml"></ui:include>
@@ -32,26 +40,25 @@
                 <ui:include src="./topbar.xhtml">
                     <ui:param name="viewname" value="#{viewname}" />                    
                 </ui:include>
-                <div class="layout-content">
+                <div class="layout-content less_padding">
                     <ui:insert name="content"></ui:insert>
                 </div>
                 <ui:include src="./footer.xhtml"></ui:include>
             </div>
-
-            <p:ajaxStatus styleClass="layout-ajax-loader">
-                <f:facet name="start">
-                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"></i>
-                </f:facet>
-
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>
-
             <ui:include src="./search.xhtml"></ui:include>
             <div class="layout-mask modal-in"></div>
         </div>
 
+        <h:outputStylesheet id="layoutCSS">
+            .less_padding{
+                padding: 1em !important;
+            }
+
+            .vless_padding{
+                padding: 0.5em !important;
+            }
+        </h:outputStylesheet>
+        
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <h:outputStylesheet name="css/nanoscroller.css"/>
@@ -59,6 +66,7 @@
         <h:outputStylesheet id="layout-scheme" name="css/layout-#{guestPreferences.scheme}.css" library="diamond-layout" />
         <h:outputStylesheet name="css/primeicons.css" library="diamond-layout" />
         <h:outputStylesheet name="css/demo-#{guestPreferences.scheme}.css" library="demo" />
+        <h:outputStylesheet name="css/custom.css"/>
     </h:body>
 
 </html>

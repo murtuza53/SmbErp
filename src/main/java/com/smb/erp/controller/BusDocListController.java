@@ -10,13 +10,13 @@ import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.ProductTransaction;
-import com.smb.erp.entity.ProductTransactionExecution;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
+import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -50,6 +50,10 @@ public class BusDocListController extends AbstractController<BusDoc> {
     BusDocInfo docInfo;
 
     List<BusinessPartner> partnerList;
+    
+    private Date fromDate = DateUtil.startOfMonth(new Date());
+    
+    private Date toDate = new Date();
 
     @Autowired
     public BusDocListController(BusDocRepository repo) {
@@ -81,7 +85,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
     public List<BusDoc> getItems() {
         if (items == null) {
             //items = repo.findAll(Sort.by(Sort.Direction.ASC, "createdon"));
-            items = repo.findByBusDocByPrefix(docInfo.getPrefix());
+            items = repo.findByBusDocByPrefix(docInfo.getPrefix(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate));
             System.out.println(docInfo.getPrefix() + " List: " + items.size());
             for (BusDoc bd : items) {
                 System.out.println("----------" + bd.getDocno() + "----------");
@@ -159,6 +163,34 @@ public class BusDocListController extends AbstractController<BusDoc> {
             }
         }
         return partnerList;
+    }
+
+    /**
+     * @return the fromDate
+     */
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    /**
+     * @param fromDate the fromDate to set
+     */
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    /**
+     * @return the toDate
+     */
+    public Date getToDate() {
+        return toDate;
+    }
+
+    /**
+     * @param toDate the toDate to set
+     */
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 
 }

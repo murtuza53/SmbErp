@@ -3,151 +3,156 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.math.BigInteger;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the ppdetails database table.
- * 
+ *
  */
 @Entity
-@Table(name="ppdetails")
-@NamedQuery(name="PartialPaymentDetail.findAll", query="SELECT p FROM PartialPaymentDetail p")
+@Table(name = "ppdetails")
+@NamedQuery(name = "PartialPaymentDetail.findAll", query = "SELECT p FROM PartialPaymentDetail p")
 public class PartialPaymentDetail implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String pplineno;
+    private static final long serialVersionUID = 1L;
 
-	private double amount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    private Long pplineno = 0l;
 
-	private BigInteger position;
+    private Double amount = 0.0;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date transdate;
+    private Long position = 0l;
 
-	private BigInteger version;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transdate;
 
-	//bi-directional many-to-one association to BusDoc
-	@ManyToOne
-	@JoinColumn(name="fpino")
-	private BusDoc busdoc1;
+    private Long version = 1l;
 
-	//bi-directional many-to-one association to BusDoc
-	@ManyToOne
-	@JoinColumn(name="jcino")
-	private BusDoc busdoc2;
+    //bi-directional many-to-one association to BusDoc
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "docno")
+    private BusDoc busdoc;
 
-	//bi-directional many-to-one association to BusDoc
-	@ManyToOne
-	@JoinColumn(name="jclpino")
-	private BusDoc busdoc3;
+    //bi-directional many-to-one association to LederLine
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "llno")
+    private LedgerLine ledline;
 
-	//bi-directional many-to-one association to LedgerLine
-	@ManyToOne
-	@JoinColumn(name="llno")
-	private LedgerLine ledline;
+    public PartialPaymentDetail() {
+    }
 
-	//bi-directional many-to-one association to BusDoc
-	@ManyToOne
-	@JoinColumn(name="lpino")
-	private BusDoc busdoc4;
+    public Long getPplineno() {
+        return this.pplineno;
+    }
 
-	//bi-directional many-to-one association to BusDoc
-	@ManyToOne
-	@JoinColumn(name="sino")
-	private BusDoc busdoc5;
+    public void setPplineno(Long pplineno) {
+        this.pplineno = pplineno;
+    }
 
-	public PartialPaymentDetail() {
-	}
+    public Double getAmount() {
+        return this.amount;
+    }
 
-	public String getPplineno() {
-		return this.pplineno;
-	}
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
-	public void setPplineno(String pplineno) {
-		this.pplineno = pplineno;
-	}
+    public Long getPosition() {
+        return this.position;
+    }
 
-	public double getAmount() {
-		return this.amount;
-	}
+    public void setPosition(Long position) {
+        this.position = position;
+    }
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+    public Date getTransdate() {
+        return this.transdate;
+    }
 
-	public BigInteger getPosition() {
-		return this.position;
-	}
+    public void setTransdate(Date transdate) {
+        this.transdate = transdate;
+    }
 
-	public void setPosition(BigInteger position) {
-		this.position = position;
-	}
+    public Long getVersion() {
+        return this.version;
+    }
 
-	public Date getTransdate() {
-		return this.transdate;
-	}
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
-	public void setTransdate(Date transdate) {
-		this.transdate = transdate;
-	}
+    @Override
+    public String toString() {
+        return "PartialPaymentDetail{" + "pplineno=" + pplineno + ", amount=" + amount + ", transdate=" + transdate + ", busdoc=" + getBusdoc() + '}';
+    }
 
-	public BigInteger getVersion() {
-		return this.version;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 61 * hash + Objects.hashCode(this.pplineno);
+        return hash;
+    }
 
-	public void setVersion(BigInteger version) {
-		this.version = version;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PartialPaymentDetail other = (PartialPaymentDetail) obj;
+        if (!Objects.equals(this.pplineno, other.pplineno)) {
+            return false;
+        }
+        return true;
+    }
 
-	public BusDoc getBusdoc1() {
-		return this.busdoc1;
-	}
+    /**
+     * @return the ledline
+     */
+    public LedgerLine getLedline() {
+        return ledline;
+    }
 
-	public void setBusdoc1(BusDoc busdoc1) {
-		this.busdoc1 = busdoc1;
-	}
+    /**
+     * @param ledline the ledline to set
+     */
+    public void setLedline(LedgerLine ledline) {
+        this.ledline = ledline;
+    }
 
-	public BusDoc getBusdoc2() {
-		return this.busdoc2;
-	}
+    /**
+     * @return the busdoc
+     */
+    public BusDoc getBusdoc() {
+        return busdoc;
+    }
 
-	public void setBusdoc2(BusDoc busdoc2) {
-		this.busdoc2 = busdoc2;
-	}
+    /**
+     * @param busdoc the busdoc to set
+     */
+    public void setBusdoc(BusDoc busdoc) {
+        this.busdoc = busdoc;
+    }
 
-	public BusDoc getBusdoc3() {
-		return this.busdoc3;
-	}
-
-	public void setBusdoc3(BusDoc busdoc3) {
-		this.busdoc3 = busdoc3;
-	}
-
-	public LedgerLine getLedline() {
-		return this.ledline;
-	}
-
-	public void setLedline(LedgerLine ledline) {
-		this.ledline = ledline;
-	}
-
-	public BusDoc getBusdoc4() {
-		return this.busdoc4;
-	}
-
-	public void setBusdoc4(BusDoc busdoc4) {
-		this.busdoc4 = busdoc4;
-	}
-
-	public BusDoc getBusdoc5() {
-		return this.busdoc5;
-	}
-
-	public void setBusdoc5(BusDoc busdoc5) {
-		this.busdoc5 = busdoc5;
-	}
-
+    public Double getBalanceAmount(){
+        return busdoc.getTotalPending() - amount;
+    }
+    
+    public Double getPaidAmount(){
+        return busdoc.getTotalPaid();
+    }
+    
+    public Double getPendingAmount(){
+        if(pplineno>0){
+            return busdoc.getTotalPending()+amount;
+        }
+        return busdoc.getTotalPending();
+    }
 }

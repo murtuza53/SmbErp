@@ -48,11 +48,16 @@
                                      rowKey="#{prod.prodtransid}"
                                      emptyMessage="No Transactions found"
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm"
-                                     style="font-size: small">
+                                     style="font-size: small"
+                                     rowStyleClass="#{prod.executedqty lt (prod.sold+prod.received)?'':'ui-helper-hidden'}">
                             <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
                             <p:column headerText="Stock#" sortBy="#{prod.prodtransid}" filterMatchMode="contains"
                                       style="width: 70px">
                                 <h:outputText value="#{prod.prodtransid}" />
+                            </p:column>
+
+                            <p:column headerText="Stock#" sortBy="#{prod.product.productid}" filterBy="#{prod.product.productid}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.product.productid}" />
                             </p:column>
 
                             <p:column headerText="Product" sortBy="#{prod.product.productname}" filterBy="#{prod.product.productname}" filterMatchMode="contains"

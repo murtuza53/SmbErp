@@ -27,30 +27,42 @@
                                              actionListener="#{busDocInfoController.edit_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
 
-                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{busDocInfoController.refresh()}"
                                              update="@form :growl" icon="fa fa-refresh" />
+
+                            <p:commandButton id="btnlist" title="List Documents" icon="fa fa-list" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             disabled="#{empty busDocInfoController.selected}" 
+                                             ajax="false" actionListener="#{busDocInfoController.findDocumentListLink()}"/>
                         </f:facet>
                         <p:dataTable id="bustable" var="bus" widgetVar="btable"
                                      value="#{busDocInfoController.items}"
                                      selectionMode="single"
                                      selection="#{busDocInfoController.selected}"
                                      rowKey="#{bus.bdinfoid}"
-                                     reflow="true"
+                                     sortBy="#{bus.doctype}"
+                                     expandableRowGroups="true"
                                      emptyMessage="No Document Definition found"
                                      styleClass="products-table ui-datatable-sm">
-                            <p:ajax event="rowSelect" update=":busform:btnedit"/>
+                            <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btnlist"/>
 
-                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                            <p:headerRow>
+                                <p:column headerText="Doc Type" colspan="6">
+                                    <h:outputText value="#{bus.doctype}" />
+                                </p:column>
+                            </p:headerRow>
+
+                            <p:column headerText="Id" style="text-align: center">
                                 <h:outputText value="#{bus.bdinfoid}" />
-                            </p:column>
-
-                            <p:column headerText="Name" style="width: 20%">
-                                <h:outputText value="#{bus.docname}" />
                             </p:column>
 
                             <p:column headerText="Doc Type">
                                 <h:outputText value="#{bus.doctype}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 20%">
+                                <h:outputText value="#{bus.docname}" />
                             </p:column>
 
                             <p:column headerText="Transaction Type">

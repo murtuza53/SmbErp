@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        #{accountVoucherListController.docInfo.docname} List
+    </ui:define>
+
+    <ui:param name="viewname" value="#{accountVoucherListController.docInfo.docname} List" />
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="doclist" header="" toggleable="true">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{accountVoucherListController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <p:dataExporter type="xls" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+                        </f:facet>
+                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
+
+                            <p:outputLabel value="From Date" for="fromdate" />
+                            <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
+                                        title="From Date"  showOn="button"
+                                        required="true" requiredMessage="Please select Date"/>
+
+                            <p:outputLabel value="To Date" for="todate" />
+                            <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
+                                        title="To Date"  showOn="button"
+                                        required="true" requiredMessage="Please select Date"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br/>
+                    <p:panel id="tablelist" header="" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" title="New #{accountVoucherListController.docInfo.docname}" icon="fa fa-plus" process="@this"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{accountVoucherListController.new_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnedit" title="Edit #{accountVoucherListController.docInfo.docname}" icon="fa fa-pencil" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty accountVoucherListController.selected}" 
+                                             actionListener="#{accountVoucherListController.edit_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btndelete" title="Delete #{accountVoucherListController.docInfo.docname}" icon="fa fa-trash" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty accountVoucherListController.selected}" 
+                                             actionListener="#{accountVoucherListController.delete()}"
+                                             update="@form :growl">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+                        </f:facet>
+                        <p:dataTable id="bustable" var="item" widgetVar="btable"
+                                     value="#{accountVoucherListController.items}"
+                                     rowKey="#{item.docno}"
+                                     selectionMode="single"
+                                     selection="#{accountVoucherListController.selected}"
+                                     reflow="true"
+                                     emptyMessage="No #{accountVoucherListController.docInfo.docname} found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
+
+                            <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.docdate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Description" sortBy="#{item.description}" 
+                                      filterBy="#{item.description}" filterMatchMode="contains">
+                                <h:outputText value="#{item.description}" />
+                            </p:column>
+
+                            <p:column headerText="Business Partner" sortBy="#{item.companyName}" 
+                                      filterBy="#{item.companyName}" filterMatchMode="contains">
+                                <h:outputText value="#{item.companyName}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalDebit}" filterBy="#{item.totalDebit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Total Debit"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalDebit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalCredit}" filterBy="#{item.totalCredit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Total Credit"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalCredit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

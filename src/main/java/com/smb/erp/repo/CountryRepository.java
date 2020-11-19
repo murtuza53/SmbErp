@@ -26,4 +26,6 @@ public interface CountryRepository extends BaseRepository<Country, Long> {
     @Query("SELECT c FROM Country as c WHERE c.defcountry=true")
     Country findCountryDefault();
 
+    @Query("SELECT c FROM Country as c ORDER BY c.defcountry desc, c.countryname asc")
+    List<Country> findByOrderByCountrynameAscDefaultFirst();
 }

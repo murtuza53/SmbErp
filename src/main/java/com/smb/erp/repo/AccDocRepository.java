@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 public interface AccDocRepository extends BaseRepository<AccDoc, String>{
     
     @Query("SELECT a FROM AccDoc as a WHERE a.docno LIKE :prefix% ORDER by a.docdate desc")
-    List<AccDoc> findByBusDocByPrefix(@Param("prefix") String prefix);
+    List<AccDoc> findByAccDocByPrefix(@Param("prefix") String prefix);
 
     AccDoc findByRefno(String refno);
 }

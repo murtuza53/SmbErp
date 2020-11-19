@@ -15,6 +15,21 @@ public class DateUtil {
     private static Calendar CALENDAR = Calendar.getInstance();
 
     /**
+     * Returns the date with current time set
+     *
+     * @param date Date to calculate end of day from
+     * @return <code>date</code>
+     */
+    public static Date setCurrentTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+        int hr = cal.get(Calendar.HOUR_OF_DAY);
+        int min = cal.get(Calendar.MINUTE);
+        int sec = cal.get(Calendar.SECOND);
+        cal.set(DateUtil.getYear(date), DateUtil.getMonth(date), DateUtil.getDay(date), hr, min, sec);
+        return cal.getTime();
+    }
+    
+    /**
      * Returns the last millisecond of the specified date.
      *
      * @param date Date to calculate end of day from

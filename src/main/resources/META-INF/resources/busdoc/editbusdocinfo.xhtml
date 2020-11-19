@@ -23,9 +23,9 @@
     </ui:define>
 
     <ui:define name="content">
-        <div class="p-grid">
+        <div class="p-grid vless_padding">
             <!-- Left Side -->
-            <div class="p-col-12 p-md-6">
+            <div class="p-col-12 p-md-6 vless_padding">
                 <p:fieldset legend="Document Details" styleClass="card ui-fluid">
                     <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
                                  styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
@@ -54,7 +54,6 @@
                         <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
                     </p:panelGrid>
                 </p:fieldset>
-                <br/>
                 <p:fieldset legend="Conversion" styleClass="card ui-fluid">
                     <p:panel id="conlist" header="Document Convert From">
                         <f:facet name="actions">
@@ -101,7 +100,7 @@
                 </p:fieldset>
             </div>
 
-            <div class="p-col-12 p-md-6">
+            <div class="p-col-12 p-md-6 vless_padding">
                 <!-- Right Side -->
                 <p:fieldset legend="Account" styleClass="card ui-fluid">
                     <p:panel id="doclist" header="Transaction Configuration">
@@ -193,6 +192,83 @@
                         #{busDocInfoController.numberFields}
                     </p:panel>
                 </p:fieldset>
+                <p:fieldset legend="Cash Register" styleClass="card ui-fluid">
+                    <p:panel id="crlist" header="Add Accounts">
+                        <f:facet name="actions">
+                            <p:commandButton id="btncrnew" title="Add New" icon="fa fa-plus"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             update="crtable" actionListener="#{busDocInfoController.createNewCashRegister()}"/>                            
+
+                            <p:commandButton id="btncrdelete" icon="fa fa-trash" update="crtable"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocInfoController.selectedCashRegister}"
+                                             actionListener="#{busDocInfoController.deleteCashRegister()}"/>
+                        </f:facet>
+                        <p:dataTable id="crtable" var="reg" widgetVar="crtable"
+                                     value="#{busDocInfoController.selected.cashregiserid}"
+                                     rowKey="#{reg.cashregisterid}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selectedCashRegister}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Accounts found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":mainform:btncrdelete"/>
+
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{reg.cashregisterid}" />
+                            </p:column>
+
+                            <p:column headerText="Type" style="width: 20%">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{reg.transtype}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{reg.transtype}" style="width:100%">
+                                            <f:selectItem itemLabel="Select.." itemValue="" itemDisabled="true"/>
+                                            <f:selectItem itemLabel="Credit" itemValue="Credit"/>
+                                            <f:selectItem itemLabel="Debit" itemValue="Debit"/>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Referred A/c">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{reg.accountid.accountname}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="acccr" value="#{reg.accountid}" converter="#{entityConverter}" 
+                                                         var="cr" effect="fade" filter="true" filterMatchMode="contains" >
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                            <f:selectItems value="#{accountController.accountInternalAndLeaf}" var="regcr" 
+                                                           itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                            <p:column style="width: 20%">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Id"/>
+                                                </f:facet>
+                                                <h:outputText value="#{cr.accountid}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{cr.accountname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>                               
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                        <b>Note:</b>
+                        <br/>
+                        If NO accounts added then Cash Register will not be displayed.
+                    </p:panel>
+                </p:fieldset>
+
             </div>
         </div>
     </ui:define>

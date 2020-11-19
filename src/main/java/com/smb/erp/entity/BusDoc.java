@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import org.hibernate.annotations.Fetch;
@@ -27,6 +28,8 @@ public class BusDoc implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdon;
+
+    private Double rate = 1.0;
 
     private String description;
 
@@ -100,8 +103,10 @@ public class BusDoc implements Serializable {
     private Double totalvat = 0.0;
 
     private Double grandtotal = 0.0;
-    
+
     private Double totalcost = 0.0;
+
+    private String docstatus = "";
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon;
@@ -148,29 +153,27 @@ public class BusDoc implements Serializable {
     @JoinColumn(name = "partnerid")
     private BusinessPartner businesspartner;
 
-    //bi-directional many-to-one association to Company
-    //@ManyToOne
-    //@JoinColumn(name = "companyid")
-    //private Company company;
     @ManyToOne
     @JoinColumn(name = "branchno")
     private Branch branch;
 
+    @ManyToOne
+    @JoinColumn(name = "countryno")
+    private Country country;
+
     //bi-directional many-to-one association to PartialPaymentDetail
-    //@OneToMany(mappedBy="busdoc1")
-    //private List<PartialPaymentDetail> ppdetails1;
+    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<BusDocExpense> expenses;
+
     //bi-directional many-to-one association to PartialPaymentDetail
-    //@OneToMany(mappedBy="busdoc2")
-    //private List<PartialPaymentDetail> ppdetails2;
-    //bi-directional many-to-one association to PartialPaymentDetail
-    //@OneToMany(mappedBy="busdoc3")
-    //private List<PartialPaymentDetail> ppdetails3;
-    //bi-directional many-to-one association to PartialPaymentDetail
-    //@OneToMany(mappedBy="busdoc4")
-    //private List<PartialPaymentDetail> ppdetails4;
-    //bi-directional many-to-one association to PartialPaymentDetail
-    //@OneToMany(mappedBy="busdoc5")
-    //private List<PartialPaymentDetail> ppdetails5;
+    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<PartialPaymentDetail> ppdetails;
+
+    @Transient
+    private List<Account> accounts;
+    
     public BusDoc() {
     }
 
@@ -552,27 +555,6 @@ public class BusDoc implements Serializable {
         this.busdoc = busdoc;
     }
 
-    /*public List<BusDoc> getBusdocs() {
-		return this.busdocs;
-	}
-
-	public void setBusdocs(List<BusDoc> busdocs) {
-		this.busdocs = busdocs;
-	}
-
-	public BusDoc addBusdoc(BusDoc busdoc) {
-		getBusdocs().add(busdoc);
-		busdoc.setBusdoc(this);
-
-		return busdoc;
-	}
-
-	public BusDoc removeBusdoc(BusDoc busdoc) {
-		getBusdocs().remove(busdoc);
-		busdoc.setBusdoc(null);
-
-		return busdoc;
-	}*/
     public BusDocInfo getBusdocinfo() {
         return this.busdocinfo;
     }
@@ -603,14 +585,6 @@ public class BusDoc implements Serializable {
         this.businesspartner = businesspartner;
     }
 
-    /*public Company getCompany() {
-        return this.company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }*/
-
     /**
      * @return the discount
      */
@@ -639,115 +613,6 @@ public class BusDoc implements Serializable {
         this.totalvat = totalvat;
     }
 
-    /*public List<PartialPaymentDetail> getPpdetails1() {
-		return this.ppdetails1;
-	}
-
-	public void setPpdetails1(List<PartialPaymentDetail> ppdetails1) {
-		this.ppdetails1 = ppdetails1;
-	}
-
-	public PartialPaymentDetail addPpdetails1(PartialPaymentDetail ppdetails1) {
-		getPpdetails1().add(ppdetails1);
-		ppdetails1.setBusdoc1(this);
-
-		return ppdetails1;
-	}
-
-	public PartialPaymentDetail removePpdetails1(PartialPaymentDetail ppdetails1) {
-		getPpdetails1().remove(ppdetails1);
-		ppdetails1.setBusdoc1(null);
-
-		return ppdetails1;
-	}
-
-	public List<PartialPaymentDetail> getPpdetails2() {
-		return this.ppdetails2;
-	}
-
-	public void setPpdetails2(List<PartialPaymentDetail> ppdetails2) {
-		this.ppdetails2 = ppdetails2;
-	}
-
-	public PartialPaymentDetail addPpdetails2(PartialPaymentDetail ppdetails2) {
-		getPpdetails2().add(ppdetails2);
-		ppdetails2.setBusdoc2(this);
-
-		return ppdetails2;
-	}
-
-	public PartialPaymentDetail removePpdetails2(PartialPaymentDetail ppdetails2) {
-		getPpdetails2().remove(ppdetails2);
-		ppdetails2.setBusdoc2(null);
-
-		return ppdetails2;
-	}
-
-	public List<PartialPaymentDetail> getPpdetails3() {
-		return this.ppdetails3;
-	}
-
-	public void setPpdetails3(List<PartialPaymentDetail> ppdetails3) {
-		this.ppdetails3 = ppdetails3;
-	}
-
-	public PartialPaymentDetail addPpdetails3(PartialPaymentDetail ppdetails3) {
-		getPpdetails3().add(ppdetails3);
-		ppdetails3.setBusdoc3(this);
-
-		return ppdetails3;
-	}
-
-	public PartialPaymentDetail removePpdetails3(PartialPaymentDetail ppdetails3) {
-		getPpdetails3().remove(ppdetails3);
-		ppdetails3.setBusdoc3(null);
-
-		return ppdetails3;
-	}
-
-	public List<PartialPaymentDetail> getPpdetails4() {
-		return this.ppdetails4;
-	}
-
-	public void setPpdetails4(List<PartialPaymentDetail> ppdetails4) {
-		this.ppdetails4 = ppdetails4;
-	}
-
-	public PartialPaymentDetail addPpdetails4(PartialPaymentDetail ppdetails4) {
-		getPpdetails4().add(ppdetails4);
-		ppdetails4.setBusdoc4(this);
-
-		return ppdetails4;
-	}
-
-	public PartialPaymentDetail removePpdetails4(PartialPaymentDetail ppdetails4) {
-		getPpdetails4().remove(ppdetails4);
-		ppdetails4.setBusdoc4(null);
-
-		return ppdetails4;
-	}
-
-	public List<PartialPaymentDetail> getPpdetails5() {
-		return this.ppdetails5;
-	}
-
-	public void setPpdetails5(List<PartialPaymentDetail> ppdetails5) {
-		this.ppdetails5 = ppdetails5;
-	}
-
-	public PartialPaymentDetail addPpdetails5(PartialPaymentDetail ppdetails5) {
-		getPpdetails5().add(ppdetails5);
-		ppdetails5.setBusdoc5(this);
-
-		return ppdetails5;
-	}
-
-	public PartialPaymentDetail removePpdetails5(PartialPaymentDetail ppdetails5) {
-		getPpdetails5().remove(ppdetails5);
-		ppdetails5.setBusdoc5(null);
-
-		return ppdetails5;
-	}*/
     /**
      * @return the productTransactions
      */
@@ -760,6 +625,23 @@ public class BusDoc implements Serializable {
      */
     public void setProductTransactions(List<ProductTransaction> productTransactions) {
         this.productTransactions = productTransactions;
+    }
+
+    public ProductTransaction addProductTransactions(ProductTransaction pt) {
+        if (getProductTransactions() == null) {
+            setProductTransactions(new LinkedList());
+        }
+        getProductTransactions().add(pt);
+        pt.setBusdoc(this);
+
+        return pt;
+    }
+
+    public ProductTransaction removeProductTransactions(ProductTransaction pt) {
+        getProductTransactions().remove(pt);
+        pt.setBusdoc(null);
+
+        return pt;
     }
 
     @Override
@@ -860,6 +742,22 @@ public class BusDoc implements Serializable {
         this.totalcost = totalcost;
     }
 
+    public Double getExecutedQty() {
+        Double total = 0.0;
+        if (getProductTransactions() != null && getProductTransactions().size() > 0) {
+            total = getProductTransactions().stream().mapToDouble(o -> o.getExecutedqty()).sum();
+        }
+        return total;
+    }
+
+    public Double getTotalQty() {
+        Double total = 0.0;
+        if (getProductTransactions() != null && getProductTransactions().size() > 0) {
+            total = getProductTransactions().stream().mapToDouble(o -> o.getLineqty()).sum();
+        }
+        return total;
+    }
+
     /**
      * @return the branch
      */
@@ -888,14 +786,202 @@ public class BusDoc implements Serializable {
         this.docdate = docdate;
         System.out.println(docno + ": " + this.docdate);
     }
-    
-    public String getTitleBadge(){
-        if(getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())){
+
+    public String getTitleBadge() {
+        if (getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
             return "status-instock";
-        } else if (getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())){
+        } else if (getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())) {
             return "status-outofstock";
         }
         return "status-lowstock";
     }
 
+    /**
+     * @return the docstatus
+     */
+    public String getDocstatus() {
+        if (docstatus.equalsIgnoreCase(DocStatus.CANCELLED.toString()) || docstatus.equalsIgnoreCase(DocStatus.RETURNED.toString())) {
+            return docstatus;
+        }
+        double qty = getTotalQty();
+        double exe = getExecutedQty();
+        docstatus = DocStatus.PENDING.toString();
+        if (exe > 0) {
+            if (qty == exe) {
+                return DocStatus.COMPLETED.toString();
+            } else if (exe < qty) {
+                return DocStatus.PARTIAL.toString();
+            }
+        }
+        return docstatus;
+    }
+
+    /**
+     * @param docstatus the docstatus to set
+     */
+    public void setDocstatus(String docstatus) {
+        this.docstatus = docstatus;
+    }
+
+    public String getStatusCss(String value) {
+        //.status-new .status-draft{}
+        //.status-negotiation .status-pending{}
+        //.status-proposal .status-partial{}
+        //.status-qualified .status-completed{}
+        //.status-qualified .status-paid{}
+        //.status-unqualified .status-cancelled{}
+        //.status-renewal .status-returned{}
+        if (value.equalsIgnoreCase("Draft")) {
+            return "new";
+        } else if (value.equalsIgnoreCase("Pending")) {
+            return "negotiation";
+        } else if (value.equalsIgnoreCase("Partial")) {
+            return "proposal";
+        } else if (value.equalsIgnoreCase("Completed")) {
+            return "qualified";
+        } else if (value.equalsIgnoreCase("Paid")) {
+            return "qualified";
+        } else if (value.equalsIgnoreCase("Cancelled")) {
+            return "unqualified";
+        } else if (value.equalsIgnoreCase("Returned")) {
+            return "renewal";
+        }
+        return "qualified";
+    }
+
+    /**
+     * @return the accounts
+     */
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    /**
+     * @return the ppdetails
+     */
+    public List<PartialPaymentDetail> getPpdetails() {
+        return ppdetails;
+    }
+
+    /**
+     * @param ppdetails the ppdetails to set
+     */
+    public void setPpdetails(List<PartialPaymentDetail> ppdetails) {
+        this.ppdetails = ppdetails;
+    }
+
+    public PartialPaymentDetail addPpdetail(PartialPaymentDetail ppdetail) {
+        if (getPpdetails() == null) {
+            setPpdetails(new LinkedList());
+        }
+        getPpdetails().add(ppdetail);
+        ppdetail.setBusdoc(this);
+
+        return ppdetail;
+    }
+
+    public PartialPaymentDetail removePpdetail(PartialPaymentDetail ppdetail) {
+        getPpdetails().remove(ppdetail);
+        ppdetail.setBusdoc(null);
+
+        return ppdetail;
+    }
+
+    public Double getTotalPaid() {
+        if (getPpdetails() == null || getPpdetails().isEmpty()) {
+            return 0.0;
+        }
+        double total = 0.0;
+        for (PartialPaymentDetail pp : getPpdetails()) {
+            //don't count ppd that are not yet saved
+            if (pp.getPplineno() > 0l) {
+                total = total + pp.getAmount();
+            }
+        }
+        return total;
+    }
+
+    public Double getTotalPending() {
+        return getGrandtotal() - getTotalPaid();
+    }
+
+    /**
+     * @return the country
+     */
+    public Country getCountry() {
+        return country;
+    }
+
+    /**
+     * @param country the country to set
+     */
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    /**
+     * @return the rate
+     */
+    public Double getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate the rate to set
+     */
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    /**
+     * @return the expenses
+     */
+    public List<BusDocExpense> getExpenses() {
+        return expenses;
+    }
+
+    /**
+     * @param expenses the expenses to set
+     */
+    public void setExpenses(List<BusDocExpense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public Double getExpenseLc(){
+        if(getExpenses()!=null){
+            return getExpenses().stream().mapToDouble(o -> o.getAmountlc()).sum();
+        }
+        return 0.0;
+    }
+
+    public Double getExpenseFc(){
+        if(getExpenses()!=null){
+            return getExpenses().stream().mapToDouble(o -> o.getAmountfc()).sum();
+        }
+        return 0.0;
+    }
+
+    public BusDocExpense addBusDocExpense(BusDocExpense exp) {
+        if (getExpenses()== null) {
+            setExpenses(new LinkedList());
+        }
+        getExpenses().add(exp);
+        exp.setBusdoc(this);
+
+        return exp;
+    }
+
+    public BusDocExpense removeBusDocExpense(BusDocExpense exp) {
+        getExpenses().remove(exp);
+        exp.setBusdoc(null);
+
+        return exp;
+    }
 }

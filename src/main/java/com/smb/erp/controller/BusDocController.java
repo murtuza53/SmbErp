@@ -7,6 +7,7 @@ package com.smb.erp.controller;
 
 import com.smb.erp.UserSession;
 import com.smb.erp.entity.AccDoc;
+import com.smb.erp.entity.Account;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocType;
@@ -99,6 +100,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     @Autowired
     VatSalesPurchaseTypeController vatsalespurchaseController;
 
+    @Autowired
+    CashRegisterController cashRegController;
+
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
     BusDocInfo docInfo;
@@ -166,7 +170,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
                 PayTerms pt = new PayTerms();
                 doc.setPaytermsid(pt);
-
+                
+                cashRegController.setCashRegister(getSelected().getBusdocinfo().getCashregiserid());
                 //docdate = getSelected().getDocdate();
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
@@ -174,6 +179,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                     setSelected(repo.getOne(docno));
                     docInfo = getSelected().getBusdocinfo();
                     setProdTransactions(getSelected().getProductTransactions());
+
+                    //setup cash register for any document like cash memo
+                    cashRegController.setupBusDoc(getSelected());
 
                     if (getSelected().getPaytermsid() == null) {
                         PayTerms pt = new PayTerms();
@@ -211,12 +219,17 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     //    return t;
     //}
     public void save() {
+        getSelected().setDocdate(DateUtil.setCurrentTime(getSelected().getDocdate()));
         if (mode == DocumentTab.MODE.NEW) {
-            getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getCreatedon())));
+            getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getDocdate())));
             //getSelected().setEmp1();
+            getSelected().setCreatedon(new Date());
         }
         getSelected().setProductTransactions(getProdTransactions());
         getSelected().setUpdatedon(new Date());
+        if (cashRegController.calculateTotal() > 0) {
+            getSelected().setAccounts(cashRegController.getCashRegisterAccounts());
+        }
         //getSelected().setDocdate(getDocdate());
         for (ProductTransaction pt : getProdTransactions()) {
             pt.setTransdate(getSelected().getDocdate());
@@ -396,8 +409,12 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     }
 
     public void businessPartnerSelected() {
+        //System.out.println("businessPartnerSelected: " + getSelected());
+        //System.out.println("businessPartnerSelected_BP: " + getSelected().getBusinesspartner());
         if (getSelected().getBusinesspartner() != null) {
             productTabDisabled = false;
+            getSelected().setCountry(getSelected().getBusinesspartner().getCountry());
+            getSelected().setRate(getSelected().getCountry().getRate());
         }
         refreshConvertFromDocumentList();
     }
@@ -520,7 +537,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         //facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
-        getSelected().setDocdate((Date) event.getObject());
+        getSelected().setDocdate(DateUtil.setCurrentTime((Date) event.getObject()));
     }
 
     public List<BusDocInfo> getConvertFromDocument() {
@@ -633,4 +650,11 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         this.accdoc = accdoc;
     }
 
+    public List<Account> getCashRegisterAccounts() {
+        return cashRegController.getCashRegisterAccounts();
+    }
+
+    public void refreshRegisterTotal() {
+        cashRegController.calculateTotal();
+    }
 }

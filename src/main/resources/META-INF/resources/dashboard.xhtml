@@ -1,41 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Dashboard
+    </ui:define>
 
-		<div class="ui-g">
-			<div class="ui-g-12">
-				<div class="card">
-					<h1>Dashboard Under Development</h1>
-					<p>This page will be developed only ERP functionality are developed</p>
+    <ui:param name="viewname" value="DASHBOARD" />
 
-					<p>Below is testing of different types of Dialog Box</p>
-					<h:panelGrid columns="1" cellpadding="5">
-						<p:commandButton value="Basic" type="button"
-							onclick="PF('dlg1').show();" />
-
-						<p:commandButton value="Modal" type="button"
-							onclick="PF('dlg2').show();" />
-
-						<p:commandButton value="Effects" type="button"
-							onclick="PF('dlg3').show();" />
-					</h:panelGrid>
-					<p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
-						<h:outputText value="Resistance to PrimeFaces is futile!" />
-					</p:dialog>
-
-					<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
-						height="100">
-						<h:outputText value="This is a Modal Dialog." />
-					</p:dialog>
-
-					<p:dialog header="Effects" widgetVar="dlg3" showEffect="explode"
-						hideEffect="bounce" height="100">
-						<h:outputText value="This dialog has nice effects." />
-					</p:dialog>
-				</div>
-			</div>
-		</div>
+    <ui:define name="content">
+        <div class="p-grid">
+            <div class="p-col-12 p-md-12">
+                Home Page
+            </div>
+        </div>
+    </ui:define>
 
 </ui:composition>

@@ -4,8 +4,12 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the ledline database table.
@@ -21,23 +25,23 @@ public class LedgerLine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Integer llno = (int) new Date().getTime();;
+    private Integer llno = new Random().nextInt(Integer.MAX_VALUE);
 
-    private Double credit=0.0;
+    private Double credit = 0.0;
 
-    private Double debit=0.0;
+    private Double debit = 0.0;
 
     private String description;
 
-    private Double fccredit=0.0;
+    private Double fccredit = 0.0;
 
-    private Double fcdebit=0.0;
+    private Double fcdebit = 0.0;
 
     private String processedref;
 
     private String processedrefback;
 
-    private Double rate=1.0;
+    private Double rate = 1.0;
 
     private String reflink1;
 
@@ -53,7 +57,8 @@ public class LedgerLine implements Serializable {
     private BigInteger version;
 
     //bi-directional many-to-one association to Asset
-    @OneToMany(mappedBy = "ledline")
+    @OneToMany(mappedBy = "ledline", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Asset> assets;
 
     //bi-directional many-to-one association to Account
@@ -67,26 +72,28 @@ public class LedgerLine implements Serializable {
     private Branch branch;
 
     //bi-directional many-to-one association to AccDoc
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "docno")
     private AccDoc accdoc;
 
     //bi-directional many-to-one association to PartialPaymentDetail
-    @OneToMany(mappedBy = "ledline")
+    @OneToMany(mappedBy = "ledline", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     private List<PartialPaymentDetail> ppdetails;
 
     @Transient
-    private Double cumulative = 0.0; 
-    
+    private Double cumulative = 0.0;
+
     public LedgerLine() {
     }
 
-    public LedgerLine(Double debit, Double credit, Double balance){
+    public LedgerLine(Double debit, Double credit, Double balance) {
+        this();
         this.debit = debit;
         this.credit = credit;
         this.cumulative = balance;
     }
-    
+
     public Integer getLlno() {
         return this.llno;
     }
@@ -95,7 +102,7 @@ public class LedgerLine implements Serializable {
         this.llno = llno;
     }
 
-    public Double getCredit() {
+    /*public Double getCredit() {
         return this.credit;
     }
 
@@ -110,16 +117,8 @@ public class LedgerLine implements Serializable {
     public void setDebit(Double debit) {
         this.debit = debit;
     }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getFccredit() {
+    
+        public Double getFccredit() {
         return this.fccredit;
     }
 
@@ -133,6 +132,14 @@ public class LedgerLine implements Serializable {
 
     public void setFcdebit(Double fcdebit) {
         this.fcdebit = fcdebit;
+    }*/
+    
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getProcessedref() {
@@ -262,6 +269,9 @@ public class LedgerLine implements Serializable {
     }
 
     public PartialPaymentDetail addPpdetail(PartialPaymentDetail ppdetail) {
+        if(getPpdetails()==null){
+            setPpdetails(new LinkedList());
+        }
         getPpdetails().add(ppdetail);
         ppdetail.setLedline(this);
 
@@ -299,10 +309,7 @@ public class LedgerLine implements Serializable {
             return false;
         }
         final LedgerLine other = (LedgerLine) obj;
-        if (!Objects.equals(this.llno, other.llno)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.llno, other.llno);
     }
 
     /**
@@ -317,6 +324,106 @@ public class LedgerLine implements Serializable {
      */
     public void setCumulative(Double cumulative) {
         this.cumulative = cumulative;
+    }
+
+    public boolean isDummy() {
+        return getAccount() == null && getAccdoc() == null;
+    }
+
+    public Double getCredit() {
+        if (isDummy()) {
+            return this.credit;
+        }
+
+        if (getFcCredit() > 0) {
+            return getFcCredit() * getRate();
+        }
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+        if (isDummy()) {
+            this.credit = credit;
+            return;
+        }
+
+        if (credit < 0) {
+            credit = 0.0;
+        }
+        this.credit = credit;
+        if (credit > 0) {
+            this.debit = 0.0;
+        }
+    }
+
+    public Double getDebit() {
+        if (isDummy()) {
+            return this.debit;
+        }
+
+        if (getFcDebit() > 0) {
+            return getFcDebit() * getRate();
+        }
+        return debit;
+    }
+
+    public void setDebit(Double debit) {
+        if (isDummy()) {
+            this.debit = debit;
+            return;
+        }
+
+        if (debit < 0) {
+            debit = 0.0;
+        }
+        this.debit = debit;
+        if (debit > 0) {
+            this.credit = 0.0;
+        }
+    }
+
+    public double getFcCredit() {
+        return fccredit;
+    }
+
+    public void setFcCredit(Double fcCredit) {
+        if (isDummy()) {
+            this.fccredit = fcCredit;
+            return;
+        }
+
+        if (fcCredit < 0) {
+            fcCredit = 0.0;
+        }
+        this.fccredit = fcCredit;
+        if (fcCredit > 0) {
+            this.fcdebit = 0.0;
+            if (getRate() > 0) {
+                setCredit(this.fccredit * getRate());
+            }
+        }
+    }
+
+    public double getFcDebit() {
+        return fcdebit;
+    }
+
+    public void setFcDebit(Double fcDebit) {
+        if (isDummy()) {
+            this.fcdebit = fcDebit;
+            return;
+        }
+
+        if (fcDebit < 0) {
+            fcDebit = 0.0;
+        }
+        this.fcdebit = fcDebit;
+        if (fcDebit > 0) {
+            this.fccredit = 0.0;
+            if (getRate() > 0) {
+                setDebit(this.fcdebit * getRate());
+            }
+        }
     }
 
 }

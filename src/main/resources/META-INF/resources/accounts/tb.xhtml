@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Trial Balance
+    </ui:define>
+
+    <ui:param name="viewname" value="Trial Balance" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <p:outputPanel deferred="true">
+                <div class="p-grid">
+                    <div class="p-col-12 p-md-12">
+                        <p:panel id="ledgerdetails" header="Search Criteria" 
+                                 collapsed="false" toggleable="true" styleClass="card">
+                            <f:facet name="actions">
+                                <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                                 actionListener="#{trialBalanceController.refreshTb()}" 
+                                                 update="@form :growl" icon="fa fa-refresh" />
+                            </f:facet>
+                            <div class="ui-fluid p-formgrid p-grid">
+                                <div class="p-field p-col-12 p-md-6">
+                                    <p:outputLabel value="From Date" for="fromdate" />
+                                    <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{trialBalanceController.fromDate}" 
+                                                title="From Date"  showOn="button"
+                                                required="true" requiredMessage="Please select Date"/>
+                                </div>
+
+                                <div class="p-field p-col-12 p-md-6">
+                                    <p:outputLabel value="To Date" for="todate" />
+                                    <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{trialBalanceController.toDate}" 
+                                                title="To Date"  showOn="button"
+                                                required="true" requiredMessage="Please select Date"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </div>
+                    <div class="p-col-12">
+                        <div class="card">
+                            <p:toolbar id="toolbar">
+                                <f:facet name="right">
+                                    <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                        <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                        <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="TrialBalance"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                        <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                        <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="TrialBalance"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                        <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                        <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="TrialBalance"/>
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:toolbar>
+                            <p:treeTable id="cattree" value="#{trialBalanceController.root}" var="node" rowStyleClass="#{node.tbBal == 0.0 ? 'ui-helper-hidden' : ''}"
+                                         selectionMode="single" selection="#{trialBalanceController.selectedNode}">
+                                <p:column headerText="Name">
+                                    <h:outputText value="#{node.accountid}"/>
+                                </p:column>
+                                <p:column headerText="Size">
+                                    <h:outputText value="#{node.accountname}" />
+                                </p:column>
+
+                                <p:column sortBy="#{node.openingBal.debit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Opn.Dr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.openingBal.debit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column sortBy="#{node.openingBal.credit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Opn.Cr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.openingBal.credit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column sortBy="#{node.currentBal.debit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Cur.Dr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.currentBal.debit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column sortBy="#{node.currentBal.credit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Cur.Cr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.currentBal.credit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column sortBy="#{node.closingBal.debit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Clo.Dr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.closingBal.debit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column sortBy="#{node.closingBal.credit}" style="text-align:right">
+                                    <f:facet name="header">
+                                        <h:outputText value="Clo.Cr"/>
+                                    </f:facet>
+                                    <h:outputText value="#{node.closingBal.credit}" style="float:right">
+                                        <f:convertNumber type="number" pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:treeTable>
+                        </div>
+                    </div>
+                </div>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

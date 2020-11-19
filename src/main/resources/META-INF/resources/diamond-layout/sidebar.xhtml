@@ -4,7 +4,7 @@
     <div class="layout-sidebar">
         <h:link class="logo" outcome="/dashboard">
             <p:graphicImage id="app-logo" styleClass="logo-image" name="images/#{guestPreferences.logoColor eq 'white' ? 'logo-white.svg' : 'logo-dark.svg'}" library="diamond-layout" />
-            <span class="app-name">DIAMOND</span>
+            <span class="app-name">SMB ERP</span>
         </h:link>
 
         <div class="layout-menu-container">
@@ -31,6 +31,9 @@
                         <p:menuitem id="acc_genled" value="General Ledger"
                                     icon="fas fa-book-open" 
                                     outcome="/accounts/ledger.xhtml" />
+                        <p:menuitem id="acc_tb" value="Trial Balance"
+                                    icon="fas fa-balance-scale" 
+                                    outcome="/accounts/tb.xhtml" />
                         <p:menuitem id="busdoc_settings" value="Document Settings"
                                     icon="fas fa-sliders-h" 
                                     outcome="/busdoc/busdocsettings.xhtml" />

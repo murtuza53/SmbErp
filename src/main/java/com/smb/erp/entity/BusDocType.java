@@ -16,7 +16,8 @@ public enum BusDocType {
     
     SALES("Sales"),
     PURCHASE("Purchase"),
-    INVENTORY("Inventory");
+    INVENTORY("Inventory"),     //like stock adjustment, stock counting
+    ACCOUNT("Account");         //like jv, pv or rct
 
     public static List<String> TYPES = new LinkedList<>();
     

@@ -1,0 +1,7 @@
+.status-new .status-draft{}
+.status-negotiation .status-pending{}
+.status-proposal .status-partial{}
+.status-qualified .status-completed{}
+.status-qualified .status-paid{}
+.status-unqualified .status-cancelled{}
+.status-renewal .status-returned{}

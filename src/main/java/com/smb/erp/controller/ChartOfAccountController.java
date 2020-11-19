@@ -11,19 +11,19 @@ import com.smb.erp.util.JsfUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.annotation.SessionScope;
 
 /**
  *
  * @author Burhani152
  */
 @Named
-@SessionScope
+@ViewScoped
 public class ChartOfAccountController implements Serializable {
 
     @Autowired
@@ -79,7 +79,7 @@ public class ChartOfAccountController implements Serializable {
             n.setExpanded(true);
         }
 
-        List<Account> childrens = accRepo.findAccountByParentBySearchCriteria(acc.getAccountid());
+        List<Account> childrens = accRepo.findAccountByParent(acc.getAccountid());
         if (childrens != null) {
             for (Account a : childrens) {
                 addNode(a, n);

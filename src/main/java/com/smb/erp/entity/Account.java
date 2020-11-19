@@ -1,5 +1,6 @@
 package com.smb.erp.entity;
 
+import com.smb.erp.helper.TBNode;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Objects;
@@ -24,6 +25,15 @@ public class Account implements Serializable, Comparable<Account> {
 
     private double openingbalance;
 
+    @Transient
+    private TBNode openingBal = new TBNode("Opn.", 0.0);
+
+    @Transient
+    private TBNode currentBal = new TBNode("Cur.", 0.0);
+
+    @Transient
+    private TBNode closingBal = new TBNode("Clo.", 0.0);
+
     //bi-directional many-to-one association to AccountGroup
     @ManyToOne
     @JoinColumn(name = "accountgroupid")
@@ -46,18 +56,20 @@ public class Account implements Serializable, Comparable<Account> {
     //bi-directional many-to-one association to LederLine
     //@OneToMany(mappedBy = "account")
     //private List<LederLine> ledlines;
-
     //bi-directional many-to-one association to ProductAccount
     //@OneToMany(mappedBy = "account1")
     //private List<ProductAccount> prodaccounts1;
-
     //bi-directional many-to-one association to ProductAccount
     //@OneToMany(mappedBy = "account2")
     //private List<ProductAccount> prodaccounts2;
-
     //bi-directional many-to-one association to ProductAccount
     //@OneToMany(mappedBy = "account3")
     //private List<ProductAccount> prodaccounts3;
+    @Transient
+    private Double amount = 0.0;
+
+    @Transient
+    private String description;
 
     public Account() {
     }
@@ -189,7 +201,6 @@ public class Account implements Serializable, Comparable<Account> {
 
         return prodaccounts3;
     }*/
-
     @Override
     public String toString() {
         return accountname + " [" + accountid + "]";
@@ -214,10 +225,7 @@ public class Account implements Serializable, Comparable<Account> {
             return false;
         }
         final Account other = (Account) obj;
-        if (!Objects.equals(this.accountid, other.accountid)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.accountid, other.accountid);
     }
 
     /**
@@ -268,4 +276,81 @@ public class Account implements Serializable, Comparable<Account> {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * @return the amount
+     */
+    public Double getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the openingBal
+     */
+    public TBNode getOpeningBal() {
+        return openingBal;
+    }
+
+    /**
+     * @param openingBal the openingBal to set
+     */
+    public void setOpeningBal(TBNode openingBal) {
+        this.openingBal = openingBal;
+    }
+
+    /**
+     * @return the currentBal
+     */
+    public TBNode getCurrentBal() {
+        return currentBal;
+    }
+
+    /**
+     * @param currentBal the currentBal to set
+     */
+    public void setCurrentBal(TBNode currentBal) {
+        this.currentBal = currentBal;
+    }
+
+    /**
+     * @return the closingBal
+     */
+    public TBNode getClosingBal() {
+        return closingBal;
+    }
+
+    /**
+     * @param closingBal the closingBal to set
+     */
+    public void setClosingBal(TBNode closingBal) {
+        this.closingBal = closingBal;
+    }
+    
+    public Double getTbBal(){
+        return getOpeningBal().getBalance()+getCurrentBal().getBalance()+getClosingBal().getBalance();
+    }
+    
+    public boolean isTbBalRequired(){
+        return getTbBal()!=0;
+    }
 }
