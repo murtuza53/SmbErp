@@ -20,7 +20,7 @@
                         <f:facet name="actions">
                             <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{producttransactionController.refresh()}" 
-                                             update="@form :growl" icon="fa fa-refresh" />
+                                             update="datalist :growl" icon="fa fa-refresh" />
                         </f:facet>
                         <div class="ui-fluid p-formgrid p-grid">
                             <div class="p-field p-col-12 p-md-6">
@@ -41,12 +41,11 @@
                                 <p:outputLabel for="product" value="Select Product" />
                                 <p:autoComplete id="product" value="#{producttransactionController.selectProduct}" dynamic="true"
                                                 converter="#{entityConverter}" completeMethod="#{producttransactionController.completeFilter}"
-                                                panelStyle="font-size: smaller"
+                                                panelStyle="font-size: smaller" scrollHeight="400"
                                                 var="prodItem" itemValue="#{prodItem}" itemLabel="#{prodItem.productname} [#{prodItem.productid}]"
-                                                minQueryLength="3" dropdown="true" forceSelection="true" scrollHeight="250"
-                                                required="true" requiredMessage="Product is required">
-                                    <p:ajax event="itemSelect" listener="#{producttransactionController.refresh()}" 
-                                            update="@form" />
+                                                minQueryLength="3" dropdown="true" forceSelection="true" required="true" requiredMessage="Product is required">
+                                    <p:ajax event="itemSelect" listener="#{producttransactionController.onItemSelect}" 
+                                            update="datalist, :growl" />
                                     <p:column style="width:50px">
                                         <f:facet name="header">
                                             <h:outputText value="Stock#"/>
@@ -138,29 +137,38 @@
                                 <h:outputText value="#{item.unit.unitsym}" />
                             </p:column>
 
-                            <p:column filterBy="#{item.linereceived}" filterMatchMode="contains"  style="text-align: right">
+                            <p:column filterBy="#{item.received}" filterMatchMode="contains"  style="text-align: right">
                                 <f:facet name="header">
                                     <h:outputText value="In"/>
                                 </f:facet>
-                                <h:outputText value="#{item.linereceived}">
+                                <h:outputText value="#{item.received}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column filterBy="#{item.linesold}" filterMatchMode="contains"  style="text-align: right">
+                            <p:column filterBy="#{item.sold}" filterMatchMode="contains"  style="text-align: right">
                                 <f:facet name="header">
                                     <h:outputText value="Out"/>
                                 </f:facet>
-                                <h:outputText value="#{item.linesold}">
+                                <h:outputText value="#{item.sold}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column filterBy="#{item.lineunitprice}" filterMatchMode="contains"  style="text-align: right">
+                            <p:column filterBy="#{item.cost}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Landed"/>
+                                </f:facet>
+                                <h:outputText value="#{item.cost}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column filterBy="#{item.unitprice}" filterMatchMode="contains"  style="text-align: right">
                                 <f:facet name="header">
                                     <h:outputText value="Price"/>
                                 </f:facet>
-                                <h:outputText value="#{item.lineunitprice}">
+                                <h:outputText value="#{item.unitprice}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>

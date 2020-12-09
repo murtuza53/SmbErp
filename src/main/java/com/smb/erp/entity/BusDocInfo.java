@@ -39,7 +39,9 @@ public class BusDocInfo implements Serializable {
 
     private String menuname;
 
-    private String transactiontype; //NON_INVENTORY, INVENTORY_ONLY, INVENTORY_ACCOUNT //BusDocTransactionType.NON_INVENTORY.value()
+    private String transactiontype; //NON_INVENTORY, INVENTORY //BusDocTransactionType.NON_INVENTORY.value()
+    
+    private String accounttype;     //Non, Receivable, Payable
 
     private String prefix;
 
@@ -1198,6 +1200,20 @@ public class BusDocInfo implements Serializable {
      */
     public void setDocediturl(String docediturl) {
         this.docediturl = docediturl;
+    }
+
+    /**
+     * @return the accounttype
+     */
+    public String getAccounttype() {
+        return accounttype;
+    }
+
+    /**
+     * @param accounttype the accounttype to set
+     */
+    public void setAccounttype(String accounttype) {
+        this.accounttype = accounttype;
     }
 
 }

@@ -69,6 +69,7 @@ public class ProductTransaction implements Serializable {
 
     private String transactiontype;
 
+    //private String accounttype;
     private Double unitprice = 0.0;
 
     private Double vatamount = 0.0;
@@ -105,17 +106,6 @@ public class ProductTransaction implements Serializable {
     @JoinColumn(name = "vatsptypeid")
     private VatSalesPurchaseType vatsptypeid;
 
-    //bi-directional many-to-one association to ProductTransactionExecutedFrom
-    //@OneToMany(mappedBy = "prodtransaction")
-    //@Fetch(FetchMode.SUBSELECT)
-    //private List<ProductTransactionExecutedFrom> prodtransexecutedfroms;
-    //bi-directional many-to-one association to ProductTransactionExecutedTo
-    //@OneToMany(mappedBy = "prodtransaction")
-    //@Fetch(FetchMode.SUBSELECT)
-    //private List<ProductTransactionExecutedTo> prodtransexecutedtos;
-    //bi-directional many-to-one association to ProductTransactionExecutedTo
-    
-    
     @OneToMany(mappedBy = "fromprodtransid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<ProductTransactionExecution> fromprodtransaction;
@@ -135,7 +125,7 @@ public class ProductTransaction implements Serializable {
 
     @Transient
     private Double cumulative = 0.0;
-    
+
     public ProductTransaction() {
     }
 
@@ -478,6 +468,12 @@ public class ProductTransaction implements Serializable {
 
     public void refreshTotals() {
         calculateActualQtyFromLineQty();
+        if (getBusdoc() != null) {
+            if (getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("STX")) {
+                vatamount = 0.0;
+                return;
+            }
+        }
         if (getVatcategoryid() != null) {
             vatamount = getVatcategoryid().getVatpercentage() * 0.01 * getLineSubtotal();
         } else if (product.getVatregisterid() != null) {
@@ -494,10 +490,14 @@ public class ProductTransaction implements Serializable {
 
     public void calculateActualQtyFromLineQty() {
         if (getBusdoc() != null) {
-            if (getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES")) {
+            setCost(getLinecost());
+            if (getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("STX")) {
+                return; //do nothing
+            }
+            if (getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES") || getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("SHS")) {
                 setLinesold(lineqty);
                 setSold(getLinesold());
-            } else {
+            } else {        //Purchase or EXS
                 setLinereceived(lineqty);
                 setReceived(getLinereceived());
             }
@@ -642,14 +642,14 @@ public class ProductTransaction implements Serializable {
     public void setFromprodtransaction(List<ProductTransactionExecution> fromprodtransaction) {
         this.fromprodtransaction = fromprodtransaction;
     }
-    
-    public String getFromProdTranstionDocNo(){
-        if(fromprodtransaction==null || fromprodtransaction.isEmpty()){
+
+    public String getFromProdTranstionDocNo() {
+        if (fromprodtransaction == null || fromprodtransaction.isEmpty()) {
             return "";
         }
         return fromprodtransaction.get(0).getFromprodtransid().getBusdoc().getDocno();
     }
-    
+
     public void addFromprodtransaction(ProductTransactionExecution pt) {
         if (fromprodtransaction == null) {
             fromprodtransaction = new LinkedList();
@@ -665,18 +665,18 @@ public class ProductTransaction implements Serializable {
         return pt;
     }
 
-    public void removeAllFromprodtransaction(){
-        if(fromprodtransaction!=null){
-            for(ProductTransactionExecution pte: fromprodtransaction){
+    public void removeAllFromprodtransaction() {
+        if (fromprodtransaction != null) {
+            for (ProductTransactionExecution pte : fromprodtransaction) {
                 pte.setFromprodtransid(null);
                 pte.setToprodtransid(null);
             }
             fromprodtransaction.clear();
         }
     }
-    
-    public String getToProdTranstionDocNo(){
-        if(toprodtransaction==null || toprodtransaction.isEmpty()){
+
+    public String getToProdTranstionDocNo() {
+        if (toprodtransaction == null || toprodtransaction.isEmpty()) {
             return "";
         }
         return toprodtransaction.get(0).getFromprodtransid().getBusdoc().getDocno();
@@ -697,9 +697,9 @@ public class ProductTransaction implements Serializable {
         return pt;
     }
 
-    public void removeAllToprodtransaction(){
-        if(toprodtransaction!=null){
-            for(ProductTransactionExecution pte: toprodtransaction){
+    public void removeAllToprodtransaction() {
+        if (toprodtransaction != null) {
+            for (ProductTransactionExecution pte : toprodtransaction) {
                 pte.setFromprodtransid(null);
                 pte.setToprodtransid(null);
             }

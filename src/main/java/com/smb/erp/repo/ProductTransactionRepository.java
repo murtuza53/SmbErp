@@ -17,15 +17,26 @@ public interface ProductTransactionRepository extends BaseRepository<ProductTran
 
     //@Query(value = "SELECT * FROM author WHERE first_name = :firstName", nativeQuery = true)
     //List<Author> findAuthorsByFirstName(@Param("firstName") String firstName);
+    
     @Query(value = "SELECT sum(received)-sum(sold) as balance from prodtransaction "
             + "where productid=:productid and branchid=:branchid and transdate<=:toDate ", nativeQuery = true)
-    Double findStockBalanceByBranch(@Param("productid") long productid, @Param("branchid") int branchid, @Param("toDate") Date toDate);
+    Double findStockBalanceByBranch(@Param("productid") long productid, @Param("branchid") long branchid, @Param("toDate") Date toDate);
+
+    @Query(value = "SELECT sum(line.received)-sum(line.sold) as balance from ProductTransaction as line "
+            + "where line.product.productid=:productid and line.busdoc.branch.company.companyid=:companyid and line.transdate<=:toDate ")
+    Double findStockBalanceByCompany(@Param("productid") long productid, @Param("companyid") long companyid, @Param("toDate") Date toDate);
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
                 + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND mov.transactiontype=:transactiontype "
                 + "ORDER BY mov.transdate DESC")
     List<ProductTransaction> findStockMovement(@Param("productid") long productid, 
             @Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("transactiontype") String transactiontype);
+
+    /*@Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
+                + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND mov.transactiontype!=:not_transactiontype "
+                + "ORDER BY mov.transdate DESC")
+    List<ProductTransaction> findStockMovementAllInventory(@Param("productid") long productid, 
+            @Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("not_transactiontype") String not_transactiontype);*/
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
                 + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND "

@@ -1,6 +1,7 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -17,8 +18,8 @@ public class ProductCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long prodcatId;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long prodcatId = new Date().getTime();
 
     private String catname;
 

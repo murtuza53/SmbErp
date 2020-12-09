@@ -17,9 +17,11 @@
                     <p:toolbar id="toolbar">
                         <f:facet name="left">
                             <p:commandButton title="New Category" icon="fa fa-plus" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             disabled="#{productTreeViewController.newCategoryDisabled}"/>
-                            <p:commandButton title="Edit Category" icon="fa fa-pencil" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             disabled="#{productTreeViewController.editCategoryDisabled}"/>
+                                             actionListener="#{productTreeViewController.prepareCreateNewCategory()}"
+                                             update="CatDlg, :mainform:cattree" oncomplete="PF('CatDialog').show()"/>
+                            <p:commandButton title="Cancel" icon="fa fa-pencil" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{productTreeViewController.editCategoryDisabled}"
+                                             update="CatDlg, :mainform:cattree" oncomplete="PF('CatDialog').show()"/>
                             <p:commandButton title="Refresh Category Tree" icon="fa fa-refresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{productTreeViewController.refreshCategoryTree()}"
                                              update="cattree"/>
@@ -98,7 +100,9 @@
                     </p:dataTable>
                 </div>
             </div>
+            <ui:include src="/confirmation.xhtml"/>
         </h:form>
+        <ui:include src="/inventory/catdialog.xhtml"/>
     </ui:define>
 
 </ui:composition>

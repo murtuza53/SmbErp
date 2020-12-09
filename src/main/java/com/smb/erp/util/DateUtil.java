@@ -144,6 +144,38 @@ public class DateUtil {
     }
 
     /**
+     * Adds <code>amount</code> days to <code>time</code> and returns the
+     * resulting time.
+     *
+     * @param date Base time
+     * @param days Amount of increment.
+     */
+    public static Date addDays(Date date, int days) {
+        Calendar calendar = CALENDAR;
+        synchronized (calendar) {
+            calendar.setTimeInMillis(date.getTime());
+            calendar.add(Calendar.DAY_OF_MONTH, days);
+            return calendar.getTime();
+        }
+    }
+
+    /**
+     * Adds <code>amount</code> days to <code>time</code> and returns the
+     * resulting time.
+     *
+     * @param date Base time
+     * @param months Amount of increment.
+     */
+    public static Date addMonths(Date date, int months) {
+        Calendar calendar = CALENDAR;
+        synchronized (calendar) {
+            calendar.setTimeInMillis(date.getTime());
+            calendar.add(Calendar.MONTH, months);
+            return calendar.getTime();
+        }
+    }
+
+    /**
      * Returns the day after <code>date</code>.
      *
      * @param date Date used in calculating next day

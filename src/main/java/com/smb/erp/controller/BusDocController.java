@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -51,6 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Named(value = "busDocController")
 @ViewScoped
+@ManagedBean
 public class BusDocController extends AbstractController<BusDoc> implements ProductTransferable {
 
     BusDocRepository repo;
@@ -170,7 +172,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
                 PayTerms pt = new PayTerms();
                 doc.setPaytermsid(pt);
-                
+
                 cashRegController.setCashRegister(getSelected().getBusdocinfo().getCashregiserid());
                 //docdate = getSelected().getDocdate();
             } else {        //edit mode=e
@@ -238,6 +240,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             pt.setBusdoc(getSelected());
             pt.setFcunitprice(pt.getLinefcunitprice());
             pt.setUnitprice(pt.getLineunitprice());
+            pt.setTransactiontype(getSelected().getBusdocinfo().getTransactiontype());
             //pt.calculateActualQtyFromLineQty();
             pt.refreshTotals();
             //if (getSelected().getBusdocinfo().getDoctype().equalsIgnoreCase("Sales")) {
@@ -350,7 +353,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             pt.setVatsptypeid(vm.getVatsptypeid());
         } else {
             if (doctype.equalsIgnoreCase("Sales")) {
-                Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1);
+                Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1l);
                 if (vt.isPresent()) {
                     pt.setVatsptypeid(vt.get());
                 }
@@ -577,6 +580,25 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 }
             }
         }
+    }
+
+    public void print() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        //facesContext.getExternalContext().getRequestMap().put("doc", getSelected());
+        //Flash flash = facesContext.getExternalContext().getFlash();
+        //flash.clear();
+        //flash.setKeepMessages(true);
+        //flash.setRedirect(true);
+        //flash.put("doc", getSelected());
+        //facesContext.getExternalContext().redirect("docviewer.xhtml?doc="+getSelected().getDocno());
+        facesContext.getExternalContext().redirect(getReport());
+    }
+
+    public String getReport() {
+        //reportGen.setBusdoc(getSelected());
+        //reportGen.saveReport();
+        //return reportGen.getReport();
+        return "/viewer/doc/" + getSelected().getDocno();
     }
 
     /**

@@ -23,7 +23,7 @@ public class BusinessPartner implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer partnerid;
+    private Long partnerid;
 
     private String address;
 
@@ -107,11 +107,11 @@ public class BusinessPartner implements Serializable {
     public BusinessPartner() {
     }
 
-    public Integer getPartnerid() {
+    public Long getPartnerid() {
         return this.partnerid;
     }
 
-    public void setPartnerid(Integer partnerid) {
+    public void setPartnerid(Long partnerid) {
         this.partnerid = partnerid;
     }
 
@@ -564,5 +564,35 @@ public class BusinessPartner implements Serializable {
      */
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+    
+    //shopno,buildingno,roadno,blockno,town,area
+    
+    public String getAddressLine1(){
+        StringBuilder b = new StringBuilder();
+        if(getShopno()!=null){
+            b.append("Shop: " + getShopno().trim());
+        }
+        if(getBuildingno()!=null){
+            b.append(" Building: " + getBuildingno().trim());
+        }
+        if(getRoadno()!=null){
+            b.append(" Road: " + getRoadno().trim());
+        }
+        return b.toString().trim();
+    }
+    
+    public String getAddressLine2(){
+        StringBuilder b = new StringBuilder();
+        if(getBlockno()!=null){
+            b.append("Block: " + getBlockno().trim());
+        }
+        if(getTown()!=null){
+            b.append(" Town: " + getTown().trim());
+        }
+        if(getArea()!=null){
+            b.append(" Area: " + getArea().trim());
+        }
+        return b.toString().trim();
     }
 }

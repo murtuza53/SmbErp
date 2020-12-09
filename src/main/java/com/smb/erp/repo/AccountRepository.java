@@ -28,8 +28,8 @@ public interface AccountRepository extends BaseRepository<Account, String> {
     List<Account> findAccountByParent(@Param("parentid") String parentid);
     
     @Query("SELECT a FROM Account as a WHERE a.businesspartner.partnerid=:partnerid ORDER BY a.accountid")
-    List<Account> findAccountByBusinessPartnerId(@Param("partnerid") Integer partnerid);
+    List<Account> findAccountByBusinessPartnerId(@Param("partnerid") Long partnerid);
 
     @Query("SELECT a FROM Account as a WHERE a.businesspartner.partnerid=:partnerid AND a.parentid.accountid=:parentid ORDER BY a.accountid")
-    List<Account> findAccountByBusinessPartnerIdAndParent(@Param("partnerid") Integer partnerid, @Param("parentid") String parentid);
+    List<Account> findAccountByBusinessPartnerIdAndParent(@Param("partnerid") Long partnerid, @Param("parentid") String parentid);
 }

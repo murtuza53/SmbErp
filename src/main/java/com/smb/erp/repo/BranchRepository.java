@@ -16,9 +16,9 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface BranchRepository extends BaseRepository<Branch, Integer> {
+public interface BranchRepository extends BaseRepository<Branch, Long> {
     
     @Query("SELECT b FROM Branch as b WHERE b.company.companyid=:companyid ORDER BY b.branchname")
-    List<Branch> findBranchByCompanyId(@Param("companyid") int companyid);
+    List<Branch> findBranchByCompanyId(@Param("companyid") long companyid);
     
 }

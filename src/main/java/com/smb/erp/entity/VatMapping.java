@@ -18,7 +18,7 @@ public class VatMapping implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer vatmappingid;
+    private Long vatmappingid;
 
     private String producttype;
 
@@ -49,14 +49,14 @@ public class VatMapping implements Serializable {
     /**
      * @return the vatmappingid
      */
-    public Integer getVatmappingid() {
+    public Long getVatmappingid() {
         return vatmappingid;
     }
 
     /**
      * @param vatmappingid the vatmappingid to set
      */
-    public void setVatmappingid(Integer vatmappingid) {
+    public void setVatmappingid(Long vatmappingid) {
         this.vatmappingid = vatmappingid;
     }
 

@@ -26,7 +26,8 @@
 
         <li>
             <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
-                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{busDocController.print()}" ajax="false"/>
         </li>
 
         <li>
@@ -414,7 +415,26 @@
     <ui:define name="history">
         <h:form id="historyform">
             <div class="p-col-12 p-md-12 vless_padding">
-                <p:panel>
+                <p:panel style="padding-bottom: 10px" header="Stock" toggleable="true">
+                    <p:dataTable id="stocklist"
+                                 value="#{busDocController.stockBalances}"
+                                 sortBy="#{trans.reference}" 
+                                 expandableRowGroups="true"
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Stock Balances found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel style="padding-bottom: 10px" header="Sales History" toggleable="true">
                     <p:dataTable id="saleslist"
                                  value="#{busDocController.salesProductTransactions}"
                                  sortBy="#{trans.reference}" 
@@ -423,11 +443,6 @@
                                  var="trans"
                                  styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
                                  emptyMessage="No Sales History found">
-                        <p:headerRow>
-                            <p:column colspan="2">
-                                <h:outputText value="#{trans.reference}" />
-                            </p:column>
-                        </p:headerRow>
                         <p:column style="width: 70%" headerText="Type">
                             <h:outputText id="scol1" value="#{trans.busdoc.docno}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
                             <p:tooltip id="toolTipGrow1" for="scol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
@@ -439,7 +454,7 @@
                         </p:column>
                     </p:dataTable>
                 </p:panel>
-                <p:panel>
+                <p:panel style="padding-bottom: 10px" header="Purchase History" toggleable="true">
                     <p:dataTable id="purchaselist"
                                  value="#{busDocController.purchaseProductTransactions}"
                                  sortBy="#{trans.reference}" 
@@ -447,11 +462,6 @@
                                  var="trans"
                                  styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
                                  emptyMessage="No Purchase History found">
-                        <p:headerRow>
-                            <p:column colspan="2">
-                                <h:outputText value="#{trans.reference}" />
-                            </p:column>
-                        </p:headerRow>
                         <p:column style="width: 70%" headerText="Type">
                             <h:outputText id="pcol1" value="#{trans.busdoc.docno}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
                             <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
@@ -460,30 +470,6 @@
                         <p:column style="width: 30%; text-align: right" headerText="Value">
                             <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
                             <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-                <p:panel>
-                    <p:dataTable id="stocklist"
-                                 value="#{busDocController.stockBalances}"
-                                 sortBy="#{trans.reference}" 
-                                 expandableRowGroups="true"
-                                 var="trans"
-                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
-                                 emptyMessage="No Stock Balances found">
-                        <p:headerRow>
-                            <p:column colspan="2">
-                                <h:outputText value="#{trans.reference}" />
-                            </p:column>
-                        </p:headerRow>
-                        <p:column style="width: 70%" headerText="Type">
-                            <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
-                        </p:column>
-
-                        <p:column style="width: 30%; text-align: right" headerText="Value">
-                            <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
                         </p:column>
                     </p:dataTable>
                 </p:panel>

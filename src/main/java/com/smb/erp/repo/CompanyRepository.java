@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface CompanyRepository extends BaseRepository<Company, Integer> {
+public interface CompanyRepository extends BaseRepository<Company, Long> {
     
 }

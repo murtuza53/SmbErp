@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface BusinessPartnerRepository extends BaseRepository<BusinessPartner, Integer> {
+public interface BusinessPartnerRepository extends BaseRepository<BusinessPartner, Long> {
     
     @Query("SELECT b FROM BusinessPartner as b WHERE (b.companyname LIKE %:criteria% OR b.email1 LIKE %:criteria%) "
             + "AND b.companytypes LIKE %:bustype% ORDER BY b.companyname")

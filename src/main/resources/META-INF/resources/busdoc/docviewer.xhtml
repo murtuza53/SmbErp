@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_busdoc.xhtml">
+
+    <ui:define name="title">
+        Document Viewer
+    </ui:define>
+
+    <ui:param name="viewname" value="Document Viewer" />
+
+    <ui:define name="toolbar">
+        <!--<li>
+            <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
+                             process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
+        </li>-->
+    </ui:define>
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <pe:documentViewer value="/viewer/doc2/#{busDocController.selected.docno}" download="#{busDocController.selected.docno}.pdf"/>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:define>
+</ui:composition>

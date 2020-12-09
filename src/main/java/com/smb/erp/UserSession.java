@@ -34,7 +34,7 @@ public class UserSession implements Serializable {
 
     @PostConstruct
     public void init(){
-        loggedInBranch = branchRepo.findById(1).get();
+        loggedInBranch = branchRepo.findById((long)1).get();
     }
     
     public Branch getLoggedInBranch(){

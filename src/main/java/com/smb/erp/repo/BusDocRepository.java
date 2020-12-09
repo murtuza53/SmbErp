@@ -31,7 +31,7 @@ public interface BusDocRepository extends BaseRepository<BusDoc, String> {
     List<BusDoc> findByBusDocByPrefix(@Param("prefix") String prefix, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
     @Query("SELECT a FROM BusDoc as a WHERE a.docno LIKE %:prefix% AND a.businesspartner.partnerid = :partnerid ORDER by a.docdate desc")
-    List<BusDoc> findByBusDocByPrefixAndBusinessPartner(@Param("prefix") String prefix, @Param("partnerid") int partnerid);
+    List<BusDoc> findByBusDocByPrefixAndBusinessPartner(@Param("prefix") String prefix, @Param("partnerid") Long partnerid);
 
     //@Query(value="SELECT * FROM busdoc as a WHERE a.docno LIKE '%:prefix%' AND a.partnerid=:partnerid ORDER by a.docdate desc", nativeQuery = true)
     //List<BusDoc> findByBusDocByPrefixAndBusinessPartner(@Param("prefix") String prefix, @Param("partnerid") int partnerid);

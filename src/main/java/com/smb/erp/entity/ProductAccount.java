@@ -18,7 +18,7 @@ public class ProductAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Integer prodaccountid;
+    private Long prodaccountid;
 
     //bi-directional many-to-one association to Account
     @ManyToOne
@@ -38,11 +38,11 @@ public class ProductAccount implements Serializable {
     public ProductAccount() {
     }
 
-    public Integer getProdaccountid() {
+    public Long getProdaccountid() {
         return this.prodaccountid;
     }
 
-    public void setProdaccountid(Integer prodaccountid) {
+    public void setProdaccountid(Long prodaccountid) {
         this.prodaccountid = prodaccountid;
     }
 

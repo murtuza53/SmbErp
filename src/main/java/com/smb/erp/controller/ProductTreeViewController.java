@@ -22,14 +22,14 @@ import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
-import org.springframework.web.context.annotation.SessionScope;
 
 @Named
-@SessionScope
+@SessionScoped
 public class ProductTreeViewController implements Serializable {
 
     @Autowired
@@ -49,6 +49,9 @@ public class ProductTreeViewController implements Serializable {
 
     @Autowired
     TabViewController mainTabs;
+    
+    @Autowired
+    TableKeyController keyCon;
 
     private TreeNode root;
 
@@ -57,6 +60,8 @@ public class ProductTreeViewController implements Serializable {
     private TreeNode selectedNode;
 
     private Product selectedProduct;
+    
+    private ProductCategory selectedCategory;
 
     private List<Product> prodList;
 
@@ -185,6 +190,10 @@ public class ProductTreeViewController implements Serializable {
     public void onNodeSelect(NodeSelectEvent event) {
         //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         //FacesContext.getCurrentInstance().addMessage(null, message);
+        //selectedNode = event.getTreeNode();
+        if(selectedNode!=null){
+            selectedCategory = (ProductCategory)selectedNode.getData();
+        }
         refreshProductList();
         setSelectedProduct(null);
         //PrimeFaces.current().ajax().update("toolbar");
@@ -233,7 +242,7 @@ public class ProductTreeViewController implements Serializable {
         return false;
     }
     
-    public void registerProductVat(int vatcatid){
+    public void registerProductVat(long vatcatid){
         if(selectedProduct!=null){
             VatCategory vc = vatcatRepo.getOne(vatcatid);
             VatProductRegister vpr = new VatProductRegister();
@@ -294,6 +303,29 @@ public class ProductTreeViewController implements Serializable {
         return "Edit Product";
     }
 
+    public String getHeaderCatTitle(){
+        if(selectedCategory==null){
+            return "";
+        }
+        if(selectedCategory.getProdcatId()>0){
+            return "Edit " + selectedCategory.getCatname();
+        }
+        return "New Product Category";
+    }
+
+    public void prepareCreateNewCategory(){
+        //System.out.println("prepareCreateNewCategory: " + selectedCategory);
+        ProductCategory newcat = new ProductCategory();
+        newcat.setProdcategory(selectedCategory);
+        newcat.setProdcatId(0l);
+        selectedCategory = newcat;
+    }
+    
+    public void saveCategory(){
+        pccontroller.save(selectedCategory);
+        //JsfUtil.addSuccessMessage(selectedCategory.getCatname() + " saved");
+    }
+    
     public void prepareCreateNewProduct() {
         selectedProduct = new Product();
         selectedProduct.setProductid(0l);
@@ -318,6 +350,20 @@ public class ProductTreeViewController implements Serializable {
      */
     public void setVatMenuModel(DefaultMenuModel vatMenuModel) {
         this.vatMenuModel = vatMenuModel;
+    }
+
+    /**
+     * @return the selectedCategory
+     */
+    public ProductCategory getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    /**
+     * @param selectedCategory the selectedCategory to set
+     */
+    public void setSelectedCategory(ProductCategory selectedCategory) {
+        this.selectedCategory = selectedCategory;
     }
 
 }

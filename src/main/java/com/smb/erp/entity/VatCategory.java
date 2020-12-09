@@ -19,7 +19,7 @@ public class VatCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Integer vatcategoryid = (int) new Date().getTime();
+    private Long vatcategoryid = new Date().getTime();
 
     private String categoryname;
 
@@ -33,14 +33,14 @@ public class VatCategory implements Serializable {
     /**
      * @return the vatcategoryid
      */
-    public Integer getVatcategoryid() {
+    public Long getVatcategoryid() {
         return vatcategoryid;
     }
 
     /**
      * @param vatcategoryid the vatcategoryid to set
      */
-    public void setVatcategoryid(Integer vatcategoryid) {
+    public void setVatcategoryid(Long vatcategoryid) {
         this.vatcategoryid = vatcategoryid;
     }
 

@@ -60,6 +60,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         if (m != null) {
             if (m.equalsIgnoreCase("0")) { // new business partner
                 BusDocInfo bus = new BusDocInfo();
+                bus.setDocname("New Document");
                 setSelected(bus);
                 mode = DocumentTab.MODE.NEW;
             } else {
@@ -134,7 +135,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     public String getTitle() {
         if (mode == DocumentTab.MODE.LIST) {
-            return getSelected().getDocname()+ " List";
+            return "BusDocInfo List";
         } else if (mode == DocumentTab.MODE.NEW) {
             return "New "+getSelected().getDocname();
         }
@@ -164,7 +165,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect(getSelected().getDocediturl() + "?mode=0");
+        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=0");
     }
 
     public void edit_in_tab() throws IOException {
@@ -174,7 +175,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect(getSelected().getDocediturl() + "?mode=1&bdid=" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=1&bdid=" + getSelected().getBdinfoid());
     }
 
     public void createNewConvertFrom(){
@@ -198,9 +199,13 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     }
 
     public List<String> getBusDocTransactionTypes() {
-        return BusDocTransactionType.TYPES;
+        return BusDocTransactionType.BUSDOC_INVENTORY_TYPES;
     }
     
+    public List<String> getBusDocAccountTypes() {
+        return BusDocTransactionType.BUSDOC_ACCOUNT_TYPES;
+    }
+
     /**
      * @return the selectedTransaction
      */

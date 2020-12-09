@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.UserSession;
 import com.smb.erp.entity.Branch;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocTransactionType;
@@ -20,12 +21,14 @@ import com.smb.erp.report.NativeQueryReportObject;
 import com.smb.erp.report.NativeQueryTableModel;
 import com.smb.erp.service.DatabaseService;
 import com.smb.erp.util.DateUtil;
+import com.smb.erp.util.JsfUtil;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.Query;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
@@ -47,9 +50,12 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
     @Autowired
     CompanyRepository companyRepo;
-    
+
     @Autowired
     ProductRepository productRepo;
+
+    @Autowired
+    UserSession userSession;
 
     private NativeQueryTableModel nqModel = new NativeQueryTableModel();
 
@@ -67,23 +73,44 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
     @Override
     public List<ProductTransaction> getItems() {
-        if (items == null) {
-            if (getSelectProduct() == null) {
-                items = new LinkedList<ProductTransaction>();
-            } else {
-                items = repo.findStockMovement(getSelectProduct().getProductid(), getFromDate(), getToDate(), BusDocTransactionType.INVENTORY_ACCOUNT.getValue());
-            }
-        }
         return items;
     }
 
     public void refresh() {
         items = null;
-        getItems();
+        //System.out.println("refresh: " + getSelectProduct());
+        if (getSelectProduct() == null) {
+            items = new LinkedList<ProductTransaction>();
+        } else {
+            items = repo.findStockMovement(getSelectProduct().getProductid(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate), BusDocTransactionType.INVENTORY.getValue());
+            //System.out.println("FETCHED: " + getSelectProduct() + " => " + items);
+            if (items != null) {
+                Double bal = repo.findStockBalanceByCompany(getSelectProduct().getProductid(), userSession.getLoggedInCompany().getCompanyid(), DateUtil.startOfDay(fromDate));
+                if (bal == null) {
+                    bal = 0.0;
+                }
+                if (items.size() > 0) {
+                    ProductTransaction pt = items.get(items.size() - 1);
+                    bal = bal + pt.getReceived() - pt.getSold();
+                    pt.setCumulative(bal);
+                }
+                for (int i = items.size() - 2; i >= 0; i--) {
+                    ProductTransaction pt = items.get(i);
+                    bal = bal + pt.getReceived() - pt.getSold();
+                    pt.setCumulative(bal);
+                }
+                JsfUtil.addSuccessMessage(items.size() + " transactions listed");
+                System.out.println(items.size() + " transactions listed from " + fromDate + " to " + toDate + ": " + getSelectProduct());
+            }
+        }
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        refresh();
     }
 
     public List<Product> completeFilter(String criteria) {
-        System.out.println("completeFilter: " + criteria);
+        //System.out.println("completeFilter: " + criteria);
 
         //return ejbFacade.findRange(0, 10, "firstName", "ASC",
         //        ejbFacade.createFilters(new String[]{"itsNo", "firstName"}, criteria));
@@ -91,7 +118,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         return productRepo.findByCriteria(criteria);
     }
 
-    public List<ProductTransaction> getSalesTransactions(long productid, Date toDate, int companyid) {
+    public List<ProductTransaction> getSalesTransactions(long productid, Date toDate, long companyid) {
         List<ProductTransaction> ptlist = new LinkedList<>();
 
         List<BusDocInfo> bdiList = docinfoRepo.findBusDocInfoByDocType(BusDocType.SALES.getValue());
@@ -108,7 +135,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         return ptlist;
     }
 
-    public List<ProductTransaction> getPurchaseTransactions(long productid, Date toDate, int companyid) {
+    public List<ProductTransaction> getPurchaseTransactions(long productid, Date toDate, long companyid) {
         List<ProductTransaction> ptlist = new LinkedList<>();
 
         List<BusDocInfo> bdiList = docinfoRepo.findBusDocInfoByDocType(BusDocType.PURCHASE.getValue());
@@ -125,7 +152,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         return ptlist;
     }
 
-    public List<ProductTransaction> getStockBalances(long productid, Date toDate, int companyid) {
+    public List<ProductTransaction> getStockBalances(long productid, Date toDate, long companyid) {
         double total = 0.0;
 
         Company com = companyRepo.getOne(companyid);
@@ -156,7 +183,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         return pts;
     }
 
-    public NativeQueryTableModel findStockBalances(String criteria, int companyid, Date todate) {
+    public NativeQueryTableModel findStockBalances(String criteria, long companyid, Date todate) {
         Company com = companyRepo.getOne(companyid);
         //String query = "SELECT OBJECT(p) FROM Product as p "
         //        + "WHERE (TRIM(p.productid) LIKE %:criteria% OR p.productname LIKE %:criteria% OR "
@@ -197,7 +224,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         return nqModel;
     }
 
-    public NativeQueryTableModel findStockBalances(long productid, int companyid, Date todate) {
+    public NativeQueryTableModel findStockBalances(long productid, long companyid, Date todate) {
         Company com = companyRepo.getOne(companyid);
         //String query = "SELECT OBJECT(p) FROM Product as p "
         //        + "WHERE (TRIM(p.productid) LIKE %:criteria% OR p.productname LIKE %:criteria% OR "

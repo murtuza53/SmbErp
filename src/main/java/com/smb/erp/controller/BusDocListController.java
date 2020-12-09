@@ -141,7 +141,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=n&docinfoid=" + docInfo.getBdinfoid());
+        facesContext.getExternalContext().redirect(docInfo.getDocediturl() +  "?mode=n&docinfoid=" + docInfo.getBdinfoid());
     }
 
     public void edit_in_tab() throws IOException {
@@ -151,7 +151,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=e&docno=" + getSelected().getDocno());
+        facesContext.getExternalContext().redirect(docInfo.getDocediturl() +  "?mode=e&docno=" + getSelected().getDocno());
     }
 
     public List<BusinessPartner> getPartnerList() {

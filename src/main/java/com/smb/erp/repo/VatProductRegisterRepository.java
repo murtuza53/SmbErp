@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface VatProductRegisterRepository extends BaseRepository<VatProductRegister, Integer> {
+public interface VatProductRegisterRepository extends BaseRepository<VatProductRegister, Long> {
 
     @Query("SELECT a FROM VatProductRegister as a WHERE a.vatregisterid = :vatregisterid")
     VatProductRegister findById(@Param("vatregisterid") String vatregisterid);

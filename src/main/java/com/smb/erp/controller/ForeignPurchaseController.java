@@ -278,6 +278,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
                 pt.setUpdatedon(getSelected().getUpdatedon());
                 pt.setFcunitprice(pt.getLinefcunitprice());
                 pt.setUnitprice(pt.getLineunitprice());
+                pt.setTransactiontype(doc.getBusdocinfo().getTransactiontype());
                 pt.refreshTotals();
                 //pt.setBusdoc(doc);
                 System.out.println("pt.getToprodtransaction: " + pt.getToprodtransaction());
@@ -494,7 +495,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
             pt.setVatsptypeid(vm.getVatsptypeid());
         } else {
             if (doctype.equalsIgnoreCase("Sales")) {
-                Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1);
+                Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1l);
                 if (vt.isPresent()) {
                     pt.setVatsptypeid(vt.get());
                 }

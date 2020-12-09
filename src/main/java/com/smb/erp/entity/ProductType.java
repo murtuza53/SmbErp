@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The persistent class for the producttype database table.
@@ -17,7 +18,7 @@ public class ProductType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int producttypeid;
+    private Long producttypeid;
 
     private String description;
 
@@ -30,11 +31,11 @@ public class ProductType implements Serializable {
     public ProductType() {
     }
 
-    public int getProducttypeid() {
+    public Long getProducttypeid() {
         return this.producttypeid;
     }
 
-    public void setProducttypeid(int producttypeid) {
+    public void setProducttypeid(Long producttypeid) {
         this.producttypeid = producttypeid;
     }
 
@@ -84,7 +85,7 @@ public class ProductType implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + this.producttypeid;
+        hash = 59 * hash + Objects.hashCode(this.producttypeid);
         return hash;
     }
 

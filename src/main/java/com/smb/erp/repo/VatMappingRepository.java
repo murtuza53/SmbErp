@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface VatMappingRepository extends BaseRepository<VatMapping, Integer> {
+public interface VatMappingRepository extends BaseRepository<VatMapping, Long> {
 
     @Query("SELECT a FROM VatMapping as a WHERE a.vataccounttypeid.vataccounttypeid = :vataccounttypeid AND a.vatcategoryid.vatcategoryid = :vatcategoryid AND a.producttype = :producttype AND a.transactiontype = :transactiontype")
-    List<VatMapping> findByVatSalesPurchaseType(@Param("vataccounttypeid") int vataccounttypeid, @Param("vatcategoryid") int vatcategoryid, @Param("producttype") String producttype, @Param("transactiontype") String transactiontype);
+    List<VatMapping> findByVatSalesPurchaseType(@Param("vataccounttypeid") long vataccounttypeid, @Param("vatcategoryid") long vatcategoryid, @Param("producttype") String producttype, @Param("transactiontype") String transactiontype);
 
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <p:dialog header="JV Viewer" id="JVViewerDlg" widgetVar="JVViewerDialog" dynamic="true" responsive="true"
+              modal="true" resizable="false" width="800" appendTo="@(body)" closeOnEscape="true">
+        <h:form id="jvviewerform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panelGrid columns="4" styleClass="card"
+                                 columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid">
+                        <p:outputLabel value="Doc No:" for="dno"/>
+                        <h:outputText id="dno" value="#{stockDocController.accdoc.docno}"/>
+
+                        <p:outputLabel value="Ref No:" for="refno"/>
+                        <h:outputText id="refno" value="#{stockDocController.accdoc.refno}"/>
+
+                        <p:outputLabel value="Doc Date:" for="ddate"/>
+                        <h:outputText id="ddate" value="#{stockDocController.accdoc.docdate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
+                        <p:outputLabel value="Last Updated:" for="udate"/>
+                        <h:outputText id="udate" value="#{stockDocController.accdoc.docdate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
+                        <p:outputLabel value="Employee:" for="emp"/>
+                        <h:outputText id="emp" value="#{stockDocController.accdoc.emp}"/>
+
+                        <p:outputLabel value="Branch:" for="branch"/>
+                        <h:outputText id="branch" value="#{stockDocController.accdoc.branch}"/>
+
+                    </p:panelGrid>
+                    <p:panel styleClass="card">
+                        <p:dataTable id="accdoctable" var="led"
+                                     value="#{stockDocController.accdoc.ledlines}" widgetVar="acctable"
+                                     emptyMessage="No Transactions found"
+                                     sortBy="#{stockDocController.accdoc.docno}"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
+                                     style="font-size: smaller">
+                            <p:column headerText="No" style="width: 100px">
+                                <h:outputText value="#{led.llno}" />
+                            </p:column>
+
+                            <p:column headerText="Acccount">
+                                <h:outputText value="#{led.account}" />
+                            </p:column>
+
+                            <p:column headerText="Description">
+                                <h:outputText value="#{led.description}" />
+                            </p:column>
+
+                            <p:column headerText="Debit" style="text-align:right">
+                                <h:outputText value="#{led.debit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Credit" style="text-align:right">
+                                <h:outputText value="#{led.credit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:summaryRow>
+                                <p:column colspan="3" style="text-align:right">
+                                    <h:outputText value="Total:" />
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{stockDocController.accdoc.ledlines.stream().map(x -> x.debit).sum()}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{stockDocController.accdoc.ledlines.stream().map(x -> x.credit).sum()}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:summaryRow>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

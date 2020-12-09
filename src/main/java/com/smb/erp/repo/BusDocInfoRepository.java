@@ -24,8 +24,8 @@ public interface BusDocInfoRepository extends BaseRepository<BusDocInfo, Integer
     @Query("SELECT b FROM BusDocInfo as b WHERE b.doctype=:doctype ORDER BY b.docname")
     List<BusDocInfo> findBusDocInfoByDocType(@Param("doctype") String doctype);
     
-    @Query("SELECT b FROM BusDocInfo as b WHERE b.transactiontype=:transactiontype ORDER BY b.docname")
-    List<BusDocInfo> findBusDocInfoByTransactionType(@Param("transactiontype") String transactiontype);
+    @Query("SELECT b FROM BusDocInfo as b WHERE b.accounttype=:accounttype ORDER BY b.docname")
+    List<BusDocInfo> findBusDocInfoByTransactionType(@Param("accounttype") String accounttype);
 
     @Query("SELECT b FROM BusDocInfo as b WHERE b.doctype=:doctype AND b.transactiontype=:transactiontype ORDER BY b.docname")
     List<BusDocInfo> findBusDocInfoByDocAndTransactionType(@Param("doctype") String doctype, @Param("transactiontype") String transactiontype);

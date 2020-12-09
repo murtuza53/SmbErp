@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The persistent class for the company database table.
@@ -18,7 +19,7 @@ public class Company implements Serializable {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer companyid = 0;
+    private Long companyid = new Date().getTime();
 
     private String abbreviation;
     
@@ -27,6 +28,8 @@ public class Company implements Serializable {
     private String companyname;
 
     private String crno;
+    
+    private String vatno;
 
     private String fax;
 
@@ -61,11 +64,11 @@ public class Company implements Serializable {
     public Company() {
     }
 
-    public Integer getCompanyid() {
+    public Long getCompanyid() {
         return this.companyid;
     }
 
-    public void setCompanyid(Integer companyid) {
+    public void setCompanyid(Long companyid) {
         this.companyid = companyid;
     }
 
@@ -228,8 +231,8 @@ public class Company implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + this.companyid;
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.companyid);
         return hash;
     }
 
@@ -263,6 +266,20 @@ public class Company implements Serializable {
      */
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    /**
+     * @return the vatno
+     */
+    public String getVatno() {
+        return vatno;
+    }
+
+    /**
+     * @param vatno the vatno to set
+     */
+    public void setVatno(String vatno) {
+        this.vatno = vatno;
     }
 
 }

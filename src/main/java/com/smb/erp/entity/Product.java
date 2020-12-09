@@ -26,7 +26,7 @@ public class Product implements Serializable {
     private String barcode2;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdon;
+    private Date createdon = new Date();
 
     private String description;
 
@@ -45,7 +45,7 @@ public class Product implements Serializable {
     private String supplierscode;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedon;
+    private Date updatedon = new Date();
 
     //bi-directional many-to-one association to PriceList
     @OneToMany(mappedBy = "product")
@@ -353,7 +353,7 @@ public class Product implements Serializable {
         Product p = SerializationUtils.clone(this);
         p.setProductid(0l);
         if (p.getProdaccount() != null) {
-            p.getProdaccount().setProdaccountid(0);
+            p.getProdaccount().setProdaccountid(0l);
         }
         return p;
     }

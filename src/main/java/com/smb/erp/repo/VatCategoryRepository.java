@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface VatCategoryRepository extends BaseRepository<VatCategory, Integer> {
+public interface VatCategoryRepository extends BaseRepository<VatCategory, Long> {
     
 }

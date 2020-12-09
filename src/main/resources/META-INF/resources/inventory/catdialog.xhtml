@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="CatDlg" widgetVar="CatDialog" modal="true" resizable="false" width="75%" responsive="true"
+              appendTo="@(body)" header="#{productTreeViewController.headerCatTitle}" closeOnEscape="true">
+        <h:form id="dlgform">
+            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid">
+                <p:outputLabel value="Category No:" for="pno" />
+                <p:inputText id="pno" value="#{productTreeViewController.selectedCategory.prodcatId}" disabled="true" style="width: 100%"/>
+
+                <p:outputLabel value="Parent:" for="des" />
+                <p:inputText id="des" value="#{productTreeViewController.selectedCategory.prodcategory}" disabled="true" style="width: 100%"/>
+
+                <p:outputLabel value="Category Name:" for="name" />
+                <p:inputText id="name" placeholder="Name" value="#{productTreeViewController.selectedCategory.catname}" style="width: 100%"/>
+
+                <p:outputLabel value="Group Code:" for="supcode" />
+                <p:inputText id="supcode" placeholder="Group Code" value="#{productTreeViewController.selectedCategory.groupcode}" style="width: 100%"/>
+
+            </p:panelGrid>
+
+            <p:commandButton actionListener="#{productTreeViewController.saveCategory}" value="Save" update="CatDlg, :mainform:cattree, :growl" 
+                             styleClass="p-mr-2 p-mb-2"
+                             oncomplete="handleSubmit(xhr,status,args,PF('CatDialog'));">
+                <p:confirm header="Confirm" message="Save Category?" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton value="Cancel" oncomplete="PF('CatDialog').hide()" update=":mainform:cattree" 
+                             styleClass="p-mr-2 p-mb-2"
+                             process="@this" immediate="true" resetValues="true"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>

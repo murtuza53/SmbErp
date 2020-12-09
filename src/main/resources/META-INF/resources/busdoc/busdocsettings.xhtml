@@ -48,7 +48,7 @@
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btnlist"/>
 
                             <p:headerRow>
-                                <p:column headerText="Doc Type" colspan="6">
+                                <p:column headerText="Doc Type" colspan="7">
                                     <h:outputText value="#{bus.doctype}" />
                                 </p:column>
                             </p:headerRow>
@@ -59,6 +59,10 @@
 
                             <p:column headerText="Doc Type">
                                 <h:outputText value="#{bus.doctype}" />
+                            </p:column>
+
+                            <p:column headerText="Account Type">
+                                <h:outputText value="#{bus.accounttype}" />
                             </p:column>
 
                             <p:column headerText="Name" style="width: 20%">

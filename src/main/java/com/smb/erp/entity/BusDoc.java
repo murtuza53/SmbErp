@@ -677,6 +677,7 @@ public class BusDoc implements Serializable {
     public void refreshTotal() {
         if (getProductTransactions() != null) {
             setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getSubtotal()).sum());
+            setTotalcost((Double) getProductTransactions().stream().mapToDouble(x -> x.getTotalcost()).sum());
             if (getSubtotal() == 0) {
                 setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getLineSubtotal()).sum());
             }

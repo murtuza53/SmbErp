@@ -5,8 +5,14 @@
  */
 package com.smb.erp.util;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -16,11 +22,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class SystemConfig {
     
+    public static String TIME_FORMAT_PATTERN = "HH:mm:ss";
     public static String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
     public static String DECIMAL_FORMAT_PATTERN = "#,##0.000";
-    public static String INTEGER_FORMAT_PATTERN = "#,###,##0";
-    
+    public static String INTEGER_FORMAT_PATTERN = "######0";
+    public static String MYSQL_DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
+
+    public static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    public static SimpleDateFormat MYSQL_DATE_FORMAT = new SimpleDateFormat(MYSQL_DATE_PATTERN);
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat(DECIMAL_FORMAT_PATTERN);
     public static DecimalFormat INTEGER_FORMAT = new DecimalFormat(INTEGER_FORMAT_PATTERN);
     public static String DECIMAL_TEXT_ALIGN = "right";
@@ -38,8 +48,16 @@ public class SystemConfig {
                                                      PURPLE_COLORS,     //purpulish
                                                      RED_COLORS,     //red
                                                      GRAY_COLORS};    //gray
-    
-    
+    public static Image PRINT_LETTERHEAD_IMAGE = null;
+
+    static {
+        try {
+            PRINT_LETTERHEAD_IMAGE = ImageIO.read(new File("D:\\Murtuza\\OneDrive\\MTC\\Stationary\\MTC LetterHead.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(SystemConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public String getDateFormatPattern(){
         return DATE_FORMAT_PATTERN;
     }

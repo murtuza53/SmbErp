@@ -1,6 +1,7 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class VatAccountType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer vataccounttypeid;
+    private Long vataccounttypeid = new Date().getTime();
 
     private String accounttype;
 
@@ -29,14 +30,14 @@ public class VatAccountType implements Serializable {
     /**
      * @return the vataccounttypeid
      */
-    public Integer getVataccounttypeid() {
+    public Long getVataccounttypeid() {
         return vataccounttypeid;
     }
 
     /**
      * @param vataccounttypeid the vataccounttypeid to set
      */
-    public void setVataccounttypeid(Integer vataccounttypeid) {
+    public void setVataccounttypeid(Long vataccounttypeid) {
         this.vataccounttypeid = vataccounttypeid;
     }
 

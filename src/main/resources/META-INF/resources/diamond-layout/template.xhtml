@@ -17,24 +17,16 @@
         </f:facet>
         <title><ui:insert name="title">SMB ERP</ui:insert></title>
         <h:outputScript name="js/layout.js" library="diamond-layout" />
+        <h:outputScript name="js/pfcrud.js"/>
         <ui:insert name="head"/>
     </h:head>
 
-    <h:body>
-            <p:ajaxStatus styleClass="layout-ajax-loader">
-                <f:facet name="start">
-                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"></i>
-                </f:facet>
+    <h:body styleClass="#{guestPreferences.inputStyleClass}">
 
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>        <div class="layout-wrapper #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
+        <div class="layout-wrapper #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
             <ui:include src="./sidebar.xhtml"></ui:include>
             <ui:include src="./sidebar-right.xhtml"></ui:include>
             <ui:include src="./config.xhtml"></ui:include>
-            <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
-            <p:messages showDetail="true" />
 
             <div class="layout-content-wrapper">
                 <ui:include src="./topbar.xhtml">
@@ -45,20 +37,31 @@
                 </div>
                 <ui:include src="./footer.xhtml"></ui:include>
             </div>
+            <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
+            <!--<p:messages showDetail="true" closable="true"/>-->
+            <p:ajaxStatus styleClass="layout-ajax-loader">
+                <f:facet name="start">
+                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>     
             <ui:include src="./search.xhtml"></ui:include>
             <div class="layout-mask modal-in"></div>
         </div>
 
         <h:outputStylesheet id="layoutCSS">
             .less_padding{
-                padding: 1em !important;
+            padding: 1em !important;
             }
 
             .vless_padding{
-                padding: 0.5em !important;
+            padding: 0.5em !important;
             }
         </h:outputStylesheet>
-        
+
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <h:outputStylesheet name="css/nanoscroller.css"/>

@@ -108,19 +108,23 @@ public class AccDocController extends AbstractController<AccDoc> {
 
     public AccDoc prepareBusDocJV(BusDoc busdoc) {
         if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())
-                || busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())) {
+                || busdoc.getBusdocinfo().getPrefix().equalsIgnoreCase("SHS")) {
             return prepareBusDocSPJV(busdoc);
-        } else {
+        } else if(busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())
+                || busdoc.getBusdocinfo().getPrefix().equalsIgnoreCase("EXS")){
             //createBusDocSalesJV(busdoc);
+            return prepareBusDocSPJV(busdoc);
         }
         return null;
     }
 
     @Transactional
     public AccDoc createBusDocJV(BusDoc busdoc) {
-        if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())) {
+        if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.SALES.getValue())
+                || busdoc.getBusdocinfo().getPrefix().equalsIgnoreCase("SHS")) {
             return createBusDocSalesJV(busdoc);
-        } else if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())) {
+        } else if (busdoc.getBusdocinfo().getDoctype().equalsIgnoreCase(BusDocType.PURCHASE.getValue())
+                || busdoc.getBusdocinfo().getPrefix().equalsIgnoreCase("EXS")) {
             return createBusDocPurchaseJV(busdoc);
         }
         return null;

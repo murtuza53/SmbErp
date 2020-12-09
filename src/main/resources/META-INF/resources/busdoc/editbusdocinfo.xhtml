@@ -47,6 +47,12 @@
                             <f:selectItems value="#{busDocInfoController.busDocTransactionTypes}" />
                         </p:selectOneMenu>
 
+                        <p:outputLabel value="Account Type:" for="actype" />
+                        <p:selectOneMenu id="actype" value="#{busDocInfoController.selected.accounttype}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItems value="#{busDocInfoController.busDocAccountTypes}" />
+                        </p:selectOneMenu>
+
                         <p:outputLabel value="Prefix:" for="pref" />
                         <p:inputText id="pref" placeholder="Prefix" value="#{busDocInfoController.selected.prefix}"/>
 
@@ -97,6 +103,16 @@
                             </p:column>
                         </p:dataTable>
                     </p:panel>
+                </p:fieldset>
+                <p:fieldset legend="Dcoument Links" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        <p:outputLabel value="List URL:" for="dllist" />
+                        <p:inputText id="dllist" placeholder="Document List Link" value="#{busDocInfoController.selected.doclisturl}"/>
+
+                        <p:outputLabel value="Edit URL:" for="docedit" />
+                        <p:inputText id="docedit" placeholder="Document Edit Link" value="#{busDocInfoController.selected.docediturl}"/>
+                    </p:panelGrid>
                 </p:fieldset>
             </div>
 

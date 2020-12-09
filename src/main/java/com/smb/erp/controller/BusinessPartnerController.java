@@ -5,15 +5,12 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusinessPartner;
 import com.smb.erp.entity.CreditLimit;
 import com.smb.erp.entity.VatBusinessRegister;
-import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CountryRepository;
 import com.smb.erp.util.JsfUtil;
-import com.smb.erp.util.StringUtils;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +23,6 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -99,7 +95,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
             } else {
                 String bpid = req.getParameter("bpid");
                 if (bpid != null) {
-                    setSelected(repo.getOne(Integer.parseInt(bpid)));
+                    setSelected(repo.getOne(Long.parseLong(bpid)));
                     if (getSelected().getBusinessRegisters() != null && getSelected().getBusinessRegisters().size() > 0) {
                         selectedVatRegister = getSelected().getBusinessRegisters().get(getSelected().getBusinessRegisters().size() - 1);
                     } else {

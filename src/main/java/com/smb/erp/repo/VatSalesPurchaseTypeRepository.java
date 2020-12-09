@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author Burhani152
  */
 @Repository
-public interface VatSalesPurchaseTypeRepository extends BaseRepository<VatSalesPurchaseType, Integer> {
+public interface VatSalesPurchaseTypeRepository extends BaseRepository<VatSalesPurchaseType, Long> {
 
     @Query("SELECT a FROM VatSalesPurchaseType as a WHERE a.category = :category")
     List<VatSalesPurchaseType> findByCategory(@Param("category") String category);

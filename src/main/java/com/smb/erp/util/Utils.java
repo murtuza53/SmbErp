@@ -6,6 +6,7 @@
 package com.smb.erp.util;
 
 import java.text.Format;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,25 @@ public class Utils {
         return value.toString();
     }
     
+    public static Object convertValue(Class type, String value) throws ParseException{
+        if(type==null){
+            return null;
+        }
+        
+        if (type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName())) {
+            return Double.parseDouble(value);
+        } else if (type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())) {
+            return Float.parseFloat(value);
+        } else if (type.getName().equals(int.class.getName()) || type.getName().equals(Integer.class.getName())) {
+            return Integer.parseInt(value);
+        } else if (type.getName().equals(long.class.getName()) || type.getName().equals(Long.class.getName())) {
+            return Long.parseLong(value);
+        } else if (type.getName().equals(Date.class.getName())) {
+            return SystemConfig.DATE_FORMAT.parse(value);
+        }
+        return value;
+    }
+    
     public static String getCssStyle(Class type){
         if(type == null){
             return "inherit";
@@ -113,5 +133,18 @@ public class Utils {
             return new Date();
         }
         return null;
+    }
+    
+    public static boolean isPrimitiveOrStringType(Class type){
+        if(type==null){
+            return false;
+        }
+        
+        return type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName()) ||
+                type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName()) ||
+                type.getName().equals(int.class.getName()) || type.getName().equals(Integer.class.getName()) ||
+                type.getName().equals(long.class.getName()) || type.getName().equals(Long.class.getName()) ||
+                type.getName().equals(boolean.class.getName()) || type.getName().equals(Boolean.class.getName()) ||
+                type.getName().equals(String.class.getName());
     }
 }

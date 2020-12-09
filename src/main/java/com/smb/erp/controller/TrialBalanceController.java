@@ -47,7 +47,7 @@ public class TrialBalanceController implements Serializable {
 
     private List<Account> accList;
 
-    private Date fromDate = DateUtil.startOfMonth(new Date());
+    private Date fromDate = DateUtil.startOfYear(new Date());
 
     private Date toDate = DateUtil.endOfDay(new Date());
 

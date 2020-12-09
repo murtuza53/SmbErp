@@ -18,7 +18,7 @@ public class Branch implements Serializable {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer branchid = 0;
+    private Long branchid = new Date().getTime();
 
     private String abbreviation;
 
@@ -76,11 +76,11 @@ public class Branch implements Serializable {
         this.branchname = branchname;
     }
 
-    public Integer getBranchid() {
+    public Long getBranchid() {
         return this.branchid;
     }
 
-    public void setBranchid(Integer branchid) {
+    public void setBranchid(Long branchid) {
         this.branchid = branchid;
     }
 
@@ -261,8 +261,8 @@ public class Branch implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.branchid);
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.branchid);
         return hash;
     }
 

@@ -271,7 +271,7 @@ public class AccountController extends AbstractController<Account> {
     public List<Account> getAccountInternalAndLeaf() {
         List<Account> list = getInternalAccounts();
         list.addAll(getAccountAllLeaf());
-        System.out.println("getAccountInternalAndLeaf: " + list.size());
+        //System.out.println("getAccountInternalAndLeaf: " + list.size());
         return list;
     }
 }

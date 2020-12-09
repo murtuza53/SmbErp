@@ -99,7 +99,7 @@ public class ProductController extends AbstractController<Product> {
         //load default accounts
         if (getSelected().getProdaccount() == null) {
             ProductAccount pa = new ProductAccount();
-            pa.setProdaccountid(0);
+            pa.setProdaccountid(0l);
             getSelected().setProdaccount(pa);
             pa.setSalesAccount(systemController.getDefaultAccount("DefSalesAccount"));
             pa.setPurchaseAccount(systemController.getDefaultAccount("DefPurchaseAccount"));
@@ -108,7 +108,7 @@ public class ProductController extends AbstractController<Product> {
         
         if(getSelected().getVatregisterid()==null){
             VatProductRegister vpr = new VatProductRegister();
-            vpr.setVatregisterid(0);
+            vpr.setVatregisterid(0l);
             vpr.setWef(new Date());
             vpr.setVatcategoryid(vatcatController.getItems().get(1));
             getSelected().setVatregisterid(vpr);

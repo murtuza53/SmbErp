@@ -31,7 +31,7 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
     @Autowired
     AccountRepository accountRepo;
 
-    private Date fromDate = DateUtil.startOfMonth(new Date());
+    private Date fromDate = DateUtil.startOfYear(new Date());
 
     private Date toDate = DateUtil.endOfDay(new Date());
 

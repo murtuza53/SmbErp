@@ -93,7 +93,7 @@ public class CompanyController extends AbstractController<Company> {
 
     @Transactional
     public void saveCompany() {
-        int select = 0;
+        long select = 0;
         System.out.println("Save Company: " + selectedCompany + "\t" + new Date());
         if (selectedCompany.getCompanyid() == 0) {
             selectedCompany.setCompanyid(keyController.getCompanyNextId());
@@ -111,7 +111,7 @@ public class CompanyController extends AbstractController<Company> {
 
     @Transactional
     public void saveBranch() {
-        int select = 0;
+        long select = 0;
         System.out.println("Save Branch: " + selectedBranch + "\t" + new Date());
         if (selectedBranch.getBranchid() == 0) {
             selectedBranch.setBranchid(keyController.getBranchNextId());

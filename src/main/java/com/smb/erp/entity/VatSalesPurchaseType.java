@@ -17,7 +17,7 @@ public class VatSalesPurchaseType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer vatsptypeid = 0;
+    private Long vatsptypeid = 0l;
 
     private String typename;
 
@@ -59,14 +59,14 @@ public class VatSalesPurchaseType implements Serializable {
     /**
      * @return the vatsptypeid
      */
-    public Integer getVatsptypeid() {
+    public Long getVatsptypeid() {
         return vatsptypeid;
     }
 
     /**
      * @param vatsptypeid the vatsptypeid to set
      */
-    public void setVatsptypeid(Integer vatsptypeid) {
+    public void setVatsptypeid(Long vatsptypeid) {
         this.vatsptypeid = vatsptypeid;
     }
 

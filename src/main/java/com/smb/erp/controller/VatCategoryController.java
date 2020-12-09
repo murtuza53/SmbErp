@@ -50,11 +50,11 @@ public class VatCategoryController extends AbstractController<VatCategory> {
         VatCategory cat = null;
         SystemDefaults def = systemController.getByPropertyname("DefaultProductVatCategory");
         if(def!=null){
-            cat = repo.getOne(Integer.parseInt(def.getValue()));
+            cat = repo.getOne(Long.parseLong(def.getValue()));
         }
         
         if(cat==null){
-            cat = repo.getOne(2);
+            cat = repo.getOne((long)2);
         }
         return cat;
     }

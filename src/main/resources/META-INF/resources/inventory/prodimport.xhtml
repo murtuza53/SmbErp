@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Product Import
+    </ui:define>
+
+    <ui:param name="viewname" value="Product Import" />
+
+    <ui:define name="content">
+        <h:form id="mainform" enctype="multipart/form-data">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="left">
+                            <h:outputLabel value="Table: " for="atables"/>
+                            <p:selectOneMenu id="atables" value="#{dataImportController.selectedTable}" converter="#{entityConverter}" 
+                                             effect="fold" style="width:100%">
+                                <f:selectItems value="#{dataImportController.availableTables}" var="tab" itemValue = "#{tab}"/>
+                                <p:ajax listener="#{dataImportController.setupTable()}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:fileUpload value="#{dataImportController.file}" mode="simple" skinSimple="true"
+                                          update=":growl" sizeLimit="1000000" allowTypes="/(xls|xlsx)$/" />
+                            <p:commandButton id="btnupload" title="Upload" icon="fas fa-upload" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{dataImportController.handleFileUpload}" ajax="false" update=":growl, btnupload, btnsave"
+                                             onclick="PF('pbAjax').start();PF('btnupload').disable();PF('btnsave').disable();"
+                                             oncomplete="PF('pbAjax').cancel();PF('btnupload').enable();PF('btnsave').enable();"/>
+
+                            <p:commandButton id="btnsave" title="Save Data" icon="fas fa-save" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{dataImportController.processData()}" ajax="true" update=":growl, btnupload, btnsave"
+                                             onclick="PF('pbAjax').start();PF('btnupload').disable();PF('btnsave').disable();"
+                                             oncomplete="PF('pbAjax').cancel();PF('btnupload').enable();PF('btnsave').enable();"/>
+                        </f:facet>
+                    </p:toolbar>
+                </div>
+                <div class="p-col-12 p-md-12">
+                    <p:progressBar id="progressbar" widgetVar="pbAjax" ajax="true" value="#{dataImportController.progress}" 
+                                   labelTemplate="{value}%" global="false">
+                        <p:ajax event="complete" update=":growl" oncomplete="PF('btnupload').enable();PF('btnsave').enable();"/>
+                    </p:progressBar>
+                </div>
+                <div class="p-col-12 p-md-12">
+                    <p:dataTable id="datatable" var="item"
+                                 value="#{dataImportController.items}"
+                                 emptyMessage="No Data found"
+                                 rowIndexVar="row"
+                                 styleClass="card products-table ui-datatable-sm ui-datatable-gridlines">
+                        <p:columns value="#{dataImportController.header}" var="column" columnIndexVar="colIndex">
+                            <f:facet name="header">
+                                <h:outputText value="#{column}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.get(colIndex)}"/>
+                        </p:columns>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -236,11 +236,14 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                 query = query + " OR a.docno LIKE '%" + info.getPrefix() + "%'";
             }
         }
-        docs = em.createQuery("SELECT a FROM BusDoc as a WHERE (" + query
-                + ") AND a.businesspartner.partnerid=" + acc.getBusinesspartner().getPartnerid()
-                + " ORDER by a.docdate asc")
-                .getResultList();
-
+        if (query == null) {
+            docs = new LinkedList();
+        } else {
+            docs = em.createQuery("SELECT a FROM BusDoc as a WHERE (" + query
+                    + ") AND a.businesspartner.partnerid=" + acc.getBusinesspartner().getPartnerid()
+                    + " ORDER by a.docdate asc")
+                    .getResultList();
+        }
         return docs;
     }
 

@@ -61,18 +61,23 @@ public class TableKeyController extends AbstractController<TableKey> {
     }
     
     @Transactional
-    public synchronized int getBusinessPartnerNextId(){
-        return (int)getNextKey("businesspartner");
+    public synchronized long getBusinessPartnerNextId(){
+        return getNextKey("businesspartner");
     }
 
     @Transactional
-    public synchronized int getCompanyNextId(){
-        return (int)getNextKey("company");
+    public synchronized long getCompanyNextId(){
+        return getNextKey("company");
     }
 
     @Transactional
-    public synchronized int getBranchNextId(){
-        return (int)getNextKey("branch");
+    public synchronized long getProductCategoryNextId(){
+        return getNextKey("prodcategory");
+    }
+
+    @Transactional
+    public synchronized long getBranchNextId(){
+        return getNextKey("branch");
     }
     
     @Transactional
@@ -81,8 +86,8 @@ public class TableKeyController extends AbstractController<TableKey> {
     }
     
     @Transactional
-    public synchronized int getBrandNextId(){
-        return (int)getNextKey("brand");
+    public synchronized long getBrandNextId(){
+        return getNextKey("brand");
     }
     
     @Transactional
