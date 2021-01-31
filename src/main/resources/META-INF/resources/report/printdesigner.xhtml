@@ -1,0 +1,592 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_simple.xhtml">
+
+    <ui:define name="title">
+        Report Designer
+    </ui:define>
+
+    <ui:param name="viewname" value="Report Designer" />
+
+    <ui:define name="toolbar">
+        <li>
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl"
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{printTemplateController.save()}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{printTemplateController.print()}" ajax="false"/>
+        </li>
+
+        <li>
+            <p:progressBar id="progressbar" widgetVar="pbAjax" ajax="true" value="#{printTemplateController.progress}" 
+                           labelTemplate="{value}%" global="false">
+                <p:ajax event="complete" update=":growl" oncomplete="PF('btnupload').enable();PF('btnsave').enable();"/>
+            </p:progressBar>
+            <p:fileUpload value="#{printTemplateController.file}" mode="simple" skinSimple="true"
+                          update=":growl" sizeLimit="1000000" allowTypes="/(rpt)$/" />
+            <p:commandButton id="btnupload" title="Upload Report" icon="fas fa-upload" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                             actionListener="#{printTemplateController.handleFileUpload}" ajax="false" update=":growl, btnupload"
+                             onclick="PF('pbAjax').start();PF('btnupload').disable();PF('btnsave').disable();"
+                             oncomplete="PF('pbAjax').cancel();PF('btnupload').enable();PF('btnsave').enable();"/>
+        </li>
+
+    </ui:define>
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12 vless_padding">
+                    <div class="card ui-fluid">
+                        <h5>Report Title</h5>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Template Id</p:outputLabel>
+                                <p:inputText id="rid" value="#{printTemplateController.selected.reportid}" disabled="true"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">For Document</p:outputLabel>
+                                <p:inputText id="rdocname" value="#{printTemplateController.selected.bdinfoid.docname}" disabled="true"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Report Name</p:outputLabel>
+                                <p:inputText id="rname" value="#{printTemplateController.dynamicReport.reportName}"/>
+                            </div>
+                        </div>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Letter Head Required</p:outputLabel>
+                                <p:selectOneRadio id="letterhead" value="#{printTemplateController.dynamicReport.letterHeadRequired}">
+                                    <f:selectItem itemLabel="Yes" itemValue="true" />
+                                    <f:selectItem itemLabel="No" itemValue="false" />
+                                </p:selectOneRadio>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Title</p:outputLabel>
+                                <p:inputText id="rtitle" value="#{printTemplateController.dynamicReport.title.text}"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Title Style</p:outputLabel>
+                                <p:selectOneMenu id="tstyle" value="#{printTemplateController.dynamicReport.titleStyle}" converter="#{entityConverter}" 
+                                                 effect="fold" style="width:100%">
+                                    <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Page Size</p:outputLabel>
+                                <p:selectOneMenu id="psize" value="#{printTemplateController.dynamicReport.pageType}" converter="#{entityConverter}" 
+                                                 effect="fold" style="width:100%">
+                                    <f:selectItems value="#{printTemplateController.pageTypes()}" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Page Orientation</p:outputLabel>
+                                <p:selectOneMenu id="pore" value="#{printTemplateController.dynamicReport.pageOrientation}" converter="#{entityConverter}" 
+                                                 effect="fold" style="width:100%">
+                                    <f:selectItems value="#{printTemplateController.pageOrientations()}" />
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Margin</p:outputLabel>
+                                <p:inputNumber value="#{printTemplateController.dynamicReport.margin}" minValue="0" maxValue="50"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:panel id="headerpanel" class="card ui-fluid" header="HEADER SECTION">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnewcontainer" title="New Report Section" update=":growl, headerpanel"
+                                             icon="fas fa-th-large" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                                             actionListener="#{printTemplateController.createNewHeaderReportSection()}"/>
+                        </f:facet>
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Before Gap</p:outputLabel>
+                                <p:inputNumber value="#{printTemplateController.headerSectionContainer.gapBefore}" minValue="0" maxValue="50"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">After Gap</p:outputLabel>
+                                <p:inputNumber value="#{printTemplateController.headerSectionContainer.gapAfter}" minValue="0" maxValue="50"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Print Layout</p:outputLabel>
+                                <p:selectOneMenu id="splayout" value="#{printTemplateController.headerSectionContainer.printLayout}" converter="#{entityConverter}" 
+                                                 effect="fold" style="width:100%">
+                                    <f:selectItems value="#{printTemplateController.containerPrintLayouts()}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <c:forEach items="#{printTemplateController.headerSectionContainer.reportSection}" var="section" varStatus="loop">
+                            <p:panel id="hrspanel_#{loop.index}" header="Report Section #{loop.index+1}: #{section.title}">
+                                <div class="p-formgrid p-grid">
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">Section Title</p:outputLabel>
+                                        <p:inputText value="#{section.title}">
+                                            <p:ajax event="blur" update="@parent"/>
+                                        </p:inputText>
+                                    </div>
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">Print Layout</p:outputLabel>
+                                        <p:selectOneMenu value="#{section.printLayout}" converter="#{entityConverter}" 
+                                                         effect="fold" style="width:100%">
+                                            <f:selectItems value="#{printTemplateController.sectionPrintLayouts()}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">Section Width (%)</p:outputLabel>
+                                        <p:inputText value="#{section.sectionWidth}"/>
+                                    </div>
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">Before Gap</p:outputLabel>
+                                        <p:inputNumber value="#{section.gapBefore}" minValue="0" maxValue="50"/>
+                                    </div>
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">After Gap</p:outputLabel>
+                                        <p:inputNumber value="#{section.gapAfter}" minValue="0" maxValue="50"/>
+                                    </div>
+                                    <div class="p-field p-col">
+                                        <p:outputLabel for="@next">Title Style</p:outputLabel>
+                                        <p:selectOneMenu value="#{section.titleStyle}" converter="#{entityConverter}" 
+                                                         effect="fold" style="width:100%">
+                                            <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <p:panel id="rfpanel_#{loop.index}" header="Report Fields">
+                                    <f:facet name="header">
+                                        <h:panelGrid columns="2" style="width: 100%">
+                                            <p:outputLabel for="@next">Report Fields</p:outputLabel>
+                                            <h:panelGrid columns="3" style="float: right; width: 100%" columnClasses="p-md-8 p-md-3 p-md-1">
+                                                <p:outputLabel value=" Choose Field" style="width: 100%; float: right; text-align: right"/>
+                                                <p:selectOneMenu id="rptfield_#{loop.index}" value="#{printTemplateController.sectionReportField}"
+                                                                 effect="fade" filter="true" filterMatchMode="contains"
+                                                                 editable="true" style="width: 100%">
+                                                    <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                                    <f:selectItems value="#{printTemplateController.fields}"/>
+                                                    <p:ajax event="change" update="@this" />
+                                                </p:selectOneMenu> 
+                                                <h:panelGroup style="float: right">
+                                                    <p:commandButton id="btn_hls_new_#{loop.index}" title="Add New Report Field" icon="fa fa-plus" 
+                                                                     update="@widgetVar(hlsdata_#{loop.index}), :growl" process="@this"
+                                                                     styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                                     actionListener="#{printTemplateController.addNewReportField(section)}"/>                            
+
+                                                    <p:commandButton id="btn_hls_delete_#{loop.index}" title="Delete Selected Report Field" icon="fa fa-trash" 
+                                                                     update="@widgetVar(hlsdata_#{loop.index}), :growl" 
+                                                                     disabled="#{empty printTemplateController.selectedReportField}"
+                                                                     styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                                     actionListener="#{printTemplateController.deleteReportField(section)}"/>
+                                                </h:panelGroup>
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </f:facet>
+                                    <p:dataTable id="hlsdata_#{loop.index}" var="trans" widgetVar="hlsdata_#{loop.index}"
+                                                 value="#{section.reportFields}"
+                                                 rowKey="#{trans.id}"
+                                                 selection="#{printTemplateController.selectedReportField}"
+                                                 selectionMode="single"
+                                                 editable="true"
+                                                 editMode="cell"
+                                                 emptyMessage="No Fields found"
+                                                 styleClass="products-table ui-datatable-sm ui-datatable-gridlines">
+                                        <p:ajax event="rowSelect" listener="#{printTemplateController.onRowSelect_ReportField}" 
+                                                update="@this, @widgetVar(btn_hls_delete_#{loop.index})" process="@this"/>
+
+                                        <p:column headerText="Id" style="width: 100px; text-align: center">
+                                            <h:outputText value="#{trans.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="Print Label" >
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{trans.printLabel?'Yes':'No'}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu value="#{trans.printLabel}">
+                                                        <f:selectItem itemValue="#{true}" itemLabel="Yes"/>
+                                                        <f:selectItem itemValue="#{false}" itemLabel="No"/>
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Label" >
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{trans.label}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText value="#{trans.label}" 
+                                                                 style="border-left: 5px solid goldenrod; width: 100%;" label="Label"/>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Field">
+                                            <h:outputText value="#{trans.propertyName}" />
+                                        </p:column>
+
+                                        <p:column headerText="Type">
+                                            <h:outputText value="#{trans.type.simpleName}" />
+                                        </p:column>
+
+                                        <p:column headerText="Label Style" >
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{trans.labelStyle}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu value="#{trans.labelStyle}" converter="#{entityConverter}" 
+                                                                     effect="fold" style="width:100%">
+                                                        <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Text Style" >
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{trans.textStyle}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu value="#{trans.textStyle}" converter="#{entityConverter}" 
+                                                                     effect="fold" style="width:100%">
+                                                        <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:panel>
+                            <br/>
+                        </c:forEach>
+                    </p:panel>
+
+                    <p:panel id="transpanel" class="card ui-fluid" header="TRANSACTIONS">
+                        <div class="p-formgrid p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Select Transaction Class</p:outputLabel>
+                                <p:selectOneMenu id="transclass" value="#{printTemplateController.reportTableField}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains" 
+                                                 editable="true" style="width: 100%">
+                                    <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                    <f:selectItems value="#{printTemplateController.fields_ListType}" var="item" 
+                                                   itemLabel="#{item.property}" itemValue="#{item}"/>
+                                    <p:ajax event="itemSelect" update="tabpropname, tabpropclass" listener="#{printTemplateController.onReportTableFieldSelectedListener}"/>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.property}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Type"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.type}"/>
+                                    </p:column>
+                                </p:selectOneMenu>  
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Data Property Name</p:outputLabel>
+                                <p:inputText id="tabpropname" value="#{printTemplateController.dynamicReport.reportTable.dataPropertyName}" disabled="true"/>
+                            </div>
+                            <div class="p-field p-col">
+                                <p:outputLabel for="@next">Property Class</p:outputLabel>
+                                <p:inputText id="tabpropclass" value="#{printTemplateController.dynamicReport.reportTable.dataClass}" disabled="true"/>
+                            </div>
+                        </div>
+                        <p:panel id="datatrans" header="Transaction Fields">
+                            <f:facet name="header">
+                                <h:panelGrid columns="2" style="width: 100%">
+                                    <p:outputLabel value="Transaction Fields" style="width: 100%"/>
+                                    <h:panelGrid columns="3" style="float: right; width: 100%" columnClasses="p-md-8 p-md-3 p-md-1">
+                                        <p:outputLabel value=" " style="width: 100%; float: right"/>
+                                        <p:selectOneMenu id="field" value="#{printTemplateController.transactionFieldToAdd}"
+                                                         effect="fade" filter="true" filterMatchMode="contains" 
+                                                         editable="true" style="width: 100%">
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                            <f:selectItems value="#{printTemplateController.transactionFields}"/>
+                                            <!--
+                                                <p:ajax event="itemSelect" update="transdata" listener="#{printTemplateController.addTransactionField}"/>
+                                            -->
+                                        </p:selectOneMenu>
+                                        <h:panelGroup style="float: right">
+                                            <p:commandButton id="btn_trans_new" title="Add Transaction Field" icon="fa fa-plus" 
+                                                             update="transdata, :growl"
+                                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                             actionListener="#{printTemplateController.addTransactionField()}"/>                            
+                                            <p:commandButton id="btn_trans_delete" title="Delete Selected Report Field" icon="fa fa-trash" 
+                                                             update="transdata, :growl"
+                                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                             actionListener="#{printTemplateController.deleteTransactionField()}"/>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </f:facet>
+                            <p:dataTable id="transdata" var="trans" widgetVar="transdata"
+                                         value="#{printTemplateController.dynamicReport.reportTable.fieldList}"
+                                         rowKey="#{trans.id}"
+                                         selectionMode="single"
+                                         selection="#{printTemplateController.selectedTransactionField}"
+                                         editable="true"
+                                         editMode="cell"
+                                         emptyMessage="No Transactions found"
+                                         styleClass="products-table ui-datatable-sm ui-datatable-gridlines">
+                                <p:ajax event="rowSelect" update="@widgetVar(btn_trans_delete)"/>
+
+                                <p:column headerText="Id" style="width: 20px; text-align: center">
+                                    <h:outputText value="#{trans.id}" />
+                                </p:column>
+
+                                <p:column headerText="Label" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{trans.columnTitle}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="coltitle" value="#{trans.columnTitle}" 
+                                                         style="border-left: 5px solid goldenrod; width: 100%;" label="Label"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Field">
+                                    <h:outputText value="#{trans.propertyName}" />
+                                </p:column>
+
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{trans.type.simpleName}"/>
+                                </p:column>
+
+                                <p:column headerText="Width" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{trans.width}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputNumber value="#{trans.width}" 
+                                                           minValue="0" maxValue="150"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Total Function" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{trans.columnFunction}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu value="#{trans.columnFunction}" converter="#{entityConverter}" 
+                                                             effect="fold" style="width:100%">
+                                                <f:selectItems value="#{printTemplateController.columnFunctions()}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:panel>
+
+                    <p:panel id="printsumpanel" header="Summary">
+                        <f:facet name="header">
+                            <h:panelGrid columns="2" style="width: 100%">
+                                <p:outputLabel value="Transaction Fields" style="width: 100%"/>
+                                <h:panelGrid columns="3" style="float: right; width: 100%" columnClasses="p-md-9 p-md-2 p-md-1">
+                                    <p:outputLabel for="" value=" " />
+                                    <h:panelGrid columns="2" style="float: right">
+                                        <p:outputLabel for="printsummary" value="Print Summary:" />
+                                        <p:selectOneRadio id="printsummary" value="#{printTemplateController.dynamicReport.reportTable.printSummary}">
+                                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                                            <f:selectItem itemLabel="No" itemValue="false" />
+                                            <p:ajax update="printsumpanel" />
+                                        </p:selectOneRadio>
+                                    </h:panelGrid>
+                                    <h:panelGroup style="float: right">
+                                        <p:commandButton id="btn_summary_add" title="Add New Report Field" icon="fa fa-plus" 
+                                                         update="printsumpanel, :growl" disabled="#{!printTemplateController.dynamicReport.reportTable.printSummary}"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{printTemplateController.addSummaryField()}"/>
+                                        <p:commandButton id="btn_summary_delete" title="Delete Selected Report Field" icon="fa fa-trash" 
+                                                         update="printsumpanel, :growl" disabled="#{!printTemplateController.dynamicReport.reportTable.printSummary}"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{printTemplateController.deletedSummaryField()}"/>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </f:facet>
+
+                        <p:dataTable id="summarydata" var="trans" 
+                                     value="#{printTemplateController.dynamicReport.reportTable.summaryList}"
+                                     rowKey="#{trans.id}"
+                                     selectionMode="single"
+                                     selection="#{printTemplateController.selectedSummaryField}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No fields found" rendered="#{printTemplateController.dynamicReport.reportTable.printSummary}"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-gridlines">
+                            <p:ajax event="rowSelect" update="@widgetVar(btn_summary_delete)"/>
+
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{trans.id}" />
+                            </p:column>
+
+                            <p:column headerText="Label" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.label}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="label" value="#{trans.label}" 
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Label"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Field">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.propertyName}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="propertyname" value="#{trans.propertyName}" 
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Label"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{trans.printLayout}" />
+                            </p:column>
+
+                            <p:column headerText="Label Style" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.labelStyle}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="slabelstyle" value="#{trans.labelStyle}" converter="#{entityConverter}" 
+                                                         effect="fold" style="width:100%">
+                                            <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Text Style" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.textStyle}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="stextstyle" value="#{trans.textStyle}" converter="#{entityConverter}" 
+                                                         effect="fold" style="width:100%">
+                                            <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <p:panel id="printsigpanel" header="SIGNATURE SECTION">
+                        <f:facet name="header">
+                            <h:panelGrid columns="2" style="width: 100%">
+                                <p:outputLabel value="Signature Fields" style="width: 100%"/>
+                                <h:panelGrid columns="3" style="float: right; width: 100%" columnClasses="p-md-9 p-md-2 p-md-1">
+                                    <p:outputLabel for="" value=" " />
+                                    <h:panelGrid columns="2" style="float: right">
+                                        <p:outputLabel for="printsig" value="Print Signatures" />
+                                        <p:selectOneRadio id="printsig" value="#{printTemplateController.dynamicReport.printSignatures}">
+                                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                                            <f:selectItem itemLabel="No" itemValue="false" />
+                                            <p:ajax update="printsigpanel" />
+                                        </p:selectOneRadio>
+                                    </h:panelGrid>
+                                    <h:panelGroup style="float: right">
+                                        <p:commandButton id="btn_sig_add" title="Add New Signature Field" icon="fa fa-plus" 
+                                                         update="printsigpanel, :growl" disabled="#{!printTemplateController.dynamicReport.printSignatures}"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{printTemplateController.addSignatureField()}"/>
+                                        <p:commandButton id="btn_sig_delete" title="Delete Selected Signature Field" icon="fa fa-trash" 
+                                                         update="printsigpanel, :growl" disabled="#{!printTemplateController.dynamicReport.printSignatures}"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{printTemplateController.deleteSignatureField()}"/>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </f:facet>
+
+                        <p:dataTable id="sigdata" var="trans" 
+                                     value="#{printTemplateController.dynamicReport.signatureFields}"
+                                     rowKey="#{trans.id}"
+                                     selectionMode="single"
+                                     selection="#{printTemplateController.selectedSignatureField}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No fields found" rendered="#{printTemplateController.dynamicReport.printSignatures}"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-gridlines">
+                            <p:ajax event="rowSelect" update="@widgetVar(btn_sig_delete)"/>
+
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{trans.id}" />
+                            </p:column>
+
+                            <p:column headerText="Signature Text" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.text}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="label" value="#{trans.text}" 
+                                                     style="border-left: 5px solid goldenrod; width: 100%;" label="Label"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Text Style" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{trans.textStyle}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="stextstyle" value="#{trans.textStyle}" converter="#{entityConverter}" 
+                                                         effect="fold" style="width:100%">
+                                            <f:selectItems value="#{printTemplateController.themeStyles}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:define>
+
+    <ui:define name="history">
+        <h:form id="historyform">
+            <div class="p-col-12 p-md-12 vless_padding">
+                <p:panel style="padding-bottom: 10px" header="Style" toggleable="true">
+
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="productsearch">
+
+    </ui:define>
+</ui:composition>

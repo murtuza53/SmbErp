@@ -20,13 +20,13 @@ public class ColorScheme {
     private String inversePrimaryColor = "#f6ef98";           //"#b7efcd";
     private String textPrimaryColor = "#000000";                  //"#363636";
     
-    private String fontName = "Carlito";        //Georgia, Calibri, Arial, Courier, Tahoma, Carlito
+    private String fontName = "Georgia";        //Georgia, Calibri, Arial, Courier, Tahoma, Carlito, Verdana
    
-    private int normalFontSize = 12;
-    private int h1FontSize = 22;
-    private int h2FontSize = 18;
-    private int h3FontSize = 14;
-    private int h4FontSize = 12;
+    private int normalFontSize = 10;    //12
+    private int h1FontSize = 16;        //22
+    private int h2FontSize = 14;        //18
+    private int h3FontSize = 12;        //14
+    private int h4FontSize = 10;        //12
     
     public ColorScheme(){
         

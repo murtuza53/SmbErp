@@ -18,7 +18,7 @@ public class VatBusinessRegister implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer vatregisterid;
+    private Integer vatregisterid = (int)new Date().getTime();
 
     private String countrystate;
 

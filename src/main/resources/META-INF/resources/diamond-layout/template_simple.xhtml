@@ -37,7 +37,7 @@
             <p:messages showDetail="true" />
 
             <div class="layout-content-wrapper">
-                <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
+                <h:form id="mainform" enctype="multipart/form-data" onkeypress="if (event.keyCode == 13) {
                             return false;
                         }">
                     <ui:include src="./topbar_simple.xhtml">
@@ -45,6 +45,7 @@
                     </ui:include>
                     <div class="layout-content less_padding">
                         <ui:insert name="content"></ui:insert>
+                        <ui:include src="/confirmation.xhtml"/>
                     </div>
                     <ui:include src="./footer.xhtml"></ui:include>
                 </h:form>

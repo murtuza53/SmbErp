@@ -26,15 +26,15 @@
                             <div class="ui-fluid p-formgrid p-grid">
                                 <div class="p-field p-col-12 p-md-6">
                                     <p:outputLabel value="From Date" for="fromdate" />
-                                    <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{trialBalanceController.fromDate}" 
-                                                title="From Date"  showOn="button"
+                                    <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{trialBalanceController.fromDate}" 
+                                                  title="From Date"  showIcon="true"
                                                 required="true" requiredMessage="Please select Date"/>
                                 </div>
 
                                 <div class="p-field p-col-12 p-md-6">
                                     <p:outputLabel value="To Date" for="todate" />
-                                    <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{trialBalanceController.toDate}" 
-                                                title="To Date"  showOn="button"
+                                    <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{trialBalanceController.toDate}" 
+                                                  title="To Date"  showIcon="true"
                                                 required="true" requiredMessage="Please select Date"/>
                                 </div>
                             </div>

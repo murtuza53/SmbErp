@@ -41,9 +41,13 @@ public class ProductTransaction implements Serializable {
 
     private Double cost = 0.0;
 
+    private Double fccost = 0.0;
+
     private String customizedname;
 
     private Double discount = 0.0;
+
+    private Double fcdiscount = 0.0;
 
     private Double discountpercentage = 0.0;
 
@@ -52,6 +56,8 @@ public class ProductTransaction implements Serializable {
     private Double fcunitprice = 0.0;
 
     private Double linecost = 0.0;
+
+    private Double linefccost = 0.0;
 
     private Double linefcunitprice = 0.0;
 
@@ -125,6 +131,39 @@ public class ProductTransaction implements Serializable {
 
     @Transient
     private Double cumulative = 0.0;
+
+    @Transient
+    private Double fccumulative = 0.0;
+
+    @Transient
+    private Double lineSubtotal;
+
+    @Transient
+    private Double fcLineSubtotal;
+
+    @Transient
+    private Double subtotal;
+
+    @Transient
+    private Double fcSubtotal;
+
+    @Transient
+    private Double totalamount;
+
+    @Transient
+    private Double fcTotalamount;
+
+    @Transient
+    private Double grandtotal;
+
+    @Transient
+    private Double fcGrandtotal;
+
+    @Transient
+    private Double totalcost;
+
+    @Transient
+    private Double fcTotalcost;
 
     public ProductTransaction() {
     }
@@ -239,6 +278,7 @@ public class ProductTransaction implements Serializable {
 
     public void setLinereceived(Double linereceived) {
         this.linereceived = linereceived;
+        this.received = linereceived;
     }
 
     public Double getLinesold() {
@@ -247,6 +287,7 @@ public class ProductTransaction implements Serializable {
 
     public void setLinesold(Double linesold) {
         this.linesold = linesold;
+        this.sold = linesold;
     }
 
     public Double getLineunitprice() {
@@ -382,7 +423,7 @@ public class ProductTransaction implements Serializable {
 
     @Override
     public String toString() {
-        return prodtransid + "\t" + busdoc.getDocno() + "\t" + product.getProductid() + "\t" + getReceived() + "\t" + getSold();
+        return prodtransid + "\t" + busdoc + "\t" + product + "\t" + getReceived() + "\t" + getSold();
     }
 
     @Override
@@ -428,16 +469,32 @@ public class ProductTransaction implements Serializable {
         return getLineqty() * getLineunitprice();
     }
 
+    public Double getFcLineSubtotal() {
+        return getLineqty() * getLinefcunitprice();
+    }
+
     public Double getSubtotal() {
         return (getSold() + getReceived()) * getLineunitprice();
     }
 
+    public Double getFcSubtotal() {
+        return (getSold() + getReceived()) * getLinefcunitprice();
+    }
+
     public Double getTotalamount() {
-        return getLineSubtotal() - getDiscount();
+        return getLineSubtotal() - getDiscount() * getExchangerate();
+    }
+
+    public Double getFcTotalamount() {
+        return getFcLineSubtotal() - getDiscount();
     }
 
     public Double getGrandtotal() {
-        return getTotalamount() + getVatamount();
+        return getTotalamount() + getVatamount() * getExchangerate();
+    }
+
+    public Double getFcGrandtotal() {
+        return getFcTotalamount() + getVatamount();
     }
 
     public Double getTotalcost() {
@@ -446,6 +503,14 @@ public class ProductTransaction implements Serializable {
         //}
         //return getLinefcunitprice() * getCost();
         return (getSold() + getReceived()) * getLinecost();
+    }
+
+    public Double getFcTotalcost() {
+        //if (getCost() == 0) {
+        //    return getSubtotal();
+        //}
+        //return getLinefcunitprice() * getCost();
+        return (getSold() + getReceived()) * getLinecost() * getExchangerate();
     }
 
     /**
@@ -475,9 +540,9 @@ public class ProductTransaction implements Serializable {
             }
         }
         if (getVatcategoryid() != null) {
-            vatamount = getVatcategoryid().getVatpercentage() * 0.01 * getLineSubtotal();
+            vatamount = getVatcategoryid().getVatpercentage() * 0.01 * getFcLineSubtotal();
         } else if (product.getVatregisterid() != null) {
-            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage() * 0.01 * getLineSubtotal();
+            vatamount = product.getVatregisterid().getVatcategoryid().getVatpercentage() * 0.01 * getFcLineSubtotal();
             //System.out.println(product.getVatregisterid() + "VatAmount: " + getVatamount());
         } else {
             vatamount = 0.0;
@@ -491,7 +556,7 @@ public class ProductTransaction implements Serializable {
     public void calculateActualQtyFromLineQty() {
         if (getBusdoc() != null) {
             setCost(getLinecost());
-            if (getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("STX")) {
+            if (getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("STX") || getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("SCP")) {
                 return; //do nothing
             }
             if (getBusdoc().getBusdocinfo().getDoctype().equalsIgnoreCase("SALES") || getBusdoc().getBusdocinfo().getPrefix().equalsIgnoreCase("SHS")) {
@@ -735,4 +800,53 @@ public class ProductTransaction implements Serializable {
         this.cumulative = cumulative;
     }
 
+    /**
+     * @return the fccost
+     */
+    public Double getFccost() {
+        return fccost;
+    }
+
+    /**
+     * @param fccost the fccost to set
+     */
+    public void setFccost(Double fccost) {
+        this.fccost = fccost;
+        this.cost = this.fccost * exchangerate;
+    }
+
+    /**
+     * @return the fcdiscount
+     */
+    public Double getFcdiscount() {
+        return fcdiscount;
+    }
+
+    /**
+     * @param fcdiscount the fcdiscount to set
+     */
+    public void setFcdiscount(Double fcdiscount) {
+        this.fcdiscount = fcdiscount;
+        this.discount = this.fcdiscount * exchangerate;
+    }
+
+    /**
+     * @return the linefccost
+     */
+    public Double getLinefccost() {
+        return linefccost;
+    }
+
+    /**
+     * @param linefccost the linefccost to set
+     */
+    public void setLinefccost(Double linefccost) {
+        this.linefccost = linefccost;
+        this.linecost = this.linefccost * exchangerate;
+    }
+
+    public String getCostingGroupBy(){
+        //"#{pt.busdoc.docno} - #{pt.toProdTranstionDocNo} - #{pt.busdoc.businesspartner.companyname}"
+        return getBusdoc().getDocno() + " - " + getToProdTranstionDocNo() + " - " + getBusdoc().getBusinesspartner().getCompanyname();
+    }
 }

@@ -104,14 +104,34 @@
                         </p:dataTable>
                     </p:panel>
                 </p:fieldset>
-                <p:fieldset legend="Dcoument Links" styleClass="card ui-fluid">
+                <p:fieldset legend="Document Links" styleClass="card ui-fluid">
                     <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
                                  styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        <p:outputLabel value="Module:" for="module" />
+                        <p:selectOneMenu id="module" value="#{busDocInfoController.selected.pageid.moduleid}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItems value="#{moduleController.activeAll}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Page Title:" for="ptitle" />
+                        <p:inputText id="ptitle" placeholder="Manu Title" value="#{busDocInfoController.selected.pageid.title}"/>
+
                         <p:outputLabel value="List URL:" for="dllist" />
                         <p:inputText id="dllist" placeholder="Document List Link" value="#{busDocInfoController.selected.doclisturl}"/>
 
                         <p:outputLabel value="Edit URL:" for="docedit" />
                         <p:inputText id="docedit" placeholder="Document Edit Link" value="#{busDocInfoController.selected.docediturl}"/>
+                        
+                        <p:outputLabel value="Icon:" for="dicon" />
+                        <p:inputText id="dicon" placeholder="Icon" value="#{busDocInfoController.selected.pageid.icon}"/>
+                        
+                        <p:outputLabel value="Page Order:" for="porder" />
+                        <p:spinner id="porder" value="#{busDocInfoController.selected.pageid.menuorder}" min="0"/>
+                        
+                        <p:outputLabel value="Active:" for="pactive" />
+                        <p:selectBooleanButton id="pactive" value="#{busDocInfoController.selected.pageid.active}" 
+                                               onLabel="Yes" offLabel="No"
+                                               onIcon="pi pi-check" offIcon="pi pi-times" />
                     </p:panelGrid>
                 </p:fieldset>
             </div>
@@ -170,7 +190,7 @@
                                         <p:selectOneMenu id="acc" value="#{trans.accountid}" converter="#{entityConverter}" 
                                                          var="t" effect="fade" filter="true" filterMatchMode="contains" >
                                             <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
-                                            <f:selectItems value="#{accountController.accountInternalAndLeaf}" var="item" 
+                                            <f:selectItems value="#{accountController.accountInternalAndLeafAndNoBusinessPartner}" var="item" 
                                                            itemLabel="#{item.accountname}" itemValue="#{item}"/>
                                             <p:column style="width: 20%">
                                                 <f:facet name="header">
@@ -259,7 +279,7 @@
                                         <p:selectOneMenu id="acccr" value="#{reg.accountid}" converter="#{entityConverter}" 
                                                          var="cr" effect="fade" filter="true" filterMatchMode="contains" >
                                             <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
-                                            <f:selectItems value="#{accountController.accountInternalAndLeaf}" var="regcr" 
+                                            <f:selectItems value="#{accountController.accountInternalAndLeafAndNoBusinessPartner}" var="regcr" 
                                                            itemLabel="#{item.accountname}" itemValue="#{item}"/>
                                             <p:column style="width: 20%">
                                                 <f:facet name="header">
@@ -284,7 +304,60 @@
                         If NO accounts added then Cash Register will not be displayed.
                     </p:panel>
                 </p:fieldset>
+                <p:fieldset legend="Print Templates" styleClass="card ui-fluid">
+                    <p:panel id="rptlist" header="Templates">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrptnew" title="New Template" icon="fa fa-plus"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             process="@this" ajax="false" onclick="form.target = '_blank'"
+                                             update="rpttable" actionListener="#{busDocInfoController.createNewPrintReport()}"/>
 
+                            <p:commandButton id="btnrptedit" title="Edit Template" icon="fa fa-pencil"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             process="@this" ajax="false" onclick="form.target = '_blank'"
+                                             disabled="#{empty busDocInfoController.selectedPrintReport}"
+                                             update="rpttable" actionListener="#{busDocInfoController.editPrintReport()}"/> 
+
+                            <p:commandButton id="btnrptdelete" icon="fa fa-trash" update="rpttable"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocInfoController.selectedPrintReport}"
+                                             actionListener="#{busDocInfoController.deleteCashRegister()}"/>
+                        </f:facet>
+                        <p:dataTable id="rpttable" var="reg"
+                                     value="#{busDocInfoController.selected.reportid}"
+                                     rowKey="#{reg.reportid}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selectedPrintReport}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No template found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":mainform:btnrptedit, :mainform:btnrptdelete"/>
+
+                            <p:column headerText="Id" style="width: 40px; text-align: center">
+                                <h:outputText value="#{reg.reportid}" />
+                            </p:column>
+
+                            <p:column headerText="Created On">
+                                <h:outputText value="#{reg.createdon}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Report Name">
+                                <h:outputText value="#{reg.reportname}" />
+                            </p:column>
+
+                            <p:column headerText="File">
+                                <h:outputText value="#{reg.filename}" />
+                            </p:column>
+
+                            <p:column headerText="Default" style="width: 70px; text-align: center">
+                                <p:selectBooleanCheckbox value="#{reg.defaultreport}" disabled="true" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:fieldset>
             </div>
         </div>
     </ui:define>

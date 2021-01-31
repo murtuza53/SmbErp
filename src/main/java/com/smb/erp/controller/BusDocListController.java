@@ -45,14 +45,17 @@ public class BusDocListController extends AbstractController<BusDoc> {
     @Autowired
     ProductTransactionExecutionController pteController;
 
+    @Autowired
+    AccDocController accDocCon;
+
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
     BusDocInfo docInfo;
 
     List<BusinessPartner> partnerList;
-    
+
     private Date fromDate = DateUtil.startOfMonth(new Date());
-    
+
     private Date toDate = new Date();
 
     @Autowired
@@ -110,17 +113,17 @@ public class BusDocListController extends AbstractController<BusDoc> {
         if (getSelected() != null) {
 
             for (ProductTransaction pt : getSelected().getProductTransactions()) {
-                if (pt.getFromprodtransaction() != null && pt.getFromprodtransaction().size()>0) {
+                if (pt.getFromprodtransaction() != null && pt.getFromprodtransaction().size() > 0) {
                     errMsg = "Cannot delete linked document";
                     break;
                 }
             }
 
-            if(errMsg!=null){
+            if (errMsg != null) {
                 JsfUtil.addErrorMessage("Error", errMsg);
                 return;
             }
-            
+
             for (ProductTransaction pt : getSelected().getProductTransactions()) {
                 System.out.println("ToProdTransaction: " + pt.getToprodtransaction());
                 if (pt.getToprodtransaction() != null) {
@@ -131,6 +134,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
                     //pt.removeAllToprodtransaction();
                 }
             }
+            accDocCon.deleteBusDocVoucher(getSelected().getDocno());
             repo.delete(getSelected());
 
             JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " deleted successfuly");
@@ -141,7 +145,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect(docInfo.getDocediturl() +  "?mode=n&docinfoid=" + docInfo.getBdinfoid());
+        facesContext.getExternalContext().redirect(docInfo.getDocediturl() + "?mode=n&docinfoid=" + docInfo.getBdinfoid());
     }
 
     public void edit_in_tab() throws IOException {
@@ -151,7 +155,7 @@ public class BusDocListController extends AbstractController<BusDoc> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect(docInfo.getDocediturl() +  "?mode=e&docno=" + getSelected().getDocno());
+        facesContext.getExternalContext().redirect(docInfo.getDocediturl() + "?mode=e&docno=" + getSelected().getDocno());
     }
 
     public List<BusinessPartner> getPartnerList() {

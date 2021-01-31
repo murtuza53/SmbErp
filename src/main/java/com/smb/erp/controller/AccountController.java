@@ -53,6 +53,7 @@ public class AccountController extends AbstractController<Account> {
     }
 
     public void saveAccount(BusinessPartner partner) {
+        System.out.println("saveAccount: " + partner.getCompanyname() + "\t" + partner.getCompanytypes());
         //Account last = findLastAccountInLedger(parent.getAccountid());
         Account parent = null;
         AccountType accountType = null;
@@ -267,10 +268,21 @@ public class AccountController extends AbstractController<Account> {
     public List<Account> getAccountAllLeaf() {
         return repo.findAccountLeafBySearchCriteria("");
     }
+    
+    public List<Account> getAccountLeafNotBusinessPartner(){
+        return repo.findAccountLeafNotBusinessPartnerBySearchCriteria("");
+    }
 
     public List<Account> getAccountInternalAndLeaf() {
         List<Account> list = getInternalAccounts();
         list.addAll(getAccountAllLeaf());
+        //System.out.println("getAccountInternalAndLeaf: " + list.size());
+        return list;
+    }
+
+    public List<Account> getAccountInternalAndLeafAndNoBusinessPartner() {
+        List<Account> list = getInternalAccounts();
+        list.addAll(getAccountLeafNotBusinessPartner());
         //System.out.println("getAccountInternalAndLeaf: " + list.size());
         return list;
     }

@@ -10,6 +10,7 @@ import com.smb.erp.entity.ProductAccount;
 import com.smb.erp.entity.ProductCategory;
 import com.smb.erp.entity.VatProductRegister;
 import com.smb.erp.repo.ProductRepository;
+import com.smb.erp.repo.ProductTypeRepository;
 import com.smb.erp.util.JsfUtil;
 import java.util.Date;
 import java.util.Map;
@@ -18,7 +19,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
  */
 //@Component
 @Named(value = "productController")
-@Service
 @ViewScoped
 public class ProductController extends AbstractController<Product> {
 
@@ -47,6 +46,9 @@ public class ProductController extends AbstractController<Product> {
     
     @Autowired
     TableKeyController keyController;
+    
+    @Autowired
+    ProductTypeRepository ptypeRepo;
 
     //private Product selected;
     private ProductCategory prodCategory;
@@ -72,6 +74,7 @@ public class ProductController extends AbstractController<Product> {
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //Flash flash = facesContext.getExternalContext().getFlash();
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        //FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 
         String windowId = params.get("windowid").toString();
 
@@ -113,6 +116,10 @@ public class ProductController extends AbstractController<Product> {
             vpr.setVatcategoryid(vatcatController.getItems().get(1));
             getSelected().setVatregisterid(vpr);
         }
+        
+        if(getSelected().getProducttype()==null){
+            getSelected().setProducttype(ptypeRepo.findAll().get(0));
+        }
     }
     
     //public ProductController(Product prod){
@@ -126,6 +133,7 @@ public class ProductController extends AbstractController<Product> {
         }
         super.save();
         setSelected(prodRepo.getOne(getSelected().getProductid()));
+        JsfUtil.addSuccessMessage(getSelected() + " saved successfuly");
     }
     
     public String getHeaderTitle() {
@@ -170,7 +178,7 @@ public class ProductController extends AbstractController<Product> {
      * @return the prodCategory
      */
     public ProductCategory getProdCategory() {
-        System.out.println("getProdCategory: " + prodCategory);
+        //System.out.println("getProdCategory: " + prodCategory);
         return prodCategory;
     }
 

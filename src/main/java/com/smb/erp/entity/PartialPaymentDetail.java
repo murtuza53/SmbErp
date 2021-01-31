@@ -142,11 +142,12 @@ public class PartialPaymentDetail implements Serializable {
     }
 
     public Double getBalanceAmount(){
-        return busdoc.getTotalPending() - amount;
+        return getPendingAmount() - amount;
     }
     
     public Double getPaidAmount(){
-        return busdoc.getTotalPaid();
+        //return busdoc.getTotalPaid();
+        return amount;
     }
     
     public Double getPendingAmount(){

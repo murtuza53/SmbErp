@@ -134,6 +134,14 @@ public class ProductSearchController extends AbstractController<Product> {
         //}
     }
 
+    public Product findByProductidOrSupplierCodeOrBarcodes(String criteria){
+        productList = prodRepo.findByProductidOrSupplierCodeOrBarcodes(criteria);
+        if(productList==null || productList.size()==0){
+            return null;
+        }
+        return productList.get(0);
+    }
+    
     public List<StockBalanceHelper> getProductStocks(){
         return stockList;
     }

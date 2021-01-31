@@ -382,7 +382,7 @@ public class LedgerLine implements Serializable {
         }
     }
 
-    public double getFcCredit() {
+    public Double getFcCredit() {
         return fccredit;
     }
 
@@ -404,7 +404,7 @@ public class LedgerLine implements Serializable {
         }
     }
 
-    public double getFcDebit() {
+    public Double getFcDebit() {
         return fcdebit;
     }
 

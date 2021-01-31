@@ -24,4 +24,10 @@ public interface ProductRepository extends BaseRepository<Product, Long> {
             + "p.barcode1 LIKE %:criteria% OR p.barcode2 LIKE %:criteria%) AND p.inactive=0 "
             + "ORDER BY p.productname asc")
     List<Product> findByCriteria(@Param("criteria") String criteria);
+    
+    @Query("SELECT OBJECT(p) FROM Product as p "
+            + "WHERE (TRIM(p.productid)=:criteria OR p.stockid=:criteria OR "
+            + "p.supplierscode=:criteria OR p.barcode1=:criteria OR p.barcode2=:criteria) AND p.inactive=0 "
+            + "ORDER BY p.productname asc")
+    List<Product> findByProductidOrSupplierCodeOrBarcodes(@Param("criteria") String criteria);
 }

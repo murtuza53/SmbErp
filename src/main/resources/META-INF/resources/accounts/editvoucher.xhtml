@@ -45,9 +45,9 @@
                                 </div>
                                 <div class="p-field p-col-12 p-md-4">
                                     <p:outputLabel value="Date" for="ddate" style="font-size: smaller"/>
-                                    <p:calendar id="ddate" value="#{accountVoucherEditController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
-                                                showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                    </p:calendar>
+                                    <p:datePicker id="ddate" value="#{accountVoucherEditController.selected.docdate}" 
+                                                  readonlyInput="true" yearNavigator="true" monthNavigator="true"
+                                                  showIcon="true" showButtonBar="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy"/>
                                 </div>
                                 <div class="p-field p-col-12 p-md-4">
                                     <p:outputLabel value="Created By" for="createdby" style="font-size: smaller"/>
@@ -159,13 +159,13 @@
                         <!--Dynamic tabs for Customer and Supplier starts here -->
                         <c:forEach items="#{accountVoucherEditController.tabs}" var="tab">
                             <p:tab title="#{tab.title}">
-                                <p:layout style="min-width:400px;min-height:600px;" widgetVar="layoutVar">
-                                    <p:layoutUnit position="west" resizable="true" size="600">
+                                <p:splitter styleClass="p-mb-5" widgetVar="layoutVar">
+                                    <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
                                         <p:panel id="pendingpanel" header="Pending Invoices">
                                             <f:facet name="actions">
                                                 <p:commandButton id="ptransferButton" icon="fa fa-arrow-right"
                                                                  update=":growl, @widgetVar(paidtable)" disabled="#{empty tab.selectedPendingDocs}" 
-                                                                 title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                                 title="Transfer selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
                                                                  actionListener="#{tab.transferSelectedPendingInvoice()}" oncomplete="resizeLayout()"/>
                                             </f:facet>
                                             <p:dataTable id="pendingtable" var="item"
@@ -247,116 +247,115 @@
                                                 </p:summaryRow>
                                             </p:dataTable>
                                         </p:panel>
-                                    </p:layoutUnit>
+                                    </p:splitterPanel>
+                                    <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                                            <p:panel id="paidpanel" header="Paid Invoices">
+                                                <p:remoteCommand name="onCellEdit" actionListener="#{tab.updateLedgerValue()}" update="paidtable" />
+                                                <f:facet name="actions">
+                                                    <p:commandButton id="pdeleteButton" icon="fa fa-trash"
+                                                                     update=":growl, paidtable" disabled="#{empty tab.paymentList}" 
+                                                                     title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                                     actionListener="#{tab.deleteSelectedInvoice()}">
+                                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                                    </p:commandButton>
+                                                </f:facet>
+                                                <p:dataTable id="paidtable" var="item"
+                                                             value="#{tab.paymentList}" widgetVar="paidtable"
+                                                             rowKey="#{item.pplineno}"
+                                                             selection="#{tab.selectedPaymentDetails}"
+                                                             selectionMode="single"
+                                                             editable="true"
+                                                             editMode="cell"
+                                                             emptyMessage="No Documents found"
+                                                             styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                                             style="font-size: small"
+                                                             sortBy="#{item.position}">
 
-                                    <p:layoutUnit position="center">
-                                        <p:panel id="paidpanel" header="Paid Invoices">
-                                            <p:remoteCommand name="onCellEdit" actionListener="#{tab.updateLedgerValue()}" update="paidtable" />
-                                            <f:facet name="actions">
-                                                <p:commandButton id="pdeleteButton" icon="fa fa-trash"
-                                                                 update=":growl, paidtable" disabled="#{empty tab.paymentList}" 
-                                                                 title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
-                                                                 actionListener="#{tab.deleteSelectedInvoice()}">
-                                                    <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
-                                                </p:commandButton>
-                                            </f:facet>
-                                            <p:dataTable id="paidtable" var="item"
-                                                         value="#{tab.paymentList}" widgetVar="paidtable"
-                                                         rowKey="#{item.pplineno}"
-                                                         selection="#{tab.selectedPaymentDetails}"
-                                                         selectionMode="single"
-                                                         editable="true"
-                                                         editMode="cell"
-                                                         emptyMessage="No Documents found"
-                                                         styleClass="products-table ui-datatable-striped ui-datatable-sm"
-                                                         style="font-size: small"
-                                                         sortBy="#{item.position}">
+                                                    <p:ajax event="rowSelect" update="@parent:pdeleteButton"/>
+                                                    <p:ajax event="rowUnselect" update="@parent:pdeleteButton"/>
+                                                    <p:ajax event="cellEdit" />
 
-                                                <p:ajax event="rowSelect" update="@parent:pdeleteButton"/>
-                                                <p:ajax event="rowUnselect" update="@parent:pdeleteButton"/>
-                                                <p:ajax event="cellEdit" />
+                                                    <p:column headerText="Trans No">
+                                                        <h:outputText value="#{item.pplineno}" />
+                                                    </p:column>
 
-                                                <p:column headerText="Trans No">
-                                                    <h:outputText value="#{item.pplineno}" />
-                                                </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Date"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.busdoc.docdate}">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                        </h:outputText>
+                                                    </p:column>
 
-                                                <p:column>
-                                                    <f:facet name="header">
-                                                        <h:outputText value="Date"/>
-                                                    </f:facet>
-                                                    <h:outputText value="#{item.busdoc.docdate}">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                    </h:outputText>
-                                                </p:column>
+                                                    <p:column headerText="Doc No" sortBy="#{item.busdoc.docno}" filterBy="#{item.busdoc.docno}" filterMatchMode="contains">
+                                                        <h:outputText value="#{item.busdoc.docno}" />
+                                                    </p:column>
 
-                                                <p:column headerText="Doc No" sortBy="#{item.busdoc.docno}" filterBy="#{item.busdoc.docno}" filterMatchMode="contains">
-                                                    <h:outputText value="#{item.busdoc.docno}" />
-                                                </p:column>
+                                                    <p:column style="text-align: right">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Pending"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.pendingAmount}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
 
-                                                <p:column style="text-align: right">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="Pending"/>
-                                                    </f:facet>
-                                                    <h:outputText value="#{item.busdoc.totalPending}">
-                                                        <f:convertNumber pattern="#,##0.000" />
-                                                    </h:outputText>
-                                                </p:column>
+                                                    <p:column headerText="Amount" style="text-align:right">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Amount"/>
+                                                        </f:facet>
+                                                        <p:cellEditor>
+                                                            <f:facet name="output">
+                                                                <h:outputText value="#{item.amount}" style="float: right;">
+                                                                    <f:convertNumber pattern="#,##0.000" />
+                                                                </h:outputText>
+                                                            </f:facet>
+                                                            <f:facet name="input">
+                                                                <p:inputText id="price" value="#{item.amount}" 
+                                                                             style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Amount">
+                                                                    <f:convertNumber pattern="#,##0.000" />
+                                                                    <p:ajax oncomplete="onCellEdit()"/>
+                                                                </p:inputText>
+                                                            </f:facet>
+                                                        </p:cellEditor>
+                                                    </p:column>
 
-                                                <p:column headerText="Amount" style="text-align:right">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="Amount"/>
-                                                    </f:facet>
-                                                    <p:cellEditor>
-                                                        <f:facet name="output">
-                                                            <h:outputText value="#{item.amount}" style="float: right;">
+                                                    <p:column id="balance" style="text-align: right">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Balance"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.balanceAmount}">
+                                                            <f:convertNumber pattern="#,##0.000" />
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:summaryRow id="tablesummary">
+                                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
+                                                        <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
+                                                            Total
+                                                        </p:column>
+                                                        <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                            <h:outputText value="#{tab.totalPending_Paid}">
                                                                 <f:convertNumber pattern="#,##0.000" />
                                                             </h:outputText>
-                                                        </f:facet>
-                                                        <f:facet name="input">
-                                                            <p:inputText id="price" value="#{item.amount}" 
-                                                                         style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Amount">
+                                                        </p:column>
+                                                        <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                            <h:outputText value="#{tab.totalAmount_Paid}">
                                                                 <f:convertNumber pattern="#,##0.000" />
-                                                                <p:ajax oncomplete="onCellEdit()"/>
-                                                            </p:inputText>
-                                                        </f:facet>
-                                                    </p:cellEditor>
-                                                </p:column>
-
-                                                <p:column id="balance" style="text-align: right">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="Balance"/>
-                                                    </f:facet>
-                                                    <h:outputText value="#{item.balanceAmount}">
-                                                        <f:convertNumber pattern="#,##0.000" />
-                                                    </h:outputText>
-                                                </p:column>
-
-                                                <p:summaryRow id="tablesummary">
-                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
-                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar"></p:column>
-                                                    <p:column style="text-align:right;" styleClass="ui-panel-titlebar">
-                                                        Total
-                                                    </p:column>
-                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
-                                                        <h:outputText value="#{tab.totalPending_Paid}">
-                                                            <f:convertNumber pattern="#,##0.000" />
-                                                        </h:outputText>
-                                                    </p:column>
-                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
-                                                        <h:outputText value="#{tab.totalAmount_Paid}">
-                                                            <f:convertNumber pattern="#,##0.000" />
-                                                        </h:outputText>
-                                                    </p:column>
-                                                    <p:column style="text-align:right" styleClass="ui-panel-titlebar">
-                                                        <h:outputText value="#{tab.balanceAmount_Paid}">
-                                                            <f:convertNumber pattern="#,##0.000" />
-                                                        </h:outputText>
-                                                    </p:column>
-                                                </p:summaryRow>
-                                            </p:dataTable>
-                                        </p:panel>
-                                    </p:layoutUnit>
-                                </p:layout>
+                                                            </h:outputText>
+                                                        </p:column>
+                                                        <p:column style="text-align:right" styleClass="ui-panel-titlebar">
+                                                            <h:outputText value="#{tab.balanceAmount_Paid}">
+                                                                <f:convertNumber pattern="#,##0.000" />
+                                                            </h:outputText>
+                                                        </p:column>
+                                                    </p:summaryRow>
+                                                </p:dataTable>
+                                            </p:panel>
+                                    </p:splitterPanel>
+                                </p:splitter>
                             </p:tab>
                         </c:forEach>
                     </p:tabView>

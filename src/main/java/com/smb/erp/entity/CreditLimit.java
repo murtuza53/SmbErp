@@ -2,7 +2,7 @@ package com.smb.erp.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigInteger;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -19,15 +19,15 @@ public class CreditLimit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
-    private Integer creditlimitno = 0;
+    private Integer creditlimitno = (int)new Date().getTime();
 
-    private double amountfc;
+    private Double amountfc = 0.0;
 
-    private double amountlc;
+    private Double amountlc = 0.0;
 
-    private BigInteger daysduration;
+    private Integer daysduration = 0;
 
-    private double rate;
+    private Double rate = 1.0;
 
     //bi-directional many-to-one association to BusinessPartner
     //@OneToMany(mappedBy="creditlimit")
@@ -47,35 +47,35 @@ public class CreditLimit implements Serializable {
         this.creditlimitno = creditlimitno;
     }
 
-    public double getAmountfc() {
+    public Double getAmountfc() {
         return this.amountfc;
     }
 
-    public void setAmountfc(double amountfc) {
+    public void setAmountfc(Double amountfc) {
         this.amountfc = amountfc;
     }
 
-    public double getAmountlc() {
+    public Double getAmountlc() {
         return this.amountlc;
     }
 
-    public void setAmountlc(double amountlc) {
+    public void setAmountlc(Double amountlc) {
         this.amountlc = amountlc;
     }
 
-    public BigInteger getDaysduration() {
+    public Integer getDaysduration() {
         return this.daysduration;
     }
 
-    public void setDaysduration(BigInteger daysduration) {
+    public void setDaysduration(Integer daysduration) {
         this.daysduration = daysduration;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return this.rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 

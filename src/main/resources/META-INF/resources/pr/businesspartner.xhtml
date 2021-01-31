@@ -150,6 +150,17 @@
                                            itemLabel="#{con.countryname}"
                                            />
                         </p:selectOneMenu>
+
+                        <p:outputLabel value="Currency" for="curency" />
+                        <p:selectOneMenu id="curency" value="#{businessPartnerController.selected.currency}" 
+                                         style="width: 100%" converter="#{entityConverter}"
+                                         filter="true" filterMatchMode="contains" >
+                            <f:selectItems value="#{countryController.countryAll}"
+                                           var="con"
+                                           itemValue="#{con}"
+                                           itemLabel="#{con.currency}"
+                                           />
+                        </p:selectOneMenu>
                     </p:panelGrid>
                 </p:fieldset>
 

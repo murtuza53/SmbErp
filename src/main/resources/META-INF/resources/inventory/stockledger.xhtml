@@ -25,16 +25,16 @@
                         <div class="ui-fluid p-formgrid p-grid">
                             <div class="p-field p-col-12 p-md-6">
                                 <p:outputLabel for="fromdate" value="From Date" />
-                                <p:calendar id="fromdate" value="#{producttransactionController.fromDate}" showButtonPanel="true" readonlyInput="true"
-                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                </p:calendar>
+                                <p:datePicker id="fromdate" value="#{producttransactionController.fromDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
                             </div>
 
                             <div class="p-field p-col-12 p-md-6">
                                 <p:outputLabel value="To Date" for="todate" />
-                                <p:calendar id="todate" value="#{producttransactionController.toDate}" showButtonPanel="true" readonlyInput="true"
-                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                </p:calendar>
+                                <p:datePicker id="todate" value="#{producttransactionController.toDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
                             </div>
 
                             <div class="p-field p-col-12">

@@ -6,8 +6,11 @@
 package com.smb.erp.dynamic.report;
 
 import com.smb.erp.UserSession;
+import com.smb.erp.controller.SystemDefaultsController;
 import com.smb.erp.entity.BusDoc;
+import com.smb.erp.entity.PrintReport;
 import com.smb.erp.repo.BusDocRepository;
+import com.smb.erp.repo.PrintReportRepository;
 import com.smb.erp.util.JsfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -19,8 +22,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import net.sf.dynamicreports.report.base.DRMargin;
 import net.sf.dynamicreports.report.base.DRPage;
@@ -32,16 +33,15 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.smberp.json.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,9 +61,17 @@ public class DocumentReportGenerator implements Serializable {
     @Autowired
     BusDocRepository busRepo;
 
+    @Autowired
+    PrintReportRepository printRepo;
+
+    @Autowired
+    SystemDefaultsController systemController;
+
     private DefaultReportTheme reportTheme = new DefaultReportTheme(new ColorScheme());
 
     private BusDoc busdoc;
+
+    private PrintReport printReport;
 
     public DocumentReportGenerator() {
     }
@@ -120,35 +128,50 @@ public class DocumentReportGenerator implements Serializable {
                 bis = new ByteArrayInputStream(msg.getBytes());
             } else {
                 setBusdoc(busdoc);
-                bis = prepareReport(getBusdoc());
+                bis = prepareReport(getBusdoc(), printReport);
             }
         }
 
-        return new DefaultStreamedContent(bis, "application/pdf", busdoc.getDocno() + ".pdf");
+        //return new DefaultStreamedContent(bis, "application/pdf", busdoc.getDocno() + ".pdf");
+        final ByteArrayInputStream bis2 = bis;
+        return new DefaultStreamedContent().builder()
+                .name(busdoc.getDocno() + ".pdf")
+                .contentType("application/pdf")
+                .stream(() -> bis2)
+                .build();
+
     }
 
-    @RequestMapping(value = "/doc/{fileName:.+}", method = RequestMethod.GET,
+    @RequestMapping(value = "/doc/{templateNo}/{docNo}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> downloadReport(@PathVariable("fileName") String fileName) {
+    public ResponseEntity<InputStreamResource> downloadReport(@PathVariable("templateNo") String templateNo, @PathVariable("docNo") String docNo) {
 
         //System.out.println("downloadRoport: " + fileName);
         ByteArrayInputStream bis = null;
         String msg = "";
-        if (fileName == null) {
-            msg = "Invalid document " + fileName;
+        if (docNo == null) {
+            msg = "Invalid document " + docNo;
             JsfUtil.addErrorMessage(msg);
             System.out.println(msg);
             bis = new ByteArrayInputStream(msg.getBytes());
         } else {
-            busdoc = loadBusDoc(fileName);
-            if (busdoc == null) {
-                msg = "Unable to load " + fileName;
+            printReport = loadPrintTemplate(templateNo);
+            if (printReport == null) {
+                msg = "Unable to load Print Template " + templateNo;
                 JsfUtil.addErrorMessage(msg);
                 System.out.println(msg);
                 bis = new ByteArrayInputStream(msg.getBytes());
             } else {
-                setBusdoc(busdoc);
-                bis = prepareReport(getBusdoc());
+                busdoc = loadBusDoc(docNo);
+                if (busdoc == null) {
+                    msg = "Unable to load " + docNo;
+                    JsfUtil.addErrorMessage(msg);
+                    System.out.println(msg);
+                    bis = new ByteArrayInputStream(msg.getBytes());
+                } else {
+                    setBusdoc(busdoc);
+                    bis = prepareReport(getBusdoc(), printReport);
+                }
             }
         }
 
@@ -157,13 +180,23 @@ public class DocumentReportGenerator implements Serializable {
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Methods", "GET, POST, PUT");
         headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Content-Disposition", "inline; filename=" + fileName + ".pdf");
+        headers.add("Content-Disposition", "inline; filename=" + docNo + ".pdf");
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
 
+        System.out.println("BIS: " + bis);
+
         ResponseEntity<InputStreamResource> response = new ResponseEntity<InputStreamResource>(new InputStreamResource(bis), headers, HttpStatus.OK);
         return response;
+    }
+
+    public PrintReport loadPrintTemplate(String bdinfoid) {
+        Optional<PrintReport> print = printRepo.findById(Long.parseLong(bdinfoid));
+        if (print.isPresent()) {
+            return print.get();
+        }
+        return null;
     }
 
     public BusDoc loadBusDoc(String docNo) {
@@ -180,8 +213,7 @@ public class DocumentReportGenerator implements Serializable {
             System.out.println("SavingReportFor: " + busdoc);
             File file = File.createTempFile(busdoc.getDocno(), ".pdf");
 
-            IOUtils.copy(prepareReport(busdoc), new FileOutputStream(file));
-
+            //IOUtils.copy(prepareReport(busdoc), new FileOutputStream(file));
             System.out.println("saveReport: " + file.getAbsolutePath());
         } catch (Exception ex) {
             Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
@@ -189,10 +221,10 @@ public class DocumentReportGenerator implements Serializable {
     }
 
     public ByteArrayInputStream getReport() {
-        return prepareReport(busdoc);
+        return prepareReport(busdoc, printReport);
     }
 
-    public ByteArrayInputStream prepareReport(BusDoc doc) {
+    public ByteArrayInputStream prepareReport(BusDoc doc, PrintReport pr) {
         System.out.println("Preparing Report..." + doc);
         ByteArrayInputStream content = null;
         try {
@@ -200,10 +232,15 @@ public class DocumentReportGenerator implements Serializable {
             PAGE.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
             PAGE.setMargin(new DRMargin(20));
 
-            Report report = generateReport(doc);
-            ReportGenerator gen = new ReportGenerator();
-            JasperPrint print = gen.prepareReport(report, prepareTheme(), PAGE, doc).toJasperPrint();
+            String folderLocation = systemController.getByPropertyname("PrintTemplateLocation").getValue();
 
+            Report report = JsonUtils.readJson(folderLocation + pr.getFilename() + ".rpt", Report.class);
+            //Report report = generateReport(doc);
+            //JsonUtils.writeJson("C:/Users/Burhani152/Documents/dpi.rpt", report);
+            ReportGenerator gen = new ReportGenerator();
+            JasperPrint print = gen.prepareReport(report, prepareTheme(), report.getPage(), doc).toJasperPrint();
+            //JasperPrint print = gen.prepareReport(report, prepareTheme(), PAGE, doc).toJasperPrint();
+            System.out.println("REPORTED_GENERATED: " + print.getName());
             ////final ByteArrayOutputStream out = new ByteArrayOutputStream();
             ////JRPdfExporter exporter = new JRPdfExporter();
             ////exporter.setExporterInput(new SimpleExporterInput(print));
@@ -212,17 +249,14 @@ public class DocumentReportGenerator implements Serializable {
             ////configuration.setMetadataAuthor("SMB ERP");  //why not set some config as we like
             ////exporter.setConfiguration(configuration);
             ////exporter.exportReport();
-            
             //File file = File.createTempFile(busdoc.getDocno(), ".pdf");
             //final FileOutputStream out = new FileOutputStream(file);
             //JasperExportManager.exportReportToPdfStream(print, out);
             //out.close();
             //System.out.println("ReportFile: " + file.getAbsolutePath());
             content = new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print));
-        } catch (JRException ex) {
-            Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
-            content = new ByteArrayInputStream(ex.getMessage().getBytes());
-        } catch (DRException ex) {
+        } catch (Throwable ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
             content = new ByteArrayInputStream(ex.getMessage().getBytes());
         } finally {
@@ -255,13 +289,20 @@ public class DocumentReportGenerator implements Serializable {
             JasperExportManager.exportReportToPdfStream(print, out);
             out.close();
             System.out.println("ReportFile: " + file.getAbsolutePath());
-            content = new DefaultStreamedContent(new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print)), "application/pdf", busdoc.getDocno() + ".pdf");
-        } catch (JRException ex) {
+            //content = new DefaultStreamedContent(new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print)), "application/pdf", busdoc.getDocno() + ".pdf");
+            final ByteArrayInputStream bis = new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print));
+            content = new DefaultStreamedContent().builder()
+                    .name(busdoc.getDocno() + ".pdf")
+                    .contentType("application/pdf")
+                    .stream(() -> bis)
+                    .build();
+        } catch (JRException | DRException ex) {
             Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
-            content = new DefaultStreamedContent(new ByteArrayInputStream(ex.getMessage().getBytes()), "application/pdf");
-        } catch (DRException ex) {
-            Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
-            content = new DefaultStreamedContent(new ByteArrayInputStream(ex.getMessage().getBytes()), "application/pdf");
+            content = new DefaultStreamedContent().builder()
+                    .name(busdoc.getDocno() + ".pdf")
+                    .contentType("application/pdf")
+                    .stream(() -> new ByteArrayInputStream(ex.toString().getBytes()))
+                    .build();
         } finally {
             return content;
         }
@@ -286,11 +327,11 @@ public class DocumentReportGenerator implements Serializable {
         section.setSectionWidth("50%");
         section.setTitle("BILLED TO");
         section.setTitleStyle("titleStyle1");
-        section.addReportField(new ReportField("", "businesspartner.companyname", false).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("", "contactperson.contactpersonname", false).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("", "businesspartner.addressLine1", false).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("", "businesspartner.addressLine2", false).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("", "businesspartner.country.countryname", false).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
+        section.addReportField(new ReportField("", "businesspartner.companyname", false, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("", "contactperson.contactpersonname", false, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("", "businesspartner.addressLine1", false, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("", "businesspartner.addressLine2", false, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("", "businesspartner.country.countryname", false, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
         header.add(section);
 
         section = new ReportSection();
@@ -299,10 +340,10 @@ public class DocumentReportGenerator implements Serializable {
         section.setPrintLayout(ReportSection.SectionPrintLayout.VERTICAL);
         section.setTitle("DOCUMENT DETAILS");
         section.setTitleStyle("titleStyle1");
-        section.addReportField(new ReportField("Vat No: ", "branch.company.vatno", true).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("Doc No: ", "docno", true).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("Doc Date: ", "docdate", true).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
-        section.addReportField(new ReportField("LPO No: ", "refno", true).setLabelStyle("labelStyle1").setTextStyle("textStyle1"));
+        section.addReportField(new ReportField("Vat No: ", "branch.company.vatno", true, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("Doc No: ", "docno", true, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("Doc Date: ", "docdate", true, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
+        section.addReportField(new ReportField("LPO No: ", "refno", true, ReportField.FieldPrintLayout.LEFT_RIGHT, "labelStyle1", "textStyle1"));
         header.add(section);
 
         con.setReportSection(header);
@@ -323,11 +364,11 @@ public class DocumentReportGenerator implements Serializable {
         section.setGapBefore(0);
         section.setGapAfter(0);
         section.setPrintLayout(ReportSection.SectionPrintLayout.HORIZONTAL);
-        section.addReportField(new ReportField("Total", "subtotal", true, ReportField.FieldPrintLayout.TOP_BOTTOM).setLabelStyle("labelStyle2").setTextStyle("textStyle2"));
-        section.addReportField(new ReportField("Discount", "discount", true, ReportField.FieldPrintLayout.TOP_BOTTOM).setLabelStyle("labelStyle2").setTextStyle("textStyle2"));
-        section.addReportField(new ReportField("Sub Total", "totalamount", true, ReportField.FieldPrintLayout.TOP_BOTTOM).setLabelStyle("labelStyle2").setTextStyle("textStyle2"));
-        section.addReportField(new ReportField("Total VAT", "totalvat", true, ReportField.FieldPrintLayout.TOP_BOTTOM).setLabelStyle("labelStyle2").setTextStyle("textStyle2"));
-        section.addReportField(new ReportField("Net Total", "grandtotal", true, ReportField.FieldPrintLayout.TOP_BOTTOM).setLabelStyle("labelStyle2").setTextStyle("textStyle2"));
+        section.addReportField(new ReportField("Total", "subtotal", true, ReportField.FieldPrintLayout.TOP_BOTTOM, "labelStyle2", "textStyle2"));
+        section.addReportField(new ReportField("Discount", "discount", true, ReportField.FieldPrintLayout.TOP_BOTTOM, "labelStyle2", "textStyle2"));
+        section.addReportField(new ReportField("Sub Total", "totalamount", true, ReportField.FieldPrintLayout.TOP_BOTTOM, "labelStyle2", "textStyle2"));
+        section.addReportField(new ReportField("Total VAT", "totalvat", true, ReportField.FieldPrintLayout.TOP_BOTTOM, "labelStyle2", "textStyle2"));
+        section.addReportField(new ReportField("Net Total", "grandtotal", true, ReportField.FieldPrintLayout.TOP_BOTTOM, "labelStyle2", "textStyle2"));
         footer.add(section);
         con.setReportSection(footer);
         sc.add(con);
@@ -346,7 +387,8 @@ public class DocumentReportGenerator implements Serializable {
         section.setPrintLayout(ReportSection.SectionPrintLayout.VERTICAL);
         section.setTitle(null);
         ReportField f = new ReportField();
-        f.setText("Receiver Sign").setTextStyle("textStyle3");
+        f.setText("Receiver Sign");
+        f.setTextStyle("textStyle3");
         section.addReportField(f);
         footer.add(section);
 
@@ -357,7 +399,8 @@ public class DocumentReportGenerator implements Serializable {
         section.setPrintLayout(ReportSection.SectionPrintLayout.VERTICAL);
         section.setTitle(null);
         f = new ReportField();
-        f.setText("Receiver Name & Mobile").setTextStyle("textStyle3");
+        f.setText("Receiver Name & Mobile");
+        f.setTextStyle("textStyle3");
         section.addReportField(f);
         footer.add(section);
 
@@ -368,7 +411,8 @@ public class DocumentReportGenerator implements Serializable {
         section.setPrintLayout(ReportSection.SectionPrintLayout.VERTICAL);
         section.setTitle(null);
         f = new ReportField();
-        f.setText("Prepared By").setTextStyle("textStyle3");
+        f.setText("Prepared By");
+        f.setTextStyle("textStyle3");
         section.addReportField(f);
         footer.add(section);
 
@@ -400,7 +444,7 @@ public class DocumentReportGenerator implements Serializable {
     }
 
     private Theme prepareTheme() {
-        
+
         String schemename = "Maimoon Logo";
         reportTheme = new DefaultReportTheme(ColorSchemeManager.themes.get(schemename));
 

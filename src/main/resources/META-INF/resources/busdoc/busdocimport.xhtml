@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <p:dialog header="Import Transactions" id="TransDlg" widgetVar="TransDialog" dynamic="true" responsive="true"
+              modal="true" resizable="true" width="50%"  height="600" appendTo="@(body)" closeOnEscape="true">
+        <h:form id="transform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panelGrid columns="1" styleClass="card"  style="width: 100%">
+                        <p:fileUpload listener="#{busDocController.handleFileUpload}" mode="advanced" auto="true"
+                                       update=":growl, transtable, btntransfer" sizeLimit="1000000" allowTypes="/(\.|\/)(xlsx)$/" />
+                    </p:panelGrid>
+
+                    <p:panel id="transimportpanel" styleClass="card">
+                         <f:facet name="header">
+                            <p:commandButton id="btntransfer" title="Transfer Transactions" icon="fas fa-exchange-alt" style="float: right"
+                                             oncomplete="PF('TransDialog').hide()" disabled="#{empty busDocController.importService.transactionList}"
+                                             actionListener="#{busDocController.importDocuments()}"
+                                             update=":transform, :busform:bustable" process="@this" immediate="true" resetValues="true"/>
+                        </f:facet>
+                        <p:dataTable id="transtable" var="trans"
+                                     value="#{busDocController.importService.transactionList}"
+                                     rowIndexVar="row"
+                                     scrollHeight="100%"
+                                     emptyMessage="No Transactions found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
+                                     style="font-size: smaller">
+                            <p:columns value="#{busDocController.importService.header}" columnIndexVar="index" var="column" 
+                                       headerText="#{column}">
+                                <h:outputText value="#{busDocController.importService.value(trans, column)}" />
+                            </p:columns>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

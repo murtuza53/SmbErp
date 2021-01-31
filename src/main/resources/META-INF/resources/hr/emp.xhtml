@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Employee
+    </ui:define>
+
+    <ui:param name="viewname" value="Employee" />
+
+    <ui:define name="content">
+        <div class="p-grid table-demo">
+            <!-- Left Side -->
+            <div class="p-col-12 p-md-6">
+                <h:form id="emplistform">
+                    <p:panel id="companylist" header="Employee List" styleClass="card ui-fluid">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" actionListener="#{empController.createNew()}"
+                                             update=":empform" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             icon="fa fa-plus"/>
+                            <p:commandButton id="btnpassword" onclick="PF('PasswordDialog').show()" 
+                                             disabled="#{empController.disablePasswordBtn()}"
+                                             update=":PasswordForm" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             icon="fa fa-lock"/>
+                        </f:facet>
+
+                        <p:dataTable id="emptable" var="emp" widgetVar="etable"
+                                     value="#{empController.items}"
+                                     selectionMode="single"
+                                     selection="#{empController.selected}"
+                                     rowKey="#{emp.empid}"
+                                     emptyMessage="No Employee found"
+                                     styleClass="products-table">
+                            <p:ajax event="rowSelect" listener="#{empController.empSelected()}" update=":empform, :emplistform:btnpassword"/>
+                            <p:column headerText="Id" style="width: 20px">
+                                <h:outputText value="#{emp.empid}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 40%">
+                                <h:outputText value="#{emp.empname}"/>
+                            </p:column>
+
+                            <p:column headerText="Mobile">
+                                <h:outputText value="#{emp.mobileno1}" />
+                            </p:column>
+
+                            <p:column headerText="Post">
+                                <h:outputText value="#{emp.post}" />
+                            </p:column>
+
+                            <p:column headerText="Role">
+                                <h:outputText value="#{emp.emprole}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <ui:include src="/confirmation.xhtml"/>
+                </h:form>
+            </div>
+
+            <!-- Right Side -->
+            <div class="p-col-12 p-md-6">
+                <h:form id="empform">
+                    <p:panel id="emplist" header="#{empController.empTitle}" styleClass="card" rendered="#{!empty empController.selected}">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnesave" actionListener="#{empController.save()}"
+                                             update=":empform, :emplistform, :growl" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             icon="fa fa-save" style="float: right;"/>
+                        </f:facet>
+                        <div class="ui-fluid p-grid p-formgrid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Emp Id</p:outputLabel>
+                                <p:inputText id="empno" styleClass="p-d-block" value="#{empController.selected.empid}" disabled="true"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Name</p:outputLabel>
+                                <p:inputText id="emp" styleClass="p-d-block" value="#{empController.selected.empname}" 
+                                             required="true" requiredMessage="Employee name is required"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Gender</p:outputLabel>
+                                <p:selectOneButton value="#{empController.selected.gender}" required="true" requiredMessage="Gender is required">
+                                    <f:selectItem itemLabel="Male" itemValue="Male"/>
+                                    <f:selectItem itemLabel="Female" itemValue="Female"/>
+                                </p:selectOneButton>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Mobile</p:outputLabel>
+                                <p:inputText id="mobile1" styleClass="p-d-block" value="#{empController.selected.mobileno1}"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Company</p:outputLabel>
+                                <p:inputText id="company" styleClass="p-d-block" value="#{empController.selected.company}" disabled="true"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" styleClass="p-d-block">Role</p:outputLabel>
+                                <p:selectOneMenu id="emprole" value="#{empController.selectedRole}" converter="#{entityConverter}"
+                                                 effect="fade" var="t" required="true" requiredMessage="Role is required">
+                                    <f:selectItems value="#{emproleController.items}" var="item" 
+                                                   itemLabel="#{item.rolename}" itemValue="#{item}" />
+                                    <p:column>
+                                        <h:outputText value="#{t.rolename}" />
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" value="Date of Joining"/>
+                                <p:datePicker id="doj" value="#{empController.selected.doj}" pattern="dd/MM/yyyy"
+                                              monthNavigator="true" yearNavigator="true" yearRange="2000:2030"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" value="Date of Birth"/>
+                                <p:datePicker id="dob" value="#{empController.selected.dob}" pattern="dd/MM/yyyy"
+                                              monthNavigator="true" yearNavigator="true" yearRange="1950:2030"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel for="@next" value="Username"/>
+                                <p:inputText id="username" styleClass="p-d-block" value="#{empController.username}"
+                                             required="true" requiredMessage="Username is required"/>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+
+        <p:dialog id="PasswordDlg" widgetVar="PasswordDialog" modal="true" resizable="true"  appendTo="@(body)" header="Change Password" closeOnEscape="true">
+            <h:form id="PasswordForm">
+                <div class="p-field p-grid">
+                    <p:outputLabel for="usr" styleClass="p-col-fixed" style="width:100px" value="Username"/>
+                    <div class="p-col">
+                        <p:inputText id="usr" value="#{empController.username}" disabled="true"/>
+                    </div>
+                </div>
+
+                <div class="p-field p-grid">
+                    <p:outputLabel for="pwd1" styleClass="p-col-fixed" style="width:100px" value="Password"/>
+                    <div class="p-col">
+                        <p:password id="pwd1" value="#{empController.password}" match="pwd2" label="Password 1" required="true"/>
+                    </div>
+                </div>
+
+                <div class="p-field p-grid">
+                    <p:outputLabel for="pwd2" styleClass="p-col-fixed" style="width:100px" value="Password"/>
+                    <div class="p-col">
+                        <p:password id="pwd2" value="#{empController.password2}" label="Password 2" required="true"/>
+                    </div>
+                </div>
+
+                <p:commandButton actionListener="#{empController.savePassword()}" value="Save" 
+                                 update=":emplistform:emptable,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PasswordDialog'));"/>
+                <p:commandButton value="Cancel" oncomplete="PF('PasswordDialog').hide()" update="PasswordDlg" process="@this" immediate="true" resetValues="true"/>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

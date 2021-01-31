@@ -42,12 +42,11 @@
                                      selection="#{busDocInfoController.selected}"
                                      rowKey="#{bus.bdinfoid}"
                                      sortBy="#{bus.doctype}"
-                                     expandableRowGroups="true"
                                      emptyMessage="No Document Definition found"
                                      styleClass="products-table ui-datatable-sm">
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btnlist"/>
 
-                            <p:headerRow>
+                            <p:headerRow groupBy="#{bus.doctype}">
                                 <p:column headerText="Doc Type" colspan="7">
                                     <h:outputText value="#{bus.doctype}" />
                                 </p:column>

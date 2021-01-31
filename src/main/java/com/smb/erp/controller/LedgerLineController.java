@@ -73,7 +73,7 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
     }
 
     public List<LedgerLine> findAccountLedgerLines(Account a) {
-        List<LedgerLine> list = repo.findByAccountIdBetweenDate(a.getAccountid(), getFromDate(), getToDate());
+        List<LedgerLine> list = repo.findByAccountIdBetweenDate(a.getAccountid(), DateUtil.startOfDay(getFromDate()), DateUtil.endOfDay(getToDate()));
         if (list != null && list.size() > 0) {
             LedgerLine opening = new LedgerLine();
             opening.setLlno(0);

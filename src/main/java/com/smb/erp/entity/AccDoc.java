@@ -63,6 +63,8 @@ public class AccDoc implements Serializable {
 
     private String refno;
 
+    private Double rate = 1.0;
+
     //bi-directional many-to-one association to Branch
     @ManyToOne
     @JoinColumn(name = "branchno")
@@ -75,8 +77,8 @@ public class AccDoc implements Serializable {
 
     //bi-directional many-to-one association to Country
     @ManyToOne
-    @JoinColumn(name = "countryno")
-    private Country country;
+    @JoinColumn(name = "currencyno")
+    private Country currency;
 
     //bi-directional many-to-one association to Emp
     @ManyToOne
@@ -256,14 +258,6 @@ public class AccDoc implements Serializable {
         this.businesspartner = businesspartner;
     }
 
-    public Country getCountry() {
-        return this.country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
     public Emp getEmp() {
         return this.emp;
     }
@@ -281,7 +275,7 @@ public class AccDoc implements Serializable {
     }
 
     public LedgerLine addLedline(LedgerLine ledline) {
-        if(getLedlines()==null){
+        if (getLedlines() == null) {
             setLedlines(new LinkedList<>());
         }
         getLedlines().add(ledline);
@@ -398,6 +392,34 @@ public class AccDoc implements Serializable {
      */
     public void setCreatedon(Date createdon) {
         this.createdon = createdon;
+    }
+
+    /**
+     * @return the currency
+     */
+    public Country getCurrency() {
+        return currency;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(Country currency) {
+        this.currency = currency;
+    }
+
+    /**
+     * @return the rate
+     */
+    public Double getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate the rate to set
+     */
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 
 }

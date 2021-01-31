@@ -1,0 +1,160 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Statement of Account
+    </ui:define>
+
+    <ui:param name="viewname" value="Statement of Account" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="ledgerdetails" header="Search Criteria" 
+                             collapsed="false" toggleable="true" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             actionListener="#{statementController.refresh()}" 
+                                             update=":mainform:datalist, :growl" icon="fa fa-refresh" />
+                        </f:facet>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:datePicker id="todate" value="#{statementController.statementDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel value="Type:" for="ptype"/>
+                                <p:selectOneMenu id="ptype" value="#{statementController.selectedDocType}" effect="fold">
+                                    <f:selectItems value="#{statementController.docTypes}" />
+                                    <p:ajax listener="#{statementController.reloadBusinessPartners()}" update="partner, :growl" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel value="Company:" for="partner"/>
+                                <p:selectOneMenu id="partner" value="#{statementController.selectedBusinessPartner}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                    <f:selectItems value="#{statementController.businessPartners}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                                    <p:ajax listener="#{statementController.refresh()}" update=":mainform:datalist, :growl" />
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.partnerid}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.companyname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+
+                <div class="p-col-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="Ledger"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="Ledger"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="Ledger"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class="card">
+                        <p:dataTable id="datalist" var="item"
+                                     value="#{statementController.reportList}" widgetVar="btable"
+                                     rowKey="#{item.docno}"
+                                     emptyMessage="No Transactions found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     style="font-size: small">
+
+                            <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.docdate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Document" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Ref No" sortBy="#{item.refno}" filterBy="#{item.refno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.refno}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.grandtotal}" filterBy="#{item.grandtotal}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Invoiced"/>
+                                </f:facet>
+                                <h:outputText value="#{item.grandtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalPaid}" filterBy="#{item.totalPaid}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Paid"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalPaid}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.totalPending}" filterBy="#{item.totalPending}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Balance"/>
+                                </f:facet>
+                                <h:outputText value="#{item.totalPending}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.cumulative}" filterBy="#{item.cumulative}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Cumulative"/>
+                                </f:facet>
+                                <h:outputText value="#{item.cumulative}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.findInvoiceAge(statementController.statementDate)}" 
+                                      filterBy="#{item.findInvoiceAge(statementController.statementDate)}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Days"/>
+                                </f:facet>
+                                <h:outputText value="#{item.findInvoiceAge(statementController.statementDate)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

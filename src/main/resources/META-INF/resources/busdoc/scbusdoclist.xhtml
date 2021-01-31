@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        #{busDocController.docInfo.docname} List
+    </ui:define>
+
+    <ui:param name="viewname" value="#{busDocController.docInfo.docname} List" />
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="doclist" header="" toggleable="true">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{stockCountingBusDocController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <p:dataExporter type="xls" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                        </f:facet>
+
+                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
+
+                            <p:outputLabel value="From Date" for="fromdate" />
+                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{stockCountingBusDocController.fromDate}" 
+                                          title="From Date"  showIcon="true"
+                                        required="true" requiredMessage="Please select Date"/>
+
+                            <p:outputLabel value="To Date" for="todate" />
+                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{stockCountingBusDocController.toDate}" 
+                                          title="To Date"  showIcon="true"
+                                        required="true" requiredMessage="Please select Date"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br/>
+                    <br/>
+                    <p:panel id="tablelist" header="" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btncounting" title="Start Counting" icon="fas fa-calculator" process="@this"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{stockCountingBusDocController.stockcounting_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+
+                            <p:commandButton id="btnnew" title="New #{stockCountingBusDocController.docInfo.docname}" icon="fa fa-plus" process="@this"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{stockCountingBusDocController.new_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnedit" title="Edit #{busDocController.docInfo.docname}" icon="fa fa-pencil" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty stockCountingBusDocController.selected}" 
+                                             actionListener="#{stockCountingBusDocController.edit_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btndelete" title="Delete #{busDocController.docInfo.docname}" icon="fa fa-trash" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty stockCountingBusDocController.selected}" 
+                                             actionListener="#{stockCountingBusDocController.delete()}"
+                                             update="@form :growl">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+                        </f:facet>
+
+                        <p:dataTable id="bustable" var="item" widgetVar="btable"
+                                     value="#{stockCountingBusDocController.items}"
+                                     rowKey="#{item.docno}"
+                                     selectionMode="single"
+                                     selection="#{stockCountingBusDocController.selected}"
+                                     reflow="true"
+                                     emptyMessage="No #{busDocController.docInfo.docname} found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
+
+                            <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.docdate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Branch" sortBy="#{item.branch.branchname}" 
+                                      filterBy="#{item.branch.branchname}" filterMatchMode="contains">
+                                <h:outputText value="#{item.branch.branchname}" />
+                            </p:column>
+
+                            <p:column headerText="Year" sortBy="#{item.countyear}" 
+                                      filterBy="#{item.countyear}" filterMatchMode="contains">
+                                <h:outputText value="#{item.countyear}" />
+                            </p:column>
+
+                            <p:column sortBy="#{item.docstatus}" filterBy="#{item.docstatus}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:outputText value="#{item.docstatus}" styleClass="customer-badge status-#{item.getStatusCss(item.docstatus)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

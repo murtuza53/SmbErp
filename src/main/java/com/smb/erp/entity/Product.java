@@ -21,9 +21,9 @@ public class Product implements Serializable {
     @Id
     private Long productid = 0l;
 
-    private String barcode1;
+    private String barcode1 = "";
 
-    private String barcode2;
+    private String barcode2 = "";
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdon = new Date();
@@ -34,15 +34,15 @@ public class Product implements Serializable {
 
     private double packqty;
 
-    private String partnumber;
+    private String partnumber = "";
 
-    private String productname;
+    private String productname = "";
 
     private double reorderlevel;
 
-    private String stockid;
+    private String stockid = "";
 
-    private String supplierscode;
+    private String supplierscode = "";
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedon = new Date();

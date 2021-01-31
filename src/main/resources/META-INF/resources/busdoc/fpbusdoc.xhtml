@@ -79,12 +79,12 @@
                                 </p:selectOneMenu>   
 
                                 <p:outputLabel value="Date:" for="ddate"/>
-                                <p:calendar id="ddate" value="#{foreignPurchaseController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
-                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                </p:calendar>
+                                <p:datePicker id="ddate" value="#{foreignPurchaseController.selected.docdate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
 
                                 <p:outputLabel value="Currency:" for="currency"/>
-                                <p:selectOneMenu id="currency" value="#{foreignPurchaseController.selected.country}" converter="#{entityConverter}" 
+                                <p:selectOneMenu id="currency" value="#{foreignPurchaseController.selected.currency}" converter="#{entityConverter}" 
                                                  var="t" effect="fade" filter="true" filterMatchMode="contains">
                                     <f:selectItems value="#{countryController.countryAllDefaultFirst}" var="item" itemLabel="#{item.currencysym} - #{item.countryname}" itemValue="#{item}"/>
                                     <p:ajax listener="#{foreignPurchaseController.currencySelected()}" update="rate" />
@@ -167,16 +167,16 @@
                                          editMode="cell"
                                          emptyMessage="No Expense found"
                                          sortBy="#{exp.country.currencysym}"
-                                         expandableRowGroups="true"
                                          styleClass="products-table ui-datatable-sm ui-datatable-gridlines"
                                          style="font-size: small">
 
-                                <p:ajax event="rowSelect" listener="#{foreignPurchaseController.refreshHistoryPanel()}" 
-                                        update="@previous:deleteExpButton"/>
+                                <!--<p:ajax event="rowSelect" listener="#{foreignPurchaseController.refreshHistoryPanel()}" 
+                                        update="@previous:deleteExpButton"/>-->
+                                <p:ajax event="rowSelect" update="@previous:deleteExpButton"/>
                                 <p:ajax event="rowUnselect" update="@previous:deleteExpButton"/>
                                 <p:ajax event="cellEdit"/>
 
-                                <p:headerRow>
+                                <p:headerRow groupBy="#{exp.country.currencysym}">
                                     <p:column colspan="6" style=" border-bottom-width: 0px" styleClass="ui-panel ui-panel-titlebar">
                                         <h:outputText value="#{exp.country.currencysym}"/>
                                     </p:column>
@@ -251,7 +251,7 @@
                                             <p:selectOneMenu id="accline" value="#{exp.account}" converter="#{entityConverter}" 
                                                              var="t" effect="fade" filter="true" filterMatchMode="contains">
                                                 <p:ajax event="change" update="exptable" />
-                                                <f:selectItems value="#{accountController.accountAllLeaf}" var="item" itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                                <f:selectItems value="#{accountController.accountLeafNotBusinessPartner}" var="item" itemLabel="#{item.accountname}" itemValue="#{item}"/>
                                                 <p:column style="width: 20%">
                                                     <f:facet name="header">
                                                         <h:outputText value="AccNo"/>
@@ -328,17 +328,16 @@
                                      editable="true"
                                      editMode="cell"
                                      emptyMessage="No Products found"
-                                     sortBy="#{pt.busdoc.docno} - #{pt.toProdTranstionDocNo} - #{pt.busdoc.businesspartner.companyname}"
-                                     expandableRowGroups="true"
+                                     sortBy="#{pt.costingGroupBy}"
                                      styleClass="products-table ui-datatable-sm"
                                      style="font-size: small">
 
                             <p:ajax event="rowSelect" listener="#{foreignPurchaseController.refreshHistoryPanel()}" 
-                                    update=":mainform:deleteButton, :historyform"/>
+                                    update=":mainform:deleteButton, :mainform:stocklist, :mainform:saleslist, :mainform:purchaselist"/>
                             <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
                             <p:ajax event="cellEdit"/>
 
-                            <p:headerRow>
+                            <p:headerRow groupBy="#{pt.costingGroupBy}">
                                 <p:column colspan="11" style="border-bottom-width: 0px" styleClass="ui-panel ui-panel-titlebar">
                                     <h:outputText value="#{pt.busdoc.docno} - #{pt.toProdTranstionDocNo} - #{pt.busdoc.businesspartner.companyname}"/>
                                 </p:column>
@@ -596,64 +595,65 @@
     </ui:define>
 
     <ui:define name="history">
-        <h:form id="historyform">
-            <div class="p-col-12 p-md-12 vless_padding">
-                <p:panel header="Stock" toggleable="true" style="padding: 0px !important">
-                    <p:dataTable id="stocklist"
-                                 value="#{foreignPurchaseController.stockBalances}"
-                                 var="trans"
-                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
-                                 emptyMessage="No Stock Balances found">
-                        <p:column style="width: 70%" headerText="Type">
-                            <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
-                        </p:column>
+        <div class="p-col-12 p-md-12 vless_padding">
+            <p:panel header="Stock" toggleable="true" style="padding: 0px !important">
+                <p:dataTable id="stocklist"
+                             value="#{foreignPurchaseController.stockBalances}"
+                             var="trans"
+                             styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                             emptyMessage="No Stock Balances found">
+                    <p:column style="width: 70%" headerText="Type">
+                        <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                    </p:column>
 
-                        <p:column style="width: 30%; text-align: right" headerText="Value">
-                            <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-                <p:spacer height="5px" width="1px"/>
-                <p:panel header="Sales History" toggleable="true">
-                    <p:dataTable id="saleslist"
-                                 value="#{foreignPurchaseController.salesProductTransactions}"
-                                 style="width: 100%"
-                                 var="trans"
-                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
-                                 emptyMessage="No Sales History found">
-                        <p:column style="width: 70%" headerText="Type">
-                            <h:outputText id="scol1" value="#{trans.busdoc.docno}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow1" for="scol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
-                        </p:column>
+                    <p:column style="width: 30%; text-align: right" headerText="Value">
+                        <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:spacer height="5px" width="1px"/>
+            <p:panel header="Sales History" toggleable="true">
+                <p:dataTable id="saleslist"
+                             value="#{foreignPurchaseController.salesProductTransactions}"
+                             style="width: 100%"
+                             var="trans"
+                             styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                             emptyMessage="No Sales History found">
+                    <p:column style="width: 70%" headerText="Type">
+                        <h:outputText id="scol1" value="#{trans.busdoc.docno}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow1" for="scol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                    </p:column>
 
-                        <p:column style="width: 30%; text-align: right" headerText="Value">
-                            <h:outputText id="scol2" value="#{trans.fcunitprice}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow2" for="scol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-                <p:spacer height="5px" width="1px"/>
-                <p:panel header="Purchase History" toggleable="true">
-                    <p:dataTable id="purchaselist"
-                                 value="#{foreignPurchaseController.purchaseProductTransactions}"
-                                 var="trans"
-                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
-                                 emptyMessage="No Purchase History found">
-                        <p:column style="width: 70%" headerText="Type">
-                            <h:outputText id="pcol1" value="#{trans.busdoc.docno}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
-                        </p:column>
+                    <p:column style="width: 30%; text-align: right" headerText="Value">
+                        <h:outputText id="scol2" value="#{trans.fcunitprice}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow2" for="scol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:spacer height="5px" width="1px"/>
+            <p:panel header="Purchase History" toggleable="true">
+                <p:dataTable id="purchaselist"
+                             value="#{foreignPurchaseController.purchaseProductTransactions}"
+                             var="trans"
+                             styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                             emptyMessage="No Purchase History found">
+                    <p:column style="width: 70%" headerText="Type">
+                        <h:outputText id="pcol1" value="#{trans.busdoc.docno}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                    </p:column>
 
-                        <p:column style="width: 30%; text-align: right" headerText="Value">
-                            <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
-                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-            </div>
-        </h:form>
+                    <p:column style="width: 30%; text-align: right" headerText="Value">
+                        <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </div>
+    </ui:define>
+
+    <ui:define name="other_includes">
         <ui:include src="/busdoc/fpfromdocument.xhtml"/>
         <ui:include src="/accounts/fpjvviewer.xhtml"/>
     </ui:define>

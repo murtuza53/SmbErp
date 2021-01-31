@@ -37,13 +37,13 @@
                         <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
 
                             <p:outputLabel value="From Date" for="fromdate" />
-                            <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
-                                        title="From Date"  showOn="button"
+                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
+                                          title="From Date"  showIcon="true"
                                         required="true" requiredMessage="Please select Date"/>
 
                             <p:outputLabel value="To Date" for="todate" />
-                            <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
-                                        title="To Date"  showOn="button"
+                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
+                                        title="To Date"  showIcon="true"
                                         required="true" requiredMessage="Please select Date"/>
                         </p:panelGrid>
                     </p:panel>

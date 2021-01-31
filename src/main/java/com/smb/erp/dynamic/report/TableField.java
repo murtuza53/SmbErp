@@ -5,7 +5,10 @@
  */
 package com.smb.erp.dynamic.report;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smb.erp.util.BeanField;
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TableField implements Serializable {
 
+    private Long id = new Date().getTime();
     private String columnTitle;
     private String propertyName;
     private Class type;
@@ -23,6 +27,9 @@ public class TableField implements Serializable {
     private boolean spellIt = false;
     private ColumnFunction columnFunction = ColumnFunction.NONE;
     private FieldFunction fieldFunction = FieldFunction.DEFAULT;
+
+    @JsonIgnore
+    private BeanField field;
 
     public TableField() {
 
@@ -40,7 +47,7 @@ public class TableField implements Serializable {
         this.type = type;
         this.width = width;
     }
-    
+
     /**
      * @return the reportTitle
      */
@@ -52,9 +59,9 @@ public class TableField implements Serializable {
      * @param reportTitle the reportTitle to set
      */
     @XmlElement
-    public TableField setColumnTitle(String columnTitle) {
+    public void setColumnTitle(String columnTitle) {
         this.columnTitle = columnTitle;
-        return this;
+        //return this;
     }
 
     /**
@@ -68,9 +75,9 @@ public class TableField implements Serializable {
      * @param propertyName the propertyName to set
      */
     @XmlElement
-    public TableField setPropertyName(String propertyName) {
+    public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
-        return this;
+        //return this;
     }
 
     /**
@@ -84,9 +91,9 @@ public class TableField implements Serializable {
      * @param columnFunction the columnFunction to set
      */
     @XmlElement
-    public TableField setColumnFunction(ColumnFunction columnFunction) {
+    public void setColumnFunction(ColumnFunction columnFunction) {
         this.columnFunction = columnFunction;
-        return this;
+        //return this;
     }
 
     /**
@@ -100,9 +107,9 @@ public class TableField implements Serializable {
      * @param fieldFunction the fieldFunction to set
      */
     @XmlElement
-    public TableField setFieldFunction(FieldFunction fieldFunction) {
+    public void setFieldFunction(FieldFunction fieldFunction) {
         this.fieldFunction = fieldFunction;
-        return this;
+        //return this;
     }
 
     /**
@@ -116,12 +123,12 @@ public class TableField implements Serializable {
      * @param type the type to set
      */
     @XmlElement
-    public TableField setType(Class type) {
+    public void setType(Class type) {
         this.type = type;
-        return this;
+        //return this;
     }
-    
-    public String getSimpleType(){
+
+    public String getSimpleType() {
         return type.getSimpleName();
     }
 
@@ -136,9 +143,9 @@ public class TableField implements Serializable {
      * @param width the width to set
      */
     @XmlElement
-    public TableField setWidth(int width) {
+    public void setWidth(int width) {
         this.width = width;
-        return this;
+        //return this;
     }
 
     /**
@@ -151,9 +158,9 @@ public class TableField implements Serializable {
     /**
      * @param spellIt the spellIt to set
      */
-    public TableField setSpellIt(boolean spellIt) {
+    public void setSpellIt(boolean spellIt) {
         this.spellIt = spellIt;
-        return this;
+        //return this;
     }
 
     public enum ColumnFunction {
@@ -170,8 +177,8 @@ public class TableField implements Serializable {
         }
         return null;
     }
-    
-    public TableField clone(){
+
+    public TableField clone() {
         TableField t = new TableField();
         t.setColumnFunction(columnFunction);
         t.setColumnTitle(columnTitle);
@@ -179,8 +186,37 @@ public class TableField implements Serializable {
         t.setPropertyName(propertyName);
         t.setType(type);
         t.setWidth(width);
-        
+
         return t;
     }
 
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+        /**
+     * @return the field
+     */
+    public BeanField getField() {
+        return field;
+    }
+
+    /**
+     * @param field the field to set
+     */
+    public void setField(BeanField field) {
+        this.field = field;
+        setPropertyName(field.getProperty());
+        setType(field.getType());
+    }
 }

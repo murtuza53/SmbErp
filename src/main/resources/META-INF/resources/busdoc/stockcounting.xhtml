@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_simple.xhtml">
+
+    <ui:define name="title">
+        Stock Counting
+    </ui:define>
+
+    <ui:param name="viewname" value="Stock Counting" />
+
+    <ui:define name="toolbar">
+    </ui:define>
+
+    <ui:define name="content">
+        <p:focus for="productno"/>
+        <div class="p-grid">
+            <div class="p-col-12 p-md-12">
+                <div class="card">
+                    <h5>Stock Counting</h5>
+                    <div class="ui-fluid p-formgrid p-grid">
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="cdoc">Counting Document</p:outputLabel>
+                            <p:selectOneMenu id="cdoc" value="#{stockCountingBatchController.selectedDoc}" converter="#{entityConverter}" 
+                                             var="t" effect="fade" filter="true" filterMatchMode="contains" 
+                                             required="true" requiredMessage="Document must be selected">
+                                <f:selectItems value="#{stockCountingBatchController.busdocList}" var="item" itemLabel="#{item.docno} - #{item.branch.abbreviation}" itemValue="#{item}"/>
+                                <p:ajax listener="#{busDocController.businessPartnerSelected()}" update="transtable" />
+                                <p:column style="width: 10%">
+                                    <f:facet name="header">
+                                        <h:outputText value="DocNo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{t.docno}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Branch"/>
+                                    </f:facet>
+                                    <h:outputText value="#{t.branch.branchname}"/>
+                                </p:column>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="sprod">Search Product</p:outputLabel>
+                            <p:autoComplete id="sprod" value="#{stockCountingBatchController.selectedProduct}" dynamic="true"
+                                            converter="#{entityConverter}" completeMethod="#{producttransactionController.completeFilter}"
+                                            panelStyle="font-size: smaller" scrollHeight="400"
+                                            var="prodItem" itemValue="#{prodItem}" itemLabel="#{prodItem.productname} [#{prodItem.productid}]"
+                                            minQueryLength="3" dropdown="true" forceSelection="true">
+                                <p:ajax event="itemSelect" />
+                                <p:column style="width:50px">
+                                    <f:facet name="header">
+                                        <h:outputText value="Stock#"/>
+                                    </f:facet>
+                                    <h:outputText value="#{prodItem.productid}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Product Name"/>
+                                    </f:facet>
+                                    <h:outputText value="#{prodItem.productname}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Category"/>
+                                    </f:facet>
+                                    <h:outputText value="#{prodItem.brand.brandname}" />
+                                </p:column>
+                            </p:autoComplete>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="productno">Product No / Supplier Code / Barcode</p:outputLabel>
+                            <p:inputText id="productno" value="#{stockCountingBatchController.productCode}" title="Enter Product Number"/>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="count">Count</p:outputLabel>
+                            <p:spinner id="count" value="#{stockCountingBatchController.count}" title="Enter Count" decimalPlaces="3" min="0.1"/>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:commandButton id="countButton" icon="fas fa-calculator" value="Submit Count"
+                                             update="details1, details2, details3, productno, transtable, :growl" title="Submit entered Count"
+                                             actionListener="#{stockCountingBatchController.addCount()}"/>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:commandButton id="checkButton" icon="fas fa-refresh" value="Check Entries"
+                                             update="details1, details2, details3, transtable, :growl" title="Check previous entries"
+                                             actionListener="#{stockCountingBatchController.checkCount()}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h5>Product Details</h5>
+                    <div class="ui-fluid p-formgrid p-grid">
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="details1">Product Name</p:outputLabel>
+                            <p:inputText id="details1" value="#{stockCountingBatchController.productName}" disabled="true"/>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="details2">Units</p:outputLabel>
+                            <p:inputText id="details2" value="#{stockCountingBatchController.unitDetails}" disabled="true"/>
+                        </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p:outputLabel for="details3">Brand / Category</p:outputLabel>
+                            <p:inputText id="details3" value="#{stockCountingBatchController.brandCatDetails}" disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Transaction List</h5>
+                        <p:commandButton id="deleteButton" icon="fa fa-trash"
+                                         update="details1, details2, details3, transtable, :growl" disabled="#{empty stockCountingBatchController.selectedStockCounting}" 
+                                         title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                         actionListener="#{stockCountingBatchController.deleteTransactions()}">
+                            <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                        </p:commandButton>
+                    </div>
+                    <p:dataTable id="transtable" var="pt"
+                                 value="#{stockCountingBatchController.countingBatch}" widgetVar="pttable"
+                                 rowKey="#{pt.countingno}"
+                                 selectionMode="single"
+                                 selection="#{stockCountingBatchController.selectedStockCounting}"
+                                 emptyMessage="No Count found"
+                                 sortBy="#{pt.productid.productid}"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                 style="font-size: small">
+
+                        <p:ajax event="rowSelect" update=":mainform:deleteButton"/>
+                        <p:ajax event="rowUnselect" update=":mainform:deleteButton"/>
+
+                        <p:column headerText="TransId" style="width: 50px">
+                            <h:outputText value="#{pt.countingno}"/>
+                        </p:column>
+
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{pt.productid.unit.unitsym}" />
+                        </p:column>
+
+                        <!--
+                        <p:column headerText="Current Stock">
+                            <h:outputText value="#{pt.currentstock}" style="float: right;">
+                                <f:convertNumber pattern="#,##0.000" />
+                            </h:outputText>
+                        </p:column>
+                        -->
+
+                        <p:column headerText="Count" style="text-align: right">
+                            <h:outputText id="count" value="#{pt.count}">
+                                <f:convertNumber pattern="#,##0.000" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Cost" style="text-align: right">
+                            <h:outputText id="cost" value="#{pt.cost}">
+                                <f:convertNumber pattern="#,##0.000" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Total" style="text-align: right">
+                            <h:outputText id="total" value="#{pt.totalAmount}">
+                                <f:convertNumber pattern="#,##0.000" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:summaryRow id="tablesummary">
+                            <p:column colspan="3"></p:column>
+                            <p:column style="text-align:right">
+                                <h:outputText id="totalcount" value="#{stockCountingBatchController.totalCount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column colspan=""></p:column>
+                            <p:column style="text-align:right">
+                                <h:outputText id="totalamount" value="#{stockCountingBatchController.totalAmount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                        </p:summaryRow>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

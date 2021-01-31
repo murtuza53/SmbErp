@@ -219,7 +219,7 @@
                             <p>Your sales activity over time.</p>
 
                             <p:dataTable id="ordersTable" var="order" value="#{dashboardView.orders}" reflow="true" paginatorPosition="bottom"
-                                rowKey="#{order.id}" paginator="true" rows="5" sortBy="#{order.date}" sortOrder="descending">
+                                rowKey="#{order.id}" paginator="true" rows="5" sortBy="#{order.date}">
                                 <p:column headerText="Id" sortBy="#{order.id}">
                                     <h:outputText value="#{order.id}" />
                                 </p:column>

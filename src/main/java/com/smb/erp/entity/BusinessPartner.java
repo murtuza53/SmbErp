@@ -22,14 +22,14 @@ public class BusinessPartner implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long partnerid;
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long partnerid = 0l;
 
     private String address;
 
     private String companyname;
 
-    private String companytypes;        //Customer, Supplier
+    private String companytypes;        //Customer, Supplier, Both
 
     private String creditstatus;        //Cash, 30 Days, 60 Days, 90 Days, PDC
 
@@ -88,6 +88,10 @@ public class BusinessPartner implements Serializable {
     @JoinColumn(name = "countryno")
     private Country country;
 
+    @ManyToOne
+    @JoinColumn(name = "currencyno")
+    private Country currency;
+
     //bi-directional many-to-one association to CreditLimit
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "creditlimitno")
@@ -103,6 +107,15 @@ public class BusinessPartner implements Serializable {
     @OneToMany(mappedBy = "partnerid", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<VatBusinessRegister> businessRegisters;
+
+    @Transient
+    private String addressLine1;
+
+    @Transient
+    private String addressLine2;
+
+    @Transient
+    private VatBusinessRegister currentVatRegister;
 
     public BusinessPartner() {
     }
@@ -409,14 +422,6 @@ public class BusinessPartner implements Serializable {
         setCompanytypes(buffer.toString());
     }
 
-    public String getCurrency() {
-        if (getCountry() == null) {
-            return "LC";
-        }
-
-        return getCountry().getCurrencysym();
-    }
-
     @Override
     public String toString() {
         return companyname + " [" + partnerid + "]";
@@ -547,9 +552,23 @@ public class BusinessPartner implements Serializable {
 
     public VatBusinessRegister getCurrentVatRegister() {
         if (getBusinessRegisters() != null && getBusinessRegisters().size() > 0) {
-            return getBusinessRegisters().get(getBusinessRegisters().size() - 1);
+            currentVatRegister = getBusinessRegisters().get(getBusinessRegisters().size() - 1);
+        } else {
+            currentVatRegister = new VatBusinessRegister();
+            setCurrentVatRegister(currentVatRegister);
         }
-        return null;
+        return currentVatRegister;
+    }
+
+    /**
+     * @param currentVatRegister the currentVatRegister to set
+     */
+    public void setCurrentVatRegister(VatBusinessRegister currentVatRegister) {
+        this.currentVatRegister = currentVatRegister;
+        if (getBusinessRegisters() == null) {
+            this.businessRegisters = new LinkedList<>();
+        }
+        this.businessRegisters.add(currentVatRegister);
     }
 
     /**
@@ -565,34 +584,57 @@ public class BusinessPartner implements Serializable {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
-    
+
     //shopno,buildingno,roadno,blockno,town,area
-    
-    public String getAddressLine1(){
+    public void setAddressLine1(String address) {
+        this.addressLine1 = address;
+    }
+
+    public String getAddressLine1() {
         StringBuilder b = new StringBuilder();
-        if(getShopno()!=null){
+        if (getShopno() != null) {
             b.append("Shop: " + getShopno().trim());
         }
-        if(getBuildingno()!=null){
+        if (getBuildingno() != null) {
             b.append(" Building: " + getBuildingno().trim());
         }
-        if(getRoadno()!=null){
+        if (getRoadno() != null) {
             b.append(" Road: " + getRoadno().trim());
         }
         return b.toString().trim();
     }
-    
-    public String getAddressLine2(){
+
+    public void setAddressLine2(String address) {
+        this.addressLine2 = address;
+    }
+
+    public String getAddressLine2() {
         StringBuilder b = new StringBuilder();
-        if(getBlockno()!=null){
+        if (getBlockno() != null) {
             b.append("Block: " + getBlockno().trim());
         }
-        if(getTown()!=null){
+        if (getTown() != null) {
             b.append(" Town: " + getTown().trim());
         }
-        if(getArea()!=null){
+        if (getArea() != null) {
             b.append(" Area: " + getArea().trim());
         }
         return b.toString().trim();
     }
+
+    /**
+     * @return the currency
+     */
+    public Country getCurrency() {
+        return currency;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(Country currency) {
+        this.currency = currency;
+    }
+
+
 }

@@ -57,10 +57,10 @@
                             <p:inputText id="dno" value="#{busDocController.selected.docno}" placeholder="Document No" disabled="true"/>
 
                             <p:outputLabel value="Date:" for="ddate"/>
-                            <p:calendar id="ddate" value="#{busDocController.selected.docdate}" showButtonPanel="true" readonlyInput="true"
-                                        showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                            <p:datePicker id="ddate" value="#{busDocController.selected.docdate}" showIcon="true" readonlyInput="true"
+                                          monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" listener="#{busDocController.docdateChange}"/>
-                            </p:calendar>
+                            </p:datePicker>
 
                             <p:outputLabel value="Company:" for="partner"/>
                             <p:selectOneMenu id="contactperson" value="#{busDocController.selected.businesspartner}" converter="#{entityConverter}" 
@@ -367,7 +367,6 @@
                     <p:dataTable id="saleslist"
                                  value="#{busDocController.salesProductTransactions}"
                                  sortBy="#{trans.reference}" 
-                                 expandableRowGroups="true"
                                  style="width: 100%"
                                  var="trans"
                                  styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
@@ -393,7 +392,6 @@
                     <p:dataTable id="purchaselist"
                                  value="#{busDocController.purchaseProductTransactions}"
                                  sortBy="#{trans.reference}" 
-                                 expandableRowGroups="true"
                                  var="trans"
                                  styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
                                  emptyMessage="No Purchase History found">
@@ -418,7 +416,6 @@
                     <p:dataTable id="stocklist"
                                  value="#{busDocController.stockBalances}"
                                  sortBy="#{trans.reference}" 
-                                 expandableRowGroups="true"
                                  var="trans"
                                  styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
                                  emptyMessage="No Stock Balances found">

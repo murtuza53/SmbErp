@@ -47,22 +47,6 @@ public class Branch implements Serializable {
 
     private String website;
 
-    //bi-directional many-to-one association to AccDoc
-    //@OneToMany(mappedBy = "branch")
-    //private List<AccDoc> accdocs;
-
-    //bi-directional many-to-one association to Asset
-    //@OneToMany(mappedBy = "branchBean")
-    //private List<Asset> assets;
-
-    //bi-directional many-to-one association to LederLine
-    //@OneToMany(mappedBy = "branch")
-    //private List<LederLine> ledlines;
-
-    //bi-directional many-to-one association to ProductTransaction
-    //@OneToMany(mappedBy="branch")
-    //private List<ProductTransaction> prodtransactions;
-
     //bi-directional many-to-one association to Company
     @ManyToOne
     @JoinColumn(name="companyid")

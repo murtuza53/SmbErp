@@ -1,5 +1,6 @@
 package com.smb.erp.entity;
 
+import com.smb.erp.util.DateUtil;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -28,6 +29,9 @@ public class BusDoc implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdon;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedon;
 
     private Double rate = 1.0;
 
@@ -108,9 +112,6 @@ public class BusDoc implements Serializable {
 
     private String docstatus = "";
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedon;
-
     //bi-directional many-to-one association to ContactPerson
     @ManyToOne
     @JoinColumn(name = "cpid")
@@ -158,8 +159,8 @@ public class BusDoc implements Serializable {
     private Branch branch;
 
     @ManyToOne
-    @JoinColumn(name = "countryno")
-    private Country country;
+    @JoinColumn(name = "currencyno")
+    private Country currency;
 
     //bi-directional many-to-one association to PartialPaymentDetail
     @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -173,6 +174,30 @@ public class BusDoc implements Serializable {
 
     @Transient
     private List<Account> accounts;
+    
+    @Transient
+    private Double executedQty;
+    
+    @Transient
+    private Double totalQty;
+    
+    @Transient
+    private String titleBadge;
+    
+    @Transient
+    private String statusCss;
+    
+    @Transient
+    private Double totalPaid;
+        
+    @Transient
+    private Double totalPending;
+    
+    @Transient
+    private Integer invoiceAge;
+    
+    @Transient
+    private Double cumulative;
     
     public BusDoc() {
     }
@@ -669,9 +694,14 @@ public class BusDoc implements Serializable {
         return true;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return docno;
+    }*/
+
+    @Override
+    public String toString() {
+        return "BusDoc{" + "docno=" + docno + ", busdocinfo=" + busdocinfo + ", docdate=" + docdate + ", extra1=" + extra1 + ", extra2=" + extra2 + ", refno=" + refno + ", emp1=" + emp1 + ", busdocinfo=" + busdocinfo + ", businesspartner=" + businesspartner + ", branch=" + branch + ", currency=" + currency + '}';
     }
 
     public void refreshTotal() {
@@ -804,6 +834,14 @@ public class BusDoc implements Serializable {
         if (docstatus.equalsIgnoreCase(DocStatus.CANCELLED.toString()) || docstatus.equalsIgnoreCase(DocStatus.RETURNED.toString())) {
             return docstatus;
         }
+        if(getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_RECEIVABLE.toString())
+                || getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_PAYABLE.toString())){
+            if(getTotalPending()==0){
+                return DocStatus.PAID.toString();
+            } else if(getTotalPaid()>0 && getTotalPaid()<getGrandtotal()){
+                return DocStatus.PAID_PARTIAL.toString();
+            }
+        }
         double qty = getTotalQty();
         double exe = getExecutedQty();
         docstatus = DocStatus.PENDING.toString();
@@ -914,20 +952,6 @@ public class BusDoc implements Serializable {
     }
 
     /**
-     * @return the country
-     */
-    public Country getCountry() {
-        return country;
-    }
-
-    /**
-     * @param country the country to set
-     */
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    /**
      * @return the rate
      */
     public Double getRate() {
@@ -984,5 +1008,54 @@ public class BusDoc implements Serializable {
         exp.setBusdoc(null);
 
         return exp;
+    }
+    
+    public int findInvoiceAge(Date toDate){
+        if(getDocdate()!=null){
+            return DateUtil.getDaysDiff(getDocdate().getTime(), toDate.getTime());
+        }
+        return 0;
+    }
+
+    /**
+     * @return the invoiceAge
+     */
+    public Integer getInvoiceAge() {
+        return findInvoiceAge(new Date());
+    }
+
+    /**
+     * @param invoiceAge the invoiceAge to set
+     */
+    public void setInvoiceAge(Integer invoiceAge) {
+        this.invoiceAge = invoiceAge;
+    }
+
+    /**
+     * @return the cumulative
+     */
+    public Double getCumulative() {
+        return cumulative;
+    }
+
+    /**
+     * @param cumulative the cumulative to set
+     */
+    public void setCumulative(Double cumulative) {
+        this.cumulative = cumulative;
+    }
+
+    /**
+     * @return the currency
+     */
+    public Country getCurrency() {
+        return currency;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(Country currency) {
+        this.currency = currency;
     }
 }

@@ -5,7 +5,10 @@
  */
 package com.smb.erp.dynamic.report;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smb.erp.util.BeanField;
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ReportField implements Serializable {
 
+    private long id = new Date().getTime();
     private String text;
     private String label;
     private boolean printLabel = false;
@@ -28,6 +32,9 @@ public class ReportField implements Serializable {
     private String labelStyle;   //propertyName of the Theme
     private String textStyle;   //propertyName of the Theme
 
+    @JsonIgnore
+    private BeanField field;
+    
     public static enum FieldPrintLayout {
         LEFT_RIGHT, TOP_BOTTOM
     };
@@ -53,6 +60,12 @@ public class ReportField implements Serializable {
         this.printLayout = layout;
     }
 
+    public ReportField(String label, String propertyName, boolean printLabel, FieldPrintLayout layout, String labelStyle, String textStyle) {
+        this(label, propertyName, printLabel, layout);
+        this.labelStyle = labelStyle;
+        this.textStyle = textStyle;
+    }
+
     public ReportField(String label, String propertyName, boolean printLabel, String prefix) {
         this.label = label;
         this.propertyName = propertyName;
@@ -71,9 +84,9 @@ public class ReportField implements Serializable {
      * @param text the text to set
      */
     @XmlElement
-    public ReportField setText(String text) {
+    public void setText(String text) {
         this.text = text;
-        return this;
+        //return this;
     }
 
     /**
@@ -87,9 +100,9 @@ public class ReportField implements Serializable {
      * @param label the label to set
      */
     @XmlElement
-    public ReportField setLabel(String label) {
+    public void setLabel(String label) {
         this.label = label;
-        return this;
+        //return this;
     }
 
     /**
@@ -103,9 +116,9 @@ public class ReportField implements Serializable {
      * @param printLabel the printLabel to set
      */
     @XmlElement
-    public ReportField setPrintLabel(boolean printLabel) {
+    public void setPrintLabel(boolean printLabel) {
         this.printLabel = printLabel;
-        return this;
+        //return this;
     }
 
     /**
@@ -118,9 +131,9 @@ public class ReportField implements Serializable {
     /**
      * @param spellIt the spellIt to set
      */
-    public ReportField setSpellIt(boolean spellIt) {
+    public void setSpellIt(boolean spellIt) {
         this.spellIt = spellIt;
-        return this;
+        //return this;
     }
 
     /**
@@ -134,9 +147,9 @@ public class ReportField implements Serializable {
      * @param propertyName the propertyName to set
      */
     @XmlElement
-    public ReportField setPropertyName(String propertyName) {
+    public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
-        return this;
+        //return this;
     }
 
     /**
@@ -150,9 +163,9 @@ public class ReportField implements Serializable {
      * @param prefix the prefix to set
      */
     @XmlElement
-    public ReportField setPrefix(String prefix) {
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
-        return this;
+        //return this;
     }
 
     /**
@@ -166,9 +179,9 @@ public class ReportField implements Serializable {
      * @param suffix the suffix to set
      */
     @XmlElement
-    public ReportField setSuffix(String suffix) {
+    public void setSuffix(String suffix) {
         this.suffix = suffix;
-        return this;
+        //return this;
     }
 
     /**
@@ -181,9 +194,9 @@ public class ReportField implements Serializable {
     /**
      * @param printLayout the printLayout to set
      */
-    public ReportField setPrintLayout(FieldPrintLayout printLayout) {
+    public void setPrintLayout(FieldPrintLayout printLayout) {
         this.printLayout = printLayout;
-        return this;
+        //return this;
     }
 
     /**
@@ -197,9 +210,9 @@ public class ReportField implements Serializable {
      * @param type the type to set
      */
     @XmlElement
-    public ReportField setType(Class type) {
+    public void setType(Class type) {
         this.type = type;
-        return this;
+        //return this;
     }
 
     public String getSimpleType() {
@@ -221,7 +234,7 @@ public class ReportField implements Serializable {
         ReportField r = new ReportField();
         r.setLabel(label);
         r.setPrefix(prefix);
-        r.setPrintLabel(printLabel);
+        r.setPrintLabel(isPrintLabel());
         r.setPrintLayout(printLayout);
         r.setPropertyName(propertyName);
         r.setSuffix(suffix);
@@ -249,9 +262,9 @@ public class ReportField implements Serializable {
     /**
      * @param labelStyle the labelStyle to set
      */
-    public ReportField setLabelStyle(String labelStyle) {
+    public void setLabelStyle(String labelStyle) {
         this.labelStyle = labelStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -264,8 +277,38 @@ public class ReportField implements Serializable {
     /**
      * @param textStyle the textStyle to set
      */
-    public ReportField setTextStyle(String textStyle) {
+    public void setTextStyle(String textStyle) {
         this.textStyle = textStyle;
-        return this;
+        //return this;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the field
+     */
+    public BeanField getField() {
+        return field;
+    }
+
+    /**
+     * @param field the field to set
+     */
+    public void setField(BeanField field) {
+        this.field = field;
+        setPropertyName(field.getProperty());
+        setType(field.getType());
     }
 }

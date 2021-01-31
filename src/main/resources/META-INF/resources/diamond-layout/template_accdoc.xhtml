@@ -67,14 +67,12 @@
             <pe:layoutPane position="center">
                 <div class="layout-slim #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
                     <div class="layout-content-wrapper">
-                        <div class="layout-content less_padding">
-                            <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
-                                        return false;
-                                    }">
-                                <ui:insert name="content"></ui:insert>
-                                <ui:include src="/confirmation.xhtml"/>
-                            </h:form>
-                        </div>
+                        <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
+                                    return false;
+                                }">
+                            <ui:insert name="content"></ui:insert>
+                            <ui:include src="/confirmation.xhtml"/>
+                        </h:form>
                     </div>
                 </div>
             </pe:layoutPane>
@@ -82,17 +80,17 @@
 
         <h:outputStylesheet id="layoutCSS">
             .less_padding{
-                padding: 1em !important;
+            padding: 1em !important;
             }
 
             .vless_padding{
-                padding: 0.5em !important;
+            padding: 0.5em !important;
             }
-            
+
             body {
             margin: 0px !important;
             }
-            
+
             body > .ui-layout-resizer{
             }
 

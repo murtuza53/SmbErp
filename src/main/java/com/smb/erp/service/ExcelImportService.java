@@ -6,13 +6,11 @@
 package com.smb.erp.service;
 
 import com.smb.erp.util.ExcelFileReader;
-import com.smb.erp.util.SystemConfig;
 import com.smb.erp.util.Utils;
 import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +19,7 @@ import org.apache.commons.beanutils.ConvertingWrapDynaBean;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExcelImportService implements Serializable {
 
-    @Autowired
-    SystemConfig systemConfig;
 
     @Autowired
     RepositoryService repoService;
@@ -83,11 +80,11 @@ public class ExcelImportService implements Serializable {
             prepareIndexMap(cells);
         }
 
-        System.out.println("columnMapping");
+        //System.out.println("columnMapping");
         for (String key : columnMapping.keySet()) {
             System.out.println(key + " => " + columnMapping.get(key));
         }
-        System.out.println("\n\nindexMapping");
+        //System.out.println("\n\nindexMapping");
         for (String key : indexMapping.keySet()) {
             System.out.println(key + " => " + indexMapping.get(key));
         }

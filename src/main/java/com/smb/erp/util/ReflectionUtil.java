@@ -1,9 +1,13 @@
 package com.smb.erp.util;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.util.*;
 import java.text.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.beanutils.PropertyUtils;
 
 /**
  * Utility class to perform some tricks with reflection. This class is
@@ -80,31 +84,33 @@ public class ReflectionUtil {
     }
 
     public static boolean isNumberType(Class cl) {
-        if (cl == byte.class || cl == Byte.class || cl == int.class || cl == Integer.class || cl == long.class || cl == Long.class
-                || cl == float.class || cl == Float.class || cl == double.class || cl == Double.class) {
-                return true;
-        }
-        return false;
+        return cl == byte.class || cl == Byte.class || cl == int.class || cl == Integer.class || cl == long.class || cl == Long.class
+                || cl == float.class || cl == Float.class || cl == double.class || cl == Double.class;
     }
 
-/**
- * Converts a String to an instance of a specified wrapper class, if possible.
- * Note that for boolean targets with a String source, the convertToBoolean
- * method is called, so any valid argument to convertToBoolean is a valid
- * source. The default NumberFormat (as obtained by NumberFormat.getInstance())
- * is used if the appropriate decode(String) method fails. If parsing with the
- * NumberFormat is successful, convertToWrapper (Number, target, boolean) is
- * called, with a value of "false" for the lossOfAccuracy parameter (so that
- * only lossless conversions are allowed).
- *
- * @param source String to convert
- * @param target wrapper class to convert to
- *
- * @throws NullPointerException if either target or source are null
- * @throws ConversionException if the source cannot be converted
- * @throws IllegalArgumentException if the target is not a wrapper class
- */
-public static Object convertToWrapper(String source, Class target)
+    public static boolean isPremitiveType(Class cl) {
+        return isNumberType(cl) || cl == boolean.class || cl == Boolean.class || cl == String.class || cl == Date.class;
+    }
+
+    /**
+     * Converts a String to an instance of a specified wrapper class, if
+     * possible. Note that for boolean targets with a String source, the
+     * convertToBoolean method is called, so any valid argument to
+     * convertToBoolean is a valid source. The default NumberFormat (as obtained
+     * by NumberFormat.getInstance()) is used if the appropriate decode(String)
+     * method fails. If parsing with the NumberFormat is successful,
+     * convertToWrapper (Number, target, boolean) is called, with a value of
+     * "false" for the lossOfAccuracy parameter (so that only lossless
+     * conversions are allowed).
+     *
+     * @param source String to convert
+     * @param target wrapper class to convert to
+     *
+     * @throws NullPointerException if either target or source are null
+     * @throws ConversionException if the source cannot be converted
+     * @throws IllegalArgumentException if the target is not a wrapper class
+     */
+    public static Object convertToWrapper(String source, Class target)
             throws ConversionException {
         // Check arguments
         if (target == null) {
@@ -117,15 +123,11 @@ public static Object convertToWrapper(String source, Class target)
                     "Null source string passed to convertToWrapper");
         }
 
-        if (target == String
+        if (target == String.class) {
+            return source;
+        }
 
-.class  
-
-    ) {
-    return source ;
-}
-
-if (!wrapperMap.containsKey(target) && !primitiveMap.containsKey(target)) {
+        if (!wrapperMap.containsKey(target) && !primitiveMap.containsKey(target)) {
             throw new IllegalArgumentException(
                     "Non-wrapper target class passed to convertToWrapper");
         }
@@ -133,118 +135,51 @@ if (!wrapperMap.containsKey(target) && !primitiveMap.containsKey(target)) {
         String str = ((String) source).trim();
         // First try the most obvious method
         try {
-            if (target.equals(Boolean
-
-.class  
-
-
-
-) || target.equals(boolean.class  
-
-    )) {
-    return convertToBoolean(str)
-
-? Boolean.TRUE : Boolean.FALSE;
-            } else if (target.equals(Byte
-
-.class  
-
-
-
-) || target.equals(byte.class  
-
-    )) {
-    return Byte.decode (str);
-}
-else if (target.equals(Short
-
-.class  
-
-
-
-) || target.equals(short.class  
-
-    )) {
-    return Short.decode (str);
-}
-else if (target.equals(Integer
-
-.class  
-
-
-
-) || target.equals(int.class  
-
-    )) {
-    return Integer.decode (str);
-}
-else if (target.equals(Long
-
-.class  
-
-
-
-) || target.equals(long.class  
-
-    )) {
-    return Long.decode (str);
-}
-else if (target.equals(Float
-
-.class  
-
-
-
-) || target.equals(float.class  
-
-    )) {
-    return new Float(str);
-}
-else if (target.equals(Double
-
-.class  
-
-
-
-) || target.equals(double.class  
-
-    )) {
-    return new Double(str);
-}
-else if (target.equals(Date
-
-.class  
-
-    )) {
-    return new Date(Long.parseLong
-
-(source));
-            } else if (target.equals(XMLGregorianCalendar
-
-.class  
-
-    )) {
-    return XMLGregorianCalendarConverter.asXMLGregorianCalendar (
-
-new Date(Long.parseLong(source)));
-            } else if (target.equals(Character
-
-.class  
-
-
-
-) || target.equals(char.class  
-
-    )) {
-    if (((String
-    ) source
-
-    ).length() 
-        == 1) {
+            if (target.equals(Boolean.class
+            ) || target.equals(boolean.class
+            )) {
+                return convertToBoolean(str)
+                        ? Boolean.TRUE : Boolean.FALSE;
+            } else if (target.equals(Byte.class
+            ) || target.equals(byte.class
+            )) {
+                return Byte.decode(str);
+            } else if (target.equals(Short.class
+            ) || target.equals(short.class
+            )) {
+                return Short.decode(str);
+            } else if (target.equals(Integer.class
+            ) || target.equals(int.class
+            )) {
+                return Integer.decode(str);
+            } else if (target.equals(Long.class
+            ) || target.equals(long.class
+            )) {
+                return Long.decode(str);
+            } else if (target.equals(Float.class
+            ) || target.equals(float.class
+            )) {
+                return new Float(str);
+            } else if (target.equals(Double.class
+            ) || target.equals(double.class
+            )) {
+                return new Double(str);
+            } else if (target.equals(Date.class
+            )) {
+                return new Date(Long.parseLong(source));
+            } else if (target.equals(XMLGregorianCalendar.class
+            )) {
+                return XMLGregorianCalendarConverter.asXMLGregorianCalendar(
+                        new Date(Long.parseLong(source)));
+            } else if (target.equals(Character.class
+            ) || target.equals(char.class
+            )) {
+                if (((String) source).length()
+                        == 1) {
                     return new Character(((String) source).charAt(0));
-    }
-}
-} catch (NumberFormatException e) {
+                }
+            }
+        } catch (NumberFormatException e) {
         }
 
         // Then try the NumberFormat...
@@ -294,76 +229,43 @@ new Date(Long.parseLong(source)));
         }
 
         // Check for character case (special as it's not a Number)
-        if (target.equals(Character
-
-.class  
-
-    )) {
-    if (source.doubleValue () 
-        != source.longValue()) {
+        if (target.equals(Character.class
+        )) {
+            if (source.doubleValue()
+                    != source.longValue()) {
                 throw new ConversionException("Unable to convert " + source + " to a character");
-    }
+            }
 
-    long l = source.longValue();
-    if ((l< Character.MIN_VALUE || l > Character.MAX_VALUE
-    ) && !allowLossOfAccuracy
-
-    
-        ) {
+            long l = source.longValue();
+            if ((l < Character.MIN_VALUE || l > Character.MAX_VALUE) && !allowLossOfAccuracy) {
                 throw new ConversionException("Unable to convert " + source + " to a character without loss of accuracy");
-    }
+            }
 
-    return new Character(
-    (char
-    ) l
-
-);
+            return new Character(
+                    (char) l
+            );
         }
 
         Number result = null;
-        if (target.equals(Byte
-
-.class  
-
-    )) {
-            result  = new Byte(source.byteValue());
-}
-else if (target.equals(Short
-
-.class  
-
-    )) {
-            result  = new Short(source.shortValue());
-}
-else if (target.equals(Integer
-
-.class  
-
-    )) {
-            result  = new Integer(source.intValue());
-}
-else if (target.equals(Long
-
-.class  
-
-    )) {
-            result  = new Long(source.longValue());
-}
-else if (target.equals(Float
-
-.class  
-
-    )) {
-            result  = new Float(source.floatValue());
-}
-else if (target.equals(Double
-
-.class  
-
-    )) {
-            result  = new Double(source.doubleValue());
-}
-else {
+        if (target.equals(Byte.class
+        )) {
+            result = new Byte(source.byteValue());
+        } else if (target.equals(Short.class
+        )) {
+            result = new Short(source.shortValue());
+        } else if (target.equals(Integer.class
+        )) {
+            result = new Integer(source.intValue());
+        } else if (target.equals(Long.class
+        )) {
+            result = new Long(source.longValue());
+        } else if (target.equals(Float.class
+        )) {
+            result = new Float(source.floatValue());
+        } else if (target.equals(Double.class
+        )) {
+            result = new Double(source.doubleValue());
+        } else {
             throw new IllegalArgumentException("Unhandled wrapper class " + target.getName());
         }
 
@@ -619,14 +521,10 @@ else {
 
             // Character is a special-case. Convert it straight
             // to an Integer
-            if (source.getClass().equals(Character
-
-.class  
-
-    )) {
-                source  = new Integer(((Character) source).charValue());
-}
-else {
+            if (source.getClass().equals(Character.class
+            )) {
+                source = new Integer(((Character) source).charValue());
+            } else {
                 try {
                     source = convertToWrapper((Number) source, chainLink[1],
                             true);
@@ -844,18 +742,9 @@ else {
      */
     public static boolean isReadable(Class cl, Field field) {
         try {
-            if (field.getType
-
-() == boolean.class  
-
-
-
-|| field.getType() == Boolean.class  
-
-    ) {
-    cl.getMethod (makeIs
-
-(field.getName()));
+            if (field.getType() == boolean.class
+                    || field.getType() == Boolean.class) {
+                cl.getMethod(makeIs(field.getName()));
             } else {
                 cl.getMethod(makeGetter(field.getName()));
             }
@@ -953,17 +842,131 @@ else {
     }
 
     /**
+     * Retrieves the type of the property with the given name of the given
+     * Class.<br>
+     * Supports nested properties following bean naming convention.
+     *
+     * "foo.bar.name"
+     *
+     * @see PropertyUtils#getPropertyDescriptors(Class)
+     *
+     * @param clazz
+     * @param propertyName
+     *
+     * @return Null if no property exists.
+     */
+    public static Class<?> getPropertyType(Class<?> clazz, String propertyName) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Clazz must not be null.");
+        }
+        if (propertyName == null) {
+            throw new IllegalArgumentException("PropertyName must not be null.");
+        }
+
+        final String[] path = propertyName.split("\\.");
+
+        for (int i = 0; i < path.length; i++) {
+            propertyName = path[i];
+            final PropertyDescriptor[] propDescs = PropertyUtils.getPropertyDescriptors(clazz);
+            for (final PropertyDescriptor propDesc : propDescs) {
+                if (propDesc.getName().equals(propertyName)) {
+                    clazz = propDesc.getPropertyType();
+                    if (i == path.length - 1) {
+                        return clazz;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns all field names of Number type
      *
      */
     public static List<String> getNumberFields(Class cls) {
         List<String> ret = new LinkedList<String>();
-        for(Field f: cls.getDeclaredFields()){
-            if(isNumberType(f.getType())){
+        for (Field f : cls.getDeclaredFields()) {
+            if (isNumberType(f.getType())) {
                 ret.add(f.getName());
             }
         }
         return ret;
+    }
+
+    public static List<String> getAllFields(Class cls) {
+        List<String> ret = new LinkedList<String>();
+        addFieldsAndSubField(cls, ret);
+        return ret;
+    }
+
+    public static List<String> addFieldsAndSubField(Class cls, List<String> ret) {
+        for (Field f : cls.getDeclaredFields()) {
+            if (!isClassCollection(f.getType())) {
+                if (isPremitiveType(f.getType())) {
+                    ret.add(f.getName());
+                } else {
+                    addFieldsAndSubField(f.getType(), ret);
+                }
+            }
+        }
+        return ret;
+    }
+
+    public static List<BeanField> getFields(Class cls, int stopDepth) {
+        List<BeanField> ret = new LinkedList<BeanField>();
+        int currentDepth = 1;
+        String prefix = "";
+        addFields(cls, ret, currentDepth, stopDepth, prefix);
+        return ret;
+    }
+
+    public static List<BeanField> addFields(Class cls, List<BeanField> ret, int currentDepth, int stopDepth, String prefix) {
+        currentDepth = currentDepth + 1;
+        for (Field f : cls.getDeclaredFields()) {
+            if (!isClassCollection(f.getType())) {
+                if (isPremitiveType(f.getType())) {
+                    ret.add(new BeanField(prefix + f.getName(), f.getType()));
+                } else {
+                    if (currentDepth <= stopDepth) {
+                        addFields(f.getType(), ret, currentDepth, stopDepth, prefix + f.getName() + ".");
+                    } else {
+                        ret.add(new BeanField(prefix + f.getName(), f.getType()));
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    public static boolean isClassCollection(Class c) {
+        return Collection.class.isAssignableFrom(c) || Map.class.isAssignableFrom(c) || c.isArray();
+    }
+
+    public static List<BeanField> getFields_ListType(Class cls) {
+        List<BeanField> ret = new LinkedList<BeanField>();
+        for (Field f : cls.getDeclaredFields()) {
+            if (isClassCollection(f.getType())) {
+                ret.add(new BeanField(f.getName(), getListClass(f)));
+            }
+        }
+        return ret;
+    }
+
+    public static Class getListClass(Field field) {
+        try {
+            //Field field = this.getClass().getDeclaredField(fieldName);
+            ParameterizedType type = (ParameterizedType) field.getGenericType();
+            Class<?> clazz = (Class<?>) type.getActualTypeArguments()[0];
+            return clazz;
+        } //catch (NoSuchFieldException ex) {
+        //    Logger.getLogger(ReflectionUtil.class.getName()).log(Level.SEVERE, null, ex);
+        //} 
+        catch (SecurityException ex) {
+            Logger.getLogger(ReflectionUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
@@ -1042,116 +1045,66 @@ else {
      */
     public static Object defaultValue(Object value, Class cl) {
         if (value == null) {
-            if (cl 
+            if (cl
+                    == char.class
+                    || cl == String.class) {
 
-== char.class  
+                return "";
+            } else if (cl
+                    == boolean.class) {
+                return Boolean.FALSE;
+            } else if (cl
+                    == byte.class) {
 
+                return 0;
+            } else if (cl
+                    == int.class) {
 
+                return 0;
+            } else if (cl
+                    == long.class) {
 
-|| cl == String.class  
+                return 0l;
+            } else if (cl
+                    == float.class) {
 
-    ) {
+                return 0f;
+            } else if (cl
+                    == double.class) {
 
-return "";
-            } else if (cl 
-
-== boolean.class  
-
-    ) {
-    return Boolean.FALSE ;
-}
-else if (cl 
-
-== byte.class  
-
-    ) {
-
-return 0;
-            } else if (cl 
-
-== int.class  
-
-    ) {
-
-return 0;
-            } else if (cl 
-
-== long.class  
-
-    ) {
-
-return 0l;
-            } else if (cl 
-
-== float.class  
-
-    ) {
-
-return 0f;
-            } else if (cl 
-
-== double.class  
-
-    ) {
-
-return 0.0;
+                return 0.0;
             } else {
                 return null;
             }
         } else if (value.toString().length() == 0) {
-            if (cl 
+            if (cl
+                    == char.class
+                    || cl == String.class) {
 
-== char.class  
+                return "";
+            } else if (cl
+                    == boolean.class) {
+                return Boolean.FALSE;
+            } else if (cl
+                    == byte.class) {
 
+                return 0;
+            } else if (cl
+                    == int.class) {
 
+                return 0;
+            } else if (cl
+                    == long.class) {
 
-|| cl == String.class  
+                return 0l;
+            } else if (cl
+                    == float.class) {
 
-    ) {
+                return 0f;
+            } else if (cl
+                    == double.class) {
 
-return "";
-            } else if (cl 
-
-== boolean.class  
-
-    ) {
-    return Boolean.FALSE ;
-}
-else if (cl 
-
-== byte.class  
-
-    ) {
-
-return 0;
-            } else if (cl 
-
-== int.class  
-
-    ) {
-
-return 0;
-            } else if (cl 
-
-== long.class  
-
-    ) {
-
-return 0l;
-            } else if (cl 
-
-== float.class  
-
-    ) {
-
-return 0f;
-            } else if (cl 
-
-== double.class  
-
-    ) {
-
-return 0.0;
+                return 0.0;
             } else {
                 return null;
             }
@@ -1175,12 +1128,8 @@ return 0.0;
         }
 
         // Walk up the superclass hierarchy
-        for (Class obj = o.getClass(); !obj.equals(Object
-
-.class  
-
-
-); obj = obj.getSuperclass()) {
+        for (Class obj = o.getClass(); !obj.equals(Object.class
+        ); obj = obj.getSuperclass()) {
             Field[] fields = obj.getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
                 fields[i].setAccessible(true);
@@ -1255,21 +1204,11 @@ return 0.0;
             if (values[i] == null || values[i].equalsIgnoreCase("null")) {
                 value = defaultValue(null, typeClass);
             } else {
-                if (typeClass == java.util.Date
-
-.class  
-
-    ) {
-                    value  = dateFormat.parseObject(values[i]);
-}
-else if (typeClass == XMLGregorianCalendar
-
-.class  
-
-    ) {
-                    value  = XMLGregorianCalendarConverter.asXMLGregorianCalendar(dateFormat.parse(values[i]));
-}
-else {
+                if (typeClass == java.util.Date.class) {
+                    value = dateFormat.parseObject(values[i]);
+                } else if (typeClass == XMLGregorianCalendar.class) {
+                    value = XMLGregorianCalendarConverter.asXMLGregorianCalendar(dateFormat.parse(values[i]));
+                } else {
                     value = convertToWrapper(values[i], typeClass);
                 }
             }

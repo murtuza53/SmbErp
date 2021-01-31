@@ -325,12 +325,12 @@ public class StockDocController extends AbstractController<BusDoc> implements Pr
         pt.setBranch(getSelected().getBranch());
 
         if (getSelected().getBusdocinfo().getPrefix().equalsIgnoreCase("SHS")) {
-            pt.setLinecost(0.0);
+            pt.setLinefccost(0.0);
             pt.setLinefcunitprice(0.0);
             pt.setLinesold(1.0);
             pt.setLinereceived(0.0);
         } else {
-            pt.setLinecost(0.0);
+            pt.setLinefccost(0.0);
             pt.setLinefcunitprice(0.0);
             pt.setLinesold(0.0);
             pt.setLinereceived(1.0);

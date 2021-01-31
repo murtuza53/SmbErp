@@ -6,6 +6,7 @@
 package com.smb.erp.dynamic.report;
 
 import com.smb.erp.dynamic.report.TableField.ColumnFunction;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,17 +19,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ReportTable {
 
+    private Long id = new Date().getTime();
     private String title;
+    private Class dataClass;
     private String dataPropertyName;
-    private List<TableField> fieldList;
-    private List<ReportField> summaryList;
-    private String titleStyle;
+    private List<TableField> fieldList = new LinkedList<>();
+    private List<ReportField> summaryList = new LinkedList<>();
+    private String titleStyle = "columnHeaderStyle";
     private String detailsOddStyle;
-    private String detailsEvenStyle;
-    private String subtotalStyle;
-    private String columnTitleStyle;
-    private String columnStyle;
-    private String valueStyle;
+    private String detailsEvenStyle = "detailsEvenRowStyle";
+    private String subtotalStyle = "subtotalStyle";
+    private String columnTitleStyle = "columnTitleStyle";
+    private String columnStyle = "columnStyle";
+    private String valueStyle = "tableRowStyle";
+    private Boolean printSummary = false;
 
     public ReportTable() {
     }
@@ -77,6 +81,28 @@ public class ReportTable {
         return field;
     }
 
+    public void addTableField(TableField field) {
+        if (getFieldList() == null) {
+            setFieldList(new LinkedList<>());
+        }
+        getFieldList().add(field);
+    }
+
+    public void removeTableField(TableField field) {
+        getFieldList().remove(field);
+    }
+
+    public void addSummaryField(ReportField field) {
+        if (getSummaryList() == null) {
+            setSummaryList(new LinkedList<>());
+        }
+        getSummaryList().add(field);
+    }
+
+    public void removeSummaryField(ReportField field) {
+        getSummaryList().remove(field);
+    }
+
     /**
      * @return the fieldList
      */
@@ -88,9 +114,9 @@ public class ReportTable {
      * @param fieldList the fieldList to set
      */
     @XmlElement
-    public ReportTable setFieldList(List<TableField> fieldList) {
+    public void setFieldList(List<TableField> fieldList) {
         this.fieldList = fieldList;
-        return this;
+        //return this;
     }
 
     /**
@@ -104,9 +130,9 @@ public class ReportTable {
      * @param dataPropertyName the dataPropertyName to set
      */
     @XmlElement
-    public ReportTable setDataPropertyName(String dataPropertyName) {
+    public void setDataPropertyName(String dataPropertyName) {
         this.dataPropertyName = dataPropertyName;
-        return this;
+        //return this;
     }
 
     /**
@@ -120,9 +146,9 @@ public class ReportTable {
      * @param summaryList the summaryList to set
      */
     @XmlElement
-    public ReportTable setSummaryList(List<ReportField> summaryList) {
+    public void setSummaryList(List<ReportField> summaryList) {
         this.summaryList = summaryList;
-        return this;
+        //return this;
     }
 
     /**
@@ -136,9 +162,9 @@ public class ReportTable {
      * @param title the title to set
      */
     @XmlElement
-    public ReportTable setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
+        //return this;
     }
 
     public boolean hasSubtotal() {
@@ -162,9 +188,9 @@ public class ReportTable {
     /**
      * @param titleStyle the titleStyle to set
      */
-    public ReportTable setTitleStyle(String titleStyle) {
+    public void setTitleStyle(String titleStyle) {
         this.titleStyle = titleStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -177,9 +203,9 @@ public class ReportTable {
     /**
      * @param detailsOddStyle the detailsOddStyle to set
      */
-    public ReportTable setDetailsOddStyle(String detailsOddStyle) {
+    public void setDetailsOddStyle(String detailsOddStyle) {
         this.detailsOddStyle = detailsOddStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -192,9 +218,9 @@ public class ReportTable {
     /**
      * @param detailsEvenStyle the detailsEvenStyle to set
      */
-    public ReportTable setDetailsEvenStyle(String detailsEvenStyle) {
+    public void setDetailsEvenStyle(String detailsEvenStyle) {
         this.detailsEvenStyle = detailsEvenStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -207,9 +233,9 @@ public class ReportTable {
     /**
      * @param subtotalStyle the subtotalStyle to set
      */
-    public ReportTable setSubtotalStyle(String subtotalStyle) {
+    public void setSubtotalStyle(String subtotalStyle) {
         this.subtotalStyle = subtotalStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -222,9 +248,9 @@ public class ReportTable {
     /**
      * @param columnTitleStyle the columnTitleStyle to set
      */
-    public ReportTable setColumnTitleStyle(String columnTitleStyle) {
+    public void setColumnTitleStyle(String columnTitleStyle) {
         this.columnTitleStyle = columnTitleStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -237,9 +263,9 @@ public class ReportTable {
     /**
      * @param columnStyle the columnStyle to set
      */
-    public ReportTable setColumnStyle(String columnStyle) {
+    public void setColumnStyle(String columnStyle) {
         this.columnStyle = columnStyle;
-        return this;
+        //return this;
     }
 
     /**
@@ -252,9 +278,51 @@ public class ReportTable {
     /**
      * @param valueStyle the valueStyle to set
      */
-    public ReportTable setValueStyle(String valueStyle) {
+    public void setValueStyle(String valueStyle) {
         this.valueStyle = valueStyle;
-        return this;
+        //return this;
+    }
+
+    /**
+     * @return the dataClass
+     */
+    public Class getDataClass() {
+        return dataClass;
+    }
+
+    /**
+     * @param dataClass the dataClass to set
+     */
+    public void setDataClass(Class dataClass) {
+        this.dataClass = dataClass;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the printSummary
+     */
+    public Boolean getPrintSummary() {
+        return printSummary;
+    }
+
+    /**
+     * @param printSummary the printSummary to set
+     */
+    public void setPrintSummary(Boolean printSummary) {
+        this.printSummary = printSummary;
     }
 
 }

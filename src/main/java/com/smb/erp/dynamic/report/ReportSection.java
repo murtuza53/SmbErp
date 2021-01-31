@@ -6,6 +6,7 @@
 package com.smb.erp.dynamic.report;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ReportSection implements Serializable {
 
+    private long id = new Date().getTime();
     private String title;
     private String sectionWidth;
     private List<ReportField> reportFields = new LinkedList<ReportField>();
@@ -61,6 +63,9 @@ public class ReportSection implements Serializable {
      */
     @XmlElement
     public void setSectionWidth(String sectionWidth) {
+        if(!sectionWidth.contains("%")){
+            sectionWidth = sectionWidth+"%";
+        }
         this.sectionWidth = sectionWidth;
     }
 
@@ -85,10 +90,6 @@ public class ReportSection implements Serializable {
         }
 
         reportFields.add(field);
-    }
-
-    public String toString() {
-        return getTitle();
     }
 
     /**
@@ -155,4 +156,35 @@ public class ReportSection implements Serializable {
     public void setTitleStyle(String titleStyle) {
         this.titleStyle = titleStyle;
     }
+
+    @Override
+    public String toString() {
+        return "ReportSection{" + "id=" + id + ", title=" + title + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ReportSection other = (ReportSection) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+    
 }

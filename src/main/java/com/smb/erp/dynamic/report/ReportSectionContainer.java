@@ -5,6 +5,7 @@
  */
 package com.smb.erp.dynamic.report;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class ReportSectionContainer {
     
-    private List<ReportSection> reportSection;
+    private List<ReportSection> reportSection = new LinkedList<>();
     private int gapBefore = 0;
     private int gapAfter = 0;
     private ContainerPrintLayout printLayout = ContainerPrintLayout.HORIZONTAL;

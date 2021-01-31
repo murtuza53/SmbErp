@@ -71,6 +71,18 @@
                                            itemLabel="#{con.countryname}"
                                            />
                         </p:selectOneMenu>
+
+                        <p:outputLabel value="Product Type" for="ptype" />
+                        <p:selectOneMenu id="ptype" value="#{productController.selected.producttype}" 
+                                         style="width: 100%" converter="#{entityConverter}"
+                                         filter="true" filterMatchMode="contains" >
+                            <f:selectItems value="#{productTypeController.items}"
+                                           var="con"
+                                           itemValue="#{con}"
+                                           itemLabel="#{con.name}"
+                                           />
+                        </p:selectOneMenu>
+
                     </p:panelGrid>
                 </p:fieldset>
 
@@ -182,7 +194,8 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="WEF:" for="wef" />
-                        <p:datePicker id="wef" placeholder="With Effitive From" value="#{productController.selected.vatregisterid.wef}" showButtonBar="true"/>
+                        <p:datePicker id="wef" placeholder="With Effitive From" value="#{productController.selected.vatregisterid.wef}"
+                                       pattern="dd/MM/yyyy" showButtonBar="true"/>
                     </p:panelGrid>
                 </p:fieldset>
 

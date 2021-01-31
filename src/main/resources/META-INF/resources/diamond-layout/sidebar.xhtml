@@ -10,9 +10,9 @@
         <div class="layout-menu-container">
             <h:form id="sidebar-form">
                 <d:menu widgetVar="diamondMenuWidget">
-                    <p:submenu id="om_homepage" label="Favorites" icon="pi pi-home">
-                        <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" outcome="/dashboard" />
-                    </p:submenu>
+                    <p:menuitem id="om_reload" value="Reload Menu" icon="pi pi-refresh" actionListener="#{appmenuController.loadMenu()}" update=":sidebar-form" ajax="false"/>
+                    <p:separator />
+                    <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" outcome="/dashboard" />
                     <p:separator />
                     <p:submenu id="om_components" label="Master Data"
                                icon="fa fa-fw fa-table">
@@ -42,11 +42,8 @@
                                     outcome="/inventory/stockledger.xhtml" />
                     </p:submenu>
                     <p:separator />
-                    <p:submenu id="om_getstarted" label="Start" icon="pi pi-download">
-                        <p:menuitem id="om_buy" value="Buy Now" icon="pi pi-shopping-cart" url="https://www.primefaces.org/store" />
-                    </p:submenu>
-                    <p:separator />
                 </d:menu>
+                <d:menu model="#{appmenuController.menuModel}" />
             </h:form>
         </div>        
     </div>

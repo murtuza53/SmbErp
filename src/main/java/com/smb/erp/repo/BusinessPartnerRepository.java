@@ -25,4 +25,6 @@ public interface BusinessPartnerRepository extends BaseRepository<BusinessPartne
     @Query("SELECT b FROM BusinessPartner as b WHERE b.companyname LIKE %:criteria% OR b.email1 LIKE %:criteria% ORDER BY b.companyname")
     List<BusinessPartner> findBusinessPartnerBySearchCriteria(@Param("criteria") String criteria);
 
+    @Query("SELECT b FROM BusinessPartner as b WHERE b.companytypes LIKE %:companytypes% ORDER BY b.companyname")
+    List<BusinessPartner> findBusinessPartnerByCompanyType(@Param("companytypes") String companytypes);
 }

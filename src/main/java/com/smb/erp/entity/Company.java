@@ -5,6 +5,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the company database table.
@@ -51,14 +53,17 @@ public class Company implements Serializable {
 
     //bi-directional many-to-one association to Dept
     @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Dept> depts;
 
     //bi-directional many-to-one association to Emp
     @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Emp> emps;
 
     //bi-directional many-to-one association to Warehouse
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Branch> branches;
 
     public Company() {

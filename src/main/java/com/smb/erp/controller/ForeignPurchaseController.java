@@ -337,6 +337,10 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         double totalInvoicePlusExpFc = invoiceTotalFc + totalExpenseFc;
         double totalFcToLc = totalInvoicePlusExpFc*getSelected().getRate();
         double ratio = (totalFcToLc+totalExpenseLc)/invoiceTotalFc;     //Total Invoice & All Cost in LC / Material value in FC
+        if(Double.isNaN(ratio)){
+            //System.out.println("Ratio is NaN");
+            return 0.0;
+        }
         return ratio;
     }
     
@@ -345,7 +349,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     }
     
     public Double getTotalExpenseInLc(){
-        if(getSelected().getExpenses()==null){
+        if(getSelected().getExpenses()==null || getSelected().getExpenses().isEmpty()){
             return 0.0;
         }
         return getSelected().getExpenses().stream().mapToDouble(BusDocExpense::getTotalAmountInLC).sum();
@@ -353,16 +357,20 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     
     public void newExpense() {
         BusDocExpense exp = new BusDocExpense();
+        //System.out.println("newExpense: Step 1");
         Country defcon = countryRepo.findCountryDefault();
+        //System.out.println("newExpense: Step 2");
         if(defcon==null){
-            defcon = getSelected().getCountry();
+            defcon = getSelected().getCurrency();
         }
         String defexptype = getCostingExpenses().get(0);
         exp.setExpensetype(defexptype);
         exp.setCountry(defcon);
         exp.setRate(defcon.getRate());
+        //System.out.println("newExpense: Step 3");
         exp.setAccount(systemController.getDefaultAccount("DefCostingExpense"));
         getSelected().addBusDocExpense(exp);
+        //System.out.println("newExpense: Step 4");
     }
 
     public void deletedExpense() {
@@ -489,7 +497,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         VatBusinessRegister vbr = getSelected().getBusinesspartner().getBusinessRegisters().get(0);
         List<VatMapping> vatmaps = vatmappingRepo.findByVatSalesPurchaseType(vbr.getVataccounttypeid().getVataccounttypeid(),
                 vbr.getVatcategoryid().getVatcategoryid(), prod.getVatregisterid().getProducttype(), doctype);
-        System.out.println("VAT_MAPPING: " + vatmaps);
+        //System.out.println("VAT_MAPPING: " + vatmaps);
         if (vatmaps != null && vatmaps.size() > 0) {
             VatMapping vm = vatmaps.get(0);
             pt.setVatsptypeid(vm.getVatsptypeid());
@@ -563,8 +571,8 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     }
 
     public void currencySelected() {
-        if (getSelected().getCountry() != null) {
-            getSelected().setRate(getSelected().getCountry().getRate());
+        if (getSelected().getCurrency()!= null) {
+            getSelected().setRate(getSelected().getCurrency().getRate());
         }
     }
 
@@ -826,4 +834,5 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     public void setSelectedExpense(BusDocExpense selectedExpense) {
         this.selectedExpense = selectedExpense;
     }
+
 }

@@ -19,7 +19,7 @@
                             <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{busDocListController.refresh()}"
                                              update="@form :growl" icon="fa fa-refresh" />
-                            
+
                             <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
                                 <p:tooltip value="Export to PDF" for="exportPdf"/>
                                 <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
@@ -40,13 +40,13 @@
                         <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
 
                             <p:outputLabel value="From Date" for="fromdate" />
-                            <p:calendar id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
-                                        title="From Date"  showOn="button"
+                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
+                                          title="From Date"  showIcon="true"
                                         required="true" requiredMessage="Please select Date"/>
 
                             <p:outputLabel value="To Date" for="todate" />
-                            <p:calendar id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
-                                        title="To Date"  showOn="button"
+                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
+                                          title="To Date"  showIcon="true"
                                         required="true" requiredMessage="Please select Date"/>
                         </p:panelGrid>
                     </p:panel>
@@ -70,6 +70,10 @@
                                              update="@form :growl">
                                 <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
                             </p:commandButton>
+
+                            <p:commandButton id="btnimportdoc" title="Import Documents" icon="fas fa-download" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             oncomplete="PF('TransDialog').show()" update=":transform"/>
                         </f:facet>
 
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
@@ -139,7 +143,7 @@
             </div>
             <ui:include src="/confirmation.xhtml"/>
         </h:form>
-
+        <ui:include src="/busdoc/busdocimport.xhtml"/>
     </ui:define>
 
 </ui:composition>

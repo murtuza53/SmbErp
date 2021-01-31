@@ -20,29 +20,29 @@
                         <f:facet name="actions">
                             <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
                                              actionListener="#{ledgerlineController.refresh()}" 
-                                             update="@form :growl" icon="fa fa-refresh" />
+                                             update=":mainform:datalist :growl" icon="fa fa-refresh" />
                         </f:facet>
                         <div class="ui-fluid p-formgrid p-grid">
                             <div class="p-field p-col-12 p-md-6">
                                 <p:outputLabel for="fromdate" value="From Date" />
-                                <p:calendar id="fromdate" value="#{ledgerlineController.fromDate}" showButtonPanel="true" readonlyInput="true"
-                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                </p:calendar>
+                                <p:datePicker id="fromdate" value="#{ledgerlineController.fromDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
                             </div>
 
                             <div class="p-field p-col-12 p-md-6">
                                 <p:outputLabel value="To Date" for="todate" />
-                                <p:calendar id="todate" value="#{ledgerlineController.toDate}" showButtonPanel="true" readonlyInput="true"
-                                            showOn="button" navigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
-                                </p:calendar>
+                                <p:datePicker id="todate" value="#{ledgerlineController.toDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
                             </div>
 
                             <div class="p-field p-col-12">
                                 <p:outputLabel for="accounts" value="Accounts" />
                                 <p:selectCheckboxMenu id="accounts" value="#{ledgerlineController.selectedAccounts}" label="Accounts" multiple="true"
-                                                      filter="true" filterMatchMode="contains">
+                                                      filter="true" filterMatchMode="contains" >
                                     <p:ajax listener="#{ledgerlineController.refresh()}" />
-                                    <f:selectItems value="#{ledgerlineController.accountList}" var="item" itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                    <f:selectItems value="#{ledgerlineController.accountList}" var="item" itemLabel="#{item.accountname} - #{item.parentid.accountname}" itemValue="#{item}"/>
                                     <p:column>
                                         <f:facet name="header">
                                             <h:outputText value="Name"/>
@@ -86,13 +86,12 @@
                                      selection="#{ledgerlineController.selected}"
                                      rowKey="#{item.llno}"
                                      sortBy="#{item.account}" 
-                                     expandableRowGroups="true"
                                      emptyMessage="No Transactions found"
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm"
                                      style="font-size: small">
 
                             <p:headerRow>
-                                <p:column colspan="6">
+                                <p:column colspan="8">
                                     <h:outputText value="#{item.account}" />
                                 </p:column>
                             </p:headerRow>
@@ -146,6 +145,24 @@
                                     <h:outputText value="Balance"/>
                                 </f:facet>
                                 <h:outputText value="#{item.cumulative}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.fcDebit}" filterBy="#{item.fcDebit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Debit FC"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fcDebit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{item.fcCredit}" filterBy="#{item.fcCredit}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="Credit"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fcCredit}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>

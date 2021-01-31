@@ -6,10 +6,15 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.UserSession;
-import com.smb.erp.entity.ProductCategory;
+import com.smb.erp.entity.Product;
+import com.smb.erp.entity.ProductAccount;
+import com.smb.erp.entity.VatProductRegister;
+import com.smb.erp.repo.AccountRepository;
+import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.service.ExcelImportService;
+import com.smb.erp.service.ImportTransferable;
 import com.smb.erp.service.RepositoryService;
-import com.smb.erp.util.BeanUtils;
+import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
 import com.smb.erp.util.SystemConfig;
 import com.smb.erp.util.Utils;
@@ -17,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,14 +31,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.apache.commons.beanutils.ConvertingWrapDynaBean;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,15 +55,20 @@ public class DataImportController implements Serializable {
 
     @Autowired
     private RepositoryService repoService;
+    
+    @Autowired
+    AccountRepository accRepo;
 
+    @Autowired
+    VatCategoryRepository vatcatRepo;
+    
     private UploadedFile file;
 
     private String progressMessage = new Date() + ": Choose File to upload";
 
     private String uploadDialogTitle = "Upload Data";
 
-    final File sysTempDir = new File(System.getProperty("java.io.tmpdir"));
-
+    //final File sysTempDir = new File(System.getProperty("java.io.tmpdir"));
     private List<String> availableTables;
 
     private String selectedTable;
@@ -71,11 +77,15 @@ public class DataImportController implements Serializable {
 
     private List<List> items;
 
+    private List retList;
+
     private List<Class> headerClass;
 
     private Class clz;
-    
+
     private int progress;
+
+    private ImportTransferable importTransferable;
 
     @PostConstruct
     public void init() {
@@ -113,7 +123,7 @@ public class DataImportController implements Serializable {
         progressMessage = "";
         for (int i = 1; i < excelService.rowCount() + 1; i++) {
             items.add(excelService.getRowAsArray(i));
-            progress = i*100/excelService.rowCount();
+            progress = i * 100 / excelService.rowCount();
             setProgressMessage(i + " / " + excelService.rowCount());
             //saveData(items.get(i - 1));
             //System.out.println("Row "+i+": " + excelService.getRowAsArray(i));
@@ -152,10 +162,10 @@ public class DataImportController implements Serializable {
         progress = 0;
         progressMessage = "";
         for (List data : items) {
-            Object ret = saveData(data);
-            progress = count*100/items.size();
+            Object ret = saveData(data, true);
+            progress = count * 100 / items.size();
             setProgressMessage(count + " / " + items.size());
-            if(ret==null){
+            if (ret == null) {
                 System.out.println(count++ + ". " + data + " ERROR");
             } else {
                 System.out.println(count++ + ". " + data + " SAVED");
@@ -164,8 +174,29 @@ public class DataImportController implements Serializable {
         JsfUtil.addSuccessMessage(items.size() + " records saved in " + selectedTable);
     }
 
-    public File saveUploadedFile(UploadedFile file) {
-        File f = new File(sysTempDir + System.getProperty("file.separator") + file.getFileName());
+    public void processDataToReturnList() {
+        if (items == null || items.size() == 0) {
+            JsfUtil.addErrorMessage("No data to process, select file to continue");
+            return;
+        }
+        int count = 1;
+        progress = 0;
+        progressMessage = "";
+        for (List data : items) {
+            Object ret = saveData(data, false);
+            progress = count * 100 / items.size();
+            setProgressMessage(count + " / " + items.size());
+            if (ret == null) {
+                System.out.println(count++ + ". " + data + " ERROR");
+            } else {
+                System.out.println(count++ + ". " + data + " SAVED");
+            }
+        }
+        JsfUtil.addSuccessMessage(items.size() + " records saved in " + selectedTable);
+    }
+
+    public static File saveUploadedFile(UploadedFile file) {
+        File f = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + file.getFileName());
         System.out.println("Saving Imported file: " + f.getAbsolutePath());
         try {
             if (f.exists()) {
@@ -175,7 +206,7 @@ public class DataImportController implements Serializable {
             FileOutputStream outputStream = new FileOutputStream(f);
             int read = 0;
             byte[] bytes = new byte[1024];
-            InputStream inputStream = file.getInputstream();
+            InputStream inputStream = file.getInputStream();
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
             }
@@ -201,7 +232,7 @@ public class DataImportController implements Serializable {
         }
     }
 
-    public Object saveData(List data) {
+    public Object saveData(List data, boolean toDatabase) {
         try {
             Object bean = repoService.getBeanValue(data.get(0).toString(), clz);
             if (bean == null) {
@@ -219,16 +250,47 @@ public class DataImportController implements Serializable {
                 } else {
                     //System.out.println("Setting_Category: " + data.get(i) + "__" + headerClass.get(i) + "__" + repoService.getBeanValue(data.get(i).toString(), headerClass.get(i)));
                     org.apache.commons.beanutils.BeanUtils.setProperty(bean, header.get(i), repoService.getBeanValue(data.get(i).toString(), headerClass.get(i)));
+                    //PropertyUtils.setNestedProperty(bean, header.get(i), repoService.getBeanValue(data.get(i).toString(), headerClass.get(i)));
                 }
             }
             //System.out.println("saveData: " + bean);
-            return repoService.saveBean(bean, clz);
+            if(getSelectedTable().equalsIgnoreCase("Product")){
+                Product p = (Product)bean;
+                if(p.getProdaccount()==null){
+                    p.setProdaccount(createNewProductAccount());
+                }
+                if(p.getVatregisterid()==null){
+                    p.setVatregisterid(createNewVatProductReister());
+                }
+            }
+            if (toDatabase) {
+                return repoService.saveBean(bean, clz);
+            } else {
+                retList.add(bean);
+                return bean;
+            }
         } catch (Exception ex) {
             Logger.getLogger(DataImportController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+    
+    public VatProductRegister createNewVatProductReister(){
+        VatProductRegister v = new VatProductRegister();
+        v.setProducttype("Products");
+        v.setVatcategoryid(vatcatRepo.getOne(2l));
+        v.setWef(DateUtil.createDate(1, Calendar.JANUARY, 2021));
+        return v;
+    }
 
+    public ProductAccount createNewProductAccount(){
+        ProductAccount pa = new ProductAccount();
+        pa.setSalesAccount(accRepo.getOne("2210"));
+        pa.setPurchaseAccount(accRepo.getOne("1410"));
+        pa.setConsumptionAccount(accRepo.getOne("2211"));
+        return pa;
+    }
+    
     @Transactional
     public void saveDataOld(List data) {
         String insertQuery = "INSER INTO " + selectedTable + " (";
@@ -375,6 +437,34 @@ public class DataImportController implements Serializable {
      */
     public void setProgressMessage(String progressMessage) {
         this.progressMessage = progressMessage;
+    }
+
+    /**
+     * @return the importTransferable
+     */
+    public ImportTransferable getImportTransferable() {
+        return importTransferable;
+    }
+
+    /**
+     * @param importTransferable the importTransferable to set
+     */
+    public void setImportTransferable(ImportTransferable importTransferable) {
+        this.importTransferable = importTransferable;
+    }
+
+    /**
+     * @return the retList
+     */
+    public List getRetList() {
+        return retList;
+    }
+
+    /**
+     * @param retList the retList to set
+     */
+    public void setRetList(List retList) {
+        this.retList = retList;
     }
 
 }

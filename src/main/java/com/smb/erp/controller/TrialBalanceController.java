@@ -57,10 +57,13 @@ public class TrialBalanceController implements Serializable {
 
     @PostConstruct
     public void init() {
-        refreshTb();
+        //refreshTb();
     }
 
     public TreeNode getRoot() {
+        if(root==null){
+            refreshTb();
+        }
         return root;
     }
 

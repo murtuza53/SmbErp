@@ -8,6 +8,7 @@ package com.smb.erp.dynamic.report;
 import com.smb.erp.util.SystemConfig;
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.DRPage;
@@ -46,7 +47,7 @@ public class ReportGenerator implements Serializable {
     }
 
     public JasperReportBuilder prepareReport(Report report, Theme theme, DRPage page, Object targetObject) {
-
+        System.out.println("ReportGenerator.start...0");
         this.report = report;
         this.theme = theme;
         this.page = page;
@@ -55,6 +56,7 @@ public class ReportGenerator implements Serializable {
         reportWidth = page.getWidth() - page.getMargin().getLeft() - page.getMargin().getRight();
         reportHeight = page.getHeight() - page.getMargin().getTop() - page.getMargin().getBottom();
 
+        System.out.println("ReportGenerator.start...1");
         ReportTemplateBuilder template = template()
                 .setColumnStyle(theme.createStyle(report.getReportTable().getColumnStyle()))
                 .setColumnHeaderStyle(theme.createStyle(report.getReportTable().getColumnTitleStyle()))
@@ -65,6 +67,7 @@ public class ReportGenerator implements Serializable {
         //if (theme.getDetailsEvenRowStyle() != null) {
         //    template.setDetailEvenRowStyle(createSimpleStyle(theme.getDetailsEvenRowStyle(), theme.getColorScheme()));
         //}
+        System.out.println("ReportGenerator.start...2");
         JasperReportBuilder builder = report()
                 .setTemplate(template)
                 .setPageFormat(page.getWidth(), page.getHeight(), page.getOrientation())
@@ -72,13 +75,70 @@ public class ReportGenerator implements Serializable {
                         .setRight(page.getMargin().getRight())
                         .setBottom(page.getMargin().getBottom())
                         .setLeft(page.getMargin().getLeft()));
+        System.out.println("ReportGenerator.start...3");
 
-        builder
-                .addPageHeader(createTitleComponent(report.isLetterHeadRequired(), report.getTitle()),
-                        createReportSection(report.getHeaderSection()))
-                .addSummary(createReportSection(report.getFooterSection()));
+        builder.addPageHeader(createTitleComponent(report.getLetterHeadRequired(), report.getTitle()));
+        System.out.println("ReportGenerator.start...3.1");
+        builder.addPageHeader(createReportSection(report.getHeaderSection()));
+        System.out.println("ReportGenerator.start...3.2");
+        //add report summary is required
+        if (report.getReportTable().getPrintSummary()) {
+            List<ReportSectionContainer> rsclist = new LinkedList<>();
+            ReportSectionContainer rsc = new ReportSectionContainer();
+            rsc.setGapBefore(20);
+            rsc.setGapAfter(0);
+            rsc.setPrintLayout(ReportSectionContainer.ContainerPrintLayout.VERTICAL);
+            rsclist.add(rsc);
+
+            List<ReportSection> rslist = new LinkedList();
+            ReportSection section = new ReportSection();
+            section.setGapBefore(0);
+            section.setGapAfter(0);
+            section.setPrintLayout(ReportSection.SectionPrintLayout.HORIZONTAL);
+            section.setReportFields(report.getReportTable().getSummaryList());
+            rslist.add(section);
+            rsc.setReportSection(rslist);
+
+            System.out.println("ReportGenerator.start...3.5 .... " + rsclist.size() + "." + rsclist.get(0).getReportSection().size() + "." + rsclist.get(0).getReportSection().get(0).getReportFields().size());
+            builder.addSummary(createReportSection(rsclist));
+        }
+        builder.addSummary(createReportSection(report.getFooterSection()));
+        System.out.println("ReportGenerator.start...4");
+
+        if (report.isPrintSignatures()) {
+            if (report.getSignatureFields() != null && report.getSignatureFields().size() > 0) {
+                List<ReportSectionContainer> rsclist = new LinkedList<>();
+                ReportSectionContainer rsc = new ReportSectionContainer();
+                rsc.setGapBefore(100);
+                rsc.setGapAfter(0);
+                rsc.setPrintLayout(ReportSectionContainer.ContainerPrintLayout.HORIZONTAL);
+                rsclist.add(rsc);
+
+                int percentage = 95 / report.getSignatureFields().size();
+                int gapBefore = 0;
+                List<ReportSection> rslist = new LinkedList<>();
+                for (ReportField field : report.getSignatureFields()) {
+                    ReportSection section = new ReportSection();
+                    section.setGapBefore(gapBefore);
+                    section.setGapAfter(0);
+                    section.setSectionWidth(percentage + "%");
+                    section.setPrintLayout(ReportSection.SectionPrintLayout.VERTICAL);
+                    section.setTitle(null);
+                    section.addReportField(field);
+                    if (gapBefore == 0) {
+                        gapBefore = 20;
+                    }
+                    rslist.add(section);
+                }
+                rsc.setReportSection(rslist);
+                System.out.println("ReportGenerator.start...4.1");
+                builder.addSummary(createReportSection(rsclist));
+                System.out.println("ReportGenerator.start...4.2");
+            }
+        }
 
         createTable(builder);
+        System.out.println("ReportGenerator.start...5");
 
         return builder;
     }
@@ -205,7 +265,7 @@ public class ReportGenerator implements Serializable {
             }*/
         }
 
-        if (report.getReportTable().getDetailsEvenStyle()!= null) {
+        if (report.getReportTable().getDetailsEvenStyle() != null) {
             System.out.println("EvenRowColor: " + report.getReportTable().getDetailsEvenStyle());
             SimpleStyleBuilder sb = theme.createSimpleStyle(report.getReportTable().getDetailsEvenStyle());
             //.setBackgroundColor(currentTheme.getTableEvenRowStyle().getBackgroundColor())
@@ -254,6 +314,8 @@ public class ReportGenerator implements Serializable {
     public ComponentBuilder<?, ?> createReportSection(List<ReportSectionContainer> containers) {
         VerticalListBuilder build = cmp.verticalList();
         if (containers != null) {
+            //System.out.println("createReportSection: " + containers.size() + "." + containers.get(0).getReportSection().size()
+            //        + "." + containers.get(0).getReportSection().get(0).getReportFields().size());
             for (ReportSectionContainer con : containers) {
                 if (con.getGapBefore() > 0) {
                     build.add(cmp.verticalGap(con.getGapBefore()));
@@ -347,7 +409,7 @@ public class ReportGenerator implements Serializable {
     }
 
     public ComponentBuilder<?, ?> createReportFieldComponent(ReportField field) {
-        
+
         if (field.getPrintLayout() == ReportField.FieldPrintLayout.TOP_BOTTOM) {
             if (field.isPrintLabel()) {
                 return cmp.verticalList().add(cmp.text(field.getLabel()).setStyle(theme.createStyle(field.getLabelStyle())),

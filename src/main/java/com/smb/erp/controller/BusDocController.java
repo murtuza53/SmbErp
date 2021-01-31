@@ -29,21 +29,33 @@ import com.smb.erp.repo.ProductTransactionExecutionRepository;
 import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.repo.VatMappingRepository;
 import com.smb.erp.repo.VatSalesPurchaseTypeRepository;
+import com.smb.erp.service.ImportTransferable;
 import com.smb.erp.service.ProductTransferable;
+import com.smb.erp.service.TransactionImportService;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
+import com.smb.erp.util.ReflectionUtil;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -53,12 +65,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Named(value = "busDocController")
 @ViewScoped
 @ManagedBean
-public class BusDocController extends AbstractController<BusDoc> implements ProductTransferable {
+public class BusDocController extends AbstractController<BusDoc> implements ProductTransferable, ImportTransferable {
 
     BusDocRepository repo;
 
     @Autowired
     UserSession userSession;
+
+    @Autowired
+    JVViewerController jvViewer;
 
     @Autowired
     SystemDefaultsController systemController;
@@ -85,6 +100,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     BranchRepository branchRepo;
 
     @Autowired
+    CountryController countryCon;
+
+    @Autowired
     AccDocController accdocController;
 
     @Autowired
@@ -104,6 +122,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     @Autowired
     CashRegisterController cashRegController;
+
+    @Autowired
+    private TransactionImportService importService;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -133,6 +154,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     private AccDoc accdoc;
 
+    private MenuModel printButtonModel;
+
+    private String success = "0";
+
     //private Date docdate;
     @Autowired
     public BusDocController(BusDocRepository repo) {
@@ -149,6 +174,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
         systemController.getAsList("BusinessPartnerType");
         getProductSearchController().setProductTransferable(this);
+        getImportService().setClz(ProductTransaction.class);
+        getImportService().setTransactionList(new LinkedList<>());
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -159,6 +186,8 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 String docinfo = req.getParameter("docinfoid");
                 docInfo = docinfoRepo.getOne(Integer.parseInt(docinfo));
                 mode = DocumentTab.MODE.LIST;
+                getImportService().setClz(BusDoc.class);
+                getImportService().setTransactionList(new LinkedList<>());
             } else if (m.equalsIgnoreCase("n")) {   // new business document 
                 String docinfo = req.getParameter("docinfoid");
                 docInfo = docinfoRepo.getOne(Integer.parseInt(docinfo));
@@ -166,6 +195,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 doc.setDocdate(new Date());
                 doc.setCreatedon(doc.getDocdate());
                 doc.setBusdocinfo(docInfo);
+                doc.setCurrency(countryCon.findCountryDefault());
                 setSelected(doc);
                 mode = DocumentTab.MODE.NEW;
                 doc.setProductTransactions(getProdTransactions());
@@ -175,6 +205,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
                 cashRegController.setCashRegister(getSelected().getBusdocinfo().getCashregiserid());
                 //docdate = getSelected().getDocdate();
+                //setupPrintMenu();
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
                 if (docno != null) {
@@ -193,8 +224,27 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 }
                 mode = DocumentTab.MODE.EDIT;
                 //docdate = getSelected().getDocdate();
+                setupPrintMenu();
             }
         }
+        showGrowl();
+    }
+
+    public void setupPrintMenu() {
+        if (getSelected().getBusdocinfo().getReportid() != null
+                && getSelected().getBusdocinfo().getReportid().size() > 0) {
+            setPrintButtonModel(new DefaultMenuModel());
+            getSelected().getBusdocinfo().getReportid().forEach((report) -> {
+                DefaultMenuItem item = new DefaultMenuItem();
+                item.setValue(report.getReportname());
+                item.setUrl("../viewer/doc/" + report.getReportid() + "/" + getSelected().getDocno());
+                getPrintButtonModel().getElements().add(item);
+            });
+        }
+    }
+
+    public boolean isPrintDisabled() {
+        return getPrintButtonModel() == null || getPrintButtonModel().getElements().isEmpty();
     }
 
     @Override
@@ -240,7 +290,11 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             pt.setBusdoc(getSelected());
             pt.setFcunitprice(pt.getLinefcunitprice());
             pt.setUnitprice(pt.getLineunitprice());
+            pt.setExchangerate(getSelected().getRate());
             pt.setTransactiontype(getSelected().getBusdocinfo().getTransactiontype());
+            if (pt.getFccost() == 0 || pt.getCost() == 0) {
+                updateCost(pt);
+            }
             //pt.calculateActualQtyFromLineQty();
             pt.refreshTotals();
             //if (getSelected().getBusdocinfo().getDoctype().equalsIgnoreCase("Sales")) {
@@ -268,11 +322,60 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         accdocController.createBusDocJV(getSelected());
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
         mode = DocumentTab.MODE.EDIT;
+        //init();
+        setupPrintMenu();
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.getSessionMap().put("addedWithSuccess", "true");
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.getExternalContext().redirect(getDocInfo().getDocediturl() + "?mode=e&docno=" + getSelected().getDocno());
+        } catch (IOException ex) {
+            Logger.getLogger(BusDocController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void showGrowl() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        String labelAddedWithSuccess = (String) ec.getSessionMap().remove("addedWithSuccess");
+        //System.out.println("showGrowl: " + labelAddedWithSuccess);
+        //if the flag on context is true show the growl message
+        if (labelAddedWithSuccess != null && labelAddedWithSuccess.equals("true")) {
+            JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
+            PrimeFaces.current().ajax().update(":growl");
+        }
     }
 
     public void refreshTotal(ProductTransaction pt) {
         pt.refreshTotals();
         pt.getBusdoc().refreshTotal();
+    }
+
+    public void updateVatCategory(ProductTransaction pt){
+        if(pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Sales") || 
+                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Exempted Sales") ||
+                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Purchase") || 
+                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Out of Scope Purchase")){
+            pt.setVatcategoryid(getVatCatogories().get(0));
+        } else {
+            pt.setVatcategoryid(getVatCatogories().get(1));
+        }
+        refreshTotal(pt);
+    }
+    
+    public void updateCost(List<ProductTransaction> ptlist) {
+        if (ptlist != null) {
+            for (ProductTransaction pt : ptlist) {
+                updateCost(pt);
+            }
+        }
+    }
+
+    public void updateCost(ProductTransaction pt) {
+        ProductTransaction p = productTransactionController.findLastCostPurchaseOrAdjustment(pt.getProduct().getProductid(), getSelected().getDocdate());
+        if (p != null) {
+            pt.setCost(p.getCost());
+            pt.setFccost(p.getFccost());
+        }
     }
 
     public void deleteTransactions() {
@@ -288,7 +391,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=n&docinfoid=" + docInfo.getBdinfoid());
+        facesContext.getExternalContext().redirect(getDocInfo().getDocediturl() + "?mode=n&docinfoid=" + docInfo.getBdinfoid());
     }
 
     public void edit_in_tab() throws IOException {
@@ -298,7 +401,12 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdoc.xhtml?mode=e&docno=" + getSelected().getDocno());
+        facesContext.getExternalContext().redirect(getDocInfo().getDocediturl() + "?mode=e&docno=" + getSelected().getDocno());
+    }
+
+    @Override
+    public void transferData(List list) {
+
     }
 
     @Override
@@ -306,7 +414,9 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //System.out.println("Product_Transfer: " + products);
         if (products != null) {
             for (Product p : products) {
-                getProdTransactions().add(convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype()));
+                ProductTransaction pt = convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype());
+                updateCost(pt);
+                getProdTransactions().add(pt);
             }
         }
     }
@@ -339,7 +449,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.setUnit(prod.getUnit());
         pt.setTransactiontype(transtype);
         pt.setCustomizedname(prod.getProductname());
-        pt.setLineqty(1.0);
+        pt.setLineqty(getSelected().getRate());
         pt.setBusdoc(getSelected());
         pt.setBranch(userSession.getLoggedInBranch());     //to be changed later
 
@@ -347,7 +457,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         VatBusinessRegister vbr = getSelected().getBusinesspartner().getBusinessRegisters().get(0);
         List<VatMapping> vatmaps = vatmappingRepo.findByVatSalesPurchaseType(vbr.getVataccounttypeid().getVataccounttypeid(),
                 vbr.getVatcategoryid().getVatcategoryid(), prod.getVatregisterid().getProducttype(), doctype);
-        System.out.println("VAT_MAPPING: " + vatmaps);
+        //System.out.println("VAT_MAPPING: " + vatmaps);
         if (vatmaps != null && vatmaps.size() > 0) {
             VatMapping vm = vatmaps.get(0);
             pt.setVatsptypeid(vm.getVatsptypeid());
@@ -366,12 +476,12 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
             pt.setVatcategoryid(prod.getVatregisterid().getVatcategoryid());
         }
         if (doctype.equalsIgnoreCase("SALES")) {
-            pt.setLinecost(0.0);
+            pt.setLinefccost(0.0);
             pt.setLinefcunitprice(0.0);
             pt.setLinesold(1.0);
             pt.setLinereceived(0.0);
         } else {
-            pt.setLinecost(0.0);
+            pt.setLinefccost(0.0);
             pt.setLinefcunitprice(0.0);
             pt.setLinesold(0.0);
             pt.setLinereceived(1.0);
@@ -398,6 +508,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         clone.setLinesold(pt.getLinesold());
         clone.setLinereceived(pt.getLinereceived());
         clone.setLinecost(pt.getLinecost());
+        clone.setLinefccost(pt.getLinefccost());
 
         ProductTransactionExecution pte = new ProductTransactionExecution();
         pte.setFromprodtransid(pt);
@@ -416,8 +527,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //System.out.println("businessPartnerSelected_BP: " + getSelected().getBusinesspartner());
         if (getSelected().getBusinesspartner() != null) {
             productTabDisabled = false;
-            getSelected().setCountry(getSelected().getBusinesspartner().getCountry());
-            getSelected().setRate(getSelected().getCountry().getRate());
+            if (getSelected().getCurrency() == null) {
+                getSelected().setCurrency(getSelected().getBusinesspartner().getCountry());
+                getSelected().setRate(getSelected().getCurrency().getRate());
+            }
         }
         refreshConvertFromDocumentList();
     }
@@ -440,9 +553,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     public void refreshHistoryPanel() {
         salesPT = null;
-        getSalesProductTransactions();
+        //getSalesProductTransactions();
         purchasePT = null;
-        getPurchaseProductTransactions();
+        //getPurchaseProductTransactions();
+        stockPT = null;
     }
 
     public List<ProductTransaction> getSalesProductTransactions() {
@@ -457,6 +571,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     }
 
     public List<ProductTransaction> getPurchaseProductTransactions() {
+        //System.out.println("getPurchaseProductTransactions: " + getSelectedTransaction() + " => " + purchasePT);
         if (getSelectedTransaction() != null) {
             if (purchasePT == null) {
                 purchasePT = productTransactionController.getPurchaseTransactions(getSelectedTransaction().getProduct().getProductid(),
@@ -471,8 +586,13 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         if (getSelectedTransaction() != null) {
             if (stockPT == null) {
                 stockPT = productTransactionController.getStockBalances(getSelectedTransaction().getProduct().getProductid(),
-                        getSelected().getDocdate(), userSession.getLoggedInCompany().getCompanyid());
+                        DateUtil.addHours(getSelected().getDocdate(), 0, -1), userSession.getLoggedInCompany().getCompanyid());
                 //purchasePT.forEach(f -> f.setReference("Purchase History"));
+                /*System.out.print("getStockBalances: ");
+                for (ProductTransaction pt : stockPT) {
+                    System.out.print(pt.getBranch().getAbbreviation() + "=>" + pt.getCumulative()+ "\t");
+                }
+                System.out.println("");*/
             }
         }
         return stockPT;
@@ -549,6 +669,7 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     public void openJVViewer() {
         accdoc = accdocController.prepareJVViewwer(getSelected());
+        jvViewer.setAccdoc(accdoc);
     }
 
     public void refreshConvertFromDocumentList() {
@@ -599,6 +720,93 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         //reportGen.saveReport();
         //return reportGen.getReport();
         return "/viewer/doc/" + getSelected().getDocno();
+    }
+
+    public void importDocuments() {
+        System.out.println("importDocuments:....");
+        //importService.IMPORT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+        //importService.IMPORT_DATE_FORMAT.setLenient(false);
+        if (importService.getTransactionList() != null) {
+            for (BusDoc doc : (List<BusDoc>) importService.getTransactionList()) {
+                setSelected(doc);
+                doc.setBusdocinfo(docInfo);
+                if (doc.getDocno() == null || doc.getDocno().trim().length() == 0) {
+                    doc.setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getDocdate())));
+                }
+                //doc.setPaytermsid(new PayTerms());
+                doc.setBusdocinfo(getDocInfo());
+                setProdTransactions(new LinkedList<>());
+                //System.out.println(doc);
+                Product p = productSearchController.findByProductidOrSupplierCodeOrBarcodes(doc.getExtra1());
+                ProductTransaction pt = convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype());
+                pt.setLineqty(doc.getRate());
+                pt.setLinefccost(doc.getExtra11());
+                pt.setLinefcunitprice(doc.getExtra11());
+                pt.calculateActualQtyFromLineQty();
+                getProdTransactions().add(pt);
+                doc.refreshTotal();
+                save();
+            }
+        }
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        //importService.IMPORT_DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        getImportService().handleFileUpload(event);
+        //importService.processData();
+    }
+
+    public String value(Object bean, String property) {
+        try {
+            return ReflectionUtil.readProperty(bean, property).toString();
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(TransactionImportService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(TransactionImportService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(TransactionImportService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+
+    public void importTransactions() {
+        if (getTransferList() != null) {
+            for (ProductTransaction trans : getTransferList()) {
+                Product prod = trans.getProduct();
+                String transtype = getSelected().getBusdocinfo().getTransactiontype();
+                String doctype = getSelected().getBusdocinfo().getDoctype();
+
+                trans.setUnit(prod.getUnit());
+                trans.setTransactiontype(transtype);
+                trans.setCustomizedname(prod.getProductname());
+                trans.setBusdoc(getSelected());
+                trans.setBranch(userSession.getLoggedInBranch());     //to be changed later
+
+                //find vat sales or purchase type
+                VatBusinessRegister vbr = getSelected().getBusinesspartner().getBusinessRegisters().get(0);
+                List<VatMapping> vatmaps = vatmappingRepo.findByVatSalesPurchaseType(vbr.getVataccounttypeid().getVataccounttypeid(),
+                        vbr.getVatcategoryid().getVatcategoryid(), prod.getVatregisterid().getProducttype(), doctype);
+                //System.out.println("VAT_MAPPING: " + vatmaps);
+                if (vatmaps != null && vatmaps.size() > 0) {
+                    VatMapping vm = vatmaps.get(0);
+                    trans.setVatsptypeid(vm.getVatsptypeid());
+                } else {
+                    if (doctype.equalsIgnoreCase("Sales")) {
+                        Optional<VatSalesPurchaseType> vt = vatsalespurRepo.findById(1l);
+                        if (vt.isPresent()) {
+                            trans.setVatsptypeid(vt.get());
+                        }
+                    } else {
+
+                    }
+                }
+
+                if (prod.getVatregisterid() != null) {
+                    trans.setVatcategoryid(prod.getVatregisterid().getVatcategoryid());
+                }
+                getProdTransactions().add(trans);
+            }
+        }
     }
 
     /**
@@ -679,4 +887,46 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     public void refreshRegisterTotal() {
         cashRegController.calculateTotal();
     }
+
+    /**
+     * @return the printButtonModel
+     */
+    public MenuModel getPrintButtonModel() {
+        return printButtonModel;
+    }
+
+    /**
+     * @param printButtonModel the printButtonModel to set
+     */
+    public void setPrintButtonModel(MenuModel printButtonModel) {
+        this.printButtonModel = printButtonModel;
+    }
+
+    public List<ProductTransaction> getTransferList() {
+        //System.out.println("getTransferList: " + importService.getTransactionList());
+        return getImportService().getTransactionList();
+    }
+
+    public List<String> getTransferHeader() {
+        return getImportService().getHeader();
+    }
+
+    public Class getTransClass() {
+        return ProductTransaction.class;
+    }
+
+    /**
+     * @return the importService
+     */
+    public TransactionImportService getImportService() {
+        return importService;
+    }
+
+    /**
+     * @param importService the importService to set
+     */
+    public void setImportService(TransactionImportService importService) {
+        this.importService = importService;
+    }
+
 }

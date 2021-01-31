@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Webpage Access
+    </ui:define>
+
+    <ui:param name="viewname" value="Webpage Access" />
+
+    <ui:define name="content">
+        <div class="p-grid table-demo">
+            <div class="p-col-12 p-md-12">
+                <h:form id="emplistform">
+                    <p:panel id="companylist" header="Webpage Access" styleClass="card">
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:selectOneMenu id="emprole" value="#{pageaccessController.selectedRole}" converter="#{entityConverter}"
+                                                 effect="fade" var="t" required="true" requiredMessage="Role is required">
+                                    <f:selectItems value="#{emproleController.items}" var="item" 
+                                                   itemLabel="#{item.rolename}" itemValue="#{item}" />
+                                    <p:ajax event="change" update="patable"/>
+                                    <p:column>
+                                        <h:outputText value="#{t.rolename}" />
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <f:facet name="right">
+                                <p:commandButton id="btnnew" actionListener="#{pageaccessController.createNew()}" onclick="PF('AccessDialog').show()"
+                                                 update=":AccessForm" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 icon="fa fa-plus"/>
+                                <p:commandButton id="btnedit" onclick="PF('AccessDlg').show()" disabled="#{empty pageaccessController.selected}"
+                                                 update=":AccessForm" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 icon="fa fa-pen"/>
+                            </f:facet>
+                        </p:toolbar>
+
+                        <p:dataTable id="patable" var="item" widgetVar="etable"
+                                     value="#{pageaccessController.items}"
+                                     editable="true"
+                                     emptyMessage="No Webpage found"
+                                     styleClass="products-table">
+                            <p:ajax event="rowEdit" listener="#{pageaccessController.save()}" update="patable, :growl"/>
+                            <p:ajax event="rowEditCancel" update="patable, :growl"/>
+
+                            <p:column headerText="Id" style="width: 20px">
+                                <h:outputText value="#{item.accessid}" />
+                            </p:column>
+
+                            <p:column headerText="Page" style="width: 40%">
+                                <h:outputText value="#{item.pageid.title}"/>
+                            </p:column>
+
+                            <p:column headerText="Create">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:selectBooleanCheckbox value="#{item.c}" disabled="true"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:toggleSwitch value="#{item.c}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Read">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:selectBooleanCheckbox value="#{item.r}" disabled="true"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:toggleSwitch value="#{item.r}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Update">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:selectBooleanCheckbox value="#{item.u}" disabled="true"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:toggleSwitch value="#{item.u}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Delete">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:selectBooleanCheckbox value="#{item.d}" disabled="true"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:toggleSwitch value="#{item.d}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:6rem">
+                                <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <ui:include src="/confirmation.xhtml"/>
+                </h:form>
+            </div>
+        </div>
+
+        <p:dialog id="AccessDlg" widgetVar="AccessDialog" modal="true" resizable="true"
+                  position="center center" showEffect="fade" width="50%" onShow="PF('AccessDialog').initPosition()"
+                  appendTo="@(body)" header="Page Access" closeOnEscape="true" responsive="true">
+            <h:form id="AccessForm">
+                <h:panelGroup rendered="#{!empty pageaccessController.selected}">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <div class="p-col">
+                                <p:outputLabel for="emprole" styleClass="p-col-fixed" style="width:100px" value="Page"/>
+                                <p:selectOneMenu id="emprole" value="#{pageaccessController.selected.pageid}" converter="#{entityConverter}"
+                                                 effect="fade" var="t" required="true" requiredMessage="Webpage is required">
+                                    <f:selectItems value="#{webpageController.items}" var="item" 
+                                                   itemLabel="#{item.title}" itemValue="#{item}" />
+                                    <p:column>
+                                        <h:outputText value="#{t.title}" />
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-3">
+                            <p:outputLabel for="c" styleClass="p-col-fixed" style="width:100px" value="Create"/>
+                            <div class="p-col">
+                                <p:toggleSwitch id="c" value="#{pageaccessController.selected.c}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-3">
+                            <p:outputLabel for="r" styleClass="p-col-fixed" style="width:100px" value="Read"/>
+                            <div class="p-col">
+                                <p:toggleSwitch id="r" value="#{pageaccessController.selected.r}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-3">
+                            <p:outputLabel for="u" styleClass="p-col-fixed" style="width:100px" value="Update"/>
+                            <div class="p-col">
+                                <p:toggleSwitch id="u" value="#{pageaccessController.selected.u}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-3">
+                            <p:outputLabel for="d" styleClass="p-col-fixed" style="width:100px" value="Delete"/>
+                            <div class="p-col">
+                                <p:toggleSwitch id="d" value="#{pageaccessController.selected.d}"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <p:commandButton actionListener="#{pageaccessController.save()}" value="Save" 
+                                     update=":emplistform:patable,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccessDialog'));"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('AccessDialog').hide()" update="AccessDlg" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

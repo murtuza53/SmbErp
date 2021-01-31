@@ -5,3 +5,12 @@
 .status-qualified .status-paid{}
 .status-unqualified .status-cancelled{}
 .status-renewal .status-returned{}
+
+#change all font size
+.ui-widget, .ui-widget .ui-widget {
+    font-size: small;
+}
+
+.card, .card .card{
+    padding: 0.25em;
+}

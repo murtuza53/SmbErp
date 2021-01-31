@@ -21,6 +21,11 @@ public interface AccountRepository extends BaseRepository<Account, String> {
     @Query("SELECT a FROM Account as a WHERE (a.accountname LIKE %:criteria% OR a.accountid LIKE %:criteria%) AND a.nodetype='ACCOUNT' ORDER BY a.accountname")
     List<Account> findAccountLeafBySearchCriteria(@Param("criteria") String criteria);
 
+    @Query("SELECT a FROM Account as a WHERE (a.accountname LIKE %:criteria% OR a.accountid LIKE %:criteria%) "
+            + " AND a.accountid NOT LIKE '1711%' AND a.accountid NOT LIKE '2111%' "
+            + "AND a.nodetype='ACCOUNT' ORDER BY a.accountname")
+    List<Account> findAccountLeafNotBusinessPartnerBySearchCriteria(@Param("criteria") String criteria);
+
     @Query("SELECT a FROM Account as a WHERE (a.accountname LIKE %:criteria% OR a.accountid LIKE %:criteria%) AND a.nodetype='GROUP' ORDER BY a.accountname")
     List<Account> findAccountGroupBySearchCriteria(@Param("criteria") String criteria);
 

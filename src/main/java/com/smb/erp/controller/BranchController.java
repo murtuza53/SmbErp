@@ -34,6 +34,7 @@ public class BranchController extends AbstractController<Branch> {
     }
 
     public List<Branch> getAllBranchByLoggedInCompany(){
+        //System.out.println("getAllBranchByLoggedInCompany: " + repo.findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid()));
         return repo.findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid());
     }
     

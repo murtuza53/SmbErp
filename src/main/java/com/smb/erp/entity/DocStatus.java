@@ -16,10 +16,12 @@ public enum DocStatus {
     
     DRAFT("Draft"), //blue
     PENDING("Pending"), //yellow
+    COUNTINTG("Counting"),  //orange
     PARTIAL("Partial"), //orange
     COMPLETED("Completed"), //green
     PAID("Paid"),   //green
     CANCELLED("Cancelled"), //red
+    PAID_PARTIAL("Paid_Partial"),   //light_green
     RETURNED("Returned");   //purple
 
     public static List<String> TYPES = new LinkedList<>();

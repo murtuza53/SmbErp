@@ -73,10 +73,11 @@ public class ProductTreeViewController implements Serializable {
     public void init() {
         refreshCategoryTree();
         for(VatCategory cat: vatcatRepo.findAll()){
-            DefaultMenuItem item = new DefaultMenuItem(cat);
+            DefaultMenuItem item = new DefaultMenuItem();
+            item.setValue(cat);
             item.setCommand("#{productTreeViewController.registerProductVat("+cat.getVatcategoryid()+")}");
             item.setUpdate("prodtable, growl");
-            getVatMenuModel().addElement(item);
+            getVatMenuModel().getElements().add(item);
         }
     }
 
@@ -123,13 +124,13 @@ public class ProductTreeViewController implements Serializable {
     public void newTab_In_newBtab() throws IOException {
         String windowId = new Date().getTime() + "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        Flash flash = facesContext.getExternalContext().getFlash();
-        flash.clear();
-        flash.put("category", (ProductCategory) getSelectedNode().getData());
-        flash.put("mode", "new");
-        flash.put("windowid", windowId);
-        flash.setKeepMessages(true);
-        flash.setRedirect(true);
+        //Flash flash = facesContext.getExternalContext().getFlash();
+        //flash.clear();
+        //flash.put("category", (ProductCategory) getSelectedNode().getData());
+        //flash.put("mode", "new");
+        //flash.put("windowid", windowId);
+        //flash.setKeepMessages(true);
+        //flash.setRedirect(true);
 
         Product p = new Product();
         p.setCreatedon(new Date());
@@ -137,22 +138,23 @@ public class ProductTreeViewController implements Serializable {
         setSelectedProduct(p);
         DocumentTab<Product> tab = new DocumentTab<Product>(p, "New Product", "product", DocumentTab.MODE.NEW);
         productMap.put(windowId, tab);
-
+        
         facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);
     }
 
     public void editTab_In_newBtab() throws IOException {
         String windowId = new Date().getTime() + "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        Flash flash = facesContext.getExternalContext().getFlash();
-        flash.clear();
-        flash.put("product", getSelectedProduct());
-        flash.put("mode", "edit");
-        flash.put("windowid", windowId);
-        flash.setKeepMessages(true);
-        flash.setRedirect(true);
+        //Flash flash = facesContext.getExternalContext().getFlash();
+        //flash.clear();
+        //flash.put("product", getSelectedProduct());
+        //flash.put("mode", "edit");
+        //flash.put("windowid", windowId);
+        //flash.setKeepMessages(true);
+        //flash.setRedirect(true);
 
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "Edit - " + getSelectedProduct().getProductname(), "product", DocumentTab.MODE.EDIT);
+        tab.setData(getSelectedProduct());
         productMap.put(windowId, tab);
 
         facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);
@@ -161,16 +163,17 @@ public class ProductTreeViewController implements Serializable {
     public void cloneTab_In_newBtab() throws IOException {
         String windowId = new Date().getTime() + "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        Flash flash = facesContext.getExternalContext().getFlash();
-        flash.clear();
-        setSelectedProduct(getSelectedProduct().clone());
-        flash.put("product", getSelectedProduct());
-        flash.put("mode", "edit");
-        flash.put("windowid", windowId);
-        flash.setKeepMessages(true);
-        flash.setRedirect(true);
+        //Flash flash = facesContext.getExternalContext().getFlash();
+        //flash.clear();
+        //setSelectedProduct(getSelectedProduct().clone());
+        //flash.put("product", getSelectedProduct());
+        //flash.put("mode", "edit");
+        //flash.put("windowid", windowId);
+        //flash.setKeepMessages(true);
+        //flash.setRedirect(true);
 
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "New Product", "product", DocumentTab.MODE.NEW);
+        tab.setData(getSelectedProduct());
         productMap.put(windowId, tab);
 
         facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);

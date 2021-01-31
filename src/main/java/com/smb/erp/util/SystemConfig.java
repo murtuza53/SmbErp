@@ -5,22 +5,22 @@
  */
 package com.smb.erp.util;
 
+import com.smb.erp.UserSession;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author Burhani152
  */
-@Controller
 public class SystemConfig {
+    
+    //@Autowired
+    //SystemDefaultsController sysCon;
+    
+    //@Autowired
+    //UserSession userSession;
     
     public static String TIME_FORMAT_PATTERN = "HH:mm:ss";
     public static String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
@@ -50,14 +50,36 @@ public class SystemConfig {
                                                      GRAY_COLORS};    //gray
     public static Image PRINT_LETTERHEAD_IMAGE = null;
 
-    static {
+    //private static SystemConfig instance;
+    
+    /*static {
         try {
             PRINT_LETTERHEAD_IMAGE = ImageIO.read(new File("D:\\Murtuza\\OneDrive\\MTC\\Stationary\\MTC LetterHead.png"));
+            
         } catch (IOException ex) {
             Logger.getLogger(SystemConfig.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 
+    /*public static SystemConfig getInstance(){
+        if(instance==null){
+            instance = new SystemConfig();
+        }
+        return instance;
+    }
+    
+    public Image getLetterHeadImage(){
+        if(PRINT_LETTERHEAD_IMAGE==null){
+            try {
+                PRINT_LETTERHEAD_IMAGE = ImageIO.read(new File(sysCon.getByPropertyname("LetterHeadLocation").getValue()
+                        + userSession.getLoggedInCompany().getCompanyid() + ".png"));
+            } catch (IOException ex) {
+                Logger.getLogger(SystemConfig.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return PRINT_LETTERHEAD_IMAGE;
+    }*/
+    
     public String getDateFormatPattern(){
         return DATE_FORMAT_PATTERN;
     }

@@ -10,8 +10,10 @@ import com.smb.erp.entity.CreditLimit;
 import com.smb.erp.entity.VatBusinessRegister;
 import com.smb.erp.repo.BusinessPartnerRepository;
 import com.smb.erp.repo.CountryRepository;
+import com.smb.erp.service.TransactionImportService;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +54,9 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     @Autowired
     TableKeyController keyController;
 
+    @Autowired
+    private TransactionImportService importService;
+
     private List<String> companyTypes;
 
     private String companyTypeAll;
@@ -80,6 +86,8 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
         //System.out.println("getAsList => CreditStatus => " + defaultController.getAsList("CreditStatus"));
         creditStatusTypes = defaultController.getAsList("CreditStatus");
         //companyTypes.addFirst("All");
+        importService.setClz(BusinessPartner.class);
+        importService.setTransactionList(new LinkedList<>());
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -88,6 +96,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
             if (m.equalsIgnoreCase("0")) { // new business partner
                 BusinessPartner bus = new BusinessPartner();
                 bus.setCountry(countryRepo.findCountryDefault());
+                bus.setCurrency(bus.getCountry());
                 bus.setCreditlimit(new CreditLimit(0));
                 setSelected(bus);
                 newVatRegister();
@@ -115,15 +124,19 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
         }
         return items;
     }
-    
+
     @Transactional
     public void saveBusiness() {
         try {
+            long id = getSelected().getPartnerid();
             if (getSelected().getPartnerid() == null || getSelected().getPartnerid() == 0) {
                 getSelected().setPartnerid(keyController.getBusinessPartnerNextId());
+                id = getSelected().getPartnerid();
             }
+            
             super.save();
-            setSelected(repo.getOne(getSelected().getPartnerid()));
+            //System.out.println("Trying to save: " + getSelected());
+            //setSelected(repo.getOne(id));
             accController.saveAccount(getSelected());
             JsfUtil.addSuccessMessage("Success", getSelected().getCompanyname() + " saved successfuly");
         } catch (Exception ex) {
@@ -180,6 +193,28 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().redirect("businesspartner.xhtml?mode=1&bpid=" + getSelected().getPartnerid());
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        getImportService().handleFileUpload(event);
+        //importService.processData();
+    }
+
+    public void importTransactions() {
+        System.out.println("importTransactions:....");
+        if (importService.getTransactionList() != null) {
+            for (BusinessPartner bus : (List<BusinessPartner>) importService.getTransactionList()) {
+                if (bus.getCurrentVatRegister() != null) {
+                    bus.getCurrentVatRegister().setPartnerid(bus);
+                    bus.getCurrentVatRegister().setWef(new Date());
+                }
+                bus.setCreditlimit(new CreditLimit());
+                //repo.save(bus);
+                setSelected(bus);
+                saveBusiness();
+                System.out.println(bus + " => Saved");
+            }
+        }
     }
 
     /**
@@ -254,5 +289,19 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
      */
     public void setCompanyTypeAll(String companyTypeAll) {
         this.companyTypeAll = companyTypeAll;
+    }
+
+    /**
+     * @return the importService
+     */
+    public TransactionImportService getImportService() {
+        return importService;
+    }
+
+    /**
+     * @param importService the importService to set
+     */
+    public void setImportService(TransactionImportService importService) {
+        this.importService = importService;
     }
 }

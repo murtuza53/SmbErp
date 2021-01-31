@@ -123,13 +123,17 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
         List<BusDocInfo> bdiList = docinfoRepo.findBusDocInfoByDocType(BusDocType.SALES.getValue());
 
-        //System.out.println("getSalesTransactions:");
+        /*System.out.println("getSalesTransactions:");
+        bdiList.forEach((info) -> {
+            System.out.print("\t=>" +info.getAbbreviation());
+        });
+        System.out.println("");*/
         for (BusDocInfo bdi : bdiList) {
             List<ProductTransaction> list = repo.findLastTransaction(productid, DateUtil.endOfDay(toDate), bdi.getPrefix(), PageRequest.of(0, 2));
             //System.out.println(bdi.getPrefix() + "\t" + list);
             if (list != null && list.size() > 0) {
                 ptlist.addAll(list);
-                //System.out.println(list.get(0));
+                System.out.println(list.get(0));
             }
         }
         return ptlist;
@@ -140,13 +144,22 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
         List<BusDocInfo> bdiList = docinfoRepo.findBusDocInfoByDocType(BusDocType.PURCHASE.getValue());
 
-        //System.out.println("getPurchaseTransactions:");
+        List<BusDocInfo> adjlist = docinfoRepo.findBusDocInfoByDocType(BusDocType.INVENTORY.getValue());
+        if (adjlist != null) {
+            bdiList.addAll(adjlist);
+        }
+
+        /*System.out.println("getPurchaseTransactions:");
+        bdiList.forEach((info) -> {
+            System.out.print("\t=>" +info.getAbbreviation());
+        });
+        System.out.println("");*/
         for (BusDocInfo bdi : bdiList) {
             List<ProductTransaction> list = repo.findLastTransaction(productid, DateUtil.endOfDay(toDate), bdi.getPrefix(), PageRequest.of(0, 2));
             //System.out.println(bdi.getPrefix() + "\t" + list);
             if (list != null && list.size() > 0) {
                 ptlist.addAll(list);
-                //System.out.println(list.get(0));
+                System.out.println(list.get(0));
             }
         }
         return ptlist;
@@ -161,6 +174,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
         for (Branch br : com.getBranches()) {
             Double bal = repo.findStockBalanceByBranch(productid, br.getBranchid(), toDate);
+            //System.out.println("ProductTransactionController.findStockBalanceByBranch: " + productid + " => " + br.getBranchid() + " => " + bal);
             if (bal == null) {
                 bal = 0.0;
             }
@@ -168,7 +182,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
             pt.setReference("Stock " + com.getAbbreviation());
             pt.setBranch(br);
             pt.setTransdate(toDate);
-            pt.setBalance(bal);
+            pt.setCumulative(bal);
             total = total + bal;
 
             pts.add(pt);
@@ -177,7 +191,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         pt.setReference("Stock " + com.getAbbreviation());
         pt.setBranch(new Branch("TOTAL", "Total"));
         pt.setTransdate(toDate);
-        pt.setBalance(total);
+        pt.setCumulative(total);
         pts.add(pt);
 
         return pts;
@@ -209,7 +223,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         }
         q = q + "sum(if(" + qtotal + ", pt.received-pt.sold, 0)) as TOTAL "
                 + "FROM prodtransaction as pt, product as p "
-                + "WHERE pt.productid=p.productid AND p.inactive=0 AND (pt.transactiontype='Inventory_Account' or pt.transactiontype = 'Inventory_Only') "
+                + "WHERE pt.productid=p.productid AND p.inactive=0 AND pt.transactiontype='Inventory' "
                 + "AND (TRIM(p.productid) LIKE '%" + criteria + "%' OR p.productname LIKE '%" + criteria + "%' OR p.supplierscode LIKE '%" + criteria + "%' "
                 + "OR p.stockid LIKE '%" + criteria + "%' OR p.barcode1 LIKE '%" + criteria + "%' OR p.barcode2 LIKE '%" + criteria + "%') "
                 + " AND pt.transdate<=:toDate "
@@ -247,7 +261,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         }
         q = q + "sum(if(" + qtotal + ", pt.received-pt.sold, 0)) as TOTAL "
                 + "FROM prodtransaction as pt, product as p "
-                + "WHERE pt.productid=p.productid AND p.inactive=0 AND (pt.transactiontype='Inventory_Account' or pt.transactiontype = 'Inventory_Only') "
+                + "WHERE pt.productid=p.productid AND p.inactive=0 AND pt.transactiontype='Inventory' "
                 + "AND pt.transdate<=:toDate AND p.productid=:productid "
                 + "GROUP BY pt.productid";
         nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
@@ -257,6 +271,62 @@ public class ProductTransactionController extends AbstractController<ProductTran
         query.setParameter("toDate", todate).setParameter("productid", productid);
         nqModel.setData(NativeQueryReportObject.asReportObjectList(query.getResultList()));
         return nqModel;
+    }
+
+    public double findLastCostPurchaseOrAdjustment(long productid) {
+        double cost = 0.0;
+
+        List<ProductTransaction> list = repo.findLastCostPurchaseOrAdjustment(productid, PageRequest.of(0, 1));
+        //System.out.println("findLastCostPurchaseOrAdjustment: " + list.size() + " => " + list);
+        if (list != null && list.size() > 0) {
+            cost = list.get(0).getCost();
+        }
+        return cost;
+    }
+
+    public ProductTransaction findLastCostPurchaseOrAdjustment(long productid, Date toDate) {
+
+        List<ProductTransaction> list = repo.findLastCostPurchaseOrAdjustment(productid, DateUtil.endOfDay(toDate), PageRequest.of(0, 1));
+        //System.out.println("findLastCostPurchaseOrAdjustment: " + list.size() + " => " + list);
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public double findLastCostPurchase(long productid) {
+        double cost = 0.0;
+
+        List<ProductTransaction> list = repo.findLastCostPurchase(productid, PageRequest.of(0, 1));
+        if (list != null || list.size() > 0) {
+            cost = list.get(0).getCost();
+        }
+        return cost;
+    }
+
+    public ProductTransaction findLastCostPurchase(long productid, Date toDate) {
+
+        List<ProductTransaction> list = repo.findLastCostPurchase(productid, DateUtil.endOfDay(toDate), PageRequest.of(0, 1));
+        if (list != null || list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public double findStockBalanceByBranch(long productid, long branchid, Date toDate) {
+        Double bal = repo.findStockBalanceByBranch(productid, branchid, DateUtil.addHours(toDate, 0, -1));
+        if (bal == null) {
+            return 0;
+        }
+        return bal;
+    }
+
+    public double findStockBalanceByCompany(long productid, long companyid, Date toDate) {
+        Double bal = repo.findStockBalanceByBranch(productid, companyid, DateUtil.addHours(toDate, 0, -1));
+        if (bal == null) {
+            return 0;
+        }
+        return bal;
     }
 
     /**

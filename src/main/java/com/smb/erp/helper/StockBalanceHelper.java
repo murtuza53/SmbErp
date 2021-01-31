@@ -53,6 +53,15 @@ public class StockBalanceHelper implements Serializable{
         return stockTable.get(branch);
     }
     
+    public String findStockStyle(String branch){
+        if(stockTable.get(branch)>0){
+            return "background: lightgreen; font-weight: bold";
+        } else if(stockTable.get(branch)<0){
+            return "background: lightpink; font-weight: bold";
+        }
+        return "";
+    }
+    
     public void recalculateTotal(){
         double total = 0;
         stockTable.remove("TOTAL");

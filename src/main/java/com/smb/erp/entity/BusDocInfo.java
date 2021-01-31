@@ -35,7 +35,7 @@ public class BusDocInfo implements Serializable {
 
     private String docname;
 
-    private String doctype; //SALES, PURCHASE
+    private String doctype; //SALES, PURCHASE, INVENTORY, ACCOUNT
 
     private String menuname;
 
@@ -50,6 +50,11 @@ public class BusDocInfo implements Serializable {
     private String doclisturl;
     
     private String docediturl;
+
+    //bi-directional many-to-one association to Company
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="pageid")
+    private Webpage pageid;
 
     private String extra1label;
 
@@ -163,6 +168,10 @@ public class BusDocInfo implements Serializable {
     @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<CashRegister> cashregiserid;
+
+    @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<PrintReport> reportid;
 
     //bi-directional many-to-one association to ConvertTo
     //@OneToMany(mappedBy = "busdocinfo")
@@ -1167,6 +1176,20 @@ public class BusDocInfo implements Serializable {
         return cr;
     }
     
+    public PrintReport addReportid(PrintReport rpt) {
+        getReportid().add(rpt);
+        rpt.setBdinfoid(this);
+
+        return rpt;
+    }
+
+    public PrintReport removeReportid(PrintReport rpt) {
+        getReportid().remove(rpt);
+        rpt.setBdinfoid(null);
+
+        return rpt;
+    }
+
     public boolean hasCashRegister(){
         if(getCashregiserid()==null || getCashregiserid().isEmpty()){
             return false;
@@ -1214,6 +1237,34 @@ public class BusDocInfo implements Serializable {
      */
     public void setAccounttype(String accounttype) {
         this.accounttype = accounttype;
+    }
+
+    /**
+     * @return the reportid
+     */
+    public List<PrintReport> getReportid() {
+        return reportid;
+    }
+
+    /**
+     * @param reportid the reportid to set
+     */
+    public void setReportid(List<PrintReport> reportid) {
+        this.reportid = reportid;
+    }
+
+    /**
+     * @return the pageid
+     */
+    public Webpage getPageid() {
+        return pageid;
+    }
+
+    /**
+     * @param pageid the pageid to set
+     */
+    public void setPageid(Webpage pageid) {
+        this.pageid = pageid;
     }
 
 }

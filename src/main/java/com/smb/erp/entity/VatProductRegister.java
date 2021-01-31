@@ -19,7 +19,7 @@ public class VatProductRegister implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Long vatregisterid;
+    private Long vatregisterid=0l;
 
     private String producttype;
 

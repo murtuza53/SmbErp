@@ -48,10 +48,13 @@ public class ChartOfAccountController implements Serializable {
 
     @PostConstruct
     public void init() {
-        refreshCoa();
+        //refreshCoa();
     }
 
     public TreeNode getRoot() {
+        if(root==null){
+            refreshCoa();
+        }
         return root;
     }
 

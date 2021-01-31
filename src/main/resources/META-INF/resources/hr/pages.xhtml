@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Webpages
+    </ui:define>
+
+    <ui:param name="viewname" value="Webpages" />
+
+    <ui:define name="content">
+        <div class="p-grid table-demo">
+            <div class="p-col-12 p-md-12">
+                <h:form id="emplistform">
+                    <p:panel id="companylist" header="Webpages List" styleClass="card">
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:selectOneMenu id="smod" value="#{webpageController.selectedModule}" converter="#{entityConverter}"
+                                                 effect="fade" var="t" required="true" requiredMessage="Module is required">
+                                    <f:selectItems value="#{moduleController.items}" var="item" 
+                                                   itemLabel="#{item.modulename}" itemValue="#{item}" />
+                                    <p:ajax event="change" update="patable"/>
+                                    <p:column>
+                                        <h:outputText value="#{t.modulename}" />
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <f:facet name="right">
+                                <p:commandButton id="btnnew" actionListener="#{webpageController.createNew()}" 
+                                                 onclick="PF('AccessDialog').show()"
+                                                 update=":AccessForm" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 icon="fa fa-plus"/>
+                                <p:commandButton id="btnedit" onclick="PF('AccessDlg').show()" disabled="#{empty webpageController.selected}"
+                                                 update=":AccessForm" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 icon="fa fa-pen"/>
+                            </f:facet>
+                        </p:toolbar>
+
+                        <p:dataTable id="patable" var="item" widgetVar="etable"
+                                     value="#{webpageController.webpagesByModule}"
+                                     emptyMessage="No Webpage found"
+                                     editable="true"
+                                     styleClass="products-table">
+                            <p:ajax event="rowEdit" listener="#{webpageController.save()}" update="patable, :growl"/>
+                            <p:ajax event="rowEditCancel" update="patable, :growl"/>
+
+                            <p:column headerText="Id" style="width: 20px">
+                                <h:outputText value="#{item.pageid}" />
+                            </p:column>
+
+                            <p:column headerText="Module">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.moduleid.modulename}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="modid" value="#{item.moduleid}" converter="#{entityConverter}" style="width: 98%"
+                                                         effect="fade" var="t" required="true" requiredMessage="Module is required">
+                                            <f:selectItems value="#{moduleController.items}" var="m" 
+                                                           itemLabel="#{m.modulename}" itemValue="#{m}" />
+                                            <p:column>
+                                                <h:outputText value="#{t.modulename}" />
+                                            </p:column>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Title">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.title}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{item.title}" style="width: 98%"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="List URL">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.listurl}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{item.listurl}" style="width: 98%"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Page URL">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.pageurl}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{item.pageurl}" style="width: 98%"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Menu Order">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.menuorder}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:spinner value="#{item.menuorder}" min="0"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Active" style="width: 40px">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:selectBooleanCheckbox value="#{item.active}" disabled="true"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectBooleanCheckbox value="#{item.active}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:6rem">
+                                <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <ui:include src="/confirmation.xhtml"/>
+                </h:form>
+            </div>
+        </div>
+
+        <p:dialog id="AccessDlg" widgetVar="AccessDialog" modal="true" resizable="true"
+                  showEffect="fade" width="50%" onShow="PF('AccessDialog').initPosition()"
+                  appendTo="@(body)" header="Page Access" closeOnEscape="true" responsive="true">
+            <h:form id="AccessForm">
+                <h:panelGroup rendered="#{!empty webpageController.selected}">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="pageid" styleClass="p-col-fixed" style="width:100px" value="Pageid"/>
+                            <div class="p-col">
+                                <p:inputText id="pageid" value="#{webpageController.selected.pageid}" disabled="true"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <div class="p-col">
+                                <p:outputLabel for="modid" styleClass="p-col-fixed" style="width:100px" value="Page"/>
+                                <p:selectOneMenu id="modid" value="#{webpageController.selected.moduleid}" converter="#{entityConverter}"
+                                                 effect="fade" var="t" required="true" requiredMessage="Module is required">
+                                    <f:selectItems value="#{moduleController.items}" var="m" 
+                                                   itemLabel="#{m.modulename}" itemValue="#{m}" />
+                                    <p:column>
+                                        <h:outputText value="#{t.modulename}" />
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="ptitle" styleClass="p-col-fixed" value="Title"/>
+                            <div class="p-col">
+                                <p:inputText id="ptitle" value="#{webpageController.selected.title}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="plisturl" styleClass="p-col-fixed" value="List URL"/>
+                            <div class="p-col">
+                                <p:inputText id="plisturl" value="#{webpageController.selected.listurl}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="ppageurl" styleClass="p-col-fixed" value="Page URL"/>
+                            <div class="p-col">
+                                <p:inputText id="ppageurl" value="#{webpageController.selected.pageurl}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="morder" styleClass="p-col-fixed" value="Menu Order"/>
+                            <div class="p-col">
+                                <p:spinner id="morder" value="#{webpageController.selected.menuorder}" min="0"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="pactive" styleClass="p-col-fixed" value="Active"/>
+                            <div class="p-col">
+                                <p:toggleSwitch id="pactive" value="#{webpageController.selected.active}"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <p:commandButton actionListener="#{webpageController.save()}" value="Save"
+                                     update=":emplistform:patable,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AccessDialog'));"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('AccessDialog').hide()" update="AccessDlg" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

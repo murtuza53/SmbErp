@@ -5,14 +5,19 @@
  */
 package com.smb.erp;
 
+import com.smb.erp.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -44,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/error",
         "/index",};
 
-        @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // require all requests to be authenticated except for the resources
-        http.authorizeRequests().antMatchers("/javax.faces.resource/**", "/**" /*,"/**"*/).permitAll()
+        http.authorizeRequests().antMatchers("/javax.faces.resource/**" /*,"/**"*/).permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 //.antMatchers("/jamaat/**").hasAnyAuthority("ADMIN", "JAMAAT_ADMIN")
                 //.antMatchers("/famb/**").hasAnyAuthority("ADMIN", "FAMB_ADMIN")
@@ -66,45 +71,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //success
         ////http.formLogin().successForwardUrl("/index.xhtml?redirect=true");
-        http.formLogin().defaultSuccessUrl("/success", true);
+        http.formLogin().defaultSuccessUrl("/index.xhtml", true);
         //http.formLogin().successHandler(new CustomSuccessHandler());
-        
+
         //error handling
         http.exceptionHandling().accessDeniedPage("/access.xhtml");
 
         // not needed as JSF 2.2 is implicitly protected against CSRF
         http.csrf().disable();
     }
-    
-    /*@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests().
-                // antMatchers("/**").
-                antMatchers(PUBLIC_MATCHERS).
-                permitAll().anyRequest().authenticated();
 
-        http
-                .csrf().disable().cors().disable()
-                .formLogin().failureUrl("/login.xhtml?error")
-                .defaultSuccessUrl("/index.xhtml")
-                .loginPage("/login.xhtml").permitAll()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login.xhtml").deleteCookies("remember-me").permitAll()
-                .and()
-                .rememberMe()
-                .and()
-                .sessionManagement().maximumSessions(3600)
-                .and().
-                invalidSessionUrl("/login.xhtml");
-
-        //error handling
-        http.exceptionHandling().accessDeniedPage("/access.xhtml");
-    }*/
-
-    /*@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
-    }*/
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
+     
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+     
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+         
+        return authProvider;
+    }
+ 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 }

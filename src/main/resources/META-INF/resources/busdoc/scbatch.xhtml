@@ -1,0 +1,480 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_busdoc.xhtml">
+
+    <ui:define name="title">
+        #{stockCountingBusDocController.tabTitle}
+    </ui:define>
+
+    <ui:param name="viewname" value="#{stockCountingBusDocController.tabTitle}" />
+
+    <ui:define name="toolbar">
+        <!--<li>
+            <p:commandButton title="Product Search" oncomplete="PF('ProductSearchDialog').show()" update=":ProductSearchDlg, :growl"
+                             process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
+                <p:confirm header="Confirmation" message="Processing cannot be reversed, sure you want to continue?" icon="fa fa-alert"/>
+        </li>-->
+        <li>
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl"
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{stockCountingBusDocController.save()}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprocess" title="Process Counting" update=":mainform, :growl"
+                             icon="fas fa-paper-plane" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{stockCountingBusDocController.processCounting()}">
+            </p:commandButton>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{stockCountingBusDocController.print()}" ajax="false"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnaccviewer" title="View JV" icon="fas fa-book-open" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}" 
+                             oncomplete="PF('JVViewerDialog').show()" 
+                             actionListener="#{stockCountingBusDocController.openJVViewer()}"
+                             update=":growl, :jvviewerform"/>
+        </li>
+        <li>
+            <p:commandButton id="btnimport" title="Import Transactions" icon="fas fa-download" 
+                             oncomplete="PF('TransDialog').show()" update=":transform"/>
+        </li>
+
+    </ui:define>
+
+    <ui:define name="content">
+        <p:outputPanel deferred="true">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:tabView id="tabsview" dynamic="true" cache="true" styleClass="card ui-fluid">
+                        <p:tab title="Document Details">
+                            <p:panelGrid columns="4" layout="grid"
+                                         columnClasses="p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5,p-col-12 p-mb-1 p-md-1 p-mb-md-0,p-col-12 p-md-5">
+                                <p:outputLabel value="Doc No:" for="dno"/>
+                                <p:inputText id="dno" value="#{stockCountingBusDocController.selected.docno}" placeholder="Document No" disabled="true"/>
+
+                                <p:outputLabel value="Counted In Branch:" for="branch"/>
+                                <p:selectOneMenu id="branch" value="#{stockCountingBusDocController.selectedBranch}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains">
+                                    <f:selectItems value="#{branchController.allBranchByLoggedInCompany}" var="item" itemLabel="#{item.branchname}" itemValue="#{item}"/>
+                                    <p:ajax event="change" update="@this" />
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.abbreviation}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.branchname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Date:" for="ddate"/>
+                                <p:datePicker id="ddate" value="#{stockCountingBusDocController.selected.docdate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
+
+                                <p:outputLabel value="Process Date:" for="pdate"/>
+                                <p:datePicker id="pdate" value="#{stockCountingBusDocController.selected.processdate}" showIcon="true"
+                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                </p:datePicker>
+
+                                <p:outputLabel value="Count Year:" for="cyear"/>
+                                <p:spinner id="cyear" value="#{stockCountingBusDocController.selected.countyear}" 
+                                           min="#{stockCountingBusDocController.spinnerMinYear}" max="#{stockCountingBusDocController.spinnerMaxYear}"/>
+
+                                <p:outputLabel value="Document Status:" for="dstatus"/>
+                                <p:selectOneMenu id="dstatus" value="#{stockCountingBusDocController.selected.docstatus}">
+                                    <p:ajax event="change" update="@this" />
+                                    <f:selectItem itemLabel="Draft" itemValue="Draft" />
+                                    <f:selectItem itemLabel="Counting" itemValue="Counting" />
+                                    <f:selectItem itemLabel="Completed" itemValue="Completed" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Comment:" for="comment"/>
+                                <p:inputText id="comment" value="#{stockCountingBusDocController.selected.description}"/>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+
+                    <p:tabView id="tabsview2" dynamic="true" cache="true" styleClass="card ui-fluid">
+                        <p:tab title="Tansactions">
+                            <p:toolbar >
+                                <f:facet name="right">
+                                    <p:commandButton id="deleteButton" icon="fa fa-trash"
+                                                     update="transtable, transtable2, :growl" disabled="#{empty stockCountingBusDocController.selectedTransaction}" 
+                                                     title="Delete selected Transaction" styleClass="#{systemDefaultsController.systemButtonStyle}" 
+                                                     actionListener="#{stockCountingBusDocController.deleteTransactions()}">
+                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:toolbar>
+                            <p:dataTable id="transtable" var="pt"
+                                         value="#{stockCountingBusDocController.countingBatch}"
+                                         rowKey="#{pt.productid.productid}"
+                                         selectionMode="single"
+                                         selection="#{stockCountingBusDocController.selectedTransaction}"
+                                         editable="true"
+                                         editMode="cell"
+                                         emptyMessage="No Products found"
+                                         sortBy="#{pt.productid.productid}"
+                                         styleClass="products-table ui-datatable-sm"
+                                         style="font-size: small">
+
+                                <p:ajax event="rowSelect" listener="#{stockCountingBusDocController.refreshHistoryPanel()}" 
+                                        update=":mainform:tabsview2:deleteButton, :mainform:historyform"/>
+                                <p:ajax event="rowUnselect" update=":mainform:tabsview2:deleteButton"/>
+                                <p:ajax event="cellEdit"/>
+
+                                <p:headerRow>
+                                    <p:column>
+                                        <h:outputText value=""/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{pt.productid.productid}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{pt.productid.productname}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{pt.productid.unit.unitsym}" />
+                                    </p:column>
+                                    <p:column style="text-align:right">
+                                        <h:outputText value="#{stockCountingBusDocController.findStockBalance(pt.productid)}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column style="text-align:right">
+                                        <h:outputText value="#{stockCountingBusDocController.findTotalCount(pt.productid)}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="" />
+                                    </p:column>
+                                </p:headerRow>
+
+                                <p:column headerText="TransId">
+                                    <h:outputText value="#{pt.countingno}"/>
+                                </p:column>
+
+                                <p:column headerText="Stock No">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="Product/CountedBy">
+                                    <h:outputText value="#{pt.countedbyempno.empname}" />
+                                </p:column>
+
+                                <p:column headerText="Unit">
+                                    <h:outputText value="#{pt.productid.unit.unitsym}" />
+                                </p:column>
+
+                                <p:column headerText="Stock">
+                                    <h:outputText value="#{pt.currentstock}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Count" style="text-align: right">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{pt.count}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="unit" value="#{pt.count}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Count">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Cost" style="text-align:right">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{pt.cost}" style="float: right;">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="price" value="#{pt.cost}" 
+                                                         style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Cost">
+                                                <f:convertNumber pattern="#,##0.000" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Total" style="text-align: right">
+                                    <h:outputText id="total" value="#{pt.totalAmount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab title="Counting Report">
+                            <p:dataTable id="transtable2" var="pt"
+                                         value="#{stockCountingBusDocController.countedRepo}" 
+                                         rowKey="#{pt.productid.productid}"
+                                         selectionMode="single"
+                                         selection="#{stockCountingBusDocController.selectedTransaction}"
+                                         emptyMessage="No Products found"
+                                         styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                         style="font-size: small">
+
+                                <p:column headerText="Stock No">
+                                    <h:outputText value="#{pt.productid.productid}" />
+                                </p:column>
+
+                                <p:column headerText="Product" style="width: 30%">
+                                    <h:outputText value="#{pt.productid.productname}" />
+                                </p:column>
+
+                                <p:column headerText="Unit">
+                                    <h:outputText value="#{pt.productid.unit.unitsym}" />
+                                </p:column>
+
+                                <p:column headerText="Current Stock">
+                                    <h:outputText value="#{pt.currentstock}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Total Count" style="text-align: right">
+                                    <h:outputText value="#{pt.count}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Diff" style="text-align:right">
+                                    <h:outputText value="#{pt.difference}" style="float: right; color: #{pt.difference eq 0?'green':pt.difference lt 0?'red':'blue'}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Cost" style="text-align:right">
+                                    <h:outputText value="#{pt.cost}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Total" style="text-align: right">
+                                    <h:outputText id="total" value="#{pt.totalAmount}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab title="Processed Transaction" rendered="#{not empty stockCountingBusDocController.processedDoc}">
+                            <p:dataTable id="transtable3" var="pt"
+                                         value="#{stockCountingBusDocController.processedDoc.productTransactions}" 
+                                         rowKey="#{pt.product.productid}"
+                                         selectionMode="single"
+                                         selection="#{stockCountingBusDocController.selectedProcessedTransaction}"
+                                         emptyMessage="No Transactions found"
+                                         sortBy="#{pt.busdoc.docno}"
+                                         styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                         style="font-size: small">
+
+                                <p:column headerText="Stock No">
+                                    <h:outputText value="#{pt.product.productid}" />
+                                </p:column>
+
+                                <p:column headerText="Product" style="width: 30%">
+                                    <h:outputText value="#{pt.product.productname}" />
+                                </p:column>
+
+                                <p:column headerText="Unit">
+                                    <h:outputText value="#{pt.product.unit.unitsym}" />
+                                </p:column>
+
+                                <p:column headerText="In" style="text-align: right">
+                                    <h:outputText value="#{pt.received}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Out" style="text-align: right">
+                                    <h:outputText value="#{pt.sold}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Cost" style="text-align:right">
+                                    <h:outputText value="#{pt.cost}" style="float: right;">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Total" style="text-align: right">
+                                    <h:outputText id="total" value="#{pt.totalcost}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:summaryRow id="tablesummary">
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column style="text-align:right">
+                                        <h:outputText value="#{stockCountingBusDocController.processedDoc.totalcost}">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </p:column>
+                                </p:summaryRow>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:define>
+    
+    <ui:define name="other_includes">
+        <ui:include src="/accounts/jvviewer.xhtml"/>
+        <ui:include src="/busdoc/transimportcounting.xhtml"/>
+    </ui:define>
+    
+    <ui:define name="history">
+        <h:panelGroup id="historyform">
+            <div class="p-col-12 p-md-12 vless_padding">
+                <p:panel style="padding-bottom: 10px" header="Stock" toggleable="true">
+                    <p:dataTable id="stocklist"
+                                 value="#{stockCountingBusDocController.stockBalances}"
+                                 sortBy="#{trans.reference}" 
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Stock Balances found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="pcol1" value="#{trans.branch.abbreviation}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel style="padding-bottom: 10px" header="Sales History" toggleable="true">
+                    <p:dataTable id="saleslist"
+                                 value="#{stockCountingBusDocController.salesProductTransactions}"
+                                 sortBy="#{trans.reference}" 
+                                 style="width: 100%"
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Sales History found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="scol1" value="#{trans.busdoc.docno}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="scol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="scol2" value="#{trans.fcunitprice}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="scol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel style="padding-bottom: 10px" header="Purchase History" toggleable="true">
+                    <p:dataTable id="purchaselist"
+                                 value="#{stockCountingBusDocController.purchaseProductTransactions}"
+                                 sortBy="#{trans.reference}" 
+                                 var="trans"
+                                 styleClass="products-table ui-datatable-striped ui-datatable-sm noHeader"
+                                 emptyMessage="No Purchase History found">
+                        <p:column style="width: 70%" headerText="Type">
+                            <h:outputText id="pcol1" value="#{trans.busdoc.docno}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow1" for="pcol1" value="#{systemDefaultsController.formatDate(trans.transdate)}" showEffect="clip" position="top"/> 
+                        </p:column>
+
+                        <p:column style="width: 30%; text-align: right" headerText="Value">
+                            <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                            <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:panelGroup>
+    </ui:define>
+
+
+
+    <ui:define name="productsearch">
+        <h:form id="psform">
+            <pe:slideout id="slideoutProduct" title="Products" icon="fa fa-search" location="top" widgetVar="slideout" 
+                         handleStyleClass="product-handle" panelStyleClass="product-panel" offset="230px" bounceTimes="5"
+                         bounceDistance="100px" handleOffsetReverse="false" >
+                <p:panel>
+                    <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid"  >
+                        <p:outputLabel for="pcriteria" value="Search Criteria" />
+                        <p:inputText id="pcriteria" placeholder="Criteria" value="#{stockCountingBusDocController.productSearchController.criteria}" />
+                        <p:commandButton value="Search" actionListener="#{stockCountingBusDocController.productSearchController.searchProducts()}" update="prodtable"/>
+                        <p:commandButton value="Transfer" actionListener="#{stockCountingBusDocController.productSearchController.transfer()}" update=":mainform:tabsview2:transtable"/>
+                    </p:panelGrid>
+                    <p:panel styleClass="slide-product-panel">
+                        <p:dataTable id="prodtable" var="prod"
+                                     value="#{stockCountingBusDocController.productSearchController.productStocks}" widgetVar="ptable"
+                                     selection="#{stockCountingBusDocController.productSearchController.selectedProductStock}"
+                                     rowKey="#{prod.productid}"
+                                     emptyMessage="No Products found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     style="font-size: small">
+                            <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
+                            <p:column headerText="Stock#" sortBy="#{prod.productid}" filterMatchMode="contains"
+                                      style="width: 70px">
+                                <h:outputText value="#{prod.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" sortBy="#{prod.product.productname}" filterBy="#{prod.product.productname}" filterMatchMode="contains"
+                                      style="width: 250px">
+                                <h:outputText value="#{prod.product.productname}" />
+                            </p:column>
+
+                            <p:column headerText="Unit" sortBy="#{prod.product.unit.unitsym}" filterBy="#{prod.product.unit.unitsym}" filterMatchMode="contains" style="width: 70px">
+                                <h:outputText value="#{prod.product.unit.unitsym}" />
+                            </p:column>
+
+                            <p:column headerText="SupCode" sortBy="#{prod.product.supplierscode}" filterBy="#{prod.product.supplierscode}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.product.supplierscode}" />
+                            </p:column>
+
+                            <p:column headerText="Brand" sortBy="#{prod.product.brand.brandname}" filterBy="#{prod.product.brand.brandname}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.product.brand.brandname}" />
+                            </p:column>
+
+                            <p:columns value="#{stockCountingBusDocController.productSearchController.branchList}" var="branch" 
+                                       headerText="#{branch}" style="text-align: right">
+                                <h:outputText value="#{prod.findStock(branch)}">
+                                    <f:convertNumber pattern="#{systemConfig.decimalFormatString}" />
+                                </h:outputText>
+                            </p:columns> 
+                        </p:dataTable>
+                    </p:panel>
+                </p:panel>
+            </pe:slideout>
+        </h:form>
+    </ui:define>
+</ui:composition>

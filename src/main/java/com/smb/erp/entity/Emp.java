@@ -5,6 +5,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the emp database table.
@@ -18,8 +20,8 @@ public class Emp implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String empid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long empid;
 
     private String addressstate;
 
@@ -45,26 +47,25 @@ public class Emp implements Serializable {
 
     private String post;
 
-    private double salary;
+    private Double salary = 0.0;
+    
+    private boolean active = true;
 
     //bi-directional many-to-one association to AccDoc
-    @OneToMany(mappedBy = "emp")
-    private List<AccDoc> accdocs;
-
+    //@OneToMany(mappedBy = "emp")
+    //private List<AccDoc> accdocs;
     //bi-directional many-to-one association to Asset
-    @OneToMany(mappedBy = "emp")
-    private List<Asset> assets;
-
+    //@OneToMany(mappedBy = "emp")
+    //private List<Asset> assets;
     //bi-directional many-to-one association to BusDoc
-    @OneToMany(mappedBy = "emp1")
-    private List<BusDoc> busdocs1;
-
+    //@OneToMany(mappedBy = "emp1")
+    //private List<BusDoc> busdocs1;
     //bi-directional many-to-one association to BusDoc
-    @OneToMany(mappedBy = "emp2")
-    private List<BusDoc> busdocs2;
-
+    //@OneToMany(mappedBy = "emp2")
+    //private List<BusDoc> busdocs2;
     //bi-directional many-to-one association to Dependant
     @OneToMany(mappedBy = "emp")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Dependant> dependants;
 
     //bi-directional many-to-one association to Dept
@@ -78,11 +79,10 @@ public class Emp implements Serializable {
     private Emp emp;
 
     //bi-directional many-to-one association to Emp
-    @OneToMany(mappedBy = "emp")
-    private List<Emp> emps;
-
+    //@OneToMany(mappedBy = "emp")
+    //private List<Emp> emps;
     //bi-directional many-to-one association to Authentication
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private Authentication authentication;
 
@@ -91,14 +91,24 @@ public class Emp implements Serializable {
     @JoinColumn(name = "companyid")
     private Company company;
 
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "emp_emprole",
+            joinColumns = {
+                @JoinColumn(name = "empid")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "roleid")}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<EmpRole> emproles;
+
     public Emp() {
     }
 
-    public String getEmpid() {
+    public Long getEmpid() {
         return this.empid;
     }
 
-    public void setEmpid(String empid) {
+    public void setEmpid(Long empid) {
         this.empid = empid;
     }
 
@@ -190,15 +200,15 @@ public class Emp implements Serializable {
         this.post = post;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return this.salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
-    public List<AccDoc> getAccdocs() {
+    /*public List<AccDoc> getAccdocs() {
         return this.accdocs;
     }
 
@@ -284,8 +294,7 @@ public class Emp implements Serializable {
         busdocs2.setEmp2(null);
 
         return busdocs2;
-    }
-
+    }*/
     public List<Dependant> getDependants() {
         return this.dependants;
     }
@@ -324,7 +333,7 @@ public class Emp implements Serializable {
         this.emp = emp;
     }
 
-    public List<Emp> getEmps() {
+    /*public List<Emp> getEmps() {
         return this.emps;
     }
 
@@ -344,8 +353,7 @@ public class Emp implements Serializable {
         emp.setEmp(null);
 
         return emp;
-    }
-
+    }*/
     public Authentication getAuthentication() {
         return this.authentication;
     }
@@ -364,7 +372,7 @@ public class Emp implements Serializable {
 
     @Override
     public String toString() {
-        return "Emp{" + "empid=" + empid + ", empname=" + empname + '}';
+        return empname + " [" + empid + "]";
     }
 
     @Override
@@ -392,4 +400,51 @@ public class Emp implements Serializable {
         return true;
     }
 
+    /**
+     * @return the emproles
+     */
+    public List<EmpRole> getEmproles() {
+        return emproles;
+    }
+
+    /**
+     * @param emproles the emproles to set
+     */
+    public void setEmproles(List<EmpRole> emproles) {
+        this.emproles = emproles;
+    }
+
+    /**
+     * @return the active
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getEmprole(){
+        if(getEmproles()==null){
+            return "N/A";
+        }
+        if(getEmproles().isEmpty()){
+            return "N/A";
+        }
+        return getEmproles().get(0).getRolename();
+    }
+    
+    public EmpRole getEmproleSingle(){
+        if(getEmproles()==null){
+            return null;
+        }
+        if(getEmproles().isEmpty()){
+            return null;
+        }
+        return getEmproles().get(0);
+    }
 }

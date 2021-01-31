@@ -5,19 +5,25 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.UserSession;
 import com.smb.erp.entity.Account;
 import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.SystemDefaultsRepository;
-import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.StringUtils;
 import com.smb.erp.util.SystemConfig;
+import static com.smb.erp.util.SystemConfig.PRINT_LETTERHEAD_IMAGE;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.annotation.SessionScope;
@@ -36,6 +42,9 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
 
     @Autowired
     AccountRepository accountRepo;
+    
+    @Autowired
+    UserSession userSession;
 
     @Autowired
     public SystemDefaultsController(SystemDefaultsRepository repo) {
@@ -59,6 +68,15 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
             }
         }
         System.out.println("SystemDefaultsController: " + propertyTable);
+                try {
+            System.out.println("Loading LetterHead: " + getByPropertyname("LetterHeadLocation").getValue()
+                    + userSession.getLoggedInCompany().getCompanyid() + ".png");
+            PRINT_LETTERHEAD_IMAGE = ImageIO.read(new File(getByPropertyname("LetterHeadLocation").getValue()
+                    + userSession.getLoggedInCompany().getCompanyid() + ".png"));
+        } catch (IOException ex) {
+            Logger.getLogger(SystemConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public Account getDefaultAccount(String propertyname) {
@@ -66,10 +84,11 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
     }
 
     public Account resolveAccount(Account account){
-        if(account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT")){
-            return getDefaultAccount(account.getAccountname());
-        } 
-        return resolveAccount(account);
+        System.out.println("resolveAccount: " + account);
+        if(account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT_SYSTEM")){
+            return resolveAccount(getDefaultAccount(account.getAccountname()));
+        }
+        return account;
     }
     
     public String getDefaultList(String propertyname) {

@@ -16,33 +16,33 @@
                     <p:panelGrid columns="4" styleClass="card"
                                  columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid">
                         <p:outputLabel value="Doc No:" for="dno"/>
-                        <h:outputText id="dno" value="#{busDocController.accdoc.docno}"/>
+                        <h:outputText id="dno" value="#{jvViewerController.accdoc.docno}"/>
 
                         <p:outputLabel value="Ref No:" for="refno"/>
-                        <h:outputText id="refno" value="#{busDocController.accdoc.refno}"/>
+                        <h:outputText id="refno" value="#{jvViewerController.accdoc.refno}"/>
 
                         <p:outputLabel value="Doc Date:" for="ddate"/>
-                        <h:outputText id="ddate" value="#{busDocController.accdoc.docdate}">
+                        <h:outputText id="ddate" value="#{jvViewerController.accdoc.docdate}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
 
                         <p:outputLabel value="Last Updated:" for="udate"/>
-                        <h:outputText id="udate" value="#{busDocController.accdoc.docdate}">
+                        <h:outputText id="udate" value="#{jvViewerController.accdoc.docdate}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
 
                         <p:outputLabel value="Employee:" for="emp"/>
-                        <h:outputText id="emp" value="#{busDocController.accdoc.emp}"/>
+                        <h:outputText id="emp" value="#{jvViewerController.accdoc.emp}"/>
 
                         <p:outputLabel value="Branch:" for="branch"/>
-                        <h:outputText id="branch" value="#{busDocController.accdoc.branch}"/>
+                        <h:outputText id="branch" value="#{jvViewerController.accdoc.branch}"/>
 
                     </p:panelGrid>
                     <p:panel styleClass="card">
                         <p:dataTable id="accdoctable" var="led"
-                                     value="#{busDocController.accdoc.ledlines}" widgetVar="acctable"
+                                     value="#{jvViewerController.accdoc.ledlines}" widgetVar="acctable"
                                      emptyMessage="No Transactions found"
-                                     sortBy="#{busDocController.accdoc.docno}"
+                                     sortBy="#{jvViewerController.accdoc.docno}"
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
                                      style="font-size: smaller">
                             <p:column headerText="No" style="width: 100px">
@@ -69,17 +69,39 @@
                                 </h:outputText>
                             </p:column>
 
+                            <p:column headerText="FcDebit" style="text-align:right">
+                                <h:outputText value="#{led.fcDebit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="FcCredit" style="text-align:right">
+                                <h:outputText value="#{led.fcCredit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
                             <p:summaryRow>
                                 <p:column colspan="3" style="text-align:right">
                                     <h:outputText value="Total:" />
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{busDocController.accdoc.ledlines.stream().map(x -> x.debit).sum()}">
+                                    <h:outputText value="#{jvViewerController.accdoc.ledlines.stream().map(x -> x.debit).sum()}">
                                     <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{busDocController.accdoc.ledlines.stream().map(x -> x.credit).sum()}">
+                                    <h:outputText value="#{jvViewerController.accdoc.ledlines.stream().map(x -> x.credit).sum()}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{jvViewerController.accdoc.ledlines.stream().map(x -> x.fcDebit).sum()}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{jvViewerController.accdoc.ledlines.stream().map(x -> x.fcCredit).sum()}">
                                     <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
