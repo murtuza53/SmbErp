@@ -40,21 +40,16 @@ public class BusDocInfo implements Serializable {
     private String menuname;
 
     private String transactiontype; //NON_INVENTORY, INVENTORY //BusDocTransactionType.NON_INVENTORY.value()
-    
+
     private String accounttype;     //Non, Receivable, Payable
 
     private String prefix;
 
     private String suffix;
-    
-    private String doclisturl;
-    
-    private String docediturl;
 
-    //bi-directional many-to-one association to Company
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name="pageid")
-    private Webpage pageid;
+    private String doclisturl;
+
+    private String docediturl;
 
     private String extra1label;
 
@@ -156,6 +151,24 @@ public class BusDocInfo implements Serializable {
 
     private String extra25value;
 
+    //default business partner to be selected
+    @ManyToOne
+    @JoinColumn(name = "businesspartnerid")
+    private BusinessPartner businesspartner;
+
+    @ManyToOne
+    @JoinColumn(name = "debitaccountid")
+    private Account debitaccountid;
+
+    @ManyToOne
+    @JoinColumn(name = "creditaccountid")
+    private Account creditaccountid;
+
+    //bi-directional many-to-one association to Company
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "pageid")
+    private Webpage pageid;
+
     //bi-directional many-to-one association to BusDoc
     //@OneToMany(mappedBy = "busdocinfo")
     //@Fetch(FetchMode.SUBSELECT)
@@ -168,6 +181,10 @@ public class BusDocInfo implements Serializable {
     @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<CashRegister> cashregiserid;
+
+    @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<DefaultModeAccount> defaultaccid;
 
     @OneToMany(mappedBy = "bdinfoid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
@@ -346,7 +363,7 @@ public class BusDocInfo implements Serializable {
      */
     @Override
     public String toString() {
-        return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getPrefix()+ '}';
+        return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getPrefix() + '}';
     }
 
     @Override
@@ -1175,7 +1192,7 @@ public class BusDocInfo implements Serializable {
 
         return cr;
     }
-    
+
     public PrintReport addReportid(PrintReport rpt) {
         getReportid().add(rpt);
         rpt.setBdinfoid(this);
@@ -1190,8 +1207,8 @@ public class BusDocInfo implements Serializable {
         return rpt;
     }
 
-    public boolean hasCashRegister(){
-        if(getCashregiserid()==null || getCashregiserid().isEmpty()){
+    public boolean hasCashRegister() {
+        if (getCashregiserid() == null || getCashregiserid().isEmpty()) {
             return false;
         }
         return true;
@@ -1267,4 +1284,109 @@ public class BusDocInfo implements Serializable {
         this.pageid = pageid;
     }
 
+    /**
+     * @return the businesspartner
+     */
+    public BusinessPartner getBusinesspartner() {
+        return businesspartner;
+    }
+
+    /**
+     * @param businesspartner the businesspartner to set
+     */
+    public void setBusinesspartner(BusinessPartner businesspartner) {
+        this.businesspartner = businesspartner;
+    }
+
+    /**
+     * @return the debitaccountid
+     */
+    public Account getDebitaccountid() {
+        return debitaccountid;
+    }
+
+    /**
+     * @param debitaccountid the debitaccountid to set
+     */
+    public void setDebitaccountid(Account debitaccountid) {
+        this.debitaccountid = debitaccountid;
+    }
+
+    /**
+     * @return the creditaccountid
+     */
+    public Account getCreditaccountid() {
+        return creditaccountid;
+    }
+
+    /**
+     * @param creditaccountid the creditaccountid to set
+     */
+    public void setCreditaccountid(Account creditaccountid) {
+        this.creditaccountid = creditaccountid;
+    }
+
+    /**
+     * @return the defaultaccid
+     */
+    public List<DefaultModeAccount> getDefaultaccid() {
+        return defaultaccid;
+    }
+
+    /**
+     * @param defaultaccid the defaultaccid to set
+     */
+    public void setDefaultaccid(List<DefaultModeAccount> defaultaccid) {
+        this.defaultaccid = defaultaccid;
+    }
+
+    public DefaultModeAccount addDefaultaccid(DefaultModeAccount def) {
+        getDefaultaccid().add(def);
+        def.setBdinfoid(this);
+
+        return def;
+    }
+
+    public DefaultModeAccount removeDefaultaccid(DefaultModeAccount def) {
+        getDefaultaccid().remove(def);
+        def.setBdinfoid(null);
+
+        return def;
+    }
+    
+    public boolean isAccountDebitMode(){
+        return getDebitaccountid()!=null;
+    }
+    
+    public boolean isAccountCreditMode(){
+        return getCreditaccountid()!=null;
+    }
+    
+    public boolean isAccountModeVisible(){
+        return isAccountDebitMode() || isAccountCreditMode();
+    }
+    
+    public String getAccountModeTitle(){
+        if(isAccountDebitMode()){
+            return "Debit Account";
+        }
+        if(isAccountCreditMode()){
+            return "Credit Account";
+        }
+        return "";
+    }
+    
+    public boolean isLedgerLineDebitVisible(){
+        if(getDebitaccountid()==null && getCreditaccountid()==null){
+            return true;
+        }
+        return isAccountDebitMode();
+    }
+
+    public boolean isLedgerLineCreditVisible(){
+        if(getDebitaccountid()==null && getCreditaccountid()==null){
+            return true;
+        }
+        return isAccountCreditMode();
+    }
 }

@@ -37,18 +37,40 @@
 
                         </f:facet>
 
-                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
-
-                            <p:outputLabel value="From Date" for="fromdate" />
-                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
-                                          title="From Date"  showIcon="true"
-                                        required="true" requiredMessage="Please select Date"/>
-
-                            <p:outputLabel value="To Date" for="todate" />
-                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
-                                          title="To Date"  showIcon="true"
-                                        required="true" requiredMessage="Please select Date"/>
-                        </p:panelGrid>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="From Date" for="fromdate" />
+                                <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
+                                              title="From Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                              required="true" requiredMessage="Please select Date"/>
+                            </div>
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
+                                              title="To Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                              required="true" requiredMessage="Please select Date"/>
+                            </div>
+                            <div class="p-field p-col-12">
+                                <p:outputLabel value="Business Partner" for="partner" />
+                                <p:selectOneMenu id="partner" value="#{busDocListController.selectedBusinessPartner}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade" filter="true" filterMatchMode="contains" style="width:100%">
+                                    <f:selectItems value="#{businessPartnerController.businessPartnerListWithAll}" var="item" 
+                                                   itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.partnerid}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.companyname}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
                     </p:panel>
                     <br/>
                     <br/>
@@ -76,6 +98,16 @@
                                              oncomplete="PF('TransDialog').show()" update=":transform"/>
                         </f:facet>
 
+                        <p:contextMenu for="bustable">
+                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
+                                        onclick="document.getElementById('busform:btnedit').click();"/>
+                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
+                                        onclick="document.getElementById('busform:btndelete').click();"/>
+
+                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
+                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
+                        </p:contextMenu>
+
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{busDocListController.items}"
                                      rowKey="#{item.docno}"
@@ -86,10 +118,7 @@
                                      styleClass="products-table ui-datatable-sm">
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
 
-                            <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
-                                <f:facet name="header">
-                                    <h:outputText value="Date"/>
-                                </f:facet>
+                            <p:column headerText="Date" sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
                                 <h:outputText value="#{item.docdate}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </h:outputText>
@@ -104,39 +133,45 @@
                                 <h:outputText value="#{item.businesspartner.companyname}" />
                             </p:column>
 
-                            <p:column sortBy="#{item.totalamount}" filterBy="#{item.totalamount}" filterMatchMode="contains"  style="text-align: right">
-                                <f:facet name="header">
-                                    <h:outputText value="Total Amount"/>
-                                </f:facet>
+                            <p:column headerText="Ref No" sortBy="#{item.refno}" 
+                                      filterBy="#{item.refno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.refno}" />
+                            </p:column>
+
+                            <p:column headerText="Total Amount" sortBy="#{item.totalamount}" filterBy="#{item.totalamount}" filterMatchMode="contains"  style="text-align: right">
                                 <h:outputText value="#{item.totalamount}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column sortBy="#{item.totalvat}" filterBy="#{item.totalvat}" filterMatchMode="contains"  style="text-align: right">
-                                <f:facet name="header">
-                                    <h:outputText value="Total VAT"/>
-                                </f:facet>
+                            <p:column headerText="Total VAT" sortBy="#{item.totalvat}" filterBy="#{item.totalvat}" filterMatchMode="contains"  style="text-align: right">
                                 <h:outputText value="#{item.totalvat}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column sortBy="#{item.grandtotal}" filterBy="#{item.grandtotal}" filterMatchMode="contains"  style="text-align: right">
-                                <f:facet name="header">
-                                    <h:outputText value="Grand Amount"/>
-                                </f:facet>
+                            <p:column headerText="Grand Amount" sortBy="#{item.grandtotal}" filterBy="#{item.grandtotal}" filterMatchMode="contains"  style="text-align: right">
                                 <h:outputText value="#{item.grandtotal}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column sortBy="#{item.docstatus}" filterBy="#{item.docstatus}" filterMatchMode="contains">
-                                <f:facet name="header">
-                                    <h:outputText value="Status"/>
-                                </f:facet>
+                            <p:column headerText="Status" sortBy="#{item.docstatus}" filterBy="#{item.docstatus}" filterMatchMode="contains">
                                 <h:outputText value="#{item.docstatus}" styleClass="customer-badge status-#{item.getStatusCss(item.docstatus)}"/>
                             </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="4" style="text-align:right" footerText="Totals:"/>
+                                    <p:column style="text-align:right" 
+                                              footerText="#{systemDefaultsController.formatDecimal(busDocListController.items.stream().map(x -> x.totalamount).sum())}"/>
+                                    <p:column style="text-align:right" 
+                                              footerText="#{systemDefaultsController.formatDecimal(busDocListController.items.stream().map(x -> x.totalvat).sum())}"/>
+                                    <p:column style="text-align:right" 
+                                              footerText="#{systemDefaultsController.formatDecimal(busDocListController.items.stream().map(x -> x.grandtotal).sum())}"/>
+                                    <p:column footerText=""/>
+                                </p:row>
+                            </p:columnGroup>
                         </p:dataTable>
                     </p:panel>
                 </div>

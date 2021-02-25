@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Ageing Analysis
+    </ui:define>
+
+    <ui:param name="viewname" value="Ageing Analysis" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <p:remoteCommand name="rc" 
+                             process="@this"
+                             update=":growl, :mainform:datalist" 
+                             actionListener="#{ageAnalysisController.refresh()}" 
+                             autoRun="true"/>
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="ledgerdetails" header="Search Criteria" 
+                             collapsed="false" toggleable="true" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             actionListener="#{ageAnalysisController.refresh()}" 
+                                             update=":mainform:datalist, :growl" icon="fa fa-refresh" />
+                        </f:facet>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:datePicker id="todate" value="#{ageAnalysisController.statementDate}" showIcon="true" readonlyInput="true"
+                                              monthNavigator="true" yearNavigator="true" pattern="dd/MM/yyyy">
+                                </p:datePicker>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="Type:" for="ptype"/>
+                                <p:selectOneMenu id="ptype" value="#{ageAnalysisController.selectedDocType}" converter="#{entityConverter}" 
+                                                 effect="fade">
+                                    <p:ajax listener="#{ageAnalysisController.refresh()}" update=":mainform:datalist, :growl" />
+                                    <f:selectItems value="#{ageAnalysisController.docTypes}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+
+                <div class="p-col-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="exportPdf2" icon="fa fa-file-pdf-o" update=":growl" ajax="false"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf2"/>
+                                <p:fileDownload value="#{ageAnalysisController.exportPdf}"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS2" icon="fa fa-file-excel-o" update=":growl" ajax="false"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to Excel" for="exportXLS2"/>
+                                <p:fileDownload value="#{ageAnalysisController.exportXlsx}"/>
+                            </p:commandButton>
+
+                            <span class="ui-separator"></span>
+                            <i class="ui-icon pi pi-ellipsis-v"></i>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to Excel only data" for="exportXLS"/>
+                                <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="Ledger"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="Ledger"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class="card">
+                        <p:dataTable id="datalist" var="item"
+                                     value="#{ageAnalysisController.reportList}" widgetVar="btable"
+                                     emptyMessage="No Transactions found"
+                                     rowKey="#{item.businessPartner.partnerid}"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     sortBy="#{item.businessPartner.companyname}"
+                                     size="small">
+
+                            <p:column headerText="Company" sortBy="#{item.businessPartner.companyname}" 
+                                      filterBy="#{item.businessPartner.companyname}" filterMatchMode="contains"
+                                      footerText="TOTAL"
+                                      style="width: 20%">
+                                <h:outputText value="#{item.businessPartner.companyname}" />
+                            </p:column>
+
+                            <p:column headerText="Cur" sortBy="#{item.businessPartner.currency.currencysym}" 
+                                      filterBy="#{item.businessPartner.currency.currencysym}" filterMatchMode="contains">
+                                <h:outputText value="#{item.businessPartner.currency.currencysym}" />
+                            </p:column>
+
+                            <p:column headerText="0-30 Days" sortBy="#{item.range1}" style="text-align: right" 
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range1)}">
+                                <h:outputText value="#{item.range1}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="31-60 Days" sortBy="#{item.range2}" style="text-align: right" 
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range2)}">
+                                <h:outputText value="#{item.range2}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="61-90 Days" sortBy="#{item.range3}" style="text-align: right" 
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range3)}">
+                                <h:outputText value="#{item.range3}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="91-180 Days" sortBy="#{item.range4}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range4)}">
+                                <h:outputText value="#{item.range4}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="181-365 Days" sortBy="#{item.range5}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range5)}">
+                                <h:outputText value="#{item.range5}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Over 365" sortBy="#{item.range6}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.range6)}">
+                                <h:outputText value="#{item.range6}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="On Account" sortBy="#{item.onAccount}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.onAccount)}">
+                                <h:outputText value="#{item.onAccount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Net Bal" sortBy="#{item.netBalance}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.netBalance)}">
+                                <h:outputText value="#{item.netBalance}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Ref No" sortBy="#{item.refNo}">
+                                <h:outputText value="#{item.refNo}" />
+                            </p:column>
+
+                            <p:column headerText="Date" sortBy="#{item.lastDate}">
+                                <h:outputText value="#{item.lastDate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Amount" sortBy="#{item.lastAmount}" style="text-align: right"
+                                      footerText="#{systemDefaultsController.formatDecimal(ageAnalysisController.totalRow.lastAmount)}">
+                                <h:outputText value="#{item.lastAmount}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

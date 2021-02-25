@@ -6,7 +6,7 @@
 package com.smb.erp.controller;
 
 import com.smb.erp.UserSession;
-import com.smb.erp.dynamic.report.DocumentReportGenerator;
+import com.smb.erp.rest.DocumentReportGenerator;
 import com.smb.erp.dynamic.report.Report;
 import com.smb.erp.dynamic.report.ReportField;
 import com.smb.erp.dynamic.report.ReportSection;
@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.annotation.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import net.sf.dynamicreports.report.constant.PageOrientation;
@@ -52,7 +51,6 @@ import org.smberp.json.JsonUtils;
  */
 @Named(value = "printTemplateController")
 @ViewScoped
-@ManagedBean
 public class PrintTemplateController extends AbstractController<PrintReport> {
 
     PrintReportRepository repo;
@@ -99,6 +97,7 @@ public class PrintTemplateController extends AbstractController<PrintReport> {
     
     @Autowired
     public PrintTemplateController(PrintReportRepository repo) {
+        super(PrintReport.class, repo);
         this.repo = repo;
     }
 
@@ -110,6 +109,7 @@ public class PrintTemplateController extends AbstractController<PrintReport> {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         String bdid = req.getParameter("bdid");
+        System.out.println("PrintTemplateController: " + facesContext.getExternalContext().getRequestParameterMap());
         if (bdid != null) {
             setBusdocInfo(bdRepo.getOne(Integer.parseInt(bdid)));
             //invoke one field to load entity
@@ -123,6 +123,7 @@ public class PrintTemplateController extends AbstractController<PrintReport> {
         if (m != null) {
             if (m.equalsIgnoreCase("n")) {   // new business document 
                 setSelected(new PrintReport());
+                getSelected().setJasper(false);
                 getSelected().setBdinfoid(getBusdocInfo());
                 getSelected().setEmpid(userSession.getLoggedInEmp());
                 getSelected().setCreatedon(new Date());
@@ -297,9 +298,16 @@ public class PrintTemplateController extends AbstractController<PrintReport> {
         System.out.println("headerSectionContainer.getReportSection:: " + headerSectionContainer.getReportSection().size());
     }
 
+    public void deleteReportSection(ReportSection section){
+        if(section!=null){
+            headerSectionContainer.getReportSection().remove(section);
+            JsfUtil.addSuccessMessage("Report Section deleted");
+        }
+    }
+    
     public void addNewReportField(ReportSection sec) {
         System.out.println("addNewReportField: " + sec + " => " + getSectionReportField());
-        if (getSectionReportField() == null) {
+        if (getSectionReportField() == null || getSectionReportField().contains("Select...")) {
             JsfUtil.addErrorMessage("Invalid proptery name for Report Field");
             return;
         }

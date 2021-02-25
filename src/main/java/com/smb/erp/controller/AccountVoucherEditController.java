@@ -84,6 +84,8 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
 
     private Hashtable<String, AccountTab> tabtable = new Hashtable<>();
 
+    private Account defaultModeAccount;
+
     //private List<AccountTab> tabs = new LinkedList<>();
     @Autowired
     public AccountVoucherEditController(AccDocRepository repo) {
@@ -106,6 +108,14 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                 doc.setUpdatedon(doc.getDocdate());
                 doc.setBusdocinfo(docInfo);
                 setSelected(doc);
+
+                if (doc.getBusdocinfo().isAccountDebitMode()) { //receipt
+                    setDefaultModeAccount(doc.getBusdocinfo().getDebitaccountid());
+                }
+                if (doc.getBusdocinfo().isAccountCreditMode()) {    //payment
+                    setDefaultModeAccount(doc.getBusdocinfo().getCreditaccountid());
+                }
+
                 mode = DocumentTab.MODE.NEW;
 
                 //docdate = getSelected().getDocdate();
@@ -115,6 +125,17 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                     setSelected(repo.getOne(docno));
                     docInfo = getSelected().getBusdocinfo();
                 }
+
+                //remove items if Debit or Credit Mode
+                if (getSelected().getBusdocinfo().isAccountDebitMode()) { //payment
+                    getSelected().getLedlines().removeIf(s -> s.getDebit() > 0);
+                    setDefaultModeAccount(getSelected().getBusdocinfo().getDebitaccountid());
+                }
+                if (getSelected().getBusdocinfo().isAccountCreditMode()) {    //receipt
+                    getSelected().getLedlines().removeIf(s -> s.getCredit() > 0);
+                    setDefaultModeAccount(getSelected().getBusdocinfo().getCreditaccountid());
+                }
+
                 mode = DocumentTab.MODE.EDIT;
                 //docdate = getSelected().getDocdate();
                 for (LedgerLine ll : getSelected().getLedlines()) {
@@ -137,6 +158,27 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
         for (LedgerLine ll : getSelected().getLedlines()) {
             ll.setTransdate(getSelected().getDocdate());
         }
+
+        //update ledger lines if Debit or Credit mode
+        if (getSelected().getBusdocinfo().isAccountModeVisible()) {
+            LedgerLine ll = new LedgerLine();
+            ll.setAccdoc(getSelected());
+            ll.setAccount(defaultModeAccount);
+            ll.setBranch(userSession.getLoggedInBranch());
+            ll.setTransdate(getSelected().getDocdate());
+
+            if (getSelected().getBusdocinfo().isAccountDebitMode()) { //receipt
+                ll.setDebit(getCreditTotal());
+                ll.setFcDebit(getFcCreditTotal());
+            }
+            if (getSelected().getBusdocinfo().isAccountCreditMode()) {    //payment
+                ll.setCredit(getDebitTotal());
+                ll.setFcCredit(getFcDebitTotal());
+            }
+
+            getSelected().addLedline(ll);
+        }
+
         repo.save(getSelected());
 
         for (AccountTab tab : tabtable.values()) {
@@ -154,6 +196,34 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
 
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
         mode = DocumentTab.MODE.EDIT;
+    }
+
+    public Double getDebitTotal() {
+        if (getSelected().getLedlines() == null) {
+            return 0.0;
+        }
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getDebit()).sum();
+    }
+
+    public Double getFcDebitTotal() {
+        if (getSelected().getLedlines() == null) {
+            return 0.0;
+        }
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFcDebit()).sum();
+    }
+
+    public Double getCreditTotal() {
+        if (getSelected().getLedlines() == null) {
+            return 0.0;
+        }
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getCredit()).sum();
+    }
+
+    public Double getFcCreditTotal() {
+        if (getSelected().getLedlines() == null) {
+            return 0.0;
+        }
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFcCredit()).sum();
     }
 
     public void addTab(LedgerLine line) {
@@ -311,6 +381,20 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
      */
     public List<AccountTab> getTabs() {
         return new LinkedList<AccountTab>(tabtable.values());
+    }
+
+    /**
+     * @return the defaultModeAccount
+     */
+    public Account getDefaultModeAccount() {
+        return defaultModeAccount;
+    }
+
+    /**
+     * @param defaultModeAccount the defaultModeAccount to set
+     */
+    public void setDefaultModeAccount(Account defaultModeAccount) {
+        this.defaultModeAccount = defaultModeAccount;
     }
 
 }

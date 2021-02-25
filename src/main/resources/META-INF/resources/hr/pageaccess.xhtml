@@ -39,14 +39,26 @@
 
                         <p:dataTable id="patable" var="item" widgetVar="etable"
                                      value="#{pageaccessController.items}"
+                                     rowKey="#{item.accessid}"
                                      editable="true"
                                      emptyMessage="No Webpage found"
+                                     sortBy="#{item.pageid.moduleid.modulename}"
                                      styleClass="products-table">
                             <p:ajax event="rowEdit" listener="#{pageaccessController.save()}" update="patable, :growl"/>
                             <p:ajax event="rowEditCancel" update="patable, :growl"/>
 
+                            <p:headerRow groupBy="#{item.pageid.moduleid.modulename}" expandable="true" expanded="true">
+                                <p:column colspan="8">
+                                    <h:outputText value="#{item.pageid.moduleid.modulename}" />
+                                </p:column>
+                            </p:headerRow>
+
                             <p:column headerText="Id" style="width: 20px">
                                 <h:outputText value="#{item.accessid}" />
+                            </p:column>
+
+                            <p:column headerText="Module">
+                                <h:outputText value="#{item.pageid.moduleid.modulename}"/>
                             </p:column>
 
                             <p:column headerText="Page" style="width: 40%">

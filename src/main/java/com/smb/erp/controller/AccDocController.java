@@ -57,7 +57,7 @@ public class AccDocController extends AbstractController<AccDoc> {
         AccDoc accdoc = repo.findByRefno(docNo);
         System.out.println("deleteBusDocVoucher: " + accdoc);
         if (accdoc != null) {
-            repo.deleteById(docNo);
+            repo.deleteById(accdoc.getDocno());
         }
     }
 

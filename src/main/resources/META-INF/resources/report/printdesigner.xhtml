@@ -128,6 +128,13 @@
                         </div>
                         <c:forEach items="#{printTemplateController.headerSectionContainer.reportSection}" var="section" varStatus="loop">
                             <p:panel id="hrspanel_#{loop.index}" header="Report Section #{loop.index+1}: #{section.title}">
+                                <f:facet name="actions">
+                                    <p:commandButton id="btndeletersection" title="Delete Report Section" update=":growl, headerpanel"
+                                                     icon="fa fa-trash" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                                                     actionListener="#{printTemplateController.deleteReportSection(section)}">
+                                        <p:confirm header="Confirmation" message="Sure you want to delete?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </f:facet>
                                 <div class="p-formgrid p-grid">
                                     <div class="p-field p-col">
                                         <p:outputLabel for="@next">Section Title</p:outputLabel>
@@ -284,7 +291,7 @@
                                     <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
                                     <f:selectItems value="#{printTemplateController.fields_ListType}" var="item" 
                                                    itemLabel="#{item.property}" itemValue="#{item}"/>
-                                    <p:ajax event="itemSelect" update="tabpropname, tabpropclass" listener="#{printTemplateController.onReportTableFieldSelectedListener}"/>
+                                    <p:ajax event="itemSelect" update="transfield, tabpropname, tabpropclass" listener="#{printTemplateController.onReportTableFieldSelectedListener}"/>
                                     <p:column>
                                         <f:facet name="header">
                                             <h:outputText value="Name"/>
@@ -314,7 +321,7 @@
                                     <p:outputLabel value="Transaction Fields" style="width: 100%"/>
                                     <h:panelGrid columns="3" style="float: right; width: 100%" columnClasses="p-md-8 p-md-3 p-md-1">
                                         <p:outputLabel value=" " style="width: 100%; float: right"/>
-                                        <p:selectOneMenu id="field" value="#{printTemplateController.transactionFieldToAdd}"
+                                        <p:selectOneMenu id="transfield" value="#{printTemplateController.transactionFieldToAdd}"
                                                          effect="fade" filter="true" filterMatchMode="contains" 
                                                          editable="true" style="width: 100%">
                                             <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>

@@ -14,7 +14,7 @@
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
                     <p:panelGrid columns="1" styleClass="card"  style="width: 100%">
-                        <p:fileUpload  fileUploadListener="#{stockCountingBusDocController.handleFileUpload}" mode="advanced" auto="true"
+                        <p:fileUpload  listener="#{stockCountingBusDocController.handleFileUpload}" mode="advanced" auto="true"
                                        update=":growl, :transform" sizeLimit="1000000" allowTypes="/(\.|\/)(xlsx)$/" />
                         <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid">
                             <p:outputLabel value="Import Type" for="itype"/>

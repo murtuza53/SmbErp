@@ -139,12 +139,12 @@
                                 <p:ajax event="rowUnselect" update=":mainform:tabsview2:deleteButton"/>
                                 <p:ajax event="cellEdit"/>
 
-                                <p:headerRow>
+                                <p:headerRow groupBy="#{pt.productid.productid}">
                                     <p:column>
                                         <h:outputText value=""/>
                                     </p:column>
                                     <p:column>
-                                        <h:outputText value="#{pt.productid.productid}" />
+                                        <h:outputText value="#{pt.productid.productid}"/>
                                     </p:column>
                                     <p:column>
                                         <h:outputText value="#{pt.productid.productname}" />

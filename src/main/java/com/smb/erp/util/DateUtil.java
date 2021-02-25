@@ -847,6 +847,13 @@ public class DateUtil {
         toDate = startOfDay(toDate);
         return addHours(toDate, hr, min);
     }
+    
+    public static int findAge(Date sourceDate, Date compareDate){
+        if(compareDate!=null){
+            return DateUtil.getDaysDiff(compareDate.getTime(), sourceDate.getTime());
+        }
+        return 0;
+    }
         
     public static void main(String args[]) {
         // System.out.println(createDate(10, Calendar.DECEMBER, 2006));

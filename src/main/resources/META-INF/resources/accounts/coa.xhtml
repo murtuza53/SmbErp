@@ -12,80 +12,87 @@
     <ui:param name="viewname" value="Chart of Accounts" />
 
     <ui:define name="content">
+        <h:form id="LoadPageForm">
+            <p:remoteCommand name="rc" 
+                             process="@this"
+                             update=":growl, :mainform:datalist" 
+                             actionListener="#{chartOfAccountController.refreshCoa()}" 
+                             autoRun="true"/>
+        </h:form>
         <h:form id="mainform">
-            <p:outputPanel deferred="true">
-                <div class="p-grid">
-                    <div class="p-col-12">
-                        <p:toolbar id="toolbar">
-                            <f:facet name="left">
-                                <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                    <p:tooltip value="Export to PDF" for="exportPdf"/>
-                                    <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="ChartOfAccount"/>
-                                </p:commandButton>
+            <div class="p-grid">
+                <div class="p-col-12">
+                    <p:toolbar id="toolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="ChartOfAccount"/>
+                            </p:commandButton>
 
-                                <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                    <p:tooltip value="Export to Excel" for="exportXLS"/>
-                                    <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="ChartOfAccount"/>
-                                </p:commandButton>
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="ChartOfAccount"/>
+                            </p:commandButton>
 
-                                <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                    <p:tooltip value="Export to CSV" for="exportCSV"/>
-                                    <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="ChartOfAccount"/>
-                                </p:commandButton>
-                            </f:facet>
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="ChartOfAccount"/>
+                            </p:commandButton>
+                        </f:facet>
 
-                            <f:facet name="right">
-                                <p:commandButton title="New Account Group" icon="fas fa-folder-plus" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.createNewAccountGroup()}"
-                                                 disabled="#{chartOfAccountController.newGroupDisabled}"
-                                                 update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                                <p:commandButton title="Edit Account Group" icon="fa fa-edit" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.editAccountGroup()}"
-                                                 disabled="#{chartOfAccountController.editGroupDisabled}"
-                                                 update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                                <p:commandButton title="New Account" icon="fas fa-file-medical" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.createNewAccount()}"
-                                                 disabled="#{chartOfAccountController.newAccountDisabled}"
-                                                 update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                                <p:commandButton title="Edit Account" icon="fa fa-file-signature" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.editAccount()}"
-                                                 disabled="#{chartOfAccountController.editAccountDisabled}"
-                                                 update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                                <p:commandButton title="Clone Account" icon="fa fa-copy" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.cloneAccount()}"
-                                                 disabled="#{chartOfAccountController.cloneAccountDisabled}"
-                                                 update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
-                                <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                 actionListener="#{chartOfAccountController.refreshCoa()}"
-                                                 update="datalist"/>
-                            </f:facet>
-                        </p:toolbar>
-                    </div>
-                    <div class="p-col-12">
-                        <div class="card">
-                            <p:treeTable id="datalist" 
-                                         value="#{chartOfAccountController.root}" var="item"
-                                         emptyMessage="Chart of Account is empty"
-                                         selectionMode="single" 
-                                         styleClass="ui-datatable-gridlines ui-datatable-sm ui-datatable-striped"
-                                         resizableColumns="true"
-                                         selection="#{chartOfAccountController.selectedNode}">
-                                <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
-                                        listener="#{chartOfAccountController.onNodeSelect}" />
-                                <p:column headerText="Account Name" style="width: 40%">
-                                    <h:outputText value="#{item.accountname}" />
-                                </p:column>
-                                <p:column headerText="Account Id">
-                                    <h:outputText value="#{item.accountid}" />
-                                </p:column>
-                                <p:column headerText="Type">
-                                    <h:outputText value="#{item.accounttype.name}" />
-                                </p:column>
-                            </p:treeTable>
-                        </div>
+                        <f:facet name="right">
+                            <p:commandButton title="New Account Group" icon="fas fa-folder-plus" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.createNewAccountGroup()}"
+                                             disabled="#{chartOfAccountController.newGroupDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Edit Account Group" icon="fa fa-edit" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.editAccountGroup()}"
+                                             disabled="#{chartOfAccountController.editGroupDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="New Account" icon="fas fa-file-medical" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.createNewAccount()}"
+                                             disabled="#{chartOfAccountController.newAccountDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Edit Account" icon="fa fa-file-signature" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.editAccount()}"
+                                             disabled="#{chartOfAccountController.editAccountDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Clone Account" icon="fa fa-copy" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.cloneAccount()}"
+                                             disabled="#{chartOfAccountController.cloneAccountDisabled}"
+                                             update=":AccountForm" oncomplete="PF('AccountEditDialog').show()"/>
+                            <p:commandButton title="Refresh Chart of Account" icon="fa fa-refresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{chartOfAccountController.refreshCoa()}"
+                                             update="datalist"/>
+                        </f:facet>
+                    </p:toolbar>
+                </div>
+                <div class="p-col-12">
+                    <div class="card">
+                        <p:treeTable id="datalist" 
+                                     value="#{chartOfAccountController.root}" var="item"
+                                     emptyMessage="Chart of Account is empty"
+                                     selectionMode="single" 
+                                     styleClass="ui-datatable-gridlines ui-datatable-sm ui-datatable-striped"
+                                     resizableColumns="true"
+                                     size="small"
+                                     selection="#{chartOfAccountController.selectedNode}">
+                            <p:ajax event="select" update="@widgetVar(ptable), :mainform:toolbar"
+                                    listener="#{chartOfAccountController.onNodeSelect}" />
+                            <p:column headerText="Account Name" style="width: 40%">
+                                <h:outputText value="#{item.accountname}" />
+                            </p:column>
+                            <p:column headerText="Account Id">
+                                <h:outputText value="#{item.accountid}" />
+                            </p:column>
+                            <p:column headerText="Type">
+                                <h:outputText value="#{item.accounttype.name}" />
+                            </p:column>
+                        </p:treeTable>
                     </div>
                 </div>
-            </p:outputPanel>
+            </div>
+            <ui:include src="/confirmation.xhtml"/>
         </h:form>
         <ui:include src="/accounts/accountedit.xhtml"/>
     </ui:define>

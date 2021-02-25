@@ -91,6 +91,10 @@ public class ReflectionUtil {
     public static boolean isPremitiveType(Class cl) {
         return isNumberType(cl) || cl == boolean.class || cl == Boolean.class || cl == String.class || cl == Date.class;
     }
+    
+    public static boolean isStringType(Class cl){
+        return cl == String.class;
+    }
 
     /**
      * Converts a String to an instance of a specified wrapper class, if

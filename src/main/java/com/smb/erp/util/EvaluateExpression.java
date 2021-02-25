@@ -32,6 +32,23 @@ public class EvaluateExpression {
     }
 
     /**
+     * @param <T> Target type
+     * @param bean the Object to holding value
+     * @param expression the expression like qty*price
+     * @param targetType Target type
+     * 
+     * @return the evaluated value
+     */
+    public static <T> T evaluateExpression(Object bean, String expression, Class<T> targetType) {
+        ExpressionParser parser = new SpelExpressionParser();
+
+        StandardEvaluationContext itemContext = new StandardEvaluationContext(bean);
+        Expression exp = parser.parseExpression(expression);
+
+        return exp.getValue(itemContext, targetType);
+    }
+
+    /**
      * @param bean the Object to holding field
      * @param expression the expression like branch.company.companyname
      * 

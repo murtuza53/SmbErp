@@ -48,13 +48,14 @@ public class ChartOfAccountController implements Serializable {
 
     @PostConstruct
     public void init() {
+        root = new DefaultTreeNode("ROOT", "Root", null);
         //refreshCoa();
     }
 
     public TreeNode getRoot() {
-        if(root==null){
-            refreshCoa();
-        }
+        //if (root == null) {
+        //    refreshCoa();
+        //}
         return root;
     }
 
@@ -64,12 +65,14 @@ public class ChartOfAccountController implements Serializable {
         addNode(ra, root);
     }
 
-    public void save(){
-        selectedAccount.setAccountid(accController.getAccountNextNo(selectedAccount.getParentid()));
+    public void save() {
+        if (getSelectedAccount().getAccountid() == null) {
+            selectedAccount.setAccountid(accController.getAccountNextNo(selectedAccount.getParentid()));
+        }
         accRepo.save(selectedAccount);
         JsfUtil.addSuccessMessage("New Account added successfuly");
     }
-    
+
     public void addNode(Account acc, TreeNode parent) {
         DefaultTreeNode n = new DefaultTreeNode(acc.getNodetype(), acc, parent);
 
@@ -94,7 +97,7 @@ public class ChartOfAccountController implements Serializable {
         //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         //FacesContext.getCurrentInstance().addMessage(null, message);
         refreshAccountList();
-        setSelectedAccount((Account)selectedNode.getData());
+        setSelectedAccount((Account) selectedNode.getData());
         //PrimeFaces.current().ajax().update("toolbar");
     }
 
@@ -103,36 +106,36 @@ public class ChartOfAccountController implements Serializable {
         //prodList = pdcontroller.getProductByCategory(pc.getProdcatId());
     }
 
-    public void createNewAccountGroup(){
+    public void createNewAccountGroup() {
         selectedAccount = new Account();
         selectedAccount.setNodetype("GROUP");
         System.out.println("createNewAccountGroup: " + selectedNode.getData());
-        selectedAccount.setParentid((Account)selectedNode.getData());
-    }
-    
-    public void editAccountGroup(){
-        selectedAccount = (Account)selectedNode.getData();
+        selectedAccount.setParentid((Account) selectedNode.getData());
     }
 
-    public void createNewAccount(){
+    public void editAccountGroup() {
+        selectedAccount = (Account) selectedNode.getData();
+    }
+
+    public void createNewAccount() {
         selectedAccount = new Account();
         selectedAccount.setNodetype("ACCOUNT");
-        selectedAccount.setParentid((Account)selectedNode.getData());
+        selectedAccount.setParentid((Account) selectedNode.getData());
     }
-    
-    public void editAccount(){
-        selectedAccount = (Account)selectedNode.getData();
+
+    public void editAccount() {
+        selectedAccount = (Account) selectedNode.getData();
     }
-    
-    public void cloneAccount(){
+
+    public void cloneAccount() {
         selectedAccount = new Account();
-        Account acc = (Account)selectedNode.getData();
+        Account acc = (Account) selectedNode.getData();
         selectedAccount.setParentid(acc.getParentid());
         selectedAccount.setAccounttype(acc.getAccounttype());
         selectedAccount.setAccountname(acc.getAccountname());
         selectedAccount.setNodetype(acc.getNodetype());
     }
-    
+
     public boolean getNewGroupDisabled() {
         if (getSelectedNode() == null) {
             //System.out.println("getNewCategoryDisabled: " + getSelectedNode());

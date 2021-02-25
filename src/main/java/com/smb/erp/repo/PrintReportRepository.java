@@ -21,4 +21,7 @@ public interface PrintReportRepository extends BaseRepository<PrintReport, Long>
     @Query("SELECT b FROM PrintReport as b WHERE b.bdinfoid.bdinfoid=:bdinfoid ORDER BY b.defaultreport, b.reportid")
     List<PrintReport> findReportByBdinfoid(@Param("bdinfoid") Integer bdinfoid);
 
+    @Query("SELECT b FROM PrintReport as b WHERE b.pageid.pageid=:pageid ORDER BY b.defaultreport, b.reportid")
+    List<PrintReport> findReportByPageid(@Param("pageid") Long pageid);
+
 }

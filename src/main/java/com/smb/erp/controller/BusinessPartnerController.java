@@ -70,6 +70,8 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     private boolean local;
 
     private VatBusinessRegister selectedVatRegister;
+    
+    private BusinessPartner all = new BusinessPartner("All");
 
     @Autowired
     public BusinessPartnerController(BusinessPartnerRepository repo) {
@@ -125,6 +127,14 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
         return items;
     }
 
+    public List<BusinessPartner> getBusinessPartnerListWithAll(){
+        if(items==null){
+            items = repo.findBusinessPartnerBySearchCriteria("");
+            items.add(0, getAll());
+        }
+        return items;
+    }
+    
     @Transactional
     public void saveBusiness() {
         try {
@@ -196,7 +206,7 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        getImportService().handleFileUpload(event);
+        getImportService().handleFileUpload(event, BusinessPartner.class);
         //importService.processData();
     }
 
@@ -303,5 +313,19 @@ public class BusinessPartnerController extends AbstractController<BusinessPartne
      */
     public void setImportService(TransactionImportService importService) {
         this.importService = importService;
+    }
+
+    /**
+     * @return the all
+     */
+    public BusinessPartner getAll() {
+        return all;
+    }
+
+    /**
+     * @param all the all to set
+     */
+    public void setAll(BusinessPartner all) {
+        this.all = all;
     }
 }

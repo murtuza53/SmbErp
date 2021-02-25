@@ -196,6 +196,7 @@ public class DataImportController implements Serializable {
     }
 
     public static File saveUploadedFile(UploadedFile file) {
+        //File f = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "report_" + new Date().getTime()+".rpt");
         File f = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + file.getFileName());
         System.out.println("Saving Imported file: " + f.getAbsolutePath());
         try {
@@ -215,6 +216,29 @@ public class DataImportController implements Serializable {
             err.printStackTrace();
         } finally {
             return f;
+        }
+    }
+
+    public static File saveUploadedFile(UploadedFile file, File toFile) {
+        //File f = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + file.getFileName());
+        System.out.println("Saving Imported file: " + toFile.getAbsolutePath());
+        try {
+            if (toFile.exists()) {
+                toFile.delete();
+            }
+            toFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(toFile);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            InputStream inputStream = file.getInputStream();
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+            outputStream.close();
+        } catch (Exception err) {
+            err.printStackTrace();
+        } finally {
+            return toFile;
         }
     }
 

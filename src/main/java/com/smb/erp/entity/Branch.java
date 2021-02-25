@@ -52,6 +52,15 @@ public class Branch implements Serializable {
     @JoinColumn(name="companyid")
     private Company company;
     
+    @Transient
+    private String companyAddress;
+    
+    @Transient
+    private String vatNo;
+
+    @Transient
+    private String companyName;
+    
     public Branch() {
     }
 
@@ -282,6 +291,48 @@ public class Branch implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    /**
+     * @return the companyAddress
+     */
+    public String getCompanyAddress() {
+        return getCompany().getAddresss();
+    }
+
+    /**
+     * @param companyAddress the companyAddress to set
+     */
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    /**
+     * @return the vatNo
+     */
+    public String getVatNo() {
+        return getCompany().getVatno();
+    }
+
+    /**
+     * @param vatNo the vatNo to set
+     */
+    public void setVatNo(String vatNo) {
+        this.vatNo = vatNo;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return getCompany().getCompanyname();
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

@@ -3,21 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smb.erp.dynamic.report;
+package com.smb.erp.rest;
 
+import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 import com.smb.erp.UserSession;
 import com.smb.erp.controller.SystemDefaultsController;
+import com.smb.erp.dynamic.report.ColorScheme;
+import com.smb.erp.dynamic.report.ColorSchemeManager;
+import com.smb.erp.dynamic.report.DefaultReportTheme;
+import com.smb.erp.dynamic.report.JasperReportFile;
+import com.smb.erp.dynamic.report.Report;
+import com.smb.erp.dynamic.report.ReportField;
+import com.smb.erp.dynamic.report.ReportGenerator;
+import com.smb.erp.dynamic.report.ReportSection;
+import com.smb.erp.dynamic.report.ReportSectionContainer;
+import com.smb.erp.dynamic.report.ReportTable;
+import com.smb.erp.dynamic.report.TableField;
+import com.smb.erp.dynamic.report.Theme;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.PrintReport;
 import com.smb.erp.repo.BusDocRepository;
 import com.smb.erp.repo.PrintReportRepository;
+import com.smb.erp.report.JasperBeanTableModel;
+import com.smb.erp.util.EvaluateExpression;
 import com.smb.erp.util.JsfUtil;
+import com.smb.erp.util.Utils;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,14 +45,21 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import net.sf.dynamicreports.report.base.DRMargin;
 import net.sf.dynamicreports.report.base.DRPage;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.LineStyle;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.smberp.json.JsonUtils;
@@ -73,6 +100,8 @@ public class DocumentReportGenerator implements Serializable {
 
     private PrintReport printReport;
 
+    String schemename = "Printed Stationary";
+
     public DocumentReportGenerator() {
     }
 
@@ -104,7 +133,9 @@ public class DocumentReportGenerator implements Serializable {
                 JsfUtil.addErrorMessage("Invalid document " + obj);
             }
         }
+        schemename = systemController.getByPropertyname("DefPrintTheme").getValue();
         System.out.println("DocumentReportGenerator_init(): " + getBusdoc());
+        System.out.println("Scehem Name: " + schemename);
     }
 
     @RequestMapping(value = "/doc2/{fileName:.+}", method = RequestMethod.GET,
@@ -170,7 +201,7 @@ public class DocumentReportGenerator implements Serializable {
                     bis = new ByteArrayInputStream(msg.getBytes());
                 } else {
                     setBusdoc(busdoc);
-                    bis = prepareReport(getBusdoc(), printReport);
+                    bis = generateReport(getBusdoc(), printReport);
                 }
             }
         }
@@ -224,6 +255,77 @@ public class DocumentReportGenerator implements Serializable {
         return prepareReport(busdoc, printReport);
     }
 
+    public ByteArrayInputStream generateReport(BusDoc doc, PrintReport pr) {
+        if (pr.getJasper()) {
+            return prepareJasperReport(doc, pr);
+        }
+        return prepareReport(doc, pr);
+    }
+
+    public ByteArrayInputStream prepareJasperReport(BusDoc doc, PrintReport pr) {
+        ByteArrayInputStream content = null;
+        String folderLocation = systemController.getByPropertyname("PrintTemplateLocation").getValue();
+        File file = new File(folderLocation + "jrxml/" + pr.getJasperfile() + ".jrxml");
+        System.out.println("prepareJasperReport: " + file.getAbsolutePath());
+        JasperReportFile report = JsonUtils.readJson(folderLocation + pr.getFilename() + ".rpt", JasperReportFile.class);
+
+        try {
+            JasperDesign design = JRXmlLoader.load(file);
+            JasperReport jreport = JasperCompileManager.compileReport(design);
+            JasperPrint print = JasperFillManager.fillReport(jreport, prepareParameters(doc, report),
+                    new JRTableModelDataSource(new JasperBeanTableModel(report.getReportTable().getDataClass(), report.getReportTable().getFieldList(), doc.getProductTransactions())));
+            content = new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print));
+        } catch (Throwable ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            content = new ByteArrayInputStream(ex.getMessage().getBytes());
+        } finally {
+            return content;
+        }
+    }
+
+    public ByteArrayInputStream prepareDynamicJasperReport(BusDoc doc, PrintReport pr) {
+        ByteArrayInputStream content = null;
+        String folderLocation = systemController.getByPropertyname("PrintTemplateLocation").getValue();
+        File file = new File(folderLocation + "jrxml/" + pr.getJasperfile() + ".jrxml");
+        System.out.println("prepareJasperReport: " + file.getAbsolutePath());
+        JasperReportFile report = JsonUtils.readJson(folderLocation + pr.getFilename() + ".rpt", JasperReportFile.class);
+        try {
+            FileInputStream is = new FileInputStream(file);
+            JasperPrint print = report().setTemplateDesign(is)
+                    //.parameters(prepareParameters(doc, report))
+                    .setParameters(prepareParameters(doc, report))
+                    .columns(prepareColumns(doc, report))
+                    .setDataSource(doc.getProductTransactions())
+                    .toJasperPrint();
+            content = new ByteArrayInputStream(JasperExportManager.exportReportToPdf(print));
+        } catch (Throwable ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(DocumentReportGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            content = new ByteArrayInputStream(ex.getMessage().getBytes());
+        } finally {
+            return content;
+        }
+    }
+
+    public Map<String, Object> prepareParameters(BusDoc doc, JasperReportFile report) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        Map<String, Object> params = new HashMap<>();
+        for (ReportField field : report.getParameters()) {
+            //params.put(field.getLabel(), Utils.formatValue(field.getType(), ReflectionUtil.readProperty(doc, field.getPropertyName())));
+            params.put(field.getLabel(), Utils.formatValue(field.getType(), EvaluateExpression.evaluateExpression(doc, field.getPropertyName(), field.getType())));
+        }
+        return params;
+    }
+
+    public TextColumnBuilder[] prepareColumns(BusDoc doc, JasperReportFile reportFile) {
+        TextColumnBuilder[] cols = new TextColumnBuilder[reportFile.getReportTable().getFieldList().size()];
+        for (int i = 0; i < reportFile.getReportTable().getFieldList().size(); i++) {
+            TableField field = reportFile.getReportTable().getFieldList().get(i);
+            cols[i] = col.column(field.getColumnTitle(), field.getPropertyName(), field.getType());
+        }
+        return cols;
+    }
+
     public ByteArrayInputStream prepareReport(BusDoc doc, PrintReport pr) {
         System.out.println("Preparing Report..." + doc);
         ByteArrayInputStream content = null;
@@ -238,7 +340,7 @@ public class DocumentReportGenerator implements Serializable {
             //Report report = generateReport(doc);
             //JsonUtils.writeJson("C:/Users/Burhani152/Documents/dpi.rpt", report);
             ReportGenerator gen = new ReportGenerator();
-            JasperPrint print = gen.prepareReport(report, prepareTheme(), report.getPage(), doc).toJasperPrint();
+            JasperPrint print = gen.prepareReport(report, prepareTheme(schemename), report.getPage(), doc).toJasperPrint();
             //JasperPrint print = gen.prepareReport(report, prepareTheme(), PAGE, doc).toJasperPrint();
             System.out.println("REPORTED_GENERATED: " + print.getName());
             ////final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -274,7 +376,8 @@ public class DocumentReportGenerator implements Serializable {
 
             Report report = generateReport(doc);
             ReportGenerator gen = new ReportGenerator();
-            JasperPrint print = gen.prepareReport(report, prepareTheme(), PAGE, doc).toJasperPrint();
+            //JasperPrint print = gen.prepareReport(report, prepareTheme(), PAGE, doc).toJasperPrint();
+            JasperPrint print = gen.prepareReport(report, prepareTheme(schemename), PAGE, doc).toJasperPrint();
 
             //final ByteArrayOutputStream out = new ByteArrayOutputStream();
             //JRPdfExporter exporter = new JRPdfExporter();
@@ -443,9 +546,8 @@ public class DocumentReportGenerator implements Serializable {
         return report;
     }
 
-    private Theme prepareTheme() {
+    private Theme prepareTheme(String schemename) {
 
-        String schemename = "Maimoon Logo";
         reportTheme = new DefaultReportTheme(ColorSchemeManager.themes.get(schemename));
 
         Theme theme = new Theme(schemename, ColorSchemeManager.themes.get(schemename));
@@ -477,6 +579,47 @@ public class DocumentReportGenerator implements Serializable {
         return theme;
     }
 
+    private Theme prepareThemeForStationary(String schemename) {
+
+        reportTheme = new DefaultReportTheme(ColorSchemeManager.themes.get(schemename));
+
+        Theme theme = new Theme(schemename, ColorSchemeManager.themes.get(schemename));
+
+        theme.setDefaultStyle(reportTheme.getVerticalSectionTextStyle());
+        theme.setColumnHeaderStyle(reportTheme.getColumnHeaderStyle().setFontBold(true));
+        theme.setColumnStyle(reportTheme.getColumnStyle());
+        theme.setColumnTitleStyle(reportTheme.getColumnTitleStyle().setFontSize(10)
+                .setBackgroundColor("secondaryColor").setForegroundColor("textPrimaryColor")
+                .setTopBorder(1.0f).setLineColor("textPrimaryColor").setLineStyle(LineStyle.DASHED));
+        theme.setSubtotalStyle(reportTheme.getColumnTitleStyle().setFontSize(9)
+                .setBackgroundColor("secondaryColor").setForegroundColor("textPrimaryColor")
+                .setTopBorder(1.0f).setLineColor("textPrimaryColor").setLineStyle(LineStyle.DASHED));
+        theme.setTableRowStyle(reportTheme.getDefaultFormat().clone().setFontSize(9).setPaddingBottom(2).setPaddingTop(2));
+        theme.setDetailsEvenRowStyle(reportTheme.getDefaultFormat().clone().setFontSize(9).setBackgroundColor("#ffffff").setHorizontalTextAlignment(null));
+        //theme.setDetailsEvenRowStyle(null);
+        theme.setDetailsOddRowStyle(null);
+        theme.setFooterSectionStyle(reportTheme.getPageFooterStyle());
+        theme.setLabelStyle1(reportTheme.getHorizontalSectionLabelStyle());
+        theme.setTextStyle1(reportTheme.getHorizontalSectionTextStyle());
+        theme.setTitleStyle1(reportTheme.getHorizontalSectionTitleStyle().clone().setFontBold(true)
+                .setBackgroundColor("secondaryColor").setForegroundColor("textPrimaryColor")
+                .setBottomBorder(1.0f).setLineColor("textPrimaryColor").setLineStyle(LineStyle.DASHED));
+        theme.setReportTitleStyle(reportTheme.getReportTitleStyle());
+        theme.setLabelStyle2(reportTheme.getVerticalSectionLabelStyle());
+        theme.setTextStyle2(reportTheme.getVerticalSectionTextStyle());
+        theme.setTitleStyle2(reportTheme.getVerticalSectionTitleStyle());
+        theme.setLabelStyle3(reportTheme.getHorizontalSectionLabelStyle());
+        theme.setTextStyle3(reportTheme.getHorizontalSectionTextStyle().setPadding(0)
+                .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                .setTopBorder(1.0f).setLineStyle(LineStyle.DASHED)
+                .setLineColor("primaryColor"));
+        theme.setTitleStyle3(reportTheme.getHorizontalSectionTitleStyle().setBackgroundColor("#ffffff")
+                .setForegroundColor("textPrimaryColor").setBottomBorder(0.5f).setTopBorder(0.5f)
+                .setLineStyle(LineStyle.DASHED).setLineColor("primaryColor"));
+
+        return theme;
+    }
+
     /**
      * @return the busdoc
      */
@@ -490,4 +633,5 @@ public class DocumentReportGenerator implements Serializable {
     public void setBusdoc(BusDoc busdoc) {
         this.busdoc = busdoc;
     }
+
 }

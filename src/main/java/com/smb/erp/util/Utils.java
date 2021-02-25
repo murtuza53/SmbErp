@@ -8,6 +8,7 @@ package com.smb.erp.util;
 import java.text.Format;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
 public class Utils {
 
     public static Integer[] YEARS;
-    public static String[] MONTH_NAMES = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};    
+    public static String[] MONTH_NAMES = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    public static List<Class> DATA_TYPES = Arrays.asList(new Class[]{String.class, Integer.class, Long.class, Float.class, Double.class, Boolean.class});
 
     static {
         int year_start = 2014;
@@ -31,8 +33,6 @@ public class Utils {
             YEARS[i] = year_start + i;
         }
     }
-
-    ;
 
     public String[] month_names_asarrays(Date date) {
         return (String[]) month_names(date).toArray();
@@ -53,12 +53,12 @@ public class Utils {
         return list;
     }
 
-    public static Format getFormatter(Class type){
-        if(type==null){
+    public static Format getFormatter(Class type) {
+        if (type == null) {
             return null;
         }
-        
-        if (type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName())) {
+
+        if (type.getName().equals(double.class.getName()) || type.getName().equals(Double.class.getName())) {
             return SystemConfig.DECIMAL_FORMAT;
         } else if (type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())) {
             return SystemConfig.DECIMAL_FORMAT;
@@ -71,24 +71,24 @@ public class Utils {
         }
         return null;
     }
-    
-    public static String formatValue(Class type, Object value){
-        if(value==null){
-            return null;
+
+    public static String formatValue(Class type, Object value) {
+        if (value == null) {
+            return "";
         }
         Format format = getFormatter(type);
-        if(format!=null){
+        if (format != null) {
             return format.format(value);
         }
         return value.toString();
     }
-    
-    public static Object convertValue(Class type, String value) throws ParseException{
-        if(type==null){
+
+    public static Object convertValue(Class type, String value) throws ParseException {
+        if (type == null) {
             return null;
         }
-        
-        if (type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName())) {
+
+        if (type.getName().equals(double.class.getName()) || type.getName().equals(Double.class.getName())) {
             return Double.parseDouble(value);
         } else if (type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())) {
             return Float.parseFloat(value);
@@ -101,27 +101,27 @@ public class Utils {
         }
         return value;
     }
-    
-    public static String getCssStyle(Class type){
-        if(type == null){
+
+    public static String getCssStyle(Class type) {
+        if (type == null) {
             return "inherit";
         }
-        if (type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName()) 
-                || type.getName().equals(float.class.getName())  || type.getName().equals(Float.class.getName())) {
+        if (type.getName().equals(double.class.getName()) || type.getName().equals(Double.class.getName())
+                || type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())) {
             return "right";
-        } else if (type.getName().equals(Date.class.getName())  || type.getName().equals(int.class.getName())
+        } else if (type.getName().equals(Date.class.getName()) || type.getName().equals(int.class.getName())
                 || type.getName().equals(Integer.class.getName())) {
             return "center";
         }
         return "inherit";
     }
-    
-    public static Object getDefaultValue(Class type){
-        if(type==null){
+
+    public static Object getDefaultValue(Class type) {
+        if (type == null) {
             return null;
         }
-        
-        if (type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName())) {
+
+        if (type.getName().equals(double.class.getName()) || type.getName().equals(Double.class.getName())) {
             return 0.0;
         } else if (type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())) {
             return 0.0;
@@ -134,17 +134,17 @@ public class Utils {
         }
         return null;
     }
-    
-    public static boolean isPrimitiveOrStringType(Class type){
-        if(type==null){
+
+    public static boolean isPrimitiveOrStringType(Class type) {
+        if (type == null) {
             return false;
         }
-        
-        return type.getName().equals(double.class.getName())  || type.getName().equals(Double.class.getName()) ||
-                type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName()) ||
-                type.getName().equals(int.class.getName()) || type.getName().equals(Integer.class.getName()) ||
-                type.getName().equals(long.class.getName()) || type.getName().equals(Long.class.getName()) ||
-                type.getName().equals(boolean.class.getName()) || type.getName().equals(Boolean.class.getName()) ||
-                type.getName().equals(String.class.getName());
+
+        return type.getName().equals(double.class.getName()) || type.getName().equals(Double.class.getName())
+                || type.getName().equals(float.class.getName()) || type.getName().equals(Float.class.getName())
+                || type.getName().equals(int.class.getName()) || type.getName().equals(Integer.class.getName())
+                || type.getName().equals(long.class.getName()) || type.getName().equals(Long.class.getName())
+                || type.getName().equals(boolean.class.getName()) || type.getName().equals(Boolean.class.getName())
+                || type.getName().equals(String.class.getName());
     }
 }

@@ -41,6 +41,9 @@ public class BusDocListController extends AbstractController<BusDoc> {
 
     @Autowired
     BusinessPartnerRepository partnerRepo;
+    
+    @Autowired
+    BusinessPartnerController partnerCon;
 
     @Autowired
     ProductTransactionExecutionController pteController;
@@ -57,6 +60,8 @@ public class BusDocListController extends AbstractController<BusDoc> {
     private Date fromDate = DateUtil.startOfMonth(new Date());
 
     private Date toDate = new Date();
+
+    private BusinessPartner selectedBusinessPartner;
 
     @Autowired
     public BusDocListController(BusDocRepository repo) {
@@ -82,21 +87,28 @@ public class BusDocListController extends AbstractController<BusDoc> {
                 mode = DocumentTab.MODE.LIST;
             }
         }
+        selectedBusinessPartner = partnerCon.getAll();
     }
 
     @Override
     public List<BusDoc> getItems() {
         if (items == null) {
             //items = repo.findAll(Sort.by(Sort.Direction.ASC, "createdon"));
-            items = repo.findByBusDocByPrefix(docInfo.getPrefix(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate));
-            System.out.println(docInfo.getPrefix() + " List: " + items.size());
+            System.out.println("selectedBusinessPartner: " + selectedBusinessPartner);
+            if (selectedBusinessPartner == null || selectedBusinessPartner.getPartnerid()==0l) {
+                items = repo.findByBusDocByPrefix(docInfo.getPrefix(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate));
+            } else {
+                items = repo.findByBusDocByPrefixAndBusinessPartner(docInfo.getPrefix(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate), selectedBusinessPartner.getPartnerid());
+            }
+            //System.out.println(docInfo.getPrefix() + " List: " + items.size());
             for (BusDoc bd : items) {
-                System.out.println("----------" + bd.getDocno() + "----------");
+                //System.out.println("----------" + bd.getDocno() + "----------");
                 for (ProductTransaction pt : bd.getProductTransactions()) {
                     System.out.println(pt.getProdtransid() + " => " + pt.getProduct() + " => FROM:" + pt.getFromprodtransaction() + " => TO:" + pt.getToprodtransaction());
                 }
-                System.out.println("\n");
+                //System.out.println("\n");
             }
+            JsfUtil.addSuccessMessage(items.size() + " documents listed");
         }
         return items;
     }
@@ -195,6 +207,20 @@ public class BusDocListController extends AbstractController<BusDoc> {
      */
     public void setToDate(Date toDate) {
         this.toDate = toDate;
+    }
+
+    /**
+     * @return the selectedBusinessPartner
+     */
+    public BusinessPartner getSelectedBusinessPartner() {
+        return selectedBusinessPartner;
+    }
+
+    /**
+     * @param selectedBusinessPartner the selectedBusinessPartner to set
+     */
+    public void setSelectedBusinessPartner(BusinessPartner selectedBusinessPartner) {
+        this.selectedBusinessPartner = selectedBusinessPartner;
     }
 
 }

@@ -43,9 +43,12 @@
                                      emptyMessage="No Webpage found"
                                      editable="true"
                                      styleClass="products-table">
-                            <p:ajax event="rowEdit" listener="#{webpageController.save()}" update="patable, :growl"/>
+                            <p:ajax event="rowEdit" listener="#{webpageController.saveWebpage}" update=":emplistform, :growl"/>
                             <p:ajax event="rowEditCancel" update="patable, :growl"/>
 
+                            <p:column style="width:2rem">
+                                <p:rowToggler/>
+                            </p:column>
                             <p:column headerText="Id" style="width: 20px">
                                 <h:outputText value="#{item.pageid}" />
                             </p:column>
@@ -75,6 +78,17 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText value="#{item.title}" style="width: 98%"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Icon">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <i class="#{item.icon}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{item.icon}" style="width: 98%"/>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
@@ -126,6 +140,62 @@
                             <p:column style="width:6rem">
                                 <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
                             </p:column>
+
+                            <p:rowExpansion>
+                                <p:panel id="rptlist" header="Print Report Templates">
+                                    <f:facet name="actions">
+                                        <p:commandButton id="btnjrptnew" title="New Jasper Template" icon="fa fa-plus" widgetVar="btnjnew"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         process="@this" ajax="false" onclick="form.target = '_blank'"
+                                                         update="rpttable" actionListener="#{webpageController.createNewJasperReport(item)}"/>
+
+                                        <p:commandButton id="btnjrptedit" title="Edit Jasper Template" icon="fa fa-pencil" widgetVar="btnjedit"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         process="@this" ajax="false" onclick="form.target = '_blank'"
+                                                         disabled="#{empty webpageController.selectedPrintReport}"
+                                                         update="rpttable" actionListener="#{webpageController.editJasperReport(item)}"/> 
+
+                                        <p:commandButton id="btnrptdelete" icon="fa fa-trash" update="rpttable" widgetVar="btnjdelete"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         disabled="#{empty webpageController.selectedPrintReport}"
+                                                         actionListener="#{webpageController.deletePrintReport(item)}"/>
+                                    </f:facet>
+                                    <p:dataTable id="rpttable" var="reg"
+                                                 value="#{item.reportid}"
+                                                 rowKey="#{reg.reportid}"
+                                                 selection="#{webpageController.selectedPrintReport}"
+                                                 selectionMode="single"
+                                                 emptyMessage="No template found"
+                                                 styleClass="products-table ui-datatable-sm">
+                                        <p:ajax event="rowSelect" update="@widgetVar(btnjedit), @widgetVar(btnjdelete)"/>
+                                        <p:column headerText="Id" style="width: 40px; text-align: center">
+                                            <h:outputText value="#{reg.pageid}" />
+                                        </p:column>
+
+                                        <p:column headerText="Created On">
+                                            <h:outputText value="#{reg.createdon}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Report Name">
+                                            <h:outputText value="#{reg.reportname}" />
+                                        </p:column>
+
+                                        <p:column headerText="File">
+                                            <h:outputText value="#{reg.filename}" />
+                                        </p:column>
+
+                                        <p:column headerText="Default" style="width: 70px; text-align: center">
+                                            <p:selectBooleanCheckbox value="#{reg.defaultreport}" disabled="true" />
+                                        </p:column>
+
+                                        <p:column headerText="Jasper" style="width: 70px; text-align: center">
+                                            <p:selectBooleanCheckbox value="#{reg.jasper}" disabled="true" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:rowExpansion>
                         </p:dataTable>
                     </p:panel>
                     <ui:include src="/confirmation.xhtml"/>
@@ -164,6 +234,14 @@
                             <p:outputLabel for="ptitle" styleClass="p-col-fixed" value="Title"/>
                             <div class="p-col">
                                 <p:inputText id="ptitle" value="#{webpageController.selected.title}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <p:outputLabel for="picon" styleClass="p-col-fixed" value="Icon"/>
+                            <div class="p-col">
+                                <i class="#{webpageController.selected.icon}"/>
+                                <p:inputText id="picon" value="#{webpageController.selected.icon}"/>
                             </div>
                         </div>
 

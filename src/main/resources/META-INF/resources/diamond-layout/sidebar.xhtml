@@ -9,38 +9,10 @@
 
         <div class="layout-menu-container">
             <h:form id="sidebar-form">
-                <d:menu widgetVar="diamondMenuWidget">
+                <d:menu widgetVar="diamondMenuWidget" rendered="#{userSession.admin}">
                     <p:menuitem id="om_reload" value="Reload Menu" icon="pi pi-refresh" actionListener="#{appmenuController.loadMenu()}" update=":sidebar-form" ajax="false"/>
                     <p:separator />
                     <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" outcome="/dashboard" />
-                    <p:separator />
-                    <p:submenu id="om_components" label="Master Data"
-                               icon="fa fa-fw fa-table">
-                        <p:menuitem id="hr_company" value="Company"
-                                    icon="far fa-building"
-                                    outcome="/hr/company.xhtml" />
-                        <p:menuitem id="pr_businesspartner" value="Business Partner"
-                                    icon="far fa-handshake"
-                                    outcome="/pr/businesspartnerlist.xhtml" />
-                        <p:menuitem id="inv_prodmaster" value="Product"
-                                    icon="fa fa-fw fa-sitemap" update=":mainform"
-                                    outcome="/inventory/prodmaster.xhtml" />
-                        <p:menuitem id="acc_accmaster" value="Accounts"
-                                    icon="fas fa-book" 
-                                    outcome="/accounts/coa.xhtml" />
-                        <p:menuitem id="acc_genled" value="General Ledger"
-                                    icon="fas fa-book-open" 
-                                    outcome="/accounts/ledger.xhtml" />
-                        <p:menuitem id="acc_tb" value="Trial Balance"
-                                    icon="fas fa-balance-scale" 
-                                    outcome="/accounts/tb.xhtml" />
-                        <p:menuitem id="busdoc_settings" value="Document Settings"
-                                    icon="fas fa-sliders-h" 
-                                    outcome="/busdoc/busdocsettings.xhtml" />
-                        <p:menuitem id="stock_ledger" value="Stock Ledger"
-                                    icon="far fa-list-alt" 
-                                    outcome="/inventory/stockledger.xhtml" />
-                    </p:submenu>
                     <p:separator />
                 </d:menu>
                 <d:menu model="#{appmenuController.menuModel}" />

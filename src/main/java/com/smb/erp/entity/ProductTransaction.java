@@ -164,6 +164,9 @@ public class ProductTransaction implements Serializable {
 
     @Transient
     private Double fcTotalcost;
+    
+    @Transient
+    String vatPercentage;
 
     public ProductTransaction() {
     }
@@ -581,6 +584,14 @@ public class ProductTransaction implements Serializable {
         setExecutedqty(total);
     }
 
+    public String getVatPercentage(){
+        return getVatcategoryid().getVatpercentage() + " %";
+    }
+    
+    public void setVatPercentage(String perString){
+        this.vatPercentage = perString;
+    }
+    
     /**
      * @return the vatamount
      */

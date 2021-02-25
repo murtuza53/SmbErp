@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the brand database table.
@@ -36,6 +38,7 @@ public class EmpRole implements Serializable {
     private Integer level;
 
     @ManyToMany(mappedBy="emproles", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Emp> emps;
 
     public EmpRole() {

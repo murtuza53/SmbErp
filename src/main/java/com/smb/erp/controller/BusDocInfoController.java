@@ -5,12 +5,14 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.Account;
 import com.smb.erp.entity.AccountTransactionType;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocTransactionType;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.CashRegister;
+import com.smb.erp.entity.DefaultModeAccount;
 import com.smb.erp.entity.PrintReport;
 import com.smb.erp.entity.Webpage;
 import com.smb.erp.repo.BusDocInfoRepository;
@@ -48,10 +50,14 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     private AccountTransactionType selectedTransaction;
 
     private CashRegister selectedCashRegister;
+    
+    private DefaultModeAccount selectedDefaultAccount;
 
     private BusDocInfo selectedConvertFrom;
 
     private PrintReport selectedPrintReport;
+    
+    private String modeDebitOrCredit = "None";
 
     @Autowired
     public BusDocInfoController(BusDocInfoRepository repo) {
@@ -76,6 +82,14 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
                 if (bdid != null) {
                     setSelected(repo.getOne(Integer.parseInt(bdid)));
                 }
+                
+                if(getSelected().getDebitaccountid()!=null){
+                    setModeDebitOrCredit("Debit");
+                }
+                if(getSelected().getCreditaccountid()!=null){
+                    setModeDebitOrCredit("Credit");
+                }
+                
                 mode = DocumentTab.MODE.EDIT;
             }
             if (getSelected().getPageid() == null) {
@@ -99,12 +113,27 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
             if (mode == DocumentTab.MODE.NEW) {
                 getSelected().setCreatedon(new Date());
             }
+            
+            if(getModeDebitOrCredit().equalsIgnoreCase("None")){
+                getSelected().setDebitaccountid(null);
+                getSelected().setCreditaccountid(null);
+            } else if(getModeDebitOrCredit().equalsIgnoreCase("Debit")){
+                getSelected().setCreditaccountid(null);
+            } else if(getModeDebitOrCredit().equalsIgnoreCase("Credit")){
+                getSelected().setDebitaccountid(null);
+            }
+            
+            if(getSelected().getDefaultaccid()!=null){
+                for(DefaultModeAccount def: getSelected().getDefaultaccid()){
+                    def.setTranstype(modeDebitOrCredit);
+                }
+            }
             //if(getSelected().getPageid().getPageid()==null){
             //    webRepo.save(getSelected().getPageid());
             //}
             super.save();
-            //if (mode == DocumentTab.MODE.NEW || getSelected().getPageid()==null) {
-            //getSelected().getPageid().setListurl(getSelected().getDoclisturl() + "?mode=l&docinfoid=" + getSelected().getBdinfoid());
+            //reload the busdocinfo 
+            setSelected(repo.getOne(getSelected().getBdinfoid()));
             getSelected().getPageid().setListurl(getSelected().getDoclisturl());
             getSelected().getPageid().setPageurl(getSelected().getDocediturl());
             super.save();
@@ -155,9 +184,36 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         JsfUtil.addSuccessMessage("Deleted Successfuly");
     }
 
+    public void createNewDefaultModeAccount() {
+        setSelectedDefaultAccount(new DefaultModeAccount());
+        getSelectedDefaultAccount().setDefaultaccid(0);
+        getSelectedDefaultAccount().setTranstype(modeDebitOrCredit);
+        if (getSelected().getDefaultaccid()== null) {
+            getSelected().setDefaultaccid(new LinkedList<DefaultModeAccount>());
+        }
+        getSelected().addDefaultaccid(getSelectedDefaultAccount());
+    }
+
+    public void deleteDefaultModeAccount() {
+        if (getSelectedDefaultAccount() == null) {
+            JsfUtil.addErrorMessage("No Account Selected to Delete");
+            return;
+        }
+        getSelected().removeDefaultaccid(getSelectedDefaultAccount());
+        setSelectedDefaultAccount(null);
+        JsfUtil.addSuccessMessage("Deleted Successfuly");
+    }
+
     public void createNewPrintReport() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().redirect("../report/printdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
+    }
+
+    public void createNewJasperReport() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        //facesContext.getExternalContext().getRequestMap().put("mode", "n");
+        //facesContext.getExternalContext().getRequestMap().put("bdid", "" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect("../report/jasperdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
     }
 
     public void editPrintReport() throws IOException {
@@ -170,13 +226,23 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         facesContext.getExternalContext().redirect("../report/printdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
     }
 
+    public void editJasperReport() throws IOException {
+        if (getSelectedPrintReport() == null) {
+            JsfUtil.addErrorMessage("Error", "No Print Template selected to edit");
+            return;
+        }
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().redirect("../report/jasperdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
+    }
+
     public void deletePrintReport() {
         if (getSelectedPrintReport() == null) {
             JsfUtil.addErrorMessage("No Print Template selected to Delete");
             return;
         }
-        getSelected().removeCashregisterid(selectedCashRegister);
-        selectedCashRegister = null;
+        getSelected().removeReportid(selectedPrintReport);
+        selectedPrintReport = null;
         JsfUtil.addSuccessMessage("Deleted Successfuly");
     }
 
@@ -307,6 +373,34 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
      */
     public void setSelectedPrintReport(PrintReport selectedPrintReport) {
         this.selectedPrintReport = selectedPrintReport;
+    }
+
+    /**
+     * @return the modeDebitOrCredit
+     */
+    public String getModeDebitOrCredit() {
+        return modeDebitOrCredit;
+    }
+
+    /**
+     * @param modeDebitOrCredit the modeDebitOrCredit to set
+     */
+    public void setModeDebitOrCredit(String modeDebitOrCredit) {
+        this.modeDebitOrCredit = modeDebitOrCredit;
+    }
+
+    /**
+     * @return the selectedDefaultAccount
+     */
+    public DefaultModeAccount getSelectedDefaultAccount() {
+        return selectedDefaultAccount;
+    }
+
+    /**
+     * @param selectedDefaultAccount the selectedDefaultAccount to set
+     */
+    public void setSelectedDefaultAccount(DefaultModeAccount selectedDefaultAccount) {
+        this.selectedDefaultAccount = selectedDefaultAccount;
     }
 
 }

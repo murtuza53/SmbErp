@@ -26,7 +26,7 @@
                             <div class="p-field p-col-12 p-md-6">
                                 <p:outputLabel for="fromdate" value="From Date" />
                                 <p:datePicker id="fromdate" value="#{ledgerlineController.fromDate}" showIcon="true" readonlyInput="true"
-                                              monthNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
+                                              monthNavigator="true" yearNavigator="true" required="true" requiredMessage="Please select Date" pattern="dd/MM/yyyy">
                                 </p:datePicker>
                             </div>
 
@@ -90,13 +90,13 @@
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm"
                                      style="font-size: small">
 
-                            <p:headerRow>
-                                <p:column colspan="8">
+                            <p:headerRow groupBy="#{item.account}">
+                                <p:column colspan="10">
                                     <h:outputText value="#{item.account}" />
                                 </p:column>
                             </p:headerRow>
 
-                            <p:column headerText="TransNo#" sortBy="#{item.llno}" filterBy="#{item.llno}" filterMatchMode="contains"
+                            <p:column headerText="No#" sortBy="#{item.llno}" filterBy="#{item.llno}" filterMatchMode="contains"
                                       style="width: 50px">
                                 <h:outputText value="#{item.llno}" />
                             </p:column>
@@ -160,7 +160,7 @@
 
                             <p:column sortBy="#{item.fcCredit}" filterBy="#{item.fcCredit}" filterMatchMode="contains"  style="text-align: right">
                                 <f:facet name="header">
-                                    <h:outputText value="Credit"/>
+                                    <h:outputText value="Credit FC"/>
                                 </f:facet>
                                 <h:outputText value="#{item.fcCredit}">
                                     <f:convertNumber pattern="#,##0.000" />

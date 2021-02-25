@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Sales Report
+    </ui:define>
+
+    <ui:param name="viewname" value="Sales Report" />
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="doclist" header="" toggleable="true">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{salesReportController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="From Date" for="fromdate" />
+                                <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{salesReportController.fromDate}" 
+                                              title="From Date"  showIcon="true"
+                                              required="true" requiredMessage="Please select Date"/>
+                            </div>
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="To Date" for="todate" />
+                                <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{salesReportController.toDate}" 
+                                              title="To Date"  showIcon="true"
+                                              required="true" requiredMessage="Please select Date"/>
+                            </div>
+                            <div class="p-field p-col-12">
+                                <p:outputLabel value="Business Partner" for="partner" />
+                                <p:selectOneMenu id="partner" value="#{salesReportController.selectedClass}" converter="#{entityConverter}" 
+                                                 var="t" effect="fade">
+                                    <f:selectItems value="#{salesReportController.classList}" var="item" itemLabel="#{item.simpleName}" itemValue="#{item}"/>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{t.simpleName}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <br/>
+                    <br/>
+                    <p:panel id="tablelist" header="" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" ajax="false" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <p:dataExporter type="xls" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" ajax="false" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
+                            </p:commandButton>
+                        </f:facet>
+
+                        <p:dataTable id="bustable" var="item" widgetVar="btable"
+                                     value="#{salesReportController.dataList}"
+                                     reflow="true"
+                                     emptyMessage="No Transaction found"
+                                     styleClass="products-table ui-datatable-sm">
+
+                            <p:columns value="#{salesReportController.propertyList}" var="column" columnIndexVar="colIndex"
+                                       headerText="#{column}" style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="#{column}"/>
+                                </f:facet>
+                                <h:outputText value="#{salesReportController[column.key]}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:columns>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

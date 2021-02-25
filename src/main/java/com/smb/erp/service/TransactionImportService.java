@@ -69,7 +69,7 @@ public class TransactionImportService implements Serializable {
 
     private ImportTransferable importTransferable;
     
-    public static SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    public static SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     //public static DateTimeFormatter IMPORT_DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     @PostConstruct
@@ -79,7 +79,9 @@ public class TransactionImportService implements Serializable {
         IMPORT_DATE_FORMAT.setLenient(false);
     }
 
-    public void handleFileUpload(FileUploadEvent event) {
+    public void handleFileUpload(FileUploadEvent event, Class cls) {
+        setClz(cls);
+        System.out.println("Processing Excel file for " + clz);
         //setFile(event.getFile());
         setFile(event.getFile());
         File f = saveUploadedFile(getFile());
@@ -88,9 +90,11 @@ public class TransactionImportService implements Serializable {
         //System.out.println(progressMessage);
 
         excelService.initFile(f);
+        System.out.println("Header: " + excelService.getRowAsArray(0));
         setHeader(excelService.getRowAsArray(0));
         setupProperty();
-
+        
+        System.out.println("Found " + excelService.rowCount() + " records in File");
         //System.out.println("EXCEl_FILE_ROW_COUNT:" + excelService.rowCount());
         //System.out.println("HEADER: " + getHeader());
         setItems((List<List>) new LinkedList());

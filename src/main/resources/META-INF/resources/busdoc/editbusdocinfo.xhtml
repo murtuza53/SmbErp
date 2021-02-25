@@ -58,6 +58,25 @@
 
                         <p:outputLabel value="Suffix:" for="suf" />
                         <p:inputText id="suf" placeholder="Suffix" value="#{busDocInfoController.selected.suffix}"/>
+
+                        <p:outputLabel value="Business Partner" for="partner" />
+                        <p:selectOneMenu id="partner" value="#{busDocInfoController.selected.businesspartner}" converter="#{entityConverter}" 
+                                         var="t" effect="fade" filter="true" filterMatchMode="contains" style="width: 100%">
+                            <f:selectItem itemLabel="None" itemValue="#{null}"/>
+                            <f:selectItems value="#{businessPartnerController.items}" var="item" itemLabel="#{item.companyname}" itemValue="#{item}"/>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{t.partnerid}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{t.companyname}"/>
+                            </p:column>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="Conversion" styleClass="card ui-fluid">
@@ -121,13 +140,13 @@
 
                         <p:outputLabel value="Edit URL:" for="docedit" />
                         <p:inputText id="docedit" placeholder="Document Edit Link" value="#{busDocInfoController.selected.docediturl}"/>
-                        
+
                         <p:outputLabel value="Icon:" for="dicon" />
                         <p:inputText id="dicon" placeholder="Icon" value="#{busDocInfoController.selected.pageid.icon}"/>
-                        
+
                         <p:outputLabel value="Page Order:" for="porder" />
                         <p:spinner id="porder" value="#{busDocInfoController.selected.pageid.menuorder}" min="0"/>
-                        
+
                         <p:outputLabel value="Active:" for="pactive" />
                         <p:selectBooleanButton id="pactive" value="#{busDocInfoController.selected.pageid.active}" 
                                                onLabel="Yes" offLabel="No"
@@ -228,6 +247,119 @@
                         #{busDocInfoController.numberFields}
                     </p:panel>
                 </p:fieldset>
+
+                <p:fieldset legend="Default Accounts" styleClass="card ui-fluid">
+                    <p:panel id="defaultdrcrlist" header="Add Accounts">
+                        <f:facet name="actions">
+                            <p:commandButton id="btndefew" title="Add New" icon="fa fa-plus"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             update="deftable" actionListener="#{busDocInfoController.createNewDefaultModeAccount()}"/>                            
+
+                            <p:commandButton id="btndefdelete" icon="fa fa-trash" update="deftable"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocInfoController.selectedCashRegister}"
+                                             actionListener="#{busDocInfoController.deleteDefaultModeAccount()}"/>
+                        </f:facet>
+                        <p:dataTable id="deftable" var="reg" widgetVar="deftable"
+                                     value="#{busDocInfoController.selected.defaultaccid}"
+                                     rowKey="#{reg.defaultaccid}"
+                                     selectionMode="single"
+                                     selection="#{busDocInfoController.selectedDefaultAccount}"
+                                     editable="true"
+                                     editMode="cell"
+                                     emptyMessage="No Accounts found"
+                                     styleClass="products-table ui-datatable-sm">
+                            <p:ajax event="rowSelect" update=":mainform:btndefdelete"/>
+
+                            <p:column headerText="Id" style="width: 30px; text-align: center">
+                                <h:outputText value="#{reg.defaultaccid}" />
+                            </p:column>
+
+                            <p:column headerText="Available A/c">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{reg.accountid.accountname}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="acccr" value="#{reg.accountid}" converter="#{entityConverter}" 
+                                                         var="cr" effect="fade" filter="true" filterMatchMode="contains" >
+                                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                                            <f:selectItems value="#{accountController.accountLeafNotBusinessPartner}" var="regcr" 
+                                                           itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                                            <p:column style="width: 20%">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Id"/>
+                                                </f:facet>
+                                                <h:outputText value="#{cr.accountid}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{cr.accountname}"/>
+                                            </p:column>
+                                        </p:selectOneMenu>                               
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panelGrid id="pnldacc" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                        <p:outputLabel value="Mode Type" for="dcmode" />
+                        <p:selectOneMenu id="dcmode" value="#{busDocInfoController.modeDebitOrCredit}" effect="fade" >
+                            <p:ajax event="change" update="pnldacc"/>
+                            <f:selectItem itemLabel="None" itemValue="None"/>
+                            <f:selectItem itemLabel="Debit (Receipt)" itemValue="Debit"/>
+                            <f:selectItem itemLabel="Credit (Payment)" itemValue="Credit"/>
+                        </p:selectOneMenu>   
+
+                        <p:outputLabel id="lbldebit" value="#{busDocInfoController.modeDebitOrCredit} Account" for="debitaccid" 
+                                       rendered="#{busDocInfoController.modeDebitOrCredit eq 'Debit'}"/>
+                        <p:selectOneMenu id="debitaccid" value="#{busDocInfoController.selected.debitaccountid}" converter="#{entityConverter}" 
+                                         var="t" effect="fade" filter="true" filterMatchMode="contains" 
+                                         rendered="#{busDocInfoController.modeDebitOrCredit eq 'Debit'}">
+                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                            <f:selectItems value="#{accountController.accountLeafNotBusinessPartner}" var="item" 
+                                           itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                            <p:column style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{t.accountid}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{t.accountname}"/>
+                            </p:column>
+                        </p:selectOneMenu>   
+
+                        <p:outputLabel id="lblcredit" value="Credit Account" for="creditaccid" 
+                                       rendered="#{busDocInfoController.modeDebitOrCredit eq 'Credit'}"/>
+                        <p:selectOneMenu id="creditaccid" value="#{busDocInfoController.selected.creditaccountid}" converter="#{entityConverter}" 
+                                         var="t" effect="fade" filter="true" filterMatchMode="contains" 
+                                         rendered="#{busDocInfoController.modeDebitOrCredit eq 'Credit'}">
+                            <f:selectItem itemLabel="Select..." itemValue="#{null}" itemDisabled="true"/>
+                            <f:selectItems value="#{accountController.accountLeafNotBusinessPartner}" var="item" 
+                                           itemLabel="#{item.accountname}" itemValue="#{item}"/>
+                            <p:column style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{t.accountid}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{t.accountname}"/>
+                            </p:column>
+                        </p:selectOneMenu>   
+                    </p:panelGrid>
+                </p:fieldset>
+
                 <p:fieldset legend="Cash Register" styleClass="card ui-fluid">
                     <p:panel id="crlist" header="Add Accounts">
                         <f:facet name="actions">
@@ -307,7 +439,7 @@
                 <p:fieldset legend="Print Templates" styleClass="card ui-fluid">
                     <p:panel id="rptlist" header="Templates">
                         <f:facet name="actions">
-                            <p:commandButton id="btnrptnew" title="New Template" icon="fa fa-plus"
+                            <p:commandButton id="btnrptnew" title="New Print Template" icon="fa fa-plus"
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              process="@this" ajax="false" onclick="form.target = '_blank'"
                                              update="rpttable" actionListener="#{busDocInfoController.createNewPrintReport()}"/>
@@ -318,10 +450,21 @@
                                              disabled="#{empty busDocInfoController.selectedPrintReport}"
                                              update="rpttable" actionListener="#{busDocInfoController.editPrintReport()}"/> 
 
+                            <p:commandButton id="btnjrptnew" title="New Jasper Template" icon="fa fa-plus"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             process="@this" ajax="false" onclick="form.target = '_blank'"
+                                             update="rpttable" actionListener="#{busDocInfoController.createNewJasperReport()}"/>
+
+                            <p:commandButton id="btnjrptedit" title="Edit Jasper Template" icon="fa fa-pencil"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             process="@this" ajax="false" onclick="form.target = '_blank'"
+                                             disabled="#{empty busDocInfoController.selectedPrintReport}"
+                                             update="rpttable" actionListener="#{busDocInfoController.editJasperReport()}"/> 
+
                             <p:commandButton id="btnrptdelete" icon="fa fa-trash" update="rpttable"
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{empty busDocInfoController.selectedPrintReport}"
-                                             actionListener="#{busDocInfoController.deleteCashRegister()}"/>
+                                             actionListener="#{busDocInfoController.deletePrintReport()}"/>
                         </f:facet>
                         <p:dataTable id="rpttable" var="reg"
                                      value="#{busDocInfoController.selected.reportid}"
@@ -332,7 +475,7 @@
                                      editMode="cell"
                                      emptyMessage="No template found"
                                      styleClass="products-table ui-datatable-sm">
-                            <p:ajax event="rowSelect" update=":mainform:btnrptedit, :mainform:btnrptdelete"/>
+                            <p:ajax event="rowSelect" update=":mainform:btnrptedit, :mainform:btnjrptedit, :mainform:btnrptdelete"/>
 
                             <p:column headerText="Id" style="width: 40px; text-align: center">
                                 <h:outputText value="#{reg.reportid}" />
@@ -354,6 +497,10 @@
 
                             <p:column headerText="Default" style="width: 70px; text-align: center">
                                 <p:selectBooleanCheckbox value="#{reg.defaultreport}" disabled="true" />
+                            </p:column>
+
+                            <p:column headerText="Jasper" style="width: 70px; text-align: center">
+                                <p:selectBooleanCheckbox value="#{reg.jasper}" disabled="true" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>

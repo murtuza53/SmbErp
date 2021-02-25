@@ -3,7 +3,10 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the branch database table.
@@ -38,6 +41,10 @@ public class Webpage implements Serializable {
     @ManyToOne
     @JoinColumn(name = "moduleid")
     private Module moduleid;
+
+    @OneToMany(mappedBy = "pageid", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<PrintReport> reportid;
 
     public Webpage() {
     }
@@ -217,4 +224,31 @@ public class Webpage implements Serializable {
         return sb.append(getModuleid()).append("_").append(getPageid()).toString();
     }
 
+    /**
+     * @return the reportid
+     */
+    public List<PrintReport> getReportid() {
+        return reportid;
+    }
+
+    /**
+     * @param reportid the reportid to set
+     */
+    public void setReportid(List<PrintReport> reportid) {
+        this.reportid = reportid;
+    }
+
+    public PrintReport addReportid(PrintReport rpt) {
+        getReportid().add(rpt);
+        rpt.setPageid(this);
+
+        return rpt;
+    }
+
+    public PrintReport removeReportid(PrintReport rpt) {
+        getReportid().remove(rpt);
+        rpt.setPageid(null);
+
+        return rpt;
+    }
 }

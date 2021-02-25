@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
@@ -158,6 +159,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
 
     private String success = "0";
 
+    private UploadedFile file;
+
+    private String quickProductCode;
+
     //private Date docdate;
     @Autowired
     public BusDocController(BusDocRepository repo) {
@@ -206,6 +211,10 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 cashRegController.setCashRegister(getSelected().getBusdocinfo().getCashregiserid());
                 //docdate = getSelected().getDocdate();
                 //setupPrintMenu();
+
+                //set default businesspartner
+                doc.setBusinesspartner(docInfo.getBusinesspartner());
+
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
                 if (docno != null) {
@@ -350,18 +359,18 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         pt.getBusdoc().refreshTotal();
     }
 
-    public void updateVatCategory(ProductTransaction pt){
-        if(pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Sales") || 
-                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Exempted Sales") ||
-                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Purchase") || 
-                pt.getVatsptypeid().getTypename().equalsIgnoreCase("Out of Scope Purchase")){
+    public void updateVatCategory(ProductTransaction pt) {
+        if (pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Sales")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Exempted Sales")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Purchase")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Out of Scope Purchase")) {
             pt.setVatcategoryid(getVatCatogories().get(0));
         } else {
             pt.setVatcategoryid(getVatCatogories().get(1));
         }
         refreshTotal(pt);
     }
-    
+
     public void updateCost(List<ProductTransaction> ptlist) {
         if (ptlist != null) {
             for (ProductTransaction pt : ptlist) {
@@ -407,6 +416,21 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
     @Override
     public void transferData(List list) {
 
+    }
+
+    public void searchAndTransfer() {
+        if (quickProductCode == null || quickProductCode.trim().isEmpty()) {
+            JsfUtil.addErrorMessage("Quick Scan cannot be empty");
+            return;
+        }
+        Product p = productSearchController.findByProductidOrSupplierCodeOrBarcodes(quickProductCode);
+        if (p == null) {
+            JsfUtil.addErrorMessage("No Product found for " + quickProductCode);
+            return;
+        }
+        ProductTransaction pt = convert(p, getSelected().getBusdocinfo().getDoctype(), getSelected().getBusdocinfo().getTransactiontype());
+        updateCost(pt);
+        getProdTransactions().add(pt);
     }
 
     @Override
@@ -722,6 +746,58 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
         return "/viewer/doc/" + getSelected().getDocno();
     }
 
+    public void saveDocument() {
+        getSelected().setDocdate(DateUtil.setCurrentTime(getSelected().getDocdate()));
+        if (mode == DocumentTab.MODE.NEW) {
+            getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getDocdate())));
+            //getSelected().setEmp1();
+            getSelected().setCreatedon(new Date());
+        }
+        getSelected().setProductTransactions(getProdTransactions());
+        getSelected().setUpdatedon(new Date());
+        if (cashRegController.calculateTotal() > 0) {
+            getSelected().setAccounts(cashRegController.getCashRegisterAccounts());
+        }
+        //getSelected().setDocdate(getDocdate());
+        for (ProductTransaction pt : getProdTransactions()) {
+            pt.setTransdate(getSelected().getDocdate());
+            pt.setCreatedon(getSelected().getCreatedon());
+            pt.setUpdatedon(getSelected().getUpdatedon());
+            pt.setBusdoc(getSelected());
+            pt.setFcunitprice(pt.getLinefcunitprice());
+            pt.setUnitprice(pt.getLineunitprice());
+            pt.setExchangerate(getSelected().getRate());
+            pt.setTransactiontype(getSelected().getBusdocinfo().getTransactiontype());
+            if (pt.getFccost() == 0 || pt.getCost() == 0) {
+                updateCost(pt);
+            }
+            //pt.calculateActualQtyFromLineQty();
+            pt.refreshTotals();
+            //if (getSelected().getBusdocinfo().getDoctype().equalsIgnoreCase("Sales")) {
+            //    pt.setLinesold(pt.getLineqty());
+            //    pt.setSold(pt.getLinesold());
+            //} else {
+            //    pt.setLinereceived(pt.getLineqty());
+            //    pt.setLinereceived(pt.getLinereceived());
+            //}
+
+            if (pt.getToprodtransaction() != null) {
+                for (ProductTransactionExecution pte : pt.getToprodtransaction()) {
+                    if (pte.getToprodtransid().getProdtransid() == pt.getProdtransid()) {
+                        pte.setExecutionqty(pt.getLineqty());
+                        pte.setCreatedon(new Date());
+                    }
+                }
+            }
+        }
+        getSelected().refreshTotal();
+        //getSelected().setCompany(companyRepo.getOne(1));    //to be commented
+        getSelected().setBranch(userSession.getLoggedInBranch());      //to be changed later
+        repo.save(getSelected());
+
+        accdocController.createBusDocJV(getSelected());
+    }
+
     public void importDocuments() {
         System.out.println("importDocuments:....");
         //importService.IMPORT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
@@ -745,14 +821,15 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
                 pt.calculateActualQtyFromLineQty();
                 getProdTransactions().add(pt);
                 doc.refreshTotal();
-                save();
+                saveDocument();
             }
+            JsfUtil.addSuccessMessage(importService.getTransactionList().size() + " documents imported successfuly");
         }
     }
 
     public void handleFileUpload(FileUploadEvent event) {
         //importService.IMPORT_DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        getImportService().handleFileUpload(event);
+        getImportService().handleFileUpload(event, BusDoc.class);
         //importService.processData();
     }
 
@@ -927,6 +1004,34 @@ public class BusDocController extends AbstractController<BusDoc> implements Prod
      */
     public void setImportService(TransactionImportService importService) {
         this.importService = importService;
+    }
+
+    /**
+     * @return the file
+     */
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    /**
+     * @return the quickProductCode
+     */
+    public String getQuickProductCode() {
+        return quickProductCode;
+    }
+
+    /**
+     * @param quickProductCode the quickProductCode to set
+     */
+    public void setQuickProductCode(String quickProductCode) {
+        this.quickProductCode = quickProductCode;
     }
 
 }

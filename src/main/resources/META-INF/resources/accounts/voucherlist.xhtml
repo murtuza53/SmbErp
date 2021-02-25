@@ -38,13 +38,13 @@
 
                             <p:outputLabel value="From Date" for="fromdate" />
                             <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
-                                          title="From Date"  showIcon="true"
-                                        required="true" requiredMessage="Please select Date"/>
+                                          title="From Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                          required="true" requiredMessage="Please select Date"/>
 
                             <p:outputLabel value="To Date" for="todate" />
                             <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
-                                        title="To Date"  showIcon="true"
-                                        required="true" requiredMessage="Please select Date"/>
+                                          title="To Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                          required="true" requiredMessage="Please select Date"/>
                         </p:panelGrid>
                     </p:panel>
                     <br/>
@@ -67,6 +67,17 @@
                                 <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
                             </p:commandButton>
                         </f:facet>
+                        
+                        <p:contextMenu for="bustable">
+                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
+                                        onclick="document.getElementById('busform:btnedit').click();"/>
+                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
+                                        onclick="document.getElementById('busform:btndelete').click();"/>
+
+                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
+                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
+                        </p:contextMenu>
+                        
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{accountVoucherListController.items}"
                                      rowKey="#{item.docno}"
@@ -74,7 +85,8 @@
                                      selection="#{accountVoucherListController.selected}"
                                      reflow="true"
                                      emptyMessage="No #{accountVoucherListController.docInfo.docname} found"
-                                     styleClass="products-table ui-datatable-sm">
+                                     styleClass="products-table ui-datatable-gridlines ui-datatable-sm"
+                                     size="small">
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
 
                             <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
@@ -118,6 +130,16 @@
                                 </h:outputText>
                             </p:column>
 
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column/>
+                                    <p:column/>
+                                    <p:column/>
+                                    <p:column/>
+                                    <p:column style="text-align:right" footerText="#{systemDefaultsController.formatDecimal(accountVoucherListController.items.stream().map(x -> x.totalDebit).sum())}"/>
+                                    <p:column style="text-align:right" footerText="#{systemDefaultsController.formatDecimal(accountVoucherListController.items.stream().map(x -> x.totalCredit).sum())}"/>
+                                </p:row>
+                            </p:columnGroup>
                         </p:dataTable>
                     </p:panel>
                 </div>

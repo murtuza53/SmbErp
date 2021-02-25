@@ -48,7 +48,7 @@ public class PageAccessController extends AbstractController<PageAccess>{
         if(getSelectedRole()==null){
             return new LinkedList<>();
         }
-        return repo.findAccessByRole(getSelectedRole().getRoleid());
+        return repo.findAccessByRoleOrderByModule(getSelectedRole().getRoleid());
     } 
 
     public void save(){
@@ -61,6 +61,10 @@ public class PageAccessController extends AbstractController<PageAccess>{
         pa.setCreatedon(new Date());
         pa.setRoleid(getSelectedRole());
         setSelected(pa);
+    }
+    
+    public List<PageAccess> findAccessByRole(EmpRole role){
+        return repo.findAccessByRole(role.getRoleid());
     }
 
     /**

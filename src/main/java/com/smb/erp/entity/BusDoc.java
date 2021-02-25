@@ -1,6 +1,7 @@
 package com.smb.erp.entity;
 
 import com.smb.erp.util.DateUtil;
+import com.smb.erp.util.Speller;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -101,6 +102,8 @@ public class BusDoc implements Serializable {
     private Double subtotal = 0.0;
 
     private Double discount = 0.0;
+    
+    private Double roundoff = 0.0;
 
     private Double totalamount = 0.0;
 
@@ -198,6 +201,9 @@ public class BusDoc implements Serializable {
     
     @Transient
     private Double cumulative;
+    
+    @Transient
+    String spelledAmountInWords;
     
     public BusDoc() {
     }
@@ -713,7 +719,7 @@ public class BusDoc implements Serializable {
             }
             setTotalamount((Double) getSubtotal() - discount);
             totalvat = getProductTransactions().stream().mapToDouble(x -> x.getVatamount()).sum();
-            setGrandtotal((Double) getTotalamount() + totalvat);
+            setGrandtotal((Double) getTotalamount() + totalvat - roundoff);
         }
     }
 
@@ -1057,5 +1063,27 @@ public class BusDoc implements Serializable {
      */
     public void setCurrency(Country currency) {
         this.currency = currency;
+    }
+    
+    public String getSpelledAmountInWords(){
+        return Speller.spellAmount(getCurrency().getCurrencysym(), getGrandtotal());
+    }
+
+    public void setSpelledAmountInWords(String value){
+        this.spelledAmountInWords = value;
+    }
+
+    /**
+     * @return the roundoff
+     */
+    public Double getRoundoff() {
+        return roundoff;
+    }
+
+    /**
+     * @param roundoff the roundoff to set
+     */
+    public void setRoundoff(Double roundoff) {
+        this.roundoff = roundoff;
     }
 }

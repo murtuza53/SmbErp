@@ -80,10 +80,18 @@ public class ColorSchemeManager {
         themes.put(scheme.getSchemeName(), scheme);
         
         scheme = new ColorScheme();
-        scheme.setSchemeName("Maimoon Logo");
+        scheme.setSchemeName("Maimoon Scheme");
         scheme.setPrimaryColor("#2a2a86");
         scheme.setSecondaryColor("#9e9e9e");
         scheme.setTextPrimaryColor("#060e2d");
+        scheme.setInversePrimaryColor("#ffffff");
+        themes.put(scheme.getSchemeName(), scheme);
+
+        scheme = new ColorScheme();
+        scheme.setSchemeName("Printed Stationary");
+        scheme.setPrimaryColor("#000000");
+        scheme.setSecondaryColor("#ffffff");
+        scheme.setTextPrimaryColor("#000000");
         scheme.setInversePrimaryColor("#ffffff");
         themes.put(scheme.getSchemeName(), scheme);
         

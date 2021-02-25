@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "printreport")
 public class PrintReport implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -45,7 +45,15 @@ public class PrintReport implements Serializable {
     @JoinColumn(name = "bdinfoid")
     private BusDocInfo bdinfoid;
 
+    @ManyToOne
+    @JoinColumn(name = "pageid")
+    private Webpage pageid;
+
     private Boolean defaultreport = false;
+
+    private Boolean jasper = false;
+
+    private String jasperfile;
 
     public PrintReport() {
     }
@@ -136,7 +144,12 @@ public class PrintReport implements Serializable {
 
     @Override
     public String toString() {
-        return getBdinfoid().getDocname() + " [" + reportid + "]";
+        if (getBdinfoid() != null) {
+            return getBdinfoid().getDocname() + " [" + reportid + "]";
+        } else if(getPageid()!=null){
+            return getPageid().getTitle() + " [" + reportid + "]";
+        }
+        return "N/A";
     }
 
     @Override
@@ -176,5 +189,47 @@ public class PrintReport implements Serializable {
      */
     public void setReportname(String reportname) {
         this.reportname = reportname;
+    }
+
+    /**
+     * @return the jasper
+     */
+    public Boolean getJasper() {
+        return jasper;
+    }
+
+    /**
+     * @param jasper the jasper to set
+     */
+    public void setJasper(Boolean jasper) {
+        this.jasper = jasper;
+    }
+
+    /**
+     * @return the jasperfile
+     */
+    public String getJasperfile() {
+        return jasperfile;
+    }
+
+    /**
+     * @param jasperfile the jasperfile to set
+     */
+    public void setJasperfile(String jasperfile) {
+        this.jasperfile = jasperfile;
+    }
+
+    /**
+     * @return the pageid
+     */
+    public Webpage getPageid() {
+        return pageid;
+    }
+
+    /**
+     * @param pageid the pageid to set
+     */
+    public void setPageid(Webpage pageid) {
+        this.pageid = pageid;
     }
 }

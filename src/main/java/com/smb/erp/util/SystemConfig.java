@@ -5,8 +5,8 @@
  */
 package com.smb.erp.util;
 
-import com.smb.erp.UserSession;
 import java.awt.Image;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
  *
  * @author Burhani152
  */
-public class SystemConfig {
+public class SystemConfig implements Serializable{
     
     //@Autowired
     //SystemDefaultsController sysCon;

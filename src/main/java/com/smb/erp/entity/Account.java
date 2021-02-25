@@ -225,7 +225,10 @@ public class Account implements Serializable, Comparable<Account> {
             return false;
         }
         final Account other = (Account) obj;
-        return Objects.equals(this.accountid, other.accountid);
+        if (!Objects.equals(this.accountid, other.accountid)) {
+            return false;
+        }
+        return true;
     }
 
     /**

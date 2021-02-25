@@ -134,6 +134,7 @@ public class StockCountingBusDocController extends AbstractController<StockCount
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         String m = req.getParameter("mode");
 
+        System.out.println("StockCountingBusDocController: " + m);
         if (m != null) {
             if (m.equalsIgnoreCase("l")) {
                 String docinfo = req.getParameter("docinfoid");
@@ -479,7 +480,7 @@ public class StockCountingBusDocController extends AbstractController<StockCount
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        importService.handleFileUpload(event);
+        importService.handleFileUpload(event, StockCountingBatch.class);
         //importService.processData();
     }
 

@@ -117,7 +117,17 @@ public class BusinessPartner implements Serializable {
     @Transient
     private VatBusinessRegister currentVatRegister;
 
+    @Transient
+    private String currentVatNo;
+
+    @Transient
+    private String fullAddress;
+
     public BusinessPartner() {
+    }
+
+    public BusinessPartner(String name) {
+        this.companyname = name;
     }
 
     public Long getPartnerid() {
@@ -601,6 +611,9 @@ public class BusinessPartner implements Serializable {
         if (getRoadno() != null) {
             b.append(" Road: " + getRoadno().trim());
         }
+        if (getBlockno() != null) {
+            b.append(" Block: " + getBlockno().trim());
+        }
         return b.toString().trim();
     }
 
@@ -610,14 +623,14 @@ public class BusinessPartner implements Serializable {
 
     public String getAddressLine2() {
         StringBuilder b = new StringBuilder();
-        if (getBlockno() != null) {
-            b.append("Block: " + getBlockno().trim());
-        }
         if (getTown() != null) {
             b.append(" Town: " + getTown().trim());
         }
         if (getArea() != null) {
             b.append(" Area: " + getArea().trim());
+        }
+        if (getCountry() != null) {
+            b.append(getCountry().getCountryname());
         }
         return b.toString().trim();
     }
@@ -636,5 +649,35 @@ public class BusinessPartner implements Serializable {
         this.currency = currency;
     }
 
+    /**
+     * @return the currentVatNo
+     */
+    public String getCurrentVatNo() {
+        if (getCurrentVatRegister() == null) {
+            return "";
+        }
+        return getCurrentVatRegister().getTrnno();
+    }
+
+    /**
+     * @param currentVatNo the currentVatNo to set
+     */
+    public void setCurrentVatNo(String currentVatNo) {
+        this.currentVatNo = currentVatNo;
+    }
+
+    /**
+     * @return the fullAddress
+     */
+    public String getFullAddress() {
+        return getAddressLine1() + " " + getAddressLine2();
+    }
+
+    /**
+     * @param fullAddress the fullAddress to set
+     */
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
+    }
 
 }

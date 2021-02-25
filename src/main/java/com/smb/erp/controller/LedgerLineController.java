@@ -140,7 +140,7 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
 
     public Double findAccountBalance(String accountNo, Date fromDate, Date toDate) {
         return repo.findAccountBalance(accountNo, DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
-                                        DateUtil.endOfDay(toDate));
+                DateUtil.endOfDay(toDate));
     }
 
     public Double findAccountLikeBalance(String accountNo, Date toDate) {
@@ -149,14 +149,14 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
 
     public Double findAccountLikeBalance(String accountNo, Date fromDate, Date toDate) {
         return repo.findAccountBalance(accountNo + "%", DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
-                                        DateUtil.endOfDay(toDate));
+                DateUtil.endOfDay(toDate));
     }
 
-    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date toDate) {
+    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date toDate, boolean showBoth) {
         List<Double[]> res = repo.findAccountBalanceDrCr(accountNo + "%", DateUtil.endOfDay(toDate));
         //System.out.println("findAccountLikeBalanceDrCr2: " + accountNo + " => " + res.size() + " => " + ((Double[])res.get(0))[0] + "," + ((Double[])res.get(0))[1]);
 
-        List<Double> ret = new LinkedList<>();
+        /*List<Double> ret = new LinkedList<>();
 
         if (res == null) {
             ret.add(new Double(0.0));
@@ -177,15 +177,41 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
             ret.add(new Double(0.0));
             ret.add(new Double(0.0));
         }
+         */
+        List<Double> ret = Arrays.asList(res.get(0));
+        Double debit = ret.get(0);
+        Double credit = ret.get(1);
+        //System.out.println("findAccountLikeBalanceDrCr2: " + accountNo + " => " + res.size() + " => " + debit + "," + credit);
+        if (debit == null) {
+            debit = 0.0;
+        }
+        if (credit == null) {
+            credit = 0.0;
+        }
+        
+        if(accountNo==null || accountNo.isEmpty() || showBoth){
+            //System.out.println("ROOT====>" + (accountNo==null || accountNo.isEmpty() || showBoth));
+            return Arrays.asList(new Double[]{debit, credit});
+        }
+        
+        if (debit > credit) {
+            debit = debit - credit;
+            credit = 0.0;
+        } else {
+            credit = credit - debit;
+            debit = 0.0;
+        }
+        //System.out.println("findAccountLikeBalanceDrCr2_2: " + accountNo + " => " + res.size() + " => " + debit + "," + credit);
+        ret = Arrays.asList(new Double[]{debit, credit});
         return ret;
     }
 
-    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date fromDate, Date toDate) {
-        List<Double[]> res = repo.findAccountBalanceDrCr(accountNo + "%", DateUtil.endOfDay(new Date(DateUtil.previousDay(fromDate.getTime()))),
-                                                    DateUtil.endOfDay(toDate));
+    public List<Double> findAccountLikeBalanceDrCr(String accountNo, Date fromDate, Date toDate, boolean showBoth) {
+        List<Double[]> res = repo.findAccountBalanceDrCr(accountNo + "%", DateUtil.startOfDay(fromDate),
+                DateUtil.endOfDay(toDate));
         //System.out.println("findAccountLikeBalanceDrCr2: " + accountNo + " => " + res.size() + " => " + ((Double[])res.get(0))[0] + "," + ((Double[])res.get(0))[1]);
 
-        List<Double> ret = new LinkedList<>();
+        /*List<Double> ret = new LinkedList<>();
 
         if (res == null) {
             ret.add(new Double(0.0));
@@ -206,7 +232,38 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
             ret.add(new Double(0.0));
             ret.add(new Double(0.0));
         }
+        double debit = ret.get(0);
+        double credit = ret.get(1);
+        if(debit>credit){
+            debit = debit-credit;
+        }else{
+            credit = credit-debit;
+        }
+        ret = Arrays.asList(new Double[]{debit, credit});
+        return ret;*/
+        
+        List<Double> ret = Arrays.asList(res.get(0));
+        Double debit = ret.get(0);
+        Double credit = ret.get(1);
+        //System.out.println("findAccountLikeBalanceDrCr1: " + accountNo + " => " + res.size() + " => " + debit + "," + credit);
+        if (debit == null) {
+            debit = 0.0;
+        }
+        if (credit == null) {
+            credit = 0.0;
+        }
+
+        if (debit > credit) {
+            debit = debit - credit;
+            credit = 0.0;
+        } else {
+            credit = credit - debit;
+            debit = 0.0;
+        }
+        //System.out.println("findAccountLikeBalanceDrCr1_2: " + accountNo + " => " + res.size() + " => " + debit + "," + credit);
+        ret = Arrays.asList(new Double[]{debit, credit});
         return ret;
+
     }
 
     /**

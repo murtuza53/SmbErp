@@ -12,12 +12,20 @@ import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.SystemDefaultsRepository;
 import com.smb.erp.util.StringUtils;
 import com.smb.erp.util.SystemConfig;
+import static com.smb.erp.util.SystemConfig.DATE_FORMAT_PATTERN;
+import static com.smb.erp.util.SystemConfig.DECIMAL_FORMAT_PATTERN;
+import static com.smb.erp.util.SystemConfig.INTEGER_FORMAT_PATTERN;
+import static com.smb.erp.util.SystemConfig.MYSQL_DATE_PATTERN;
 import static com.smb.erp.util.SystemConfig.PRINT_LETTERHEAD_IMAGE;
+import static com.smb.erp.util.SystemConfig.TIME_FORMAT_PATTERN;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +50,7 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
 
     @Autowired
     AccountRepository accountRepo;
-    
+
     @Autowired
     UserSession userSession;
 
@@ -68,7 +76,7 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
             }
         }
         System.out.println("SystemDefaultsController: " + propertyTable);
-                try {
+        try {
             System.out.println("Loading LetterHead: " + getByPropertyname("LetterHeadLocation").getValue()
                     + userSession.getLoggedInCompany().getCompanyid() + ".png");
             PRINT_LETTERHEAD_IMAGE = ImageIO.read(new File(getByPropertyname("LetterHeadLocation").getValue()
@@ -77,20 +85,35 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
             Logger.getLogger(SystemConfig.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        SystemConfig.TIME_FORMAT_PATTERN = getSystemPropertyValue("DefaultTimeFormat");
+        SystemConfig.DATE_FORMAT_PATTERN = getSystemPropertyValue("DefaultDateFormat");
+        SystemConfig.DECIMAL_FORMAT_PATTERN = getSystemPropertyValue("DefaultDecimalFormat");
+        SystemConfig.INTEGER_FORMAT_PATTERN = getSystemPropertyValue("DefaultIntegerFormat");
+        SystemConfig.MYSQL_DATE_PATTERN = getSystemPropertyValue("DefaultMysqlDateTimeFormat");
+        SystemConfig.DECIMAL_TEXT_ALIGN = getSystemPropertyValue("DecimalNumberAlignment");
+        SystemConfig.INTEGER_TEXT_ALIGN = getSystemPropertyValue("IntegerNumberAlignment");
+
+        SystemConfig.TIME_FORMAT = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+        SystemConfig.DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+        SystemConfig.MYSQL_DATE_FORMAT = new SimpleDateFormat(MYSQL_DATE_PATTERN);
+        SystemConfig.DECIMAL_FORMAT = new DecimalFormat(DECIMAL_FORMAT_PATTERN);
+        SystemConfig.INTEGER_FORMAT = new DecimalFormat(INTEGER_FORMAT_PATTERN);
     }
 
     public Account getDefaultAccount(String propertyname) {
+        //Optional<Account> acc = accountRepo.findById(propertyTable.get("Account." + propertyname));
+        //return acc.get();
         return accountRepo.getOne(propertyTable.get("Account." + propertyname));
     }
 
-    public Account resolveAccount(Account account){
+    public Account resolveAccount(Account account) {
         System.out.println("resolveAccount: " + account);
-        if(account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT_SYSTEM")){
+        if (account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT_SYSTEM")) {
             return resolveAccount(getDefaultAccount(account.getAccountname()));
         }
         return account;
     }
-    
+
     public String getDefaultList(String propertyname) {
         return propertyTable.get("List." + propertyname);
     }
@@ -108,11 +131,11 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
             }
         }*/
     }
-    
+
     public List<Integer> getAsListInteger(String propertyname) {
         return convertStringListToIntList(StringUtils.tokensToList(propertyTable.get("List." + propertyname)), Integer::parseInt);
-    }    
-    
+    }
+
     public List<String> getAsList(String propertyname, String firstValue) {
         return StringUtils.tokensToList(propertyTable.get("List." + propertyname), firstValue);
     }
@@ -125,6 +148,34 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
         return systemRepo.findByPropertyname(propertyName);
     }
 
+    public boolean isSystemProperty(String property) {
+        SystemDefaults sys = getByPropertyname(property);
+        return sys != null;
+    }
+
+    public String getSystemPropertyValue(String property) {
+        SystemDefaults sys = getByPropertyname(property);
+        if (sys == null) {
+            return "Invalid Property - " + property;
+        }
+        return sys.getValue();
+    }
+
+    public Object getSystemPropertyAsObject(String property) {
+        SystemDefaults sys = getByPropertyname(property);
+        if (sys == null) {
+            return "Invalid Property - " + property;
+        }
+        if (sys.getReferredclass().equalsIgnoreCase("String") || sys.getReferredclass().equalsIgnoreCase("VatCategory")) {
+            return sys.getValue();
+        } else if (sys.getReferredclass().equalsIgnoreCase("Account")) {
+            return getDefaultAccount(property);
+        } else if (sys.getReferredclass().equalsIgnoreCase("List")) {
+            return getAsList(property);
+        }
+        return sys.getValue();
+    }
+
     public static <T, U> List<U>
             convertStringListToIntList(List<T> listOfString,
                     Function<T, U> function) {
@@ -132,16 +183,68 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
                 .map(function)
                 .collect(Collectors.toList());
     }
-            
-    public String getSystemButtonStyle(){
+
+    public String getSystemButtonStyle() {
         return systemRepo.findByPropertyname("SystemButtonStyle").getValue();
     }
 
-    public String getToolbarButtonStyle(){
+    public String getToolbarButtonStyle() {
         return systemRepo.findByPropertyname("ToolbarButtonStyle").getValue();
     }
-    
-    public String formatDate(Date date){
+
+    public String formatDate(Date date) {
+        if (date == null) {
+            return "";
+        }
         return SystemConfig.DATE_FORMAT.format(date);
+    }
+
+    public String formatTime(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return SystemConfig.TIME_FORMAT.format(date);
+    }
+
+    public String formatMysqlDate(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return SystemConfig.MYSQL_DATE_FORMAT.format(date);
+    }
+
+    public String formatDecimal(Double value) {
+        if (value == null) {
+            return "";
+        }
+        return SystemConfig.DECIMAL_FORMAT.format(value);
+    }
+
+    public String formatDecimal(Float value) {
+        if (value == null) {
+            return "";
+        }
+        return SystemConfig.DECIMAL_FORMAT.format(value);
+    }
+
+    public String formatDecimal(Long value) {
+        if (value == null) {
+            return "";
+        }
+        return SystemConfig.DECIMAL_FORMAT.format(value);
+    }
+
+    public String formatNumber(Long value) {
+        if (value == null) {
+            return "";
+        }
+        return SystemConfig.INTEGER_FORMAT.format(value);
+    }
+
+    public String formatNumber(Integer value) {
+        if (value == null) {
+            return "";
+        }
+        return SystemConfig.INTEGER_FORMAT.format(value);
     }
 }

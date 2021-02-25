@@ -41,6 +41,7 @@ public class EntityConverter implements Converter{
         synchronized (entities) {
             if (!entities.containsKey(entity)) {
                 String uuid = UUID.randomUUID().toString();
+                //System.out.println("UUID: " + uuid +" => " + entity);
                 entities.put(entity, uuid);
                 return uuid;
             } else {

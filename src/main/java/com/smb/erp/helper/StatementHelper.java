@@ -14,6 +14,12 @@ import java.util.Objects;
  */
 public class StatementHelper implements Serializable{
     
+    private String docno;
+    
+    private String refno;
+    
+    private String docdate;
+    
     private Double invoiceAmount = 0.0;
     
     private Double paid = 0.0;
@@ -30,18 +36,21 @@ public class StatementHelper implements Serializable{
     public StatementHelper(Double invAmt){
         this.invoiceAmount = invAmt;
     }
-    
-    public StatementHelper(Double invAmt, Double paid, Double pending, Double cumulative, Integer days){
+
+    public StatementHelper(String docno, String refno, String docdate, Double invAmt, Double paid, Double pending, Double cumulative, Integer days) {
+        this.docno = docno;
+        this.refno = refno;
+        this.docdate = docdate;
         this.invoiceAmount = invAmt;
         this.paid = paid;
         this.pending = pending;
         this.cumulative = cumulative;
         this.days = days;
     }
-    
+
     @Override
     public String toString() {
-        return "StatementHelper{" + "invoiceAmount=" + invoiceAmount + ", paid=" + paid + ", pending=" + pending + ", days=" + days + '}';
+        return "StatementHelper{" + "docno=" + docno + ", refno=" + refno + ", docdate=" + docdate + ", invoiceAmount=" + invoiceAmount + ", paid=" + paid + ", pending=" + pending + ", cumulative=" + cumulative + ", days=" + days + '}';
     }
 
     @Override
@@ -119,6 +128,48 @@ public class StatementHelper implements Serializable{
      */
     public void setCumulative(Double cumulative) {
         this.cumulative = cumulative;
+    }
+
+    /**
+     * @return the docno
+     */
+    public String getDocno() {
+        return docno;
+    }
+
+    /**
+     * @param docno the docno to set
+     */
+    public void setDocno(String docno) {
+        this.docno = docno;
+    }
+
+    /**
+     * @return the refno
+     */
+    public String getRefno() {
+        return refno;
+    }
+
+    /**
+     * @param refno the refno to set
+     */
+    public void setRefno(String refno) {
+        this.refno = refno;
+    }
+
+    /**
+     * @return the docdate
+     */
+    public String getDocdate() {
+        return docdate;
+    }
+
+    /**
+     * @param docdate the docdate to set
+     */
+    public void setDocdate(String docdate) {
+        this.docdate = docdate;
     }
     
     

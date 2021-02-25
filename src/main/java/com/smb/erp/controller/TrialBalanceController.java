@@ -33,7 +33,7 @@ public class TrialBalanceController implements Serializable {
 
     @Autowired
     AccountRepository accRepo;
-    
+
     @Autowired
     LedgerLineController ledCon;
 
@@ -57,19 +57,21 @@ public class TrialBalanceController implements Serializable {
 
     @PostConstruct
     public void init() {
+        root = new DefaultTreeNode("ROOT", "Root", null);
         //refreshTb();
     }
 
     public TreeNode getRoot() {
-        if(root==null){
-            refreshTb();
-        }
+        //if(root==null){
+        //    refreshTb();
+        //}
         return root;
     }
 
     public void refreshTb() {
-        Account ra = accRepo.getOne("1");
         root = new DefaultTreeNode("ROOT", "Root", null);
+        Account ra = accRepo.getOne("1");
+        setAccountGroupBalances(ra);
         addNode(ra, root);
     }
 
@@ -93,27 +95,34 @@ public class TrialBalanceController implements Serializable {
 
         List<Account> childrens = accRepo.findAccountByParent(acc.getAccountid());
         if (childrens != null) {
-            if(acc.getNodetype().equalsIgnoreCase("GROUP") || acc.getNodetype().equalsIgnoreCase("ROOT")){
-                setAccountGroupBalances(acc);
-            }else{
-                setAccountNodeBalances(acc);
-            }
             for (Account a : childrens) {
-                addNode(a, n);
+                if (a.getNodetype().equalsIgnoreCase("GROUP")) {
+                    setAccountGroupBalances(a);
+                } else {
+                    setAccountNodeBalances(a);
+                }
+
+                if ((a.getNodetype().equalsIgnoreCase("ROOT") || a.isTbBalRequired()) && !a.getNodetype().equalsIgnoreCase("INT1")) {
+                    addNode(a, n);
+                }
             }
         }
     }
 
     public void setAccountGroupBalances(Account a) {
-        a.getOpeningBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate()));
-        a.getCurrentBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate(), getToDate()));
-        a.getClosingBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getToDate()));
+        String accid = a.getAccountid();
+        if (accid.equalsIgnoreCase("1")) {
+            accid = "";
+        }
+        a.getOpeningBal().setBalance(ledCon.findAccountLikeBalanceDrCr(accid, getFromDate(), false));
+        a.getCurrentBal().setBalance(ledCon.findAccountLikeBalanceDrCr(accid, getFromDate(), getToDate(), false));
+        a.getClosingBal().setBalance(ledCon.findAccountLikeBalanceDrCr(accid, getToDate(), false));
     }
 
     public void setAccountNodeBalances(Account a) {
-        a.getOpeningBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate()));
-        a.getCurrentBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate(), getToDate()));
-        a.getClosingBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getToDate()));
+        a.getOpeningBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate(), false));
+        a.getCurrentBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getFromDate(), getToDate(), false));
+        a.getClosingBal().setBalance(ledCon.findAccountLikeBalanceDrCr(a.getAccountid(), getToDate(), false));
     }
 
     public void onNodeSelect(NodeSelectEvent event) {

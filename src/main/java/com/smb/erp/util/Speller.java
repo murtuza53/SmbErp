@@ -19,7 +19,7 @@ public class Speller extends Object {
     
     public static String spellAmount(String currency, double amount) {
         amount = Math.abs(amount);
-        DecimalFormat format = new DecimalFormat("#,##0.000");
+        DecimalFormat format = SystemConfig.DECIMAL_FORMAT;
         try {
             amount = ((Number)format.parse(format.format(amount))).doubleValue();
         } catch (ParseException ex) {

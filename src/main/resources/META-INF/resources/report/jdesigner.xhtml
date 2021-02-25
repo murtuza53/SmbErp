@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/diamond-layout/template_simple.xhtml">
+
+    <ui:define name="title">
+        Jasper Report Configuration
+    </ui:define>
+
+    <ui:param name="viewname" value="Jasper Report Configuration" />
+
+    <ui:define name="toolbar">
+        <li>
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl"
+                             icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
+                             actionListener="#{jasperprintTemplateController.save()}"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
+                             styleClass="#{systemDefaultsController.toolbarButtonStyle}" 
+                             actionListener="#{jasperprintTemplateController.print()}" ajax="false"/>
+        </li>
+
+        <li>
+            <p:commandButton id="btnjfile" title="Upload Jasper File" icon="fas fa-file-upload"
+                             oncomplete="PF('JFileDialog').show()"  disabled="#{jasperprintTemplateController.disableJasperUpload}"
+                             update=":jfileform" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="p-grid">
+            <div class="p-col-12 p-md-12 vless_padding">
+                <div class="card ui-fluid">
+                    <h5>Report Title</h5>
+                    <div class="p-formgrid p-grid">
+                        <div class="p-field p-col">
+                            <p:outputLabel for="@next">Template Id</p:outputLabel>
+                            <p:inputText id="rid" value="#{jasperprintTemplateController.selected.reportid}" disabled="true"/>
+                        </div>
+                        <div class="p-field p-col">
+                            <p:outputLabel for="@next">For Document</p:outputLabel>
+                            <p:inputText id="rdocname" value="#{jasperprintTemplateController.selected.bdinfoid.docname}" disabled="true"/>
+                        </div>
+                        <div class="p-field p-col">
+                            <p:outputLabel for="@next">Report Name</p:outputLabel>
+                            <p:inputText id="rname" value="#{jasperprintTemplateController.dynamicReport.reportName}" 
+                                         required="true" requiredMessage="Report Name is required"/>
+                        </div>
+                    </div>
+                    <div class="p-formgrid p-grid">
+                        <div class="p-field p-col">
+                            <p:outputLabel for="@next">Letter Head Required</p:outputLabel>
+                            <p:selectOneRadio id="letterhead" value="#{jasperprintTemplateController.dynamicReport.letterHeadRequired}">
+                                <f:selectItem itemLabel="Yes" itemValue="true" />
+                                <f:selectItem itemLabel="No" itemValue="false" />
+                            </p:selectOneRadio>
+                        </div>
+                        <div class="p-field p-col">
+                            <p:outputLabel for="@next">Title</p:outputLabel>
+                            <p:inputText id="rtitle" value="#{jasperprintTemplateController.dynamicReport.title.text}"
+                                         required="true" requiredMessage="Report Title is required"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="dialogpanel">
+        <p:dialog header="Upload Jasper Report File" id="JFileDlg" widgetVar="JFileDialog" dynamic="true" responsive="true"
+                  modal="true" resizable="false" width="800" appendTo="@(body)" closeOnEscape="true">
+            <h:form id="jfileform" enctype="multipart/form-data">
+                <div class="p-grid">
+                    <div class="p-col-12 p-md-12">
+                        <p:progressBar id="progressbar" widgetVar="pbAjax" ajax="true" value="#{jasperprintTemplateController.progress}" 
+                                       labelTemplate="{value}%" global="false">
+                            <p:ajax event="complete" update=":growl" oncomplete="PF('btnupload').enable();PF('btnsave').enable();"/>
+                        </p:progressBar>
+                        <p:fileUpload value="#{jasperprintTemplateController.file}" mode="simple" skinSimple="true"
+                                      update=":growl" sizeLimit="1000000" allowTypes="/(jrxml)$/" />
+                        <p:commandButton id="btnupload" title="Upload Jasper Report" icon="fas fa-upload" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                         actionListener="#{jasperprintTemplateController.handleJasperFileUpload}" ajax="false" update=":growl, btnupload"
+                                         onclick="PF('pbAjax').start();PF('btnupload').disable();"
+                                         oncomplete="PF('pbAjax').cancel();PF('btnupload').enable();"/>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+    <ui:define name="history">
+        <h:form id="historyform">
+            <div class="p-col-12 p-md-12 vless_padding">
+                <p:panel style="padding-bottom: 10px" header="Style" toggleable="true">
+
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="productsearch">
+
+    </ui:define>
+</ui:composition>
