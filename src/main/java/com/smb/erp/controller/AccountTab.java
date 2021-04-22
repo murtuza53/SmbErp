@@ -8,6 +8,7 @@ package com.smb.erp.controller;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.LedgerLine;
 import com.smb.erp.entity.PartialPaymentDetail;
+import com.smb.erp.util.JsfUtil;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,11 +79,13 @@ public class AccountTab extends DocumentTab<LedgerLine> {
                     doc.addPpdetail(ppd);
 
                     paymentList.add(ppd);
+                } else {
+                    JsfUtil.addWarnMessage(doc.getDocno() + " already included in Paid List");
                 }
             }
             updateLedgerValue();
         }
-        System.out.println("transferSelectedPendingInvoice: " + paymentList.size());
+        //System.out.println("transferSelectedPendingInvoice: " + paymentList.size());
     }
 
     public void deleteSelectedInvoice() {
@@ -115,9 +118,9 @@ public class AccountTab extends DocumentTab<LedgerLine> {
 
     public void updateLedgerValue() {
         if (getData().getAccount().getAccounttype().getName().equalsIgnoreCase("Debtors")) {
-            getData().setCredit(getTotalAmount_Paid());
+            getData().setFccredit(getTotalAmount_Paid());
         } else if (getData().getAccount().getAccounttype().getName().equalsIgnoreCase("Creditors")) {
-            getData().setDebit(getTotalAmount_Paid());
+            getData().setFcdebit(getTotalAmount_Paid());
         }
     }
 

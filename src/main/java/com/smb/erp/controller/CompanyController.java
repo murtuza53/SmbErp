@@ -115,7 +115,7 @@ public class CompanyController extends AbstractController<Company> {
         System.out.println("Save Branch: " + selectedBranch + "\t" + new Date());
         if (selectedBranch.getBranchid() == 0) {
             selectedBranch.setBranchid(keyController.getBranchNextId());
-            selectedCompany.addBranch(selectedBranch);
+            //selectedCompany.addBranch(selectedBranch);
             //setSelected(selectedCompany);
             //super.save();
             branchRepo.save(selectedBranch);

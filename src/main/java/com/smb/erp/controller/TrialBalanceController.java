@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.GuestPreferences;
 import com.smb.erp.entity.Account;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.util.DateUtil;
@@ -37,6 +38,9 @@ public class TrialBalanceController implements Serializable {
     @Autowired
     LedgerLineController ledCon;
 
+    @Autowired
+    GuestPreferences guestPref;
+    
     private TreeNode root;
 
     private String treeName;
@@ -68,6 +72,16 @@ public class TrialBalanceController implements Serializable {
         return root;
     }
 
+    public String findNodeStyle(Account node){
+        if(node==null){
+            return "";
+        }
+        if(node.getNodetype().equalsIgnoreCase("GROUP") || node.getNodetype().equalsIgnoreCase("ROOT")){
+            return "font-weight: bold; color: " + guestPref.getCurrentComponentColor();
+        }
+        return "";
+    }
+    
     public void refreshTb() {
         root = new DefaultTreeNode("ROOT", "Root", null);
         Account ra = accRepo.getOne("1");

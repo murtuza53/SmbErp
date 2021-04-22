@@ -32,6 +32,7 @@ import com.smb.erp.repo.ProductTransactionExecutionRepository;
 import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.repo.VatMappingRepository;
 import com.smb.erp.repo.VatSalesPurchaseTypeRepository;
+import com.smb.erp.rest.JasperPrintReportGenerator;
 import com.smb.erp.service.ProductTransferable;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
@@ -41,12 +42,25 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.el.ValueExpression;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import net.sf.jasperreports.engine.JRException;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.filedownload.FileDownloadActionListener;
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +88,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
 
     @Autowired
     ProductSearchController productSearchController;
-    
+
     @Autowired
     CountryRepository countryRepo;
 
@@ -111,6 +125,9 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     @Autowired
     CashRegisterController cashRegController;
 
+    @Autowired
+    JasperPrintReportGenerator reportGenerator;
+
     //@Autowired
     //BusDocExpenseController expenseCont;
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
@@ -146,6 +163,8 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     private BusDocInfo fpiInfo;
 
     private BusDocExpense selectedExpense;
+
+    private MenuModel printButtonModel;
 
     //private Date docdate;
     @Autowired
@@ -214,11 +233,14 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
                 }
                 mode = DocumentTab.MODE.EDIT;
                 //docdate = getSelected().getDocdate();
+                setupPrintMenu();
+                getRatio();
             }
         }
         fpiInfo = docinfoRepo.getOne(13);
         System.out.println("PostConstruct_FPI_INFO: " + fpiInfo);
         //expenseCont.setBusdoc(getSelected());
+        showGrowl();
     }
 
     @Override
@@ -251,14 +273,21 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
             getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getDocdate())));
             //getSelected().setEmp1();
             getSelected().setCreatedon(new Date());
+            getSelected().setEmp1(userSession.getLoggedInEmp());
         }
+
+        if (getSelected().getEmp1() == null) {
+            getSelected().setEmp1(userSession.getLoggedInEmp());
+        }
+
         //getSelected().setProductTransactions(getProdTransactions());
         getSelected().setUpdatedon(new Date());
         if (cashRegController.calculateTotal() > 0) {
             getSelected().setAccounts(cashRegController.getCashRegisterAccounts());
         }
-        getSelected().setBranch(userSession.getLoggedInBranch());
+        //getSelected().setBranch(userSession.getLoggedInBranch());
         getSelected().setProductTransactions(new LinkedList<>());
+        getSelected().setExtra11(getRatio());
         //first save FPC
         repo.save(getSelected());
 
@@ -272,12 +301,23 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
             doc.setCreatedon(getSelected().getCreatedon());
             doc.setUpdatedon(getSelected().getUpdatedon());
             doc.setBranch(getSelected().getBranch());
+            doc.setCurrency(getSelected().getCurrency());
+            doc.setRate(getSelected().getRate());
+            doc.setEmp1(getSelected().getEmp1());
+            doc.setExtra11(getRatio());
             for (ProductTransaction pt : doc.getProductTransactions()) {
                 pt.setTransdate(getSelected().getDocdate());
                 pt.setCreatedon(getSelected().getCreatedon());
                 pt.setUpdatedon(getSelected().getUpdatedon());
+                pt.setExchangerate(getRatio());
+                pt.setBranch(getSelected().getBranch());
                 pt.setFcunitprice(pt.getLinefcunitprice());
+                pt.setLinefccost(pt.getLinefcunitprice());
+                pt.setFccost(pt.getLinefcunitprice());
+                pt.setLineunitprice(pt.getLinefcunitprice() * pt.getExchangerate());
                 pt.setUnitprice(pt.getLineunitprice());
+                pt.setCost(pt.getLineunitprice());
+                pt.setLinecost(pt.getLineunitprice());
                 pt.setTransactiontype(doc.getBusdocinfo().getTransactiontype());
                 pt.refreshTotals();
                 //pt.setBusdoc(doc);
@@ -292,21 +332,49 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
                 }
             }
             doc.refreshTotal();
-            doc.setBranch(userSession.getLoggedInBranch());      //to be changed later
+            //doc.setBranch(userSession.getLoggedInBranch());      //to be changed later
             repo.save(doc);
             accdocController.createBusDocPurchaseJV(doc);
         }
 
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
         mode = DocumentTab.MODE.EDIT;
+        setupPrintMenu();
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.getSessionMap().put("addedWithSuccess", "true");
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.getExternalContext().redirect(getDocInfo().getDocediturl() + "?mode=e&docno=" + getSelected().getDocno());
+        } catch (IOException ex) {
+            Logger.getLogger(BusDocController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void showGrowl() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        String labelAddedWithSuccess = (String) ec.getSessionMap().remove("addedWithSuccess");
+        //System.out.println("showGrowl: " + labelAddedWithSuccess);
+        //if the flag on context is true show the growl message
+        if (labelAddedWithSuccess != null && labelAddedWithSuccess.equals("true")) {
+            JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
+            PrimeFaces.current().ajax().update(":growl");
+        }
     }
 
     public void reloadProductTransactions() {
         prodTransactions.clear();
         for (String key : docmap.keySet()) {
             BusDoc doc = docmap.get(key);
+            doc.refreshTotal();
             prodTransactions.addAll(doc.getProductTransactions());
         }
+        getSelected().setProductTransactions(prodTransactions);
+    }
+
+    public List<BusDoc> getFpiList() {
+        return new LinkedList(docmap.values());
+
     }
 
     public void refreshTotal(ProductTransaction pt) {
@@ -314,53 +382,54 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         pt.getBusdoc().refreshTotal();
     }
 
-    public Double getRatio(){
+    public Double getRatio() {
         double invoiceTotalFc = 0.0;
-        if(!docmap.isEmpty()){
-            for(BusDoc doc: docmap.values()){
-                invoiceTotalFc = invoiceTotalFc + doc.getGrandtotal();
+        System.out.println("getRatio:isEmpty: " + docmap.isEmpty());
+        if (!docmap.isEmpty()) {
+            for (BusDoc doc : docmap.values()) {
+                invoiceTotalFc = invoiceTotalFc + doc.getTotalamount();
             }
         }
-        
+
         double totalExpenseFc = 0.0;
         double totalExpenseLc = 0.0;
-        if(getSelected().getExpenses()!=null){
-            for(BusDocExpense exp: getSelected().getExpenses()){
-                if(exp.getCountry().getDefcountry()){
+        if (getSelected().getExpenses() != null) {
+            for (BusDocExpense exp : getSelected().getExpenses()) {
+                if (exp.getCountry().getDefcountry()) {
                     totalExpenseLc = totalExpenseLc + exp.getAmountlc();
-                }else {
+                } else {
                     totalExpenseFc = totalExpenseFc + exp.getAmountfc();
                 }
             }
         }
-        
+
         double totalInvoicePlusExpFc = invoiceTotalFc + totalExpenseFc;
-        double totalFcToLc = totalInvoicePlusExpFc*getSelected().getRate();
-        double ratio = (totalFcToLc+totalExpenseLc)/invoiceTotalFc;     //Total Invoice & All Cost in LC / Material value in FC
-        if(Double.isNaN(ratio)){
-            //System.out.println("Ratio is NaN");
-            return 0.0;
+        double totalFcToLc = totalInvoicePlusExpFc * getSelected().getRate();
+        double ratio = (totalFcToLc + totalExpenseLc) / invoiceTotalFc;     //Total Invoice & All Cost in LC / Material value in FC
+        if (Double.isNaN(ratio) || Double.isInfinite(ratio)) {
+            System.out.println("Ratio is NaN or Infinity");
+            return getSelected().getRate();
         }
         return ratio;
     }
-    
-    public List<String> getCostingExpenses(){
+
+    public List<String> getCostingExpenses() {
         return systemController.getAsList("CostingExpense");
     }
-    
-    public Double getTotalExpenseInLc(){
-        if(getSelected().getExpenses()==null || getSelected().getExpenses().isEmpty()){
+
+    public Double getTotalExpenseInLc() {
+        if (getSelected().getExpenses() == null || getSelected().getExpenses().isEmpty()) {
             return 0.0;
         }
         return getSelected().getExpenses().stream().mapToDouble(BusDocExpense::getTotalAmountInLC).sum();
     }
-    
+
     public void newExpense() {
         BusDocExpense exp = new BusDocExpense();
         //System.out.println("newExpense: Step 1");
         Country defcon = countryRepo.findCountryDefault();
         //System.out.println("newExpense: Step 2");
-        if(defcon==null){
+        if (defcon == null) {
             defcon = getSelected().getCurrency();
         }
         String defexptype = getCostingExpenses().get(0);
@@ -470,6 +539,9 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
             doc.addProductTransactions(prodtra);
         }
         reloadProductTransactions();
+        getSelected().refreshTotal();
+        getRatio();
+        JsfUtil.addSuccessMessage(selectedFromProductTransactions.size() + " trassactions added");
     }
 
     public List<BusinessPartner> getPartnerList() {
@@ -491,7 +563,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         pt.setCustomizedname(prod.getProductname());
         pt.setLineqty(1.0);
         pt.setBusdoc(getSelected());
-        pt.setBranch(userSession.getLoggedInBranch());     //to be changed later
+        pt.setBranch(getSelected().getBranch());     //to be changed later
 
         //find vat sales or purchase type
         VatBusinessRegister vbr = getSelected().getBusinesspartner().getBusinessRegisters().get(0);
@@ -538,7 +610,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         clone.setCustomizedname(pt.getCustomizedname());
         clone.setLineqty(pt.getBalance());
         clone.setBusdoc(getSelected());
-        clone.setBranch(userSession.getLoggedInBranch());     //to be changed later
+        clone.setBranch(pt.getBranch());     //to be changed later
         clone.setVatsptypeid(pt.getVatsptypeid());
 
         clone.setVatcategoryid(pt.getVatcategoryid());
@@ -571,7 +643,7 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
     }
 
     public void currencySelected() {
-        if (getSelected().getCurrency()!= null) {
+        if (getSelected().getCurrency() != null) {
             getSelected().setRate(getSelected().getCurrency().getRate());
         }
     }
@@ -689,6 +761,18 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
         return vatsalespurRepo.findByCategory(getSelected().getBusdocinfo().getDoctype());
     }
 
+    public void updateVatCategory(ProductTransaction pt) {
+        if (pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Sales")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Exempted Sales")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Zero Rated Domestic Purchase")
+                || pt.getVatsptypeid().getTypename().equalsIgnoreCase("Out of Scope Purchase")) {
+            pt.setVatcategoryid(getVatCatogories().get(0));
+        } else {
+            pt.setVatcategoryid(getVatCatogories().get(1));
+        }
+        refreshTotal(pt);
+    }
+
     public void docdateChange(SelectEvent event) {
         //FacesContext facesContext = FacesContext.getCurrentInstance();
         //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -740,6 +824,56 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
                 }
             }
         }
+    }
+
+    public void callDownloadReport(MenuActionEvent menuActionEvent) {
+        //Create new action event
+        final ActionEvent actionEvent = new ActionEvent(menuActionEvent.getComponent());
+
+        //Create the value expression for the download listener
+        //-> is executed when calling "processAction"!
+        final FacesContext context = FacesContext.getCurrentInstance();
+        final String exprStr = "#{foreignPurchaseController.exportPdf}";
+        final ValueExpression valueExpr = context.getApplication()
+                .getExpressionFactory()
+                .createValueExpression(context.getELContext(), exprStr, StreamedContent.class);
+
+        //Instantiate the download listener and indirectly call "downloadReport()"
+        new FileDownloadActionListener(valueExpr, null, null)
+                .processAction(actionEvent);
+    }
+
+    public StreamedContent getExportPdf() throws JRException {
+        //System.out.println("BusDocController_getExportPdf: " + reportid);
+        //PrintReport rep = null;
+        //for (PrintReport report : getSelected().getBusdocinfo().getReportid()) {
+        //    if (report.getReportid().toString().equalsIgnoreCase(reportid)) {
+        //        rep = report;
+        //    }
+        //}
+        //System.out.println("BusDocController_getExportPdf: " + rep);
+        //getSelected().setCurrentPrintReport(rep);
+        return reportGenerator.downloadFpcPdf(getSelected().getCurrentPrintReport(), getSelected(), getFpiList(), prodTransactions, getSelected().getReportTitle());
+    }
+
+    public void setupPrintMenu() {
+        if (getSelected().getBusdocinfo().getReportid() != null
+                && getSelected().getBusdocinfo().getReportid().size() > 0) {
+            setPrintButtonModel(new DefaultMenuModel());
+            getSelected().getBusdocinfo().getReportid().forEach((report) -> {
+                DefaultMenuItem item = new DefaultMenuItem();
+                item.setCommand("#{foreignPurchaseController.callDownloadReport}");
+                item.setAjax(false);
+                item.setValue(report.getReportname());
+                getSelected().setCurrentPrintReport(report);
+                //item.setUrl("../viewer/doc/" + report.getReportid() + "/" + getSelected().getDocno());
+                getPrintButtonModel().getElements().add(item);
+            });
+        }
+    }
+
+    public boolean isPrintDisabled() {
+        return getPrintButtonModel() == null || getPrintButtonModel().getElements().isEmpty();
     }
 
     /**
@@ -833,6 +967,20 @@ public class ForeignPurchaseController extends AbstractController<BusDoc> implem
      */
     public void setSelectedExpense(BusDocExpense selectedExpense) {
         this.selectedExpense = selectedExpense;
+    }
+
+    /**
+     * @return the printButtonModel
+     */
+    public MenuModel getPrintButtonModel() {
+        return printButtonModel;
+    }
+
+    /**
+     * @param printButtonModel the printButtonModel to set
+     */
+    public void setPrintButtonModel(MenuModel printButtonModel) {
+        this.printButtonModel = printButtonModel;
     }
 
 }

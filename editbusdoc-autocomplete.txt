@@ -1,0 +1,44 @@
+<!--<p:autoComplete value="#{pt.product}" dynamic="true"
+                                                        converter="#{entityConverter}" completeMethod="#{producttransactionController.completeFilter}"
+                                                        panelStyle="font-size: smaller" scrollHeight="400" style="width: 100%" size="45"
+                                                        var="prodItem" itemValue="#{prodItem}" itemLabel="#{prodItem.productname}"
+                                                        minQueryLength="3">
+                                            <p:ajax event="itemSelect" listener="#{busDocController.changeSearchedProduct(pt)}" 
+                                                    update="custeditor, :growl" />
+                                            <p:column style="width:50px">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Stock#"/>
+                                                </f:facet>
+                                                <h:outputText value="#{prodItem.productid}" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Product Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{prodItem.productname}" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Supp Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{prodItem.supplierscode}" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Brand"/>
+                                                </f:facet>
+                                                <h:outputText value="#{prodItem.brand}" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Category"/>
+                                                </f:facet>
+                                                <h:outputText value="#{prodItem.prodcategory}" />
+                                            </p:column>
+                                            <p:tooltip id="toolTipquicksearch" for="quicksearch" value="Full Text Search Product" 
+                                                       style="white-space: pre-wrap" showEffect="clip"/> 
+                                        </p:autoComplete>-->

@@ -28,13 +28,13 @@
 
         <li>
             <p:commandButton id="btnfile" title="Upload Report File" icon="fas fa-file-upload"
-                             oncomplete="PF('FileDialog').show()"
+                             oncomplete="PF('FileDialog').show()" rendered="false"
                              update=":fileform" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
 
         <li>
             <p:commandButton id="btnjfile" title="Upload Jasper File" icon="fas fa-file-upload"
-                             oncomplete="PF('JFileDialog').show()"  disabled="#{jasperprintTemplateController.disableJasperUpload}"
+                             oncomplete="PF('JFileDialog').show()" disabled="#{jasperprintTemplateController.disableJasperUpload}"
                              update=":jfileform" styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
         </li>
     </ui:define>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="p-field p-col">
                             <p:outputLabel for="@next">Title</p:outputLabel>
-                            <p:inputText id="rtitle" value="#{jasperprintTemplateController.dynamicReport.title.text}"
+                            <p:inputText id="rtitle" value="#{jasperprintTemplateController.selected.reporttitle}"
                                          required="true" requiredMessage="Report Title is required"/>
                         </div>
                     </div>

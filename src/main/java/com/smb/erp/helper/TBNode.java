@@ -5,13 +5,14 @@
  */
 package com.smb.erp.helper;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Burhani152
  */
-public class TBNode {
+public class TBNode implements Serializable{
         private Double debit = 0.0;
         private Double credit = 0.0;
         private String title = "";

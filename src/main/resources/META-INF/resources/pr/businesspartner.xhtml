@@ -50,6 +50,72 @@
                                          effect="fold" style="width:100%">
                             <f:selectItems value="#{businessPartnerController.creditStatusTypes}" />
                         </p:selectOneMenu>
+
+                        <p:outputLabel value="Business Group:" for="bpgroup" />
+                        <p:selectOneMenu id="bpgroup" value="#{businessPartnerController.selected.bpgroupid}" converter="#{entityConverter}" 
+                                         effect="fold" style="width:100%">
+                            <f:selectItem itemLabel="None" itemValue="#{null}"/>
+                            <f:selectItems value="#{businessPartnerGroupController.items}" var="item" itemLabel="#{item.groupname}" itemValue="#{item}"/>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{t.bpgroupid}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{t.groupname}"/>
+                            </p:column>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <br/>
+
+                <p:fieldset legend="VAT" styleClass="card ui-fluid">
+                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
+                        <p:outputLabel value="Registration Id:" for="regid" />
+                        <p:inputText id="regid" placeholder="Registration Id" value="#{businessPartnerController.selectedVatRegister.vatregisterid}" disabled="true"/>
+
+                        <p:outputLabel value="State:" for="state" />
+                        <p:inputText id="state" value="#{businessPartnerController.selectedVatRegister.countryState}" />
+
+                        <p:outputLabel value="VAT Number:" for="trno" />
+                        <p:inputText id="trno" value="#{businessPartnerController.selectedVatRegister.trnno}" />
+
+                        <p:outputLabel value="Vat Category:" for="vcat" />
+                        <p:selectOneMenu id="vcat" var="v" value="#{businessPartnerController.selectedVatRegister.vatcategoryid}" converter="#{entityConverter}" 
+                                         style="width:100%" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{vatcategoryController.items}" var="vatcat" itemValue="#{vatcat}" itemLabel="#{vatcat.categoryname}"/>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Category Name"/>
+                                </f:facet>
+                                <h:outputText value="#{v.categoryname}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Vat %"/>
+                                </f:facet>
+                                <h:outputText value="#{v.vatpercentage}" />
+                            </p:column>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Vat Account Type" for="vacc" />
+                        <p:selectOneMenu id="vacc" var="v" value="#{businessPartnerController.selectedVatRegister.vataccounttypeid}" converter="#{entityConverter}" 
+                                         style="width:100%" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{vatacounttypeController.vatAccountTypeAll}" var="vatacc" itemValue="#{vatacc}" itemLabel="#{vatacc.accounttype}"/>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Account Type"/>
+                                </f:facet>
+                                <h:outputText value="#{v.accounttype}" />
+                            </p:column>
+                        </p:selectOneMenu>
+
                     </p:panelGrid>
                 </p:fieldset>
 
@@ -67,81 +133,17 @@
                         <p:inputNumber id="days" value="#{businessPartnerController.selected.creditlimit.daysduration}" minValue="0" maxValue="90" decimalPlaces="0" />
                     </p:panelGrid>
                 </p:fieldset>
-
-                <br/>
-                
-                <p:fieldset legend="VAT" styleClass="card ui-fluid">
-                    <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
-                        <p:outputLabel value="Registration Id:" for="regid" />
-                        <p:inputText id="regid" placeholder="Registration Id" value="#{businessPartnerController.selectedVatRegister.vatregisterid}" disabled="true"/>
-
-                        <p:outputLabel value="State:" for="state" />
-                        <p:inputText id="state" value="#{businessPartnerController.selectedVatRegister.countryState}" />
-
-                        <p:outputLabel value="VAT Number:" for="trno" />
-                        <p:inputText id="trno" value="#{businessPartnerController.selectedVatRegister.trnno}" />
-
-                        <p:outputLabel value="Vat Category:" for="vcat" />
-                        <p:selectOneMenu id="vcat" value="#{businessPartnerController.selectedVatRegister.vatcategoryid}" converter="#{entityConverter}" 
-                                         style="width:100%">
-                            <f:selectItems value="#{vatcategoryController.items}" var="vatcat" itemValue="#{vatcat}" itemLabel="#{vatcat.categoryname}">
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Category Name"/>
-                                    </f:facet>
-                                    <h:outputText value="#{vatcat.categoryname}" />
-                                </p:column>
-
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Vat %"/>
-                                    </f:facet>
-                                    <h:outputText value="#{vatcat.vatpercentage}" />
-                                </p:column>
-                            </f:selectItems>
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="Vat Account Type" for="vacc" />
-                        <p:selectOneMenu id="vacc" value="#{businessPartnerController.selectedVatRegister.vataccounttypeid}" converter="#{entityConverter}" 
-                                         style="width:100%">
-                            <f:selectItems value="#{vatacounttypeController.vatAccountTypeAll}" var="vatacc" itemValue="#{vatacc}" itemLabel="#{vatacc.accounttype}">
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Account Type"/>
-                                    </f:facet>
-                                    <h:outputText value="#{vatacc.accounttype}" />
-                                </p:column>
-                            </f:selectItems>
-                        </p:selectOneMenu>
-
-                    </p:panelGrid>
-                </p:fieldset>
             </div>
 
             <div class="ui-g-12 ui-lg-6">
                 <!-- Right Side -->
                 <p:fieldset legend="Address" styleClass="card ui-fluid">
                     <p:panelGrid columns="2" columnClasses="p-col-12 p-mb-4 p-md-4 p-mb-md-0,p-col-12 p-md-8" layout="grid">
-                        <p:outputLabel value="Shop No:" for="shopno" />
-                        <p:inputText id="shopno" placeholder="Shop No" value="#{businessPartnerController.selected.shopno}"/>
-
-                        <p:outputLabel value="Building No:" for="buildingno" />
-                        <p:inputText id="buildingno" placeholder="Building No" value="#{businessPartnerController.selected.buildingno}"/>
-
-                        <p:outputLabel value="Road No:" for="roadno" />
-                        <p:inputText id="roadno" placeholder="Road No" value="#{businessPartnerController.selected.roadno}"/>
-
-                        <p:outputLabel value="Block No:" for="blockno" />
-                        <p:inputText id="blockno" placeholder="Block No" value="#{businessPartnerController.selected.blockno}"/>
-
-                        <p:outputLabel value="Town:" for="town" />
-                        <p:inputText id="town" placeholder="Town" value="#{businessPartnerController.selected.town}"/>
-
-                        <p:outputLabel value="Area:" for="area" />
-                        <p:inputText id="area" placeholder="Area" value="#{businessPartnerController.selected.area}"/>
+                        <p:outputLabel value="Address:" for="address" />
+                        <p:inputTextarea id="address" value="#{businessPartnerController.selected.fulladdress}" rows="5" style="width:100%"/>
 
                         <p:outputLabel value="Country" for="country" />
-                        <p:selectOneMenu id="country" value="#{businessPartnerController.selected.country}" 
+                        <p:selectOneMenu id="country" var="c" value="#{businessPartnerController.selected.country}" 
                                          style="width: 100%" converter="#{entityConverter}"
                                          filter="true" filterMatchMode="contains" >
                             <f:selectItems value="#{countryController.countryAll}"
@@ -149,10 +151,22 @@
                                            itemValue="#{con}"
                                            itemLabel="#{con.countryname}"
                                            />
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Country"/>
+                                </f:facet>
+                                <h:outputText value="#{c.countryname}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Sym"/>
+                                </f:facet>
+                                <h:outputText value="#{c.countrysym}" />
+                            </p:column>
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Currency" for="curency" />
-                        <p:selectOneMenu id="curency" value="#{businessPartnerController.selected.currency}" 
+                        <p:selectOneMenu id="curency" var="c" value="#{businessPartnerController.selected.currency}" 
                                          style="width: 100%" converter="#{entityConverter}"
                                          filter="true" filterMatchMode="contains" >
                             <f:selectItems value="#{countryController.countryAll}"
@@ -160,6 +174,18 @@
                                            itemValue="#{con}"
                                            itemLabel="#{con.currency}"
                                            />
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Country"/>
+                                </f:facet>
+                                <h:outputText value="#{c.countryname}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="CurSym"/>
+                                </f:facet>
+                                <h:outputText value="#{c.currencysym}" />
+                            </p:column>
                         </p:selectOneMenu>
                     </p:panelGrid>
                 </p:fieldset>

@@ -46,6 +46,18 @@ public class JsfUtil {
         FacesContext.getCurrentInstance().validationFailed(); // Invalidate JSF page if we raise an error message
     }    
 
+    public static void addWarnMessage(String msg) {
+        //FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
+        //FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        //FacesContext.getCurrentInstance().validationFailed(); // Invalidate JSF page if we raise an error message
+        addWarnMessage("Warning", msg);
+    }
+    
+    public static void addWarnMessage(String summary, String details) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, details);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }    
+
     public static void addSuccessMessage(String msg) {
         //FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
         //FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);

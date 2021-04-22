@@ -8,7 +8,11 @@ package com.smb.erp.controller;
 import com.smb.erp.UserSession;
 import com.smb.erp.entity.Branch;
 import com.smb.erp.repo.BranchRepository;
+import com.smb.erp.util.DateUtil;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +29,9 @@ public class BranchController extends AbstractController<Branch> {
 
     @Autowired
     UserSession userSession;
-    
+
+    private static List<Branch> LOGGED_IN_COMPANY_BRANCHS;
+
     @Autowired
     public BranchController(BranchRepository repo) {
         // Inform the Abstract parent controller of the concrete ItsMaster Entity
@@ -33,9 +39,24 @@ public class BranchController extends AbstractController<Branch> {
         this.repo = repo;
     }
 
-    public List<Branch> getAllBranchByLoggedInCompany(){
-        //System.out.println("getAllBranchByLoggedInCompany: " + repo.findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid()));
-        return repo.findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid());
+    @PostConstruct
+    public void init() {
+        LOGGED_IN_COMPANY_BRANCHS = findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid());
     }
-    
+
+    public List<Branch> getAllBranchByLoggedInCompany() {
+        //System.out.println("getAllBranchByLoggedInCompany: " + items);
+        if (items == null) {
+            items = repo.findBranchByCompanyId(userSession.getLoggedInCompany().getCompanyid());
+        }
+        return items;
+    }
+
+    public List<Branch> findBranchByCompanyId(long companyid) {
+        if (LOGGED_IN_COMPANY_BRANCHS == null) {
+            LOGGED_IN_COMPANY_BRANCHS = repo.findBranchByCompanyId(companyid);
+        }
+        return LOGGED_IN_COMPANY_BRANCHS;
+    }
+
 }

@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:l="http://www.lapis.com/jsf/exporter"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Business Partner
+    </ui:define>
+
+    <ui:param name="viewname" value="Business Partner" />
+
+    <ui:define name="content">
+        <h:form id="mainform">
+            <p:outputPanel deferred="true">
+                <div class="p-grid">
+                    <div class="p-col-12 p-md-12">
+                        <p:panel id="companydetails" header="Search Criteria" 
+                                 collapsed="false" toggleable="true" styleClass="card">
+                            <f:facet name="actions">
+                                <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 actionListener="#{businessPartnerController.refresh()}" 
+                                                 update="@form, :growl" icon="fa fa-refresh" />
+                                <p:commandButton id="btnimport" title="Import Transactions" icon="fas fa-download" 
+                                                 styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                 oncomplete="PF('TransDialog').show()" update=":transform"/>
+                                <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                    <l:dataExporter id="exportPdf" source="transtable" fileType="pdf" fileName="BusinessPartnerList"/>
+                                </p:commandButton>
+
+                                <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                    <l:dataExporter id="exportXLS" source="transtable" fileType="excel" fileName="BusinessPartnerList"/>
+                                </p:commandButton>
+
+                                <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                    <l:dataExporter id="exportCSV" source="transtable" fileType="csv" fileName="BusinessPartnerList"/>
+                                </p:commandButton>
+                            </f:facet>
+                            <p:panelGrid columns="5" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" 
+                                         styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel value="Search Criteria:" for="criteria" />
+                                <p:inputText id="criteria" value="#{businessPartnerController.criteria}" style="width: 100% !important"/>
+
+                                <p:outputLabel value="Partner Type:" for="ptype" />
+                                <p:selectOneMenu id="ptype" value="#{businessPartnerController.selectedType}" converter="#{entityConverter}" 
+                                                 effect="fold" style="width:90%">
+                                    <f:selectItem itemValue="Both" itemLabel="Both" />
+                                    <f:selectItems value="#{businessPartnerController.companyTypes}" />
+                                </p:selectOneMenu>
+
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+
+                    <div class="p-col-12 p-md-12">
+                        <p:panel header="List of Business Partners" styleClass="card">
+                            <f:facet name="actions">
+                                <div class="customers-table-header">
+                                    <div>
+                                        <span class="ui-input-icon-left filter-container">
+                                            <i class="pi pi-search"></i>
+                                            <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
+                                        </span>
+                                        <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{businessPartnerController.newTab_In_newBtab()}"
+                                                         ajax="false" onclick="form.target = '_blank'"/>
+                                        <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                                         disabled="#{businessPartnerController.companyDisabled}" 
+                                                         actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                                         ajax="false" onclick="form.target = '_blank'"/>
+                                    </div>
+                                </div>
+                            </f:facet>
+                            <p:contextMenu for="transtable">
+                                <p:menuitem value="Edit" icon="pi pi-pencil" process="@this"
+                                            actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                            ajax="false" target="_blank"/>
+
+                                <p:menuitem value="Refresh" update="transtable" icon="pi pi-refresh"
+                                            onclick="document.getElementById('mainform:btnrefresh').click();"/>
+                            </p:contextMenu>
+                            <p:dataTable id="transtable" var="bus" widgetVar="btable"
+                                         value="#{businessPartnerController.items}"
+                                         selectionMode="single"
+                                         selection="#{businessPartnerController.selected}"
+                                         rowKey="#{bus.partnerid}"
+                                         reflow="true"
+                                         emptyMessage="No Business Partner found"
+                                         styleClass="ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
+                                         style="font-size: small">
+
+
+                                <p:ajax event="rowSelect" update=":mainform:btnedit"/>
+                                <p:column headerText="Id" style="width: 40px; text-align: center"
+                                          sortBy="#{bus.partnerid}" filterBy="#{bus.partnerid}">
+                                    <h:outputText value="#{bus.partnerid}" />
+                                </p:column>
+
+                                <p:column headerText="Name" style="width: 30%" 
+                                          sortBy="#{bus.companyname}" filterBy="#{bus.companyname}">
+                                    <h:outputText value="#{bus.companyname}" />
+                                </p:column>
+
+                                <p:column headerText="Email"
+                                          sortBy="#{bus.email1}" filterBy="#{bus.email1}">
+                                    <h:outputText value="#{bus.email1}" />
+                                </p:column>
+
+                                <p:column headerText="Phone"
+                                          sortBy="#{bus.phone1}" filterBy="#{bus.phone1}">
+                                    <h:outputText value="#{bus.phone1}" />
+                                </p:column>
+
+                                <p:column headerText="Fax"
+                                          sortBy="#{bus.fax1}" filterBy="#{bus.fax1}">
+                                    <h:outputText value="#{bus.fax1}" />
+                                </p:column>
+
+                                <p:column headerText="Type"
+                                          sortBy="#{bus.companytypes}" filterBy="#{bus.companytypes}">
+                                    <h:outputText value="#{bus.companytypes}" />
+                                </p:column>
+
+                                <p:column headerText="TRN No"
+                                          sortBy="#{bus.currentVatRegister.trnno}" filterBy="#{bus.currentVatRegister.trnno}">
+                                    <h:outputText value="#{bus.currentVatRegister.trnno}" />
+                                </p:column>
+
+                                <p:column headerText="Vat Category"
+                                          sortBy="#{bus.currentVatRegister.vatcategoryid}" filterBy="#{bus.currentVatRegister.vatcategoryid}">
+                                    <h:outputText value="#{bus.currentVatRegister.vatcategoryid}" />
+                                </p:column>
+
+                                <p:column headerText="Vat Type"
+                                          sortBy="#{bus.currentVatRegister.vataccounttypeid}" filterBy="#{bus.currentVatRegister.vataccounttypeid}">
+                                    <h:outputText value="#{bus.currentVatRegister.vataccounttypeid}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+            </p:outputPanel>
+        </h:form>
+        <ui:include src="/pr/buspartimport.xhtml"/>
+    </ui:define>
+
+</ui:composition>

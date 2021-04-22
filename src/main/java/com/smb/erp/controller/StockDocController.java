@@ -72,6 +72,9 @@ public class StockDocController extends AbstractController<BusDoc> implements Pr
 
     @Autowired
     AccDocController accdocController;
+    
+    @Autowired
+    PageAccessController pageController;
 
     DocumentTab.MODE mode = DocumentTab.MODE.LIST;
 
@@ -146,6 +149,7 @@ public class StockDocController extends AbstractController<BusDoc> implements Pr
                 mode = DocumentTab.MODE.EDIT;
                 //docdate = getSelected().getDocdate();
             }
+            pageController.hasAccess(docInfo);
         }
     }
 

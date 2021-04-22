@@ -5,7 +5,6 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.Account;
 import com.smb.erp.entity.AccountTransactionType;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
@@ -50,13 +49,13 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
     private AccountTransactionType selectedTransaction;
 
     private CashRegister selectedCashRegister;
-    
+
     private DefaultModeAccount selectedDefaultAccount;
 
     private BusDocInfo selectedConvertFrom;
 
     private PrintReport selectedPrintReport;
-    
+
     private String modeDebitOrCredit = "None";
 
     @Autowired
@@ -82,15 +81,21 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
                 if (bdid != null) {
                     setSelected(repo.getOne(Integer.parseInt(bdid)));
                 }
-                
-                if(getSelected().getDebitaccountid()!=null){
+
+                if (getSelected().getDebitaccountid() != null) {
                     setModeDebitOrCredit("Debit");
                 }
-                if(getSelected().getCreditaccountid()!=null){
+                if (getSelected().getCreditaccountid() != null) {
                     setModeDebitOrCredit("Credit");
                 }
-                
+
                 mode = DocumentTab.MODE.EDIT;
+                
+                //temporary print conversion stats
+                System.out.println("--------- CONVERSION FOR " + getSelected().getDocname() + " ---------");
+                System.out.println("FROM => " + getSelected().getConvertfrom());
+                System.out.println("TO => " + getSelected().getConvertto());
+                System.out.println("------------------ END ------------------");
             }
             if (getSelected().getPageid() == null) {
                 getSelected().setPageid(new Webpage());
@@ -112,32 +117,32 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         try {
             if (mode == DocumentTab.MODE.NEW) {
                 getSelected().setCreatedon(new Date());
+            } else {
+                getSelected().getPageid().setListurl(getSelected().getDoclisturl());
+                getSelected().getPageid().setPageurl(getSelected().getDocediturl());
             }
-            
-            if(getModeDebitOrCredit().equalsIgnoreCase("None")){
+
+            if (getModeDebitOrCredit().equalsIgnoreCase("None")) {
                 getSelected().setDebitaccountid(null);
                 getSelected().setCreditaccountid(null);
-            } else if(getModeDebitOrCredit().equalsIgnoreCase("Debit")){
+            } else if (getModeDebitOrCredit().equalsIgnoreCase("Debit")) {
                 getSelected().setCreditaccountid(null);
-            } else if(getModeDebitOrCredit().equalsIgnoreCase("Credit")){
+            } else if (getModeDebitOrCredit().equalsIgnoreCase("Credit")) {
                 getSelected().setDebitaccountid(null);
             }
-            
-            if(getSelected().getDefaultaccid()!=null){
-                for(DefaultModeAccount def: getSelected().getDefaultaccid()){
+
+            if (getSelected().getDefaultaccid() != null) {
+                for (DefaultModeAccount def : getSelected().getDefaultaccid()) {
                     def.setTranstype(modeDebitOrCredit);
                 }
             }
-            //if(getSelected().getPageid().getPageid()==null){
-            //    webRepo.save(getSelected().getPageid());
-            //}
-            super.save();
+
+            repo.save(getSelected());
             //reload the busdocinfo 
-            setSelected(repo.getOne(getSelected().getBdinfoid()));
-            getSelected().getPageid().setListurl(getSelected().getDoclisturl());
-            getSelected().getPageid().setPageurl(getSelected().getDocediturl());
-            super.save();
-            //}
+            //setSelected(repo.getOne(getSelected().getBdinfoid()));
+            //getSelected().getPageid().setListurl(getSelected().getDoclisturl());
+            //getSelected().getPageid().setPageurl(getSelected().getDocediturl());
+            //super.save();
 
             JsfUtil.addSuccessMessage(getSelected().getDocname() + " Definition saved");
         } catch (Exception ex) {
@@ -188,7 +193,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         setSelectedDefaultAccount(new DefaultModeAccount());
         getSelectedDefaultAccount().setDefaultaccid(0);
         getSelectedDefaultAccount().setTranstype(modeDebitOrCredit);
-        if (getSelected().getDefaultaccid()== null) {
+        if (getSelected().getDefaultaccid() == null) {
             getSelected().setDefaultaccid(new LinkedList<DefaultModeAccount>());
         }
         getSelected().addDefaultaccid(getSelectedDefaultAccount());
@@ -206,14 +211,14 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     public void createNewPrintReport() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("../report/printdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+ "/report/printdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
     }
 
     public void createNewJasperReport() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         //facesContext.getExternalContext().getRequestMap().put("mode", "n");
         //facesContext.getExternalContext().getRequestMap().put("bdid", "" + getSelected().getBdinfoid());
-        facesContext.getExternalContext().redirect("../report/jasperdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/report/jasperdesigner.xhtml?mode=n&bdid=" + getSelected().getBdinfoid());
     }
 
     public void editPrintReport() throws IOException {
@@ -223,7 +228,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("../report/printdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/report/printdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
     }
 
     public void editJasperReport() throws IOException {
@@ -233,7 +238,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("../report/jasperdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/report/jasperdesigner.xhtml?mode=e&bdid=" + getSelected().getBdinfoid() + "&reportid=" + getSelectedPrintReport().getReportid());
     }
 
     public void deletePrintReport() {
@@ -278,7 +283,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
 
     public void new_in_tab() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=0");
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/busdoc/editbusdocinfo.xhtml?mode=0");
     }
 
     public void edit_in_tab() throws IOException {
@@ -288,7 +293,7 @@ public class BusDocInfoController extends AbstractController<BusDocInfo> {
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("editbusdocinfo.xhtml?mode=1&bdid=" + getSelected().getBdinfoid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/busdoc/editbusdocinfo.xhtml?mode=1&bdid=" + getSelected().getBdinfoid());
     }
 
     public void createNewConvertFrom() {

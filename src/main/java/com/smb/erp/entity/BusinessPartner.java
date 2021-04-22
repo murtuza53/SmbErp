@@ -65,6 +65,8 @@ public class BusinessPartner implements Serializable {
 
     private String area;
 
+    private String fulladdress;
+
     @XmlTransient
     @Transient
     public static final String CUSTOMER = "Customer";
@@ -91,6 +93,10 @@ public class BusinessPartner implements Serializable {
     @ManyToOne
     @JoinColumn(name = "currencyno")
     private Country currency;
+
+    @ManyToOne
+    @JoinColumn(name = "bpgroupid")
+    private BusinessPartnerGroup bpgroupid;
 
     //bi-directional many-to-one association to CreditLimit
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -119,9 +125,6 @@ public class BusinessPartner implements Serializable {
 
     @Transient
     private String currentVatNo;
-
-    @Transient
-    private String fullAddress;
 
     public BusinessPartner() {
     }
@@ -667,17 +670,30 @@ public class BusinessPartner implements Serializable {
     }
 
     /**
-     * @return the fullAddress
+     * @return the fulladdress
      */
-    public String getFullAddress() {
-        return getAddressLine1() + " " + getAddressLine2();
+    public String getFulladdress() {
+        return fulladdress;
     }
 
     /**
-     * @param fullAddress the fullAddress to set
+     * @param fulladdress the fulladdress to set
      */
-    public void setFullAddress(String fullAddress) {
-        this.fullAddress = fullAddress;
+    public void setFulladdress(String fulladdress) {
+        this.fulladdress = fulladdress;
     }
 
+    /**
+     * @return the bpgroupid
+     */
+    public BusinessPartnerGroup getBpgroupid() {
+        return bpgroupid;
+    }
+
+    /**
+     * @param bpgroupid the bpgroupid to set
+     */
+    public void setBpgroupid(BusinessPartnerGroup bpgroupid) {
+        this.bpgroupid = bpgroupid;
+    }
 }

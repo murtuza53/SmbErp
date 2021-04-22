@@ -24,6 +24,9 @@ public interface PageAccessRepository extends BaseRepository<PageAccess, Long> {
     @Query("SELECT b FROM PageAccess as b WHERE b.roleid.roleid=:roleid ORDER BY b.pageid.menuorder")
     List<PageAccess> findAccessByRole(@Param("roleid") long roleid);
     
+    @Query("SELECT b FROM PageAccess as b WHERE b.pageid.pageid=:pageid AND b.roleid.roleid=:roleid ORDER BY b.pageid.menuorder")
+    List<PageAccess> findAccessByWebPageAndRole(@Param("pageid") long pageid, @Param("roleid") long roleid);
+
     @Query("SELECT b FROM PageAccess as b WHERE b.roleid.roleid=:roleid ORDER BY b.pageid.moduleid.modulename")
     List<PageAccess> findAccessByRoleOrderByModule(@Param("roleid") long roleid);
 

@@ -159,4 +159,8 @@ public class UserSession implements Serializable {
         return "";
     }
 
+    public boolean isAdminUser(){
+        return getLoggedInEmp().getAuthentication().getUsername().equals("admin");
+    }
+    
 }

@@ -38,7 +38,7 @@ public class WebpageController extends AbstractController<Webpage> {
     private Module selectedModule;
     
     private PrintReport selectedPrintReport;
-
+    
     @Autowired
     public WebpageController(WebpageRepository repo) {
         this.webpageRepo = repo;
@@ -92,7 +92,7 @@ public class WebpageController extends AbstractController<Webpage> {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         //facesContext.getExternalContext().getRequestMap().put("mode", "n");
         //facesContext.getExternalContext().getRequestMap().put("bdid", "" + getSelected().getBdinfoid());
-        facesContext.getExternalContext().redirect("../report/jdesigner.xhtml?mode=n&pageid=" + getSelected().getPageid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/report/jdesigner.xhtml?mode=n&pageid=" + getSelected().getPageid());
     }
 
     public void editJasperReport(Webpage page) throws IOException {
@@ -103,7 +103,7 @@ public class WebpageController extends AbstractController<Webpage> {
         setSelected(page);
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().redirect("../report/jdesigner.xhtml?mode=e&pageid=" + getSelected().getPageid() + "&reportid=" + getSelectedPrintReport().getReportid());
+        facesContext.getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/report/jdesigner.xhtml?mode=e&pageid=" + getSelected().getPageid() + "&reportid=" + getSelectedPrintReport().getReportid());
     }
 
     public void deletePrintReport(Webpage page) {
@@ -117,7 +117,7 @@ public class WebpageController extends AbstractController<Webpage> {
         save();
         JsfUtil.addSuccessMessage("Deleted Successfuly");
     }
-
+    
     /**
      * @return the selectedModule
      */

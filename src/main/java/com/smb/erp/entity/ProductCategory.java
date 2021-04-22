@@ -1,5 +1,6 @@
 package com.smb.erp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -32,17 +33,15 @@ public class ProductCategory implements Serializable {
     private List<PriceList> pricelists;
 
     //bi-directional many-to-one association to ProductCategry
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parentid")
     private ProductCategory prodcategory;
 
     //bi-directional many-to-one association to ProductCategry
+    @JsonIgnore
     @OneToMany(mappedBy = "prodcategory")
     private List<ProductCategory> prodcategories;
-
-    //bi-directional many-to-one association to Product
-    @OneToMany(mappedBy = "prodcategory")
-    private List<Product> products;
 
     public ProductCategory() {
     }
@@ -123,7 +122,7 @@ public class ProductCategory implements Serializable {
         return prodcategry;
     }
 
-    public List<Product> getProducts() {
+    /*public List<Product> getProducts() {
         return this.products;
     }
 
@@ -143,7 +142,7 @@ public class ProductCategory implements Serializable {
         product.setProdcategory(null);
 
         return product;
-    }
+    }*/
 
     @Override
     public String toString() {

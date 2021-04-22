@@ -76,13 +76,13 @@
                             </p:column>
 
                             <p:column headerText="FcDebit" style="text-align:right">
-                                <h:outputText value="#{led.fcDebit}">
+                                <h:outputText value="#{led.fcdebit}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
 
                             <p:column headerText="FcCredit" style="text-align:right">
-                                <h:outputText value="#{led.fcCredit}">
+                                <h:outputText value="#{led.fccredit}">
                                     <f:convertNumber pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
@@ -102,12 +102,12 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{systemDefaultsController.formatDecimal(jvViewerController.accdoc.ledlines.stream().map(x -> x.fcDebit).sum())}">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(jvViewerController.accdoc.ledlines.stream().map(x -> x.fcdebit).sum())}">
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{systemDefaultsController.formatDecimal(jvViewerController.accdoc.ledlines.stream().map(x -> x.fcCredit).sum())}">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(jvViewerController.accdoc.ledlines.stream().map(x -> x.fccredit).sum())}">
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>

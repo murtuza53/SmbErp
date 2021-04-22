@@ -3,22 +3,35 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/diamond-layout/template.xhtml">
+                template="/diamond-layout/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">
-        #{busDocController.docInfo.docname} List
+        #{busDocListController.docInfo.docname} List
     </ui:define>
 
-    <ui:param name="viewname" value="#{busDocController.docInfo.docname} List" />
+    <ui:param name="viewname" value="#{busDocListController.docInfo.docname} List" />
 
     <ui:define name="content">
+        <style type="text/css">
+            .ui-sticky {
+                top: 5px !important;
+            }
+
+            @media (max-width: 960px) {
+                .ui-sticky {
+                    top: 102px !important;
+                }
+            }
+        </style>
         <h:form id="busform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
-                    <p:panel id="doclist" header="" toggleable="true">
-                        <f:facet name="actions">
-                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             actionListener="#{busDocListController.refresh()}"
-                                             update="@form :growl" icon="fa fa-refresh" />
+                    <p:toolbar id="listtoolbar">
+                        <p:toolbarGroup>
+                            <p:commandButton id="print" icon="pi pi-print" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="print"/>
+                                <p:printer target="bustable"/>
+                            </p:commandButton>
 
                             <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
                                 <p:tooltip value="Export to PDF" for="exportPdf"/>
@@ -34,8 +47,57 @@
                                 <p:tooltip value="Export to CSV" for="exportCSV"/>
                                 <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
                             </p:commandButton>
+                        </p:toolbarGroup>
 
-                        </f:facet>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+
+                            <p:commandButton id="btnnew" title="New #{busDocListController.docInfo.docname}" icon="fa fa-plus" process="@this"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.new_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btnedit" title="Edit #{busDocListController.docInfo.docname}" icon="fa fa-pencil" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocListController.selected}" 
+                                             actionListener="#{busDocListController.edit_in_tab()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btndelete" title="Delete #{busDocListController.docInfo.docname}" icon="fa fa-trash" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty busDocListController.selected}" 
+                                             actionListener="#{busDocListController.delete()}" rendered="#{userSession.adminUser}"
+                                             update="@form :growl">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="btndeleteall" title="Delete All" icon="fa fa-trash" rendered="#{userSession.adminUser}"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.deleteAll()}"
+                                             update="@form :growl">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="btnsaveall" title="Save All" update=":growl, :busform:bustable" rendered="#{userSession.adminUser}"
+                                             icon="fa fa-save" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{busDocListController.saveAll()}">
+                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
+                            </p:commandButton>
+
+
+                            <p:commandButton id="btnimportdoc" title="Import Documents" icon="fas fa-download" rendered="#{userSession.adminUser}"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             oncomplete="PF('TransDialog').show()" update=":transform"/>
+
+                            <p:commandButton id="btnbusimportdoc" title="Import Documents with Transactions" icon="fas fa-download" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle}" rendered="#{userSession.adminUser}"
+                                             oncomplete="PF('BusTransDialog').show()" update=":transform"/>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                    <p:sticky target="listtoolbar"/>
+
+                    <p:panel id="doclist" toggleable="true">
 
                         <div class="ui-fluid p-formgrid p-grid">
                             <div class="p-field p-col-12 p-md-6">
@@ -74,39 +136,7 @@
                     </p:panel>
                     <br/>
                     <br/>
-                    <p:panel id="tablelist" header="" styleClass="card">
-                        <f:facet name="actions">
-                            <p:commandButton id="btnnew" title="New #{busDocController.docInfo.docname}" icon="fa fa-plus" process="@this"
-                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             actionListener="#{busDocListController.new_in_tab()}"
-                                             ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton id="btnedit" title="Edit #{busDocController.docInfo.docname}" icon="fa fa-pencil" process="@this" 
-                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             disabled="#{empty busDocListController.selected}" 
-                                             actionListener="#{busDocListController.edit_in_tab()}"
-                                             ajax="false" onclick="form.target = '_blank'"/>
-                            <p:commandButton id="btndelete" title="Delete #{busDocController.docInfo.docname}" icon="fa fa-trash" 
-                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             disabled="#{empty busDocListController.selected}" 
-                                             actionListener="#{busDocListController.delete()}"
-                                             update="@form :growl">
-                                <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
-                            </p:commandButton>
-
-                            <p:commandButton id="btnimportdoc" title="Import Documents" icon="fas fa-download" 
-                                             styleClass="#{systemDefaultsController.systemButtonStyle}"
-                                             oncomplete="PF('TransDialog').show()" update=":transform"/>
-                        </f:facet>
-
-                        <p:contextMenu for="bustable">
-                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
-                                        onclick="document.getElementById('busform:btnedit').click();"/>
-                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
-                                        onclick="document.getElementById('busform:btndelete').click();"/>
-
-                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
-                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
-                        </p:contextMenu>
+                    <p:panel id="tablelist" styleClass="card">
 
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{busDocListController.items}"
@@ -114,14 +144,14 @@
                                      selectionMode="single"
                                      selection="#{busDocListController.selected}"
                                      reflow="true"
-                                     emptyMessage="No #{busDocController.docInfo.docname} found"
-                                     styleClass="products-table ui-datatable-sm">
+                                     emptyMessage="No #{busDocListController.docInfo.docname} found"
+                                     styleClass="products-table ui-datatable-sm"
+                                     size="small"
+                                     style="font-size: smaller">
                             <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
 
                             <p:column headerText="Date" sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
-                                <h:outputText value="#{item.docdate}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
+                                <h:outputText value="#{systemDefaultsController.formatDate(item.docdate)}"/>
                             </p:column>
 
                             <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
@@ -129,13 +159,18 @@
                             </p:column>
 
                             <p:column headerText="Business Partner" sortBy="#{item.businesspartner.companyname}" 
-                                      filterBy="#{item.businesspartner.companyname}" filterMatchMode="contains">
+                                      filterBy="#{item.businesspartner.companyname}" filterMatchMode="contains" style="width: 25%">
                                 <h:outputText value="#{item.businesspartner.companyname}" />
                             </p:column>
 
                             <p:column headerText="Ref No" sortBy="#{item.refno}" 
                                       filterBy="#{item.refno}" filterMatchMode="contains">
                                 <h:outputText value="#{item.refno}" />
+                            </p:column>
+
+                            <p:column headerText="Pact No" sortBy="#{item.extra1}" 
+                                      filterBy="#{item.extra1}" filterMatchMode="contains">
+                                <h:outputText value="#{item.extra1}" />
                             </p:column>
 
                             <p:column headerText="Total Amount" sortBy="#{item.totalamount}" filterBy="#{item.totalamount}" filterMatchMode="contains"  style="text-align: right">
@@ -162,7 +197,7 @@
 
                             <p:columnGroup type="footer">
                                 <p:row>
-                                    <p:column colspan="4" style="text-align:right" footerText="Totals:"/>
+                                    <p:column colspan="5" style="text-align:right" footerText="Totals:"/>
                                     <p:column style="text-align:right" 
                                               footerText="#{systemDefaultsController.formatDecimal(busDocListController.items.stream().map(x -> x.totalamount).sum())}"/>
                                     <p:column style="text-align:right" 
@@ -172,13 +207,41 @@
                                     <p:column footerText=""/>
                                 </p:row>
                             </p:columnGroup>
+
+                            <p:column headerText="Converted To" sortBy="#{item.toDocs}" 
+                                      filterBy="#{item.toDocs}" filterMatchMode="contains">
+                                <h:outputText value="#{item.toDocs}" />
+                            </p:column>
                         </p:dataTable>
+
+                        <p:contextMenu for="bustable">
+                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
+                                        onclick="document.getElementById('busform:btnedit').click();"/>
+
+                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
+                                        onclick="document.getElementById('busform:btndelete').click();"/>
+
+                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
+                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
+
+                            <p:menuitem value="Make Copy" update="growl" icon="far fa-copy"
+                                        process="@this" actionListener="#{busDocListController.makeCopy()}"/>
+
+                            <p:submenu label="Convert To" rendered="#{!empty busDocListController.convertToMenuItems}" icon="far fa-share-square">
+                                <c:forEach items="#{busDocListController.convertToMenuItems}" var="item">
+                                    <p:menuitem value="#{item.title}" title="#{item.title}" update="growl"
+                                                process="@this" actionListener="#{busDocListController.convertSelected(item.value)}"/>
+                                </c:forEach>
+                            </p:submenu>
+                        </p:contextMenu>
+
                     </p:panel>
                 </div>
             </div>
             <ui:include src="/confirmation.xhtml"/>
         </h:form>
         <ui:include src="/busdoc/busdocimport.xhtml"/>
+        <ui:include src="/busdoc/busdocimport2.xhtml"/>
     </ui:define>
 
 </ui:composition>

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModuleRepository extends BaseRepository<Module, Long> {
 
-    @Query("SELECT b FROM Module as b WHERE b.active=1 ORDER BY b.modulename")
+    @Query("SELECT b FROM Module as b WHERE b.active=1 ORDER BY b.modulename desc")
     List<Module> findActiveAll();
     
 }

@@ -24,6 +24,8 @@ public class VatSalesPurchaseType implements Serializable {
     private String description;
     
     private String category;
+    
+    private String abbreviation;
 
     public VatSalesPurchaseType() {
     }
@@ -72,7 +74,7 @@ public class VatSalesPurchaseType implements Serializable {
 
     @Override
     public String toString() {
-        return "VatSalesPurchaseType{" + "vatsptypeid=" + vatsptypeid + ", typename=" + typename + '}';
+        return typename + " [" + vatsptypeid + "]";
     }
 
     @Override
@@ -112,6 +114,20 @@ public class VatSalesPurchaseType implements Serializable {
      */
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    /**
+     * @return the abbreviation
+     */
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    /**
+     * @param abbreviation the abbreviation to set
+     */
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
 }

@@ -151,6 +151,7 @@ public class AccDocController extends AbstractController<AccDoc> {
         if (docNo == null) {
             docNo = keyCon.getDocNo("AV", DateUtil.getYear(busdoc.getDocdate()));
         }
+        System.out.println("createBusDocSalesJV: " + docNo + " => " + busdoc.getDocno());
         accdoc = prepareBusDocSPJV(busdoc);
         accdoc.setDocno(docNo);
         repo.save(accdoc);
@@ -180,7 +181,7 @@ public class AccDocController extends AbstractController<AccDoc> {
             accdoc.setCreatedon(accdoc.getDocdate());
             accdoc.setRate(busdoc.getRate());
             accdoc.setCurrency(busdoc.getCurrency());
-            System.out.println("SettingAccountDoc_branch: " + busdoc.getBranch());
+            //System.out.println("SettingAccountDoc_branch: " + busdoc.getBranch());
             accdoc.setBranch(busdoc.getBranch());
             accdoc.setEmp(busdoc.getEmp1());
             accdoc.setUpdatedon(new Date());
@@ -196,7 +197,7 @@ public class AccDocController extends AbstractController<AccDoc> {
             }
             ledtable = new Hashtable<String, LedgerLine>();
             for (AccountTransactionType att : info.getTranstypeid()) {
-                System.out.println("AccountTransactionType:\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + att.getAccountid());
+                //System.out.println("AccountTransactionType:\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + att.getAccountid());
                 if (att.getAccountid().getNodetype().startsWith("INTERNAL_ACCOUNT")) {  //internal accounts refer to products
                     if (att.getAccountid().getAccountname().equalsIgnoreCase("DefBusinessPartnerAccount")) {
                         //busdoc.getBusdocinfo().getDoctype().
@@ -228,6 +229,8 @@ public class AccDocController extends AbstractController<AccDoc> {
                 line.setRefno(busdoc.getDocno());
                 line.setReftype(busdoc.getBusdocinfo().getTransactiontype());
                 line.setBranch(accdoc.getBranch());
+                line.setCurrency(busdoc.getCurrency());
+                line.setAccdoc(accdoc);
                 //System.out.println("start: " + line.getTransdate() + "\t" + line.getDebit() + "\t" + line.getCredit() + "\t" + line.getAccount().getAccountname());
                 //inverse for negative value
                 /*if (line.getCredit() < 0 && line.getDebit() == 0) {
@@ -247,12 +250,20 @@ public class AccDocController extends AbstractController<AccDoc> {
 
             //delete ledgerline that has zero value
             if (deletedLedLine.size() > 0) {
+                //System.out.println("-----------DELETED_LEDGERLINE-----------");
                 for (LedgerLine ll : deletedLedLine) {
+                    //System.out.println(ll.getTransdate() + "\t" + ll.getDebit() + "\t" + ll.getCredit() + "\t" + ll.getAccount().getAccountname());
                     accdoc.removeLedline(ll);
                 }
+                //System.out.println("-----------CLOSED_LEDGERLINE-----------");
             }
             //accdoc.setDocno(keyCon.getDocNo("JV", DateUtil.getYear(busdoc.getCreatedon())));
         }
+        //System.out.println("-----------FINAL_LEDGERLINE-----------");
+        //for (LedgerLine line : accdoc.getLedlines()) {
+        //    System.out.println(line.getTransdate() + "\t" + line.getDebit() + "\t" + line.getCredit() + "\t" + line.getAccount().getAccountname());
+        //}
+        //System.out.println("-----------FINAL_LEDGERLINE-----------");
         return accdoc;
     }
 
@@ -262,14 +273,14 @@ public class AccDocController extends AbstractController<AccDoc> {
             line.setCredit(line.getCredit() - line.getDebit());
             line.setDebit(0.0);
 
-            line.setFcCredit(line.getFcCredit() - line.getFcDebit());
-            line.setFcDebit(0.0);
+            line.setFccredit(line.getFccredit() - line.getFcdebit());
+            line.setFcdebit(0.0);
         } else {
             line.setDebit(line.getDebit() - line.getCredit());
             line.setCredit(0.0);
 
-            line.setFcDebit(line.getFcDebit() - line.getFcCredit());
-            line.setFcCredit(0.0);
+            line.setFcdebit(line.getFcdebit() - line.getFccredit());
+            line.setFccredit(0.0);
         }
     }
 
@@ -290,7 +301,7 @@ public class AccDocController extends AbstractController<AccDoc> {
 
     public void prepareBusinessPartnerLine(AccDoc accdoc, BusinessPartner partner, AccountTransactionType att, BusDoc busdoc) {
         Account acc = getAccountByBusDocType(busdoc.getBusdocinfo().getDoctype(), partner.getAccounts());
-        System.out.println("prepareBusinessPartnerLine: " + acc);
+        //System.out.println("prepareBusinessPartnerLine: " + acc);
         if (acc != null) {
             LedgerLine line = new LedgerLine();
             line.setTransdate(busdoc.getCreatedon());
@@ -312,10 +323,10 @@ public class AccDocController extends AbstractController<AccDoc> {
             line.setDescription(acc.getDescription());
             if (att.getTranstype().equalsIgnoreCase("Credit")) {
                 line.setCredit(acc.getAmount() * line.getRate());
-                line.setFcCredit(acc.getAmount());
+                line.setFccredit(acc.getAmount());
             } else {
                 line.setDebit(acc.getAmount() * line.getRate());
-                line.setFcDebit(acc.getAmount());
+                line.setFcdebit(acc.getAmount());
             }
             accdoc.addLedline(line);
             ledtable.put(line.getAccount().getAccountid(), line);
@@ -337,7 +348,7 @@ public class AccDocController extends AbstractController<AccDoc> {
 
     public void prepareProductLedgerLine(AccDoc accdoc, AccountTransactionType att, ProductTransaction pt) {
         Account ledaccount = getProductAccount(att.getAccountid(), pt.getProduct().getProdaccount());
-        System.out.println("prepareProductLedgerLine: " + pt.getProduct().getProductname() + " => " + ledaccount);
+        //System.out.println("prepareProductLedgerLine: " + pt.getProduct().getProductname() + " => " + ledaccount);
         LedgerLine line = ledtable.get(ledaccount.getAccountid());
         if (line == null) {
             line = new LedgerLine();
@@ -389,23 +400,23 @@ public class AccDocController extends AbstractController<AccDoc> {
             System.out.println("Invalid Formula: " + att.getFormula() + " " + doc.getDocno() + " " + att.getAccountid());
         }
 
-        System.out.println("evaluateLedgerLineValue:busdoc:\t" + line.getAccount() + "\t\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + value + "\tDebit:" + line.getDebit() + "\tCredit:" + line.getCredit());
+        //System.out.println("evaluateLedgerLineValue:busdoc:\t" + line.getAccount() + "\t\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + value + "\tDebit:" + line.getDebit() + "\tCredit:" + line.getCredit());
         if (att.getTranstype().equalsIgnoreCase("Credit")) {
             if (value < 0) {
                 //line.setDebit(line.getDebit() + value * -1);
-                line.setDebit(line.getFcDebit() * line.getRate() + value * -1);
-                line.setFcDebit(line.getFcDebit() + value * -1);
+                line.setDebit(line.getFcdebit() * line.getRate() + value * -1);
+                line.setFcdebit(line.getFcdebit() + value * -1);
             } else {
-                line.setCredit(line.getFcCredit() * line.getRate() + value);
-                line.setFcCredit(line.getFcCredit() + value);
+                line.setCredit(line.getFccredit() * line.getRate() + value);
+                line.setFccredit(line.getFccredit() + value);
             }
         } else {
             if (value < 0) {
-                line.setFcCredit(line.getFcCredit() + value * -1);
-                line.setCredit(line.getFcCredit() * line.getRate() + value * -1);
+                line.setFccredit(line.getFccredit() + value * -1);
+                line.setCredit(line.getFccredit() * line.getRate() + value * -1);
             } else {
-                line.setFcDebit(line.getFcDebit() + value);
-                line.setDebit(line.getFcDebit() * line.getRate() + value);
+                line.setFcdebit(line.getFcdebit() + value);
+                line.setDebit(line.getFcdebit() * line.getRate() + value);
             }
         }
         //System.out.println("2evaluateLedgerLineValue:busdoc:\t" + line.getAccount() + "\t\t" + line.getDebit() + "\t" + line.getCredit());
@@ -419,23 +430,23 @@ public class AccDocController extends AbstractController<AccDoc> {
             System.out.println("Invalid Formula: " + att.getFormula() + " " + pt.getProduct() + " " + att.getAccountid());
         }
 
-        System.out.println("evaluateLedgerLineValue:prodtrans:\t" + line.getAccount() + "\t\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + value);
+        //System.out.println("evaluateLedgerLineValue:prodtrans:\t" + line.getAccount() + "\t\t" + att.getTranstype() + "\t" + att.getFormula() + "\t" + value);
         if (att.getTranstype().equalsIgnoreCase("Credit")) {
             if (value < 0) {
                 //line.setDebit(line.getDebit() + value * -1);
-                line.setDebit(line.getFcDebit() * line.getRate() + value * -1);
-                line.setFcDebit(line.getFcDebit() + value * -1);
+                line.setDebit(line.getFcdebit() * line.getRate() + value * -1);
+                line.setFcdebit(line.getFcdebit() + value * -1);
             } else {
-                line.setCredit(line.getFcCredit() * line.getRate() + value);
-                line.setFcCredit(line.getFcCredit() + value);
+                line.setCredit(line.getFccredit() * line.getRate() + value);
+                line.setFccredit(line.getFccredit() + value);
             }
         } else {
             if (value < 0) {
-                line.setFcCredit(line.getFcCredit() + value * -1);
-                line.setCredit(line.getFcCredit() * line.getRate() + value * -1);
+                line.setFccredit(line.getFccredit() + value * -1);
+                line.setCredit(line.getFccredit() * line.getRate() + value * -1);
             } else {
-                line.setFcDebit(line.getFcDebit() + value);
-                line.setDebit(line.getFcDebit() * line.getRate() + value);
+                line.setFcdebit(line.getFcdebit() + value);
+                line.setDebit(line.getFcdebit() * line.getRate() + value);
             }
         }
     }

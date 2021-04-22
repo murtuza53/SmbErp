@@ -19,28 +19,9 @@
         <title><ui:insert name="title">SMB ERP</ui:insert></title>
         <h:outputScript name="js/layout.js" library="diamond-layout" />
         <ui:insert name="head"/>
-        <script type="text/javascript">
-            //<![CDATA[
-            //js code
-            function resizeLayout() {
-                $(".ui-layout-pane-center").css({
-                    "height": "auto",
-                });
-            }
-
-            //var browserwidth = jQuery(window).width();
-            //var percent50 = Math.ceil(browserwidth / (100 / 50));
-
-            //set new widths
-            //layoutVar.getManager().sizePane('west', percent50);
-
-            //resize all panes
-            //layoutVar.getManager().resizeAll();
-            //]]>
-        </script>  
     </h:head>
 
-    <h:body>
+    <h:body style="font-size: smaller" styleClass="#{guestPreferences.inputStyleClass}">
         <p:ajaxStatus styleClass="layout-ajax-loader">
             <f:facet name="start">
                 <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"></i>
@@ -52,31 +33,55 @@
         </p:ajaxStatus>
 
         <p:growl id="growl" showDetail="true" life="3000" widgetVar="growlW"/>
+        <ui:insert name="other_includes"/>
         <ui:insert name="productsearch" />
+        <h:form id="mainform" enctype="multipart/form-data" onkeypress="if (event.keyCode == 13) {
+                    return false;
+                }">
+            <div class="layout-slim #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" 
+                 data-theme="#{guestPreferences.menuTheme}">
+                <div class="layout-content-wrapper">
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <ui:include src="./topbar_simple.xhtml">
+                                <ui:param name="viewname" value="#{viewname}" />
+                            </ui:include>
+                        </div>
+                        <div class="p-col-12">
+                            <p:splitter>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="100">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="content"></ui:insert>
+                                        <ui:include src="/confirmation.xhtml"/>
+                                    </div>
+                                </p:splitterPanel>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="0" minSize="0">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="history"/>
+                                    </div>
+                                </p:splitterPanel>
+                            </p:splitter>
+                        </div>
 
-        <pe:layout fullPage="true" resizerTip="Resize Me" togglerTipClosed="Open Me" togglerTipOpen="Close me" style="z-index: -1;">
-            <pe:layoutPane position="north" closable="false" resizable="false" size="60" slidable="false">
-                <div class="layout-slim #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
-                    <h:form id="toolbarform">
-                        <ui:include src="./topbar_simple.xhtml">
-                            <ui:param name="viewname" value="#{viewname}" />
-                        </ui:include>
-                    </h:form>
-                </div>
-            </pe:layoutPane>
-            <pe:layoutPane position="center">
-                <div class="layout-slim #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
-                    <div class="layout-content-wrapper">
-                        <h:form id="mainform" onkeypress="if (event.keyCode == 13) {
-                                    return false;
-                                }">
-                            <ui:insert name="content"></ui:insert>
-                            <ui:include src="/confirmation.xhtml"/>
-                        </h:form>
+                        <!--<div class="p-col-12">
+                            <div class="p-grid p-align-stretch vertical-container">
+                                <div class="p-col-10">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="content"></ui:insert>
+                                        <ui:include src="/confirmation.xhtml"/>
+                                    </div>
+                                </div>
+                                <div class="p-col-2">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="history"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
-            </pe:layoutPane>
-        </pe:layout>
+            </div>
+        </h:form>
 
         <h:outputStylesheet id="layoutCSS">
             .less_padding{

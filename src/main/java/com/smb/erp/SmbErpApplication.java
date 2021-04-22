@@ -32,4 +32,5 @@ public class SmbErpApplication {
     public static ServletListenerRegistrationBean httpSessionEventPublisher() {
         return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
     }
+
 }

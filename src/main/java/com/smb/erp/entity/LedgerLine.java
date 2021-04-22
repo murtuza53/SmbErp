@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -25,7 +26,7 @@ public class LedgerLine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Integer llno = new Random().nextInt(Integer.MAX_VALUE);
+    private Long llno = ThreadLocalRandom.current().nextLong();
 
     private Double credit = 0.0;
 
@@ -76,6 +77,10 @@ public class LedgerLine implements Serializable {
     @JoinColumn(name = "docno")
     private AccDoc accdoc;
 
+    @ManyToOne
+    @JoinColumn(name = "currencyno")
+    private Country currency;
+
     //bi-directional many-to-one association to PartialPaymentDetail
     @OneToMany(mappedBy = "ledline", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
@@ -83,6 +88,9 @@ public class LedgerLine implements Serializable {
 
     @Transient
     private Double cumulative = 0.0;
+    
+    @Transient
+    private boolean totalRow = false;
 
     public LedgerLine() {
     }
@@ -94,11 +102,11 @@ public class LedgerLine implements Serializable {
         this.cumulative = balance;
     }
 
-    public Integer getLlno() {
+    public Long getLlno() {
         return this.llno;
     }
 
-    public void setLlno(Integer llno) {
+    public void setLlno(Long llno) {
         this.llno = llno;
     }
 
@@ -327,6 +335,9 @@ public class LedgerLine implements Serializable {
     }
 
     public boolean isDummy() {
+        if(totalRow){
+            return true;
+        }
         return getAccount() == null && getAccdoc() == null;
     }
 
@@ -335,8 +346,8 @@ public class LedgerLine implements Serializable {
             return this.credit;
         }
 
-        if (getFcCredit() > 0) {
-            return getFcCredit() * getRate();
+        if (getFccredit() > 0) {
+            return getFccredit() * getRate();
         }
         return credit;
     }
@@ -361,8 +372,8 @@ public class LedgerLine implements Serializable {
             return this.debit;
         }
 
-        if (getFcDebit() > 0) {
-            return getFcDebit() * getRate();
+        if (getFcdebit() > 0) {
+            return getFcdebit() * getRate();
         }
         return debit;
     }
@@ -382,11 +393,11 @@ public class LedgerLine implements Serializable {
         }
     }
 
-    public Double getFcCredit() {
+    public Double getFccredit() {
         return fccredit;
     }
 
-    public void setFcCredit(Double fcCredit) {
+    public void setFccredit(Double fcCredit) {
         if (isDummy()) {
             this.fccredit = fcCredit;
             return;
@@ -404,11 +415,11 @@ public class LedgerLine implements Serializable {
         }
     }
 
-    public Double getFcDebit() {
+    public Double getFcdebit() {
         return fcdebit;
     }
 
-    public void setFcDebit(Double fcDebit) {
+    public void setFcdebit(Double fcDebit) {
         if (isDummy()) {
             this.fcdebit = fcDebit;
             return;
@@ -426,4 +437,51 @@ public class LedgerLine implements Serializable {
         }
     }
 
+    /**
+     * @return the totalRow
+     */
+    public boolean isTotalRow() {
+        return totalRow;
+    }
+
+    /**
+     * @param totalRow the totalRow to set
+     */
+    public void setTotalRow(boolean totalRow) {
+        this.totalRow = totalRow;
+    }
+
+    /**
+     * @return the currency
+     */
+    public Country getCurrency() {
+        return currency;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(Country currency) {
+        this.currency = currency;
+    }
+
+    public static LedgerLine clone(LedgerLine line){
+        LedgerLine newline = new LedgerLine();
+        
+        newline.setAccount(line.getAccount());
+        newline.setBranch(line.getBranch());
+        newline.setCredit(line.getCredit());
+        newline.setCurrency(line.getCurrency());
+        newline.setDebit(line.getDebit());
+        newline.setDescription(line.getDescription());
+        newline.setFccredit(line.getFccredit());
+        newline.setFcdebit(line.getFcdebit());
+        newline.setRate(line.getRate());
+        newline.setRefno(line.getRefno());
+        newline.setReftype(line.getReftype());
+        newline.setTransdate(line.getTransdate());
+        
+        return newline;
+    }
+    
 }

@@ -40,7 +40,7 @@
                         </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton value="Add To Document" actionListener="#{foreignPurchaseController.transferProductTransaction()}"
-                                     update=":mainform:transtable, :mainform:totalpanel"/>
+                                     update=":growl, :mainform:tabsview:ratio, :mainform:transtable, :mainform:totalpanel"/>
                     <p:panel >
                         <p:dataTable id="busdoctable" var="prod"
                                      value="#{foreignPurchaseController.selectedFromDocument.productTransactions}" widgetVar="btable"

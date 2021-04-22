@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,7 +106,7 @@ public class SystemDefaultsController extends AbstractController<SystemDefaults>
     }
 
     public Account resolveAccount(Account account) {
-        System.out.println("resolveAccount: " + account);
+        //System.out.println("resolveAccount: " + account);
         if (account.getNodetype().equalsIgnoreCase("INTERNAL_ACCOUNT_SYSTEM")) {
             return resolveAccount(getDefaultAccount(account.getAccountname()));
         }

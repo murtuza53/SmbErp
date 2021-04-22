@@ -33,6 +33,8 @@ public class PrintReport implements Serializable {
     private String filename;
 
     private String reportname;
+    
+    private String reporttitle;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdon;
@@ -144,10 +146,13 @@ public class PrintReport implements Serializable {
 
     @Override
     public String toString() {
-        if (getBdinfoid() != null) {
+        /*if (getBdinfoid() != null) {
             return getBdinfoid().getDocname() + " [" + reportid + "]";
         } else if(getPageid()!=null){
             return getPageid().getTitle() + " [" + reportid + "]";
+        }*/
+        if(getReportname()!=null){
+            return getReportname();
         }
         return "N/A";
     }
@@ -231,5 +236,19 @@ public class PrintReport implements Serializable {
      */
     public void setPageid(Webpage pageid) {
         this.pageid = pageid;
+    }
+
+    /**
+     * @return the reporttitle
+     */
+    public String getReporttitle() {
+        return reporttitle;
+    }
+
+    /**
+     * @param reporttitle the reporttitle to set
+     */
+    public void setReporttitle(String reporttitle) {
+        this.reporttitle = reporttitle;
     }
 }

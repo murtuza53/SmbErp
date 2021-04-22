@@ -1,5 +1,8 @@
 package com.smb.erp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -64,6 +67,7 @@ public class Emp implements Serializable {
     //@OneToMany(mappedBy = "emp2")
     //private List<BusDoc> busdocs2;
     //bi-directional many-to-one association to Dependant
+    @JsonIgnore
     @OneToMany(mappedBy = "emp")
     @Fetch(FetchMode.SUBSELECT)
     private List<Dependant> dependants;
@@ -74,6 +78,7 @@ public class Emp implements Serializable {
     private Dept dept;
 
     //bi-directional many-to-one association to Emp
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "managerid")
     private Emp emp;
@@ -91,6 +96,9 @@ public class Emp implements Serializable {
     @JoinColumn(name = "companyid")
     private Company company;
 
+    //@JsonIgnore
+    //@JsonManagedReference
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="empid")
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "emp_emprole",
             joinColumns = {

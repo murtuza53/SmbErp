@@ -20,11 +20,12 @@ import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.rest.ProductRestController;
 import com.smb.erp.util.JsfUtil;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 
@@ -98,7 +99,8 @@ public class ProductTreeViewController implements Serializable {
         }
 
         if (pc.getProdcategories() != null) {
-            for (ProductCategory p : pc.getProdcategories()) {
+            List<ProductCategory> pclist = pc.getProdcategories().stream().sorted(Comparator.comparing(ProductCategory::getCatname)).collect(Collectors.toList());
+            for (ProductCategory p : pclist) {
                 addNode(p, n);
             }
         }
@@ -173,7 +175,9 @@ public class ProductTreeViewController implements Serializable {
         //flash.setRedirect(true);
 
         DocumentTab<Product> tab = new DocumentTab<Product>(getSelectedProduct(), "New Product", "product", DocumentTab.MODE.NEW);
-        tab.setData(getSelectedProduct());
+        Product clone = getSelectedProduct().clone();
+        clone.setProductid(0l);
+        tab.setData(clone);
         productMap.put(windowId, tab);
 
         facesContext.getExternalContext().redirect("product.xhtml?windowid=" + windowId);

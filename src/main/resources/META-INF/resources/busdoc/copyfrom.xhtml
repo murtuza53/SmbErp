@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <p:dialog header="Copy Document" id="CopyDlg" widgetVar="CopyDialog" dynamic="true" responsive="true"
+              modal="true" resizable="true" width="50%"  height="100" appendTo="@(body)" closeOnEscape="true">
+        <h:form id="copyform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <div class="p-col-12 p-md-12">
+                        <p:outputLabel value="Enter Doc No:" for="copysearch"/>
+                        <p:autoComplete id="copysearch" value="#{busDocController.copyDoc}" dynamic="true"
+                                        converter="#{entityConverter}" completeMethod="#{busDocController.completeFilterBusDoc}"
+                                        panelStyle="font-size: smaller" scrollHeight="400" style="width: 100%;" size="100"
+                                        var="doc" itemValue="#{doc}" itemLabel="#{doc.docno}"
+                                        minQueryLength="3">
+                            <p:ajax event="itemSelect" update="@this, btncopydoc" />
+
+                            <p:column headerText="Date" style="width:50px">
+                                <h:outputText value="#{systemDefaultsController.formatDate(doc.docdate)}" />
+                            </p:column>
+
+                            <p:column headerText="DocNo" style="width:120px">
+                                <h:outputText value="#{doc.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Company">
+                                <h:outputText value="#{doc.businesspartner.companyname}" />
+                            </p:column>
+                        </p:autoComplete>
+                    </div>
+                </div>
+                <div class="p-col-12 p-md-12">
+                    <p:commandButton id="btncopydoc" value="Make Copy" title="Copy this Document" style="float: right"
+                                     oncomplete="PF('CopyDialog').hide()" disabled="#{busDocController.copyDoc eq null}"
+                                     actionListener="#{busDocController.copyDocument()}"
+                                     update=":copyform, :mainform" process="@this" immediate="true" resetValues="true"/>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -76,6 +76,10 @@ public class ProductSearchController extends AbstractController<Product> {
         center.setChildOptions(childCenterOptions);
 
     }
+    
+    public List<Product> getItems(){
+        return prodRepo.findByCriteria("");
+    }
 
     public void transfer() {
         //System.out.println("Transfering: " + getSelectedProductStock());

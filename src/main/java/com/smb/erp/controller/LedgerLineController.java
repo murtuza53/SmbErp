@@ -76,7 +76,7 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
         List<LedgerLine> list = repo.findByAccountIdBetweenDate(a.getAccountid(), DateUtil.startOfDay(getFromDate()), DateUtil.endOfDay(getToDate()));
         if (list != null && list.size() > 0) {
             LedgerLine opening = new LedgerLine();
-            opening.setLlno(0);
+            opening.setLlno(0l);
             opening.setAccount(a);
             opening.setTransdate(fromDate);
             opening.setDescription("Opening Balance");
@@ -89,26 +89,46 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
             } else {
                 opening.setCredit(bal * -1);
             }
+
+            Double balfc = repo.findBalanceFcByAccountByDate(a.getAccountid(), DateUtil.startOfDay(fromDate));
+            if (balfc == null) {
+                balfc = 0.0;
+            }
+            if (balfc >= 0) {
+                opening.setFcdebit(balfc);
+            } else {
+                opening.setFccredit(balfc * -1);
+            }
+
             list.add(0, opening);
 
             bal = 0.0;
-            Double dt = 0.0;
-            Double ct = 0.0;
+            double dt = 0.0;
+            double ct = 0.0;
+            double dtfc = 0.0;
+            double ctfc = 0.0;
             for (LedgerLine line : list) {
                 bal = bal + line.getDebit() - line.getCredit();
                 line.setCumulative(bal);
 
                 dt = dt + line.getDebit();
                 ct = ct + line.getCredit();
+
+                dtfc = dtfc + line.getFcdebit();
+                ctfc = ctfc + line.getFccredit();
             }
+            System.out.println(a + "_Closing: " + dt + "\t" + ct + "\t" + dtfc + "\t" + ctfc);
 
             LedgerLine closing = new LedgerLine();
-            closing.setLlno(0);
+            closing.setTotalRow(true);
+            closing.setLlno(0l);
             closing.setAccount(a);
             closing.setTransdate(toDate);
             closing.setDescription("Closing Balance");
             closing.setDebit(dt);
             closing.setCredit(ct);
+            closing.setFcdebit(dtfc);
+            closing.setFccredit(ctfc);
             closing.setCumulative(bal);
             list.add(list.size(), closing);
             return list;
@@ -188,12 +208,12 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
         if (credit == null) {
             credit = 0.0;
         }
-        
-        if(accountNo==null || accountNo.isEmpty() || showBoth){
+
+        if (accountNo == null || accountNo.isEmpty() || showBoth) {
             //System.out.println("ROOT====>" + (accountNo==null || accountNo.isEmpty() || showBoth));
             return Arrays.asList(new Double[]{debit, credit});
         }
-        
+
         if (debit > credit) {
             debit = debit - credit;
             credit = 0.0;
@@ -241,11 +261,15 @@ public class LedgerLineController extends AbstractController<LedgerLine> {
         }
         ret = Arrays.asList(new Double[]{debit, credit});
         return ret;*/
-        
         List<Double> ret = Arrays.asList(res.get(0));
         Double debit = ret.get(0);
         Double credit = ret.get(1);
         //System.out.println("findAccountLikeBalanceDrCr1: " + accountNo + " => " + res.size() + " => " + debit + "," + credit);
+        if (accountNo == null || accountNo.isEmpty() || showBoth) {
+            //System.out.println("ROOT====>" + (accountNo==null || accountNo.isEmpty() || showBoth));
+            return Arrays.asList(new Double[]{debit, credit});
+        }
+
         if (debit == null) {
             debit = 0.0;
         }

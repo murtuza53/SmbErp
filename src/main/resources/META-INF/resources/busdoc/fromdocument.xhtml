@@ -23,7 +23,7 @@
                         <p:selectOneMenu id="busdoc" value="#{busDocController.selectedFromDocument}" converter="#{entityConverter}" 
                                          effect="fold" style="width:100%" filter="true" filterMatchMode="contains"
                                          var="t">
-                            <f:selectItems value="#{busDocController.convertFromDocumentList}" var="item" itemLabel="#{item.docno}" itemValue="#{item}"/>
+                            <f:selectItems value="#{busDocController.convertFromDocumentList}" var="item" itemLabel="#{item.docno} - #{item.businesspartner.companyname}" itemValue="#{item}"/>
                             <p:ajax update="busdoctable" listener="#{busDocController.refreshProdTransExe()}"/>
                             <p:column>
                                 <f:facet name="header">
@@ -35,12 +35,24 @@
                                 <f:facet name="header">
                                     <h:outputText value="Date"/>
                                 </f:facet>
-                                <h:outputText value="#{t.docdate}"/>
+                                <h:outputText value="#{systemDefaultsController.formatDate(t.docdate)}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Company"/>
+                                </f:facet>
+                                <h:outputText value="#{t.businesspartner.companyname}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Pact No"/>
+                                </f:facet>
+                                <h:outputText value="#{t.extra1}"/>
                             </p:column>
                         </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton value="Add To Document" actionListener="#{busDocController.transferProductTransaction()}"
-                                     update=":mainform:transtable, :mainform:totalpanel"/>
+                                     update=":mainform:transtable, :mainform:totalpanel, :growl"/>
                     <p:panel >
                         <p:dataTable id="busdoctable" var="prod"
                                      value="#{busDocController.selectedFromDocument.productTransactions}" widgetVar="btable"
@@ -51,33 +63,31 @@
                                      style="font-size: small"
                                      rowStyleClass="#{prod.executedqty lt (prod.sold+prod.received)?'':'ui-helper-hidden'}">
                             <p:column selectionMode="multiple" style="width: 16px; text-align: center"/>
-                            <p:column headerText="Stock#" sortBy="#{prod.prodtransid}" filterMatchMode="contains"
-                                      style="width: 70px">
+                            <p:column headerText="Stock#" style="width: 70px">
                                 <h:outputText value="#{prod.prodtransid}" />
                             </p:column>
 
-                            <p:column headerText="Stock#" sortBy="#{prod.product.productid}" filterBy="#{prod.product.productid}" filterMatchMode="contains">
+                            <p:column headerText="Stock#">
                                 <h:outputText value="#{prod.product.productid}" />
                             </p:column>
 
-                            <p:column headerText="Product" sortBy="#{prod.product.productname}" filterBy="#{prod.product.productname}" filterMatchMode="contains"
-                                      style="width: 250px">
+                            <p:column headerText="Product" style="width: 250px">
                                 <h:outputText value="#{prod.product.productname}" />
                             </p:column>
 
-                            <p:column headerText="Unit" sortBy="#{prod.product.unit.unitsym}" filterBy="#{prod.product.unit.unitsym}" filterMatchMode="contains" style="width: 70px">
+                            <p:column headerText="Unit" style="width: 70px">
                                 <h:outputText value="#{prod.product.unit.unitsym}" />
                             </p:column>
 
-                            <p:column headerText="Qty" sortBy="#{prod.lineqty}" filterBy="#{prod.lineqty}" filterMatchMode="contains">
+                            <p:column headerText="Qty">
                                 <h:outputText value="#{prod.lineqty}" />
                             </p:column>
 
-                            <p:column headerText="Executed" sortBy="#{prod.executedqty}" filterBy="#{prod.executedqty}" filterMatchMode="contains">
+                            <p:column headerText="Executed">
                                 <h:outputText value="#{prod.executedqty}" />
                             </p:column>
 
-                            <p:column headerText="Balance" sortBy="#{prod.balance}" filterBy="#{prod.balance}" filterMatchMode="contains">
+                            <p:column headerText="Balance">
                                 <h:outputText value="#{prod.balance}" />
                             </p:column>
                         </p:dataTable>

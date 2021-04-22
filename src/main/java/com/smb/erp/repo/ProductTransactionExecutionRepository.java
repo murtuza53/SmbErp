@@ -20,12 +20,16 @@ import org.springframework.stereotype.Repository;
 public interface ProductTransactionExecutionRepository extends BaseRepository<ProductTransactionExecution, Integer> {
 
     @Query("SELECT a FROM ProductTransactionExecution as a WHERE a.fromprodtransid.prodtransid = :prodtransid ORDER by a.createdon")
-    List<ProductTransactionExecution> findByFromProductTransaction(@Param("prodtransid") int prodtransid);
+    List<ProductTransactionExecution> findByFromProductTransaction(@Param("prodtransid") Long prodtransid);
 
     @Query("SELECT a FROM ProductTransactionExecution as a WHERE a.toprodtransid.prodtransid = :prodtransid ORDER by a.createdon")
-    List<ProductTransactionExecution> findByToProductTransaction(@Param("prodtransid") int prodtransid);
+    List<ProductTransactionExecution> findByToProductTransaction(@Param("prodtransid") Long prodtransid);
 
     @Modifying
     @Query("DELETE FROM ProductTransactionExecution a where a.toprodtransid.prodtransid=:prodtransid")
-    void deleteToProductTransations(@Param("prodtransid") int prodtransid);
+    void deleteToProductTransations(@Param("prodtransid") Long prodtransid);
+
+    @Modifying
+    @Query("DELETE FROM ProductTransactionExecution a where a.fromprodtransid.prodtransid=:prodtransid")
+    void deleteFromProductTransations(@Param("prodtransid") Long prodtransid);
 }

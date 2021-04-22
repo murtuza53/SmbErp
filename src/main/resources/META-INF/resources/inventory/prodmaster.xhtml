@@ -11,6 +11,17 @@
     <ui:param name="viewname" value="Product Master" />
 
     <ui:define name="content">
+        <style type="text/css">
+            .ui-sticky {
+                top: 5px !important;
+            }
+
+            @media (max-width: 960px) {
+                .ui-sticky {
+                    top: 102px !important;
+                }
+            }
+        </style>
         <h:form id="mainform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
@@ -48,6 +59,7 @@
                                              actionListener="#{productTreeViewController.refreshProductList()}"/>
                         </f:facet>
                     </p:toolbar>
+                    <p:sticky target="toolbar"/>
                 </div>
                 <div class="p-col-12 p-md-4">
                     <p:tree id="cattree" value="#{productTreeViewController.root}" var="node" dynamic="true"
@@ -96,6 +108,11 @@
                         <p:column headerText="VAT" sortBy="#{prod.vatregisterid}"
                                   filterBy="#{prod.vatregisterid}" filterMatchMode="contains">
                             <h:outputText value="#{prod.vatregisterid}" />
+                        </p:column>
+
+                        <p:column headerText="Type" sortBy="#{prod.producttype.name}"
+                                  filterBy="#{prod.producttype.name}" filterMatchMode="contains">
+                            <h:outputText value="#{prod.producttype.name}" />
                         </p:column>
                     </p:dataTable>
                 </div>

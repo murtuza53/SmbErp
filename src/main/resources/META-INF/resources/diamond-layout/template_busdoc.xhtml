@@ -49,6 +49,22 @@
                             </ui:include>
                         </div>
                         <div class="p-col-12">
+                            <p:splitter>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="88">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="content"></ui:insert>
+                                        <ui:include src="/confirmation.xhtml"/>
+                                    </div>
+                                </p:splitterPanel>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="12" minSize="12">
+                                    <div class="box box-stretched">
+                                        <ui:insert name="history"/>
+                                    </div>
+                                </p:splitterPanel>
+                            </p:splitter>
+                        </div>
+
+                        <!--<div class="p-col-12">
                             <div class="p-grid p-align-stretch vertical-container">
                                 <div class="p-col-10">
                                     <div class="box box-stretched">
@@ -62,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -108,6 +124,12 @@
             color: #000000;
             padding: 0px;
             overflow: auto;
+            }
+
+            .ui-datatable.ui-widget {
+            width: auto !important;
+            overflow: auto;
+            display: inline-block;
             }
 
             /* Custom styles for the SlideOut */

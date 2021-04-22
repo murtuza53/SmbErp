@@ -22,7 +22,19 @@ public class StockBalanceHelper implements Serializable{
     private LinkedHashMap<String, Double> stockTable = new LinkedHashMap<String, Double>();
     
     private Long productid = 0l;
+    
+    private Double price = 0.0;
+    
+    private String productname;
+    
+    private String unit;
 
+    private String brand;
+    
+    private String category;
+    
+    private String supcode;
+    
     public StockBalanceHelper() {
     }
 
@@ -43,14 +55,18 @@ public class StockBalanceHelper implements Serializable{
     public void setProduct(Product product) {
         this.product = product;
     }
-
+    
     public void putStock(String branch, Double value){
         stockTable.remove(branch);
         stockTable.put(branch, value);
     }
 
-    public Object findStock(String branch){
+    public Double findStock(String branch){
         return stockTable.get(branch);
+    }
+    
+    public Double findStockValue(String branch){
+        return stockTable.get(branch) * getPrice();
     }
     
     public String findStockStyle(String branch){
@@ -72,7 +88,7 @@ public class StockBalanceHelper implements Serializable{
     }
     
     public List<String> getBranches(){
-        System.out.println("getBranches: " + stockTable.keySet());
+        //System.out.println("getBranches: " + stockTable.keySet());
         if(stockTable==null){
             return new LinkedList<>();
         }
@@ -110,11 +126,107 @@ public class StockBalanceHelper implements Serializable{
         return 0.0;
     }
     
+    public Double getTotalValue(){
+        return getTotal() * getPrice();
+    }
+    
     public String getStockBalances(){
         StringBuilder sb = new StringBuilder();
         for(String key: stockTable.keySet()){
             sb.append(key +": " + stockTable.get(key) + "\t");
         }
         return sb.toString();
+    }
+
+        public String getStockBalancesWithValue(){
+        StringBuilder sb = new StringBuilder();
+        for(String key: stockTable.keySet()){
+            sb.append("[" + key +": " + stockTable.get(key) + "," + findStockValue(key) + "]\t");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    /**
+     * @return the productname
+     */
+    public String getProductname() {
+        return productname;
+    }
+
+    /**
+     * @param productname the productname to set
+     */
+    public void setProductname(String productname) {
+        this.productname = productname;
+    }
+
+    /**
+     * @return the unit
+     */
+    public String getUnit() {
+        return unit;
+    }
+
+    /**
+     * @param unit the unit to set
+     */
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    /**
+     * @return the brand
+     */
+    public String getBrand() {
+        return brand;
+    }
+
+    /**
+     * @param brand the brand to set
+     */
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    /**
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    /**
+     * @return the supcode
+     */
+    public String getSupcode() {
+        return supcode;
+    }
+
+    /**
+     * @param supcode the supcode to set
+     */
+    public void setSupcode(String supcode) {
+        this.supcode = supcode;
     }
 }

@@ -12,28 +12,28 @@ import java.util.Objects;
  *
  * @author Burhani152
  */
-public class StatementHelper implements Serializable{
-    
+public class StatementHelper implements Serializable {
+
     private String docno;
-    
+
     private String refno;
-    
+
     private String docdate;
-    
+
     private Double invoiceAmount = 0.0;
-    
+
     private Double paid = 0.0;
-    
+
     private Double pending = 0.0;
-    
+
     private Double cumulative = 0.0;
-    
+
     private Integer days = 1;
 
     public StatementHelper() {
     }
 
-    public StatementHelper(Double invAmt){
+    public StatementHelper(Double invAmt) {
         this.invoiceAmount = invAmt;
     }
 
@@ -82,8 +82,6 @@ public class StatementHelper implements Serializable{
         return true;
     }
 
-
-    
     public Double getInvoiceAmount() {
         return invoiceAmount;
     }
@@ -171,7 +169,5 @@ public class StatementHelper implements Serializable{
     public void setDocdate(String docdate) {
         this.docdate = docdate;
     }
-    
-    
-    
+
 }

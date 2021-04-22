@@ -45,6 +45,12 @@
                                      sortBy="#{foreignPurchaseController.accdoc.docno}"
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
                                      style="font-size: smaller">
+                            <p:headerRow groupBy="#{foreignPurchaseController.accdoc.docno}">
+                                <p:column colspan="7">
+                                    <h:outputText value="#{foreignPurchaseController.accdoc.docno}"/>
+                                </p:column>
+                            </p:headerRow>
+
                             <p:column headerText="No" style="width: 100px">
                                 <h:outputText value="#{led.llno}" />
                             </p:column>
@@ -69,18 +75,40 @@
                                 </h:outputText>
                             </p:column>
 
+                            <p:column headerText="FcDebit" style="text-align:right">
+                                <h:outputText value="#{led.fcdebit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="FcCredit" style="text-align:right">
+                                <h:outputText value="#{led.fccredit}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
                             <p:summaryRow>
                                 <p:column colspan="3" style="text-align:right">
                                     <h:outputText value="Total:" />
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.debit).sum()}">
-                                    <f:convertNumber pattern="#,##0.000" />
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.debit).sum())}">
+                                        <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="text-align:right">
-                                    <h:outputText value="#{foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.credit).sum()}">
-                                    <f:convertNumber pattern="#,##0.000" />
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.credit).sum())}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.fcdebit).sum())}">
+                                        <f:convertNumber pattern="#,##0.000" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:right">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(foreignPurchaseController.accdoc.ledlines.stream().map(x -> x.fccredit).sum())}">
+                                        <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
                             </p:summaryRow>

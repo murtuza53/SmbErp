@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.entity.ProductTransaction;
 import com.smb.erp.entity.ProductTransactionExecution;
 import com.smb.erp.repo.ProductTransactionExecutionRepository;
 import java.util.List;
@@ -30,6 +31,14 @@ public class ProductTransactionExecutionController extends AbstractController<Pr
         this.repo = repo;
     }
     
+    public List<ProductTransactionExecution> findByFromProductTransaction(ProductTransaction pt){
+        return repo.findByFromProductTransaction(pt.getProdtransid());
+    }
+    
+    public List<ProductTransactionExecution> findByToProductTransaction(ProductTransaction pt){
+        return repo.findByToProductTransaction(pt.getProdtransid());
+    }
+
     @Transactional
     public void deleteToProductTransactionExe(List<ProductTransactionExecution> ptes){
         System.out.println("deleteToProductTransactionExe: " + ptes);
@@ -44,4 +53,17 @@ public class ProductTransactionExecutionController extends AbstractController<Pr
         }
     }
 
+    @Transactional
+    public void deleteFromProductTransactionExe(List<ProductTransactionExecution> ptes){
+        System.out.println("deleteFromProductTransactionExe: " + ptes);
+        if(ptes!=null){
+            for(ProductTransactionExecution pte: ptes){
+                //pte.setToprodtransid(null);
+                //pte.setFromprodtransid(null);
+                //repo.save(pte);
+                System.out.println("deleteFromProductTransactionExe: " + pte);
+                repo.deleteFromProductTransations(pte.getToprodtransid().getProdtransid());
+            }
+        }
+    }
 }

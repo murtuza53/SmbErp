@@ -200,7 +200,11 @@ public class TransactionImportService implements Serializable {
     public String value(Object bean, String property) {
         try {
             //return ReflectionUtil.readProperty(bean, property).toString();
-            return PropertyUtils.getNestedProperty(bean, property).toString();
+            Object val = PropertyUtils.getNestedProperty(bean, property);
+            if(val==null){
+                return null;
+            }
+            return val.toString();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(TransactionImportService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {

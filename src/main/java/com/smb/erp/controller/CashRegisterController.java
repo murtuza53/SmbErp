@@ -7,6 +7,7 @@ package com.smb.erp.controller;
 
 import com.smb.erp.entity.Account;
 import com.smb.erp.entity.BusDoc;
+import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.CashRegister;
 import com.smb.erp.repo.AccountRepository;
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class CashRegisterController implements Serializable {
     String cashAndBankLedgerNo = "16";
 
     private List<Account> cashRegisterAccounts;
+
     private Account total;
 
     public CashRegisterController() {
@@ -43,15 +45,20 @@ public class CashRegisterController implements Serializable {
     @PostConstruct
     public void init() {
         //setCashRegisterAccounts(accountRepo.findAccountByParent(cashAndBankLedgerNo));
+        //getCashRegisterAccounts().add(total);
+        resetTotal();
+    }
+
+    public void resetTotal() {
         total = new Account();
         total.setAccountid("Total");
         total.setAccountname("Total");
-        //getCashRegisterAccounts().add(total);
     }
 
     public void setupBusDoc(BusDoc doc) {
         if (doc.getBusdocinfo().hasCashRegister()) {
             cashRegisterAccounts = new LinkedList<Account>();
+            resetTotal();
             for (CashRegister cr : doc.getBusdocinfo().getCashregiserid()) {
                 cashRegisterAccounts.add(cr.getAccountid());
             }
@@ -64,6 +71,7 @@ public class CashRegisterController implements Serializable {
                 }
             }
             calculateTotal();
+            cashRegisterAccounts.add(total);
         }
     }
 
@@ -72,6 +80,17 @@ public class CashRegisterController implements Serializable {
             for (Account acc : accounts) {
                 if (acc.getAccountid().equalsIgnoreCase(accNo)) {
                     return acc;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Account findAccountFromCashRegister(List<CashRegister> registers, String accNo) {
+        if (registers != null) {
+            for (CashRegister cr : registers) {
+                if (cr.getAccountid().getAccountid().equalsIgnoreCase(accNo)) {
+                    return cr.getAccountid();
                 }
             }
         }
@@ -93,19 +112,21 @@ public class CashRegisterController implements Serializable {
     }
 
     public void setCashRegister(List<CashRegister> crList) {
-        if(crList!=null){
+        if (crList != null) {
             cashRegisterAccounts = new LinkedList();
             crList.forEach((cr) -> {
                 cashRegisterAccounts.add(cr.getAccountid());
             });
         }
     }
-    
+
     public double calculateTotal() {
         if (cashRegisterAccounts != null) {
             double t = 0.0;
-            for (int i = 0; i < cashRegisterAccounts.size() - 1; i++) {
-                t = t + cashRegisterAccounts.get(i).getAmount();
+            for (int i = 0; i < cashRegisterAccounts.size(); i++) {
+                if (!cashRegisterAccounts.get(i).getAccountid().equalsIgnoreCase("Total")) {
+                    t = t + cashRegisterAccounts.get(i).getAmount();
+                }
             }
             total.setAmount(t);
         }
@@ -115,6 +136,17 @@ public class CashRegisterController implements Serializable {
     public List<Account> getFinalCashRegiserAccounts() {
         cashRegisterAccounts.remove(total);
         return cashRegisterAccounts;
+    }
+
+    public List<Account> getCashRegisterWithCashPaid(BusDocInfo info, double amount) {
+        List<Account> accs = new LinkedList();
+        Account account = findAccountFromCashRegister(info.getCashregiserid(), "1610");
+        if (account != null) {
+            account.setAmount(amount);
+            accs.add(account);
+            return accs;
+        }
+        return accs;
     }
 
 }

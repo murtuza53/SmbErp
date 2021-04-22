@@ -21,7 +21,7 @@ public interface ProductRepository extends BaseRepository<Product, Long> {
     @Query("SELECT OBJECT(p) FROM Product as p "
             + "WHERE (TRIM(p.productid) LIKE %:criteria% OR p.productname LIKE %:criteria% OR "
             + "p.supplierscode LIKE %:criteria% OR p.stockid LIKE %:criteria% OR "
-            + "p.barcode1 LIKE %:criteria% OR p.barcode2 LIKE %:criteria%) AND p.inactive=0 "
+            + "p.barcode1 LIKE %:criteria% OR p.barcode2 LIKE %:criteria% OR p.brand.brandname LIKE %:criteria%) AND p.inactive=0 "
             + "ORDER BY p.productname asc")
     List<Product> findByCriteria(@Param("criteria") String criteria);
     
@@ -30,4 +30,10 @@ public interface ProductRepository extends BaseRepository<Product, Long> {
             + "p.supplierscode=:criteria OR p.barcode1=:criteria OR p.barcode2=:criteria) AND p.inactive=0 "
             + "ORDER BY p.productname asc")
     List<Product> findByProductidOrSupplierCodeOrBarcodes(@Param("criteria") String criteria);
+
+    @Query("SELECT OBJECT(p) FROM Product as p "
+            + "WHERE (p.stockid=:criteria OR "
+            + "p.supplierscode=:criteria OR p.barcode1=:criteria OR p.barcode2=:criteria) AND p.inactive=0 "
+            + "ORDER BY p.productname asc")
+    List<Product> findBySupplierCodeOrBarcodes(@Param("criteria") String criteria);
 }

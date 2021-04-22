@@ -8,7 +8,11 @@
 
 #change all font size
 .ui-widget, .ui-widget .ui-widget {
-    font-size: small;
+    font-size: 90%;
+}
+.ui-widget,.ui-widget-header,.ui-widget-content,.ui-widget-header .ui-widget-header,.ui-widget-content .ui-widget-content,.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button, .ui-selectonemenu-label
+{
+    font-size: 100% !important;
 }
 
 .card, .card .card{

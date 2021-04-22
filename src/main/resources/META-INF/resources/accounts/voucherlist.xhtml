@@ -11,14 +11,22 @@
     <ui:param name="viewname" value="#{accountVoucherListController.docInfo.docname} List" />
 
     <ui:define name="content">
+        <style type="text/css">
+            .ui-sticky {
+                top: 5px !important;
+            }
+
+            @media (max-width: 960px) {
+                .ui-sticky {
+                    top: 102px !important;
+                }
+            }
+        </style>
         <h:form id="busform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
-                    <p:panel id="doclist" header="" toggleable="true">
-                        <f:facet name="actions">
-                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             actionListener="#{accountVoucherListController.refresh()}"
-                                             update="@form :growl" icon="fa fa-refresh" />
+                    <p:toolbar id="listtoolbar">
+                        <p:toolbarGroup>
                             <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
                                 <p:tooltip value="Export to PDF" for="exportPdf"/>
                                 <p:dataExporter type="pdf" target="bustable" fileName="DocumentList"/>
@@ -33,23 +41,13 @@
                                 <p:tooltip value="Export to CSV" for="exportCSV"/>
                                 <p:dataExporter type="csv" target="bustable" fileName="DocumentList" />
                             </p:commandButton>
-                        </f:facet>
-                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
+                        </p:toolbarGroup>
 
-                            <p:outputLabel value="From Date" for="fromdate" />
-                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{busDocListController.fromDate}" 
-                                          title="From Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
-                                          required="true" requiredMessage="Please select Date"/>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{accountVoucherListController.refresh()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
 
-                            <p:outputLabel value="To Date" for="todate" />
-                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{busDocListController.toDate}" 
-                                          title="To Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
-                                          required="true" requiredMessage="Please select Date"/>
-                        </p:panelGrid>
-                    </p:panel>
-                    <br/>
-                    <p:panel id="tablelist" header="" styleClass="card">
-                        <f:facet name="actions">
                             <p:commandButton id="btnnew" title="New #{accountVoucherListController.docInfo.docname}" icon="fa fa-plus" process="@this"
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              actionListener="#{accountVoucherListController.new_in_tab()}"
@@ -59,6 +57,11 @@
                                              disabled="#{empty accountVoucherListController.selected}" 
                                              actionListener="#{accountVoucherListController.edit_in_tab()}"
                                              ajax="false" onclick="form.target = '_blank'"/>
+                            <p:commandButton id="btncopy" title="Make Copy" icon="fa fa-copy" process="@this" 
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             disabled="#{empty accountVoucherListController.selected}" 
+                                             actionListener="#{accountVoucherListController.makeCopy()}"
+                                             ajax="false" onclick="form.target = '_blank'"/>
                             <p:commandButton id="btndelete" title="Delete #{accountVoucherListController.docInfo.docname}" icon="fa fa-trash" 
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                              disabled="#{empty accountVoucherListController.selected}" 
@@ -66,18 +69,26 @@
                                              update="@form :growl">
                                 <p:confirm header="Confirmation" message="Sure you want to delete?" icon="fa fa-alert"/>
                             </p:commandButton>
-                        </f:facet>
-                        
-                        <p:contextMenu for="bustable">
-                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
-                                        onclick="document.getElementById('busform:btnedit').click();"/>
-                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
-                                        onclick="document.getElementById('busform:btndelete').click();"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:sticky target="listtoolbar"/>
+                    <p:panel id="doclist" toggleable="true">
+                        <p:panelGrid columns="4" columnClasses="p-md-3, p-md-3, p-md-3, p-md-3" style="width: 100%; border: none">
 
-                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
-                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
-                        </p:contextMenu>
-                        
+                            <p:outputLabel value="From Date" for="fromdate" />
+                            <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{accountVoucherListController.fromDate}" 
+                                          title="From Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                          required="true" requiredMessage="Please select Date"/>
+
+                            <p:outputLabel value="To Date" for="todate" />
+                            <p:datePicker id="todate" pattern="dd/MM/yyyy" value="#{accountVoucherListController.toDate}" 
+                                          title="To Date"  showIcon="true" monthNavigator="true" yearNavigator="true"
+                                          required="true" requiredMessage="Please select Date"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br/>
+
+                    <p:panel id="tablelist" styleClass="card">
                         <p:dataTable id="bustable" var="item" widgetVar="btable"
                                      value="#{accountVoucherListController.items}"
                                      rowKey="#{item.docno}"
@@ -87,7 +98,7 @@
                                      emptyMessage="No #{accountVoucherListController.docInfo.docname} found"
                                      styleClass="products-table ui-datatable-gridlines ui-datatable-sm"
                                      size="small">
-                            <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btndelete"/>
+                            <p:ajax event="rowSelect" update=":busform:btnedit, :busform:btncopy, :busform:btndelete"/>
 
                             <p:column sortBy="#{item.docdate}" filterBy="#{item.docdate}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -100,6 +111,10 @@
 
                             <p:column headerText="Doc No" sortBy="#{item.docno}" filterBy="#{item.docno}" filterMatchMode="contains">
                                 <h:outputText value="#{item.docno}" />
+                            </p:column>
+
+                            <p:column headerText="Ref No" sortBy="#{item.refno}" filterBy="#{item.refno}" filterMatchMode="contains">
+                                <h:outputText value="#{item.refno}" />
                             </p:column>
 
                             <p:column headerText="Description" sortBy="#{item.description}" 
@@ -136,11 +151,27 @@
                                     <p:column/>
                                     <p:column/>
                                     <p:column/>
+                                    <p:column/>
                                     <p:column style="text-align:right" footerText="#{systemDefaultsController.formatDecimal(accountVoucherListController.items.stream().map(x -> x.totalDebit).sum())}"/>
                                     <p:column style="text-align:right" footerText="#{systemDefaultsController.formatDecimal(accountVoucherListController.items.stream().map(x -> x.totalCredit).sum())}"/>
                                 </p:row>
                             </p:columnGroup>
                         </p:dataTable>
+                        <p:contextMenu for="bustable">
+                            <p:menuitem value="Edit" update="bustable" icon="pi pi-pencil"
+                                        onclick="document.getElementById('busform:btnedit').click();"/>
+
+                            <p:menuitem value="Delete" update="bustable" icon="pi pi-trash"
+                                        onclick="document.getElementById('busform:btndelete').click();"/>
+
+                            <p:menuitem value="Refresh" update="bustable" icon="pi pi-refresh"
+                                        onclick="document.getElementById('busform:btnrefresh').click();"/>
+
+                            <p:menuitem value="Make Copy" icon="pi pi-copy"
+                                        onclick="document.getElementById('busform:btncopy').click();"/>
+
+                        </p:contextMenu>
+
                     </p:panel>
                 </div>
             </div>

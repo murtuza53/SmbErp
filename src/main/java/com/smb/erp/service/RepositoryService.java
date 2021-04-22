@@ -26,6 +26,7 @@ import com.smb.erp.entity.Unit;
 import com.smb.erp.entity.VatAccountType;
 import com.smb.erp.entity.VatCategory;
 import com.smb.erp.entity.VatProductRegister;
+import com.smb.erp.entity.VatSalesPurchaseType;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.BaseRepository;
 import com.smb.erp.repo.BranchRepository;
@@ -48,6 +49,7 @@ import com.smb.erp.repo.UnitRepository;
 import com.smb.erp.repo.VatAccountTypeRepository;
 import com.smb.erp.repo.VatCategoryRepository;
 import com.smb.erp.repo.VatProductRegisterRepository;
+import com.smb.erp.repo.VatSalesPurchaseTypeRepository;
 import com.smb.erp.util.Utils;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -127,6 +129,9 @@ public class RepositoryService implements Serializable {
     @Autowired
     PayTermsRepository paytermsRepo;
 
+    @Autowired
+    VatSalesPurchaseTypeRepository vatspprRepo;
+
     HashMap<String, BaseRepository> repositories = new HashMap<>();
     HashMap<String, Class> primaryTypes = new HashMap<>();
 
@@ -148,6 +153,7 @@ public class RepositoryService implements Serializable {
         addRepository(CreditLimit.class.getName(), clRepo, Integer.class);
         addRepository(VatCategory.class.getName(), vcRepo, Long.class);
         addRepository(VatAccountType.class.getName(), vatRepo, Long.class);
+        addRepository(VatSalesPurchaseType.class.getName(), vatspprRepo, Long.class);
         addRepository(Account.class.getName(), acRepo, String.class);
 
         addRepository(ContactPerson.class.getName(), cpRepo, Long.class);

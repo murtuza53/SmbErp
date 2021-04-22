@@ -12,6 +12,17 @@
     <ui:param name="viewname" value="Stock Ledger" />
 
     <ui:define name="content">
+        <style type="text/css">
+            .ui-sticky {
+                top: 5px !important;
+            }
+
+            @media (max-width: 960px) {
+                .ui-sticky {
+                    top: 102px !important;
+                }
+            }
+        </style>
         <h:form id="mainform">
             <div class="p-grid">
                 <div class="p-col-12 p-md-12">
@@ -74,6 +85,33 @@
 
                 <div class="p-col-12">
                     <div class="card table-demo">
+                        <p:toolbar id="listtoolbar">
+                            <p:toolbarGroup>
+                                <span class="ui-input-icon-left filter-container">
+                                    <i class="pi pi-search"></i>
+                                    <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
+                                </span>
+                            </p:toolbarGroup>
+
+                            <p:toolbarGroup align="right">
+                                <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                    <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="StockLedger"/>
+                                </p:commandButton>
+
+                                <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                    <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="StockLedger"/>
+                                </p:commandButton>
+
+                                <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
+                                    <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                    <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="StockLedger"/>
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:sticky target="listtoolbar"/>
+
                         <p:dataTable id="datalist" widgetVar="btable" var="item"
                                      value="#{producttransactionController.items}"
                                      selection="#{producttransactionController.selected}"
@@ -81,34 +119,6 @@
                                      emptyMessage="No Transactions found"
                                      styleClass="products-table ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
                                      style="font-size: smaller">
-
-                            <f:facet name="header">
-                                <div class="customers-table-header">
-                                    <div>
-                                        <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                            <p:tooltip value="Export to PDF" for="exportPdf"/>
-                                            <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="StockLedger"/>
-                                        </p:commandButton>
-
-                                        <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                            <p:tooltip value="Export to Excel" for="exportXLS"/>
-                                            <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="StockLedger"/>
-                                        </p:commandButton>
-
-                                        <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
-                                            <p:tooltip value="Export to CSV" for="exportCSV"/>
-                                            <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="StockLedger"/>
-                                        </p:commandButton>
-                                    </div>
-
-                                    <div>
-                                        <span class="ui-input-icon-left filter-container">
-                                            <i class="pi pi-search"></i>
-                                            <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
-                                        </span>
-                                    </div>
-                                </div>
-                            </f:facet>
 
                             <p:column headerText="No" filterBy="#{item.prodtransid}" filterMatchMode="contains"
                                       style="width: 50px">
@@ -124,7 +134,8 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Document" filterBy="#{item.busdoc.docno}" filterMatchMode="contains">
+                            <p:column headerText="Document" filterBy="#{item.busdoc.docno}" filterMatchMode="contains"
+                                      style="width: 110px; text-align: center">
                                 <h:outputText value="#{item.busdoc.docno}" styleClass="product-badge #{item.busdoc.titleBadge}"/>
                             </p:column>
 
@@ -133,7 +144,7 @@
                                 <h:outputText value="#{item.busdoc.businesspartner.companyname}" />
                             </p:column>
 
-                            <p:column headerText="Unit" filterBy="#{item.unit.unitsym}" style="width: 50px;" filterMatchMode="contains">
+                            <p:column headerText="Unit" filterBy="#{item.unit.unitsym}" style="width: 50px; text-align: center" filterMatchMode="contains">
                                 <h:outputText value="#{item.unit.unitsym}" />
                             </p:column>
 
@@ -160,7 +171,7 @@
                                     <h:outputText value="Landed"/>
                                 </f:facet>
                                 <h:outputText value="#{item.cost}">
-                                    <f:convertNumber pattern="#,##0.000" />
+                                    <f:convertNumber pattern="#,##0.00000" />
                                 </h:outputText>
                             </p:column>
 
@@ -168,8 +179,8 @@
                                 <f:facet name="header">
                                     <h:outputText value="Price"/>
                                 </f:facet>
-                                <h:outputText value="#{item.unitprice}">
-                                    <f:convertNumber pattern="#,##0.000" />
+                                <h:outputText  value="#{item.unitprice}">
+                                    <f:convertNumber pattern="#,##0.00000" />
                                 </h:outputText>
                             </p:column>
 
@@ -182,8 +193,25 @@
                                 </h:outputText>
                             </p:column>
 
+                            <p:column filterBy="#{item.fcunitprice}" filterMatchMode="contains"  style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText value="FcPrice"/>
+                                </f:facet>
+                                <h:outputText  value="#{item.fcunitprice}">
+                                    <f:convertNumber pattern="#,##0.00000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Cur" filterBy="#{item.busdoc.currency.currencysym}" style="width: 50px;" filterMatchMode="contains">
+                                <h:outputText value="#{item.busdoc.currency.currencysym}" />
+                            </p:column>
+
                             <p:column headerText="Branch" filterBy="#{item.branch.abbreviation}" style="width: 50px;" filterMatchMode="contains">
                                 <h:outputText value="#{item.branch.abbreviation}" />
+                            </p:column>
+
+                            <p:column headerText="Type" filterBy="#{item.transactiontype}" filterMatchMode="contains">
+                                <h:outputText value="#{item.transactiontype}" />
                             </p:column>
                         </p:dataTable>
                     </div>

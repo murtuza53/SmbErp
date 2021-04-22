@@ -5,7 +5,6 @@
  */
 package com.smb.erp.controller;
 
-import com.smb.erp.entity.Account;
 import com.smb.erp.entity.SystemDefaults;
 import com.smb.erp.entity.VatCategory;
 import com.smb.erp.repo.VatCategoryRepository;

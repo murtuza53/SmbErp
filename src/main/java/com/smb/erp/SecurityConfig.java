@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // require all requests to be authenticated except for the resources
-        http.authorizeRequests().antMatchers("/javax.faces.resource/**", "/viewer/**" /*,"/**"*/).permitAll()
+        http.authorizeRequests().antMatchers("/javax.faces.resource/**", "/viewer/**", "/rest/**" /*,"/**"*/).permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 //.antMatchers("/jamaat/**").hasAnyAuthority("ADMIN", "JAMAAT_ADMIN")
                 //.antMatchers("/famb/**").hasAnyAuthority("ADMIN", "FAMB_ADMIN")

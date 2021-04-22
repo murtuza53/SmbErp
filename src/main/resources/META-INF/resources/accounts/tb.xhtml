@@ -55,31 +55,33 @@
                             <f:facet name="right">
                                 <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
                                     <p:tooltip value="Export to PDF" for="exportPdf"/>
-                                    <l:dataExporter id="exportPdf" source="datalist" fileType="pdf" fileName="TrialBalance"/>
+                                    <l:dataExporter id="exportPdf" source="cattree" fileType="pdf" fileName="TrialBalance"/>
                                 </p:commandButton>
 
                                 <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
                                     <p:tooltip value="Export to Excel" for="exportXLS"/>
-                                    <l:dataExporter id="exportXLS" source="datalist" fileType="excel" fileName="TrialBalance"/>
+                                    <l:dataExporter id="exportXLS" source="cattree" fileType="excel" fileName="TrialBalance"/>
                                 </p:commandButton>
 
                                 <p:commandButton id="exportCSV" icon="fa fa-file-text-o" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2" ajax="false">
                                     <p:tooltip value="Export to CSV" for="exportCSV"/>
-                                    <l:dataExporter id="exportCSV" source="datalist" fileType="csv" fileName="TrialBalance"/>
+                                    <l:dataExporter id="exportCSV" source="cattree" fileType="csv" fileName="TrialBalance"/>
                                 </p:commandButton>
                             </f:facet>
                         </p:toolbar>
                         <p:treeTable id="cattree" value="#{trialBalanceController.root}" var="node" size="small"
                                      resizableColumns="true" selectionMode="single" selection="#{trialBalanceController.selectedNode}">
                             <!--rowStyleClass="#{node.tbBal == 0.0  ? 'ui-helper-hidden' : ''}"-->
-                            <p:column headerText="Id">
+                            
+                            <p:column headerText="Id" style="#{trialBalanceController.findNodeStyle(node)}">
                                 <h:outputText value="#{node.accountid}"/>
                             </p:column>
-                            <p:column headerText="Account">
+                            
+                            <p:column headerText="Account" style="width: 25%; #{trialBalanceController.findNodeStyle(node)}">
                                 <h:outputText value="#{node.accountname}" />
                             </p:column>
 
-                            <p:column sortBy="#{node.openingBal.debit}" style="text-align:right">
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Opn.Dr"/>
                                 </f:facet>
@@ -87,7 +89,8 @@
                                     <f:convertNumber type="number" pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                            <p:column sortBy="#{node.openingBal.credit}" style="text-align:right">
+                            
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Opn.Cr"/>
                                 </f:facet>
@@ -96,7 +99,7 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:column sortBy="#{node.currentBal.debit}" style="text-align:right">
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Cur.Dr"/>
                                 </f:facet>
@@ -104,7 +107,7 @@
                                     <f:convertNumber type="number" pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                            <p:column sortBy="#{node.currentBal.credit}" style="text-align:right">
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Cur.Cr"/>
                                 </f:facet>
@@ -113,7 +116,7 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:column sortBy="#{node.closingBal.debit}" style="text-align:right">
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Clo.Dr"/>
                                 </f:facet>
@@ -121,7 +124,7 @@
                                     <f:convertNumber type="number" pattern="#,##0.000" />
                                 </h:outputText>
                             </p:column>
-                            <p:column sortBy="#{node.closingBal.credit}" style="text-align:right">
+                            <p:column style="text-align:right; #{trialBalanceController.findNodeStyle(node)}">
                                 <f:facet name="header">
                                     <h:outputText value="Clo.Cr"/>
                                 </f:facet>

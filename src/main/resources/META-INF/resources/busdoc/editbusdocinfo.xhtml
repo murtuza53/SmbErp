@@ -36,19 +36,19 @@
                         <p:inputText id="name" placeholder="Document Name" value="#{busDocInfoController.selected.docname}"/>
 
                         <p:outputLabel value="Document Type:" for="dtype" />
-                        <p:selectOneMenu id="dtype" value="#{busDocInfoController.selected.doctype}" converter="#{entityConverter}" 
+                        <p:selectOneMenu id="dtype" value="#{busDocInfoController.selected.doctype}"
                                          effect="fold" style="width:100%">
                             <f:selectItems value="#{busDocInfoController.busDocTypes}" />
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Transaction Type:" for="ttype" />
-                        <p:selectOneMenu id="ttype" value="#{busDocInfoController.selected.transactiontype}" converter="#{entityConverter}" 
+                        <p:selectOneMenu id="ttype" value="#{busDocInfoController.selected.transactiontype}"
                                          effect="fold" style="width:100%">
                             <f:selectItems value="#{busDocInfoController.busDocTransactionTypes}" />
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Account Type:" for="actype" />
-                        <p:selectOneMenu id="actype" value="#{busDocInfoController.selected.accounttype}" converter="#{entityConverter}" 
+                        <p:selectOneMenu id="actype" value="#{busDocInfoController.selected.accounttype}"
                                          effect="fold" style="width:100%">
                             <f:selectItems value="#{busDocInfoController.busDocAccountTypes}" />
                         </p:selectOneMenu>
@@ -257,7 +257,7 @@
 
                             <p:commandButton id="btndefdelete" icon="fa fa-trash" update="deftable"
                                              styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                             disabled="#{empty busDocInfoController.selectedCashRegister}"
+                                             disabled="#{empty busDocInfoController.selectedDefaultAccount}"
                                              actionListener="#{busDocInfoController.deleteDefaultModeAccount()}"/>
                         </f:facet>
                         <p:dataTable id="deftable" var="reg" widgetVar="deftable"

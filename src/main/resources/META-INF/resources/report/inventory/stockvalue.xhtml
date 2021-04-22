@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">
+        Stock Value
+    </ui:define>
+
+    <ui:param name="viewname" value="Stock Value" />
+
+    <ui:define name="content">
+        <h:form id="LoadPageForm">
+            <p:remoteCommand name="rc" 
+                             process="@this"
+                             update=":growl, :mainform:tablelist" 
+                             actionListener="#{stockReportController.refreshValue()}" 
+                             autoRun="true"/>
+        </h:form>
+        <h:form id="mainform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="doclist" header="" toggleable="true">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             actionListener="#{stockReportController.refreshValue()}"
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="From Date" for="fromdate" />
+                                <p:datePicker id="fromdate" pattern="dd/MM/yyyy" value="#{stockReportController.toDate}" 
+                                              title="From Date"  showIcon="true"
+                                              required="true" requiredMessage="Please select Date"/>
+                            </div>
+                            <div class="p-field p-col-12 p-md-6">
+                                <p:outputLabel value="Group By" for="groupby" />
+                                <p:selectOneMenu id="groupby" value="#{stockReportController.selectedGroupBy}" effect="fade">
+                                    <f:selectItem itemLabel="None" itemValue="None"/>
+                                    <f:selectItem itemLabel="Product Group" itemValue="Group"/>
+                                    <f:selectItem itemLabel="Brand" itemValue="Brand"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <br/>
+                    <br/>
+                    <p:panel id="tablelist" header="" styleClass="card">
+                        <f:facet name="actions">
+                            <p:commandButton id="exportPdf" icon="fa fa-file-pdf-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to PDF" for="exportPdf"/>
+                                <p:dataExporter type="pdf" target="prodtable" fileName="StockList"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="exportXLS" icon="fa fa-file-excel-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2">
+                                <p:tooltip value="Export to Excel" for="exportXLS"/>
+                                <p:dataExporter type="xls" target="prodtable" fileName="StockList" />
+                            </p:commandButton>
+
+                            <p:commandButton id="exportCSV" icon="fa fa-file-text-o" ajax="false" styleClass="#{systemDefaultsController.systemButtonStyle}">
+                                <p:tooltip value="Export to CSV" for="exportCSV"/>
+                                <p:dataExporter type="csv" target="prodtable" fileName="StockList" />
+                            </p:commandButton>
+
+                        </f:facet>
+                        <p:dataTable id="prodtable" var="prod"
+                                     value="#{stockReportController.stockList}" widgetVar="ptable"
+                                     emptyMessage="No Stock found"
+                                     styleClass="products-table ui-datatable-striped ui-datatable-sm"
+                                     size="small">
+                            <p:column headerText="Stock#" sortBy="#{prod.productid}" filterBy="#{prod.productid}" filterMatchMode="contains"
+                                      style="width: 70px">
+                                <h:outputText value="#{prod.productid}" />
+                            </p:column>
+
+                            <p:column headerText="Product" sortBy="#{prod.productname}" filterBy="#{prod.productname}" filterMatchMode="contains"
+                                      style="width: 30%">
+                                <h:outputText value="#{prod.productname}" />
+                            </p:column>
+
+                            <p:column headerText="SupCode" sortBy="#{prod.supcode}" filterBy="#{prod.supcode}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.supcode}" />
+                            </p:column>
+
+                            <p:column headerText="Category" sortBy="#{prod.category}" filterBy="#{prod.category}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.category}" />
+                            </p:column>
+
+                            <p:column headerText="Brand" sortBy="#{prod.brand}" filterBy="#{prod.brand}" filterMatchMode="contains">
+                                <h:outputText value="#{prod.brand}" />
+                            </p:column>
+
+                            <p:column headerText="Unit" sortBy="#{prod.unit}" filterBy="#{prod.unit}" filterMatchMode="contains" style="width: 70px">
+                                <h:outputText value="#{prod.unit}" />
+                            </p:column>
+
+                            <p:column headerText="Price">
+                                <h:outputText value="#{systemDefaultsController.formatDecimal(prod.price)}" />
+                            </p:column>
+
+                            <c:forEach items="#{stockReportController.branchList}" var="branch">
+                                <p:column headerText="#{branch} Qty" style="text-align: right; #{prod.findStockStyle(branch)}">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(prod.findStock(branch))}"/>
+                                </p:column> 
+                                <p:column headerText="#{branch} Total" style="text-align: right; #{prod.findStockStyle(branch)}">
+                                    <h:outputText value="#{systemDefaultsController.formatDecimal(prod.findStockValue(branch))}"/>
+                                </p:column> 
+                            </c:forEach>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="5" style="text-align:right" footerText="Totals:"/>
+                                    <ui:repeat value="#{stockReportController.branchList}" var="branch">
+                                        <p:column style="text-align: right; font-weight: bold}" 
+                                                  footerText="#{systemDefaultsController.formatDecimal(stockReportController.totalRow.findStockValue(branch))}"/>
+                                    </ui:repeat>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

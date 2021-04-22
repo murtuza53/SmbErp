@@ -21,7 +21,7 @@
                             <f:facet name="actions">
                                 <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                                  actionListener="#{businessPartnerController.refresh()}" 
-                                                 update="@form :growl" icon="fa fa-refresh" />
+                                                 update="@form, :growl" icon="fa fa-refresh" />
                                 <p:commandButton id="btnimport" title="Import Transactions" icon="fas fa-download" 
                                                  styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
                                                  oncomplete="PF('TransDialog').show()" update=":transform"/>
@@ -57,7 +57,26 @@
                     </div>
 
                     <div class="p-col-12 p-md-12">
-                        <div class="card table-demo">
+                        <p:panel header="List of Business Partners" styleClass="card">
+                            <f:facet name="actions">
+                                <div class="customers-table-header">
+                                    <div>
+                                        <span class="ui-input-icon-left filter-container">
+                                            <i class="pi pi-search"></i>
+                                            <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
+                                        </span>
+                                        <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                                         actionListener="#{businessPartnerController.newTab_In_newBtab()}"
+                                                         ajax="false" onclick="form.target = '_blank'"/>
+                                        <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
+                                                         styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                                         disabled="#{businessPartnerController.companyDisabled}" 
+                                                         actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                                         ajax="false" onclick="form.target = '_blank'"/>
+                                    </div>
+                                </div>
+                            </f:facet>
                             <p:dataTable id="transtable" var="bus" widgetVar="btable"
                                          value="#{businessPartnerController.items}"
                                          selectionMode="single"
@@ -67,37 +86,21 @@
                                          emptyMessage="No Business Partner found"
                                          styleClass="ui-datatable-striped ui-datatable-sm ui-datatable-gridlines"
                                          style="font-size: small">
-                                <f:facet name="header">
-                                    <div class="customers-table-header">
-                                        <span style="font-weight: bold">List of Business Partners</span>
 
-                                        <div>
-                                            <span class="ui-input-icon-left filter-container">
-                                                <i class="pi pi-search"></i>
-                                                <p:inputText id="globalFilter" onkeyup="PF('btable').filter()" placeholder="Search" styleClass="p-mr-2 p-mb-2"/>
-                                            </span>
-                                            <p:commandButton id="btnnew" title="New Business Partner" icon="fa fa-plus" process="@this"
-                                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
-                                                             actionListener="#{businessPartnerController.newTab_In_newBtab()}"
-                                                             ajax="false" onclick="form.target = '_blank'"/>
-                                            <p:commandButton id="btnedit" title="New Business Partner" icon="fa fa-pencil" process="@this" 
-                                                             styleClass="#{systemDefaultsController.systemButtonStyle}"
-                                                             disabled="#{businessPartnerController.companyDisabled}" 
-                                                             actionListener="#{businessPartnerController.editTab_In_newBtab()}"
-                                                             ajax="false" onclick="form.target = '_blank'"/>
-                                        </div>
-                                    </div>
-                                </f:facet>
 
-                                <p:ajax event="rowSelect" update=":mainform:transtable:btnedit"/>
-                                <p:column headerText="Id" style="width: 20px; text-align: center"
+                                <p:ajax event="rowSelect" update=":mainform:btnedit"/>
+                                <p:column headerText="Id" style="width: 40px; text-align: center"
                                           sortBy="#{bus.partnerid}" filterBy="#{bus.partnerid}">
                                     <h:outputText value="#{bus.partnerid}" />
                                 </p:column>
 
-                                <p:column headerText="Name" style="width: 20%" 
+                                <p:column headerText="Name" style="width: 30%" 
                                           sortBy="#{bus.companyname}" filterBy="#{bus.companyname}">
                                     <h:outputText value="#{bus.companyname}" />
+                                </p:column>
+
+                                <p:column headerText="Group" sortBy="#{bus.bpgroupid.groupname}" filterBy="#{bus.bpgroupid.groupname}">
+                                    <h:outputText value="#{bus.bpgroupid.groupname}" />
                                 </p:column>
 
                                 <p:column headerText="Email"
@@ -135,7 +138,15 @@
                                     <h:outputText value="#{bus.currentVatRegister.vataccounttypeid}" />
                                 </p:column>
                             </p:dataTable>
-                        </div>
+                            <p:contextMenu for="transtable">
+                                <p:menuitem value="Edit" icon="pi pi-pencil" process="@this"
+                                            actionListener="#{businessPartnerController.editTab_In_newBtab()}"
+                                            ajax="false" target="_blank"/>
+
+                                <p:menuitem value="Refresh" update="transtable" icon="pi pi-refresh"
+                                            onclick="document.getElementById('mainform:btnrefresh').click();"/>
+                            </p:contextMenu>
+                        </p:panel>
                     </div>
                 </div>
             </p:outputPanel>

@@ -1,5 +1,6 @@
 package com.smb.erp.entity;
 
+import com.smb.erp.util.Speller;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -7,6 +8,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * The persistent class for the accdoc database table.
@@ -65,6 +68,10 @@ public class AccDoc implements Serializable {
 
     private Double rate = 1.0;
 
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "paymentno")
+    private PaymentMethod paymentMethod;
+
     //bi-directional many-to-one association to Branch
     @ManyToOne
     @JoinColumn(name = "branchno")
@@ -92,8 +99,17 @@ public class AccDoc implements Serializable {
 
     //bi-directional many-to-one association to LedgerLine
     @OneToMany(mappedBy = "accdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    //@Fetch(FetchMode.SUBSELECT)
+    @Fetch(FetchMode.SUBSELECT)
     private List<LedgerLine> ledlines;
+
+    @Transient
+    private PrintReport currentPrintReport;
+
+    @Transient
+    private String spelledAmountInWords;
+    
+    @Transient
+    private List<PartialPaymentDetail> paymentDetails;
 
     public AccDoc() {
     }
@@ -422,4 +438,129 @@ public class AccDoc implements Serializable {
         this.rate = rate;
     }
 
+    /**
+     * @return the paymentMethod
+     */
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    /**
+     * @param paymentMethod the paymentMethod to set
+     */
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    /**
+     * @return the currentPrintReport
+     */
+    public PrintReport getCurrentPrintReport() {
+        return currentPrintReport;
+    }
+
+    /**
+     * @param currentPrintReport the currentPrintReport to set
+     */
+    public void setCurrentPrintReport(PrintReport currentPrintReport) {
+        this.currentPrintReport = currentPrintReport;
+    }
+
+    public String getReportTitle() {
+        if (getCurrentPrintReport() != null) {
+            return getCurrentPrintReport().getReportname();
+        }
+        return getBusdocinfo().getDocname();
+    }
+
+    public String getCompany() {
+        StringBuilder com = null;
+        if (getLedlines() != null) {
+            for (LedgerLine line : getLedlines()) {
+                if (line.getAccount().getBusinesspartner() != null) {
+                    if (com == null) {
+                        com = new StringBuilder(line.getAccount().getBusinesspartner().getCompanyname());
+                    } else {
+                        if (!com.toString().contains(line.getAccount().getBusinesspartner().getCompanyname())) {
+                            com.append(", ").append(line.getAccount().getBusinesspartner().getCompanyname());
+                        }
+                    }
+                }
+            }
+        }
+        if (com == null) {
+            return null;
+        }
+        return com.toString();
+    }
+
+    public String getSpelledAmountInWords() {
+        return Speller.spellAmount(getCurrency().getCurrencysym(), getTotalDebit());
+    }
+
+    public void setSpelledAmountInWords(String value) {
+        this.spelledAmountInWords = value;
+    }
+
+    /**
+     * @return the paymentDetails
+     */
+    public List<PartialPaymentDetail> getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    /**
+     * @param paymentDetails the paymentDetails to set
+     */
+    public void setPaymentDetails(List<PartialPaymentDetail> paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
+
+    public void preparePaymentDetailsForPrinting(){
+        setPaymentDetails(new LinkedList());
+        if(getLedlines()!=null){
+            for(LedgerLine line: getLedlines()){
+                if(line.getPpdetails()==null || line.getPpdetails().isEmpty()){
+                    PartialPaymentDetail ppd = new PartialPaymentDetail();
+                    ppd.setLedline(line);
+                    ppd.setPplineno(0l);
+                    getPaymentDetails().add(ppd);
+                } else {
+                    for(PartialPaymentDetail ppd: line.getPpdetails()){
+                        getPaymentDetails().add(ppd);
+                    }
+                }
+            }
+        }
+    }
+    
+    public static AccDoc clone(AccDoc doc){
+        AccDoc newdoc = new AccDoc();
+        newdoc.setBranch(doc.getBranch());
+        newdoc.setBusdocinfo(doc.getBusdocinfo());
+        newdoc.setCreatedon(doc.getCreatedon());
+        newdoc.setCurrency(doc.getCurrency());
+        newdoc.setDescription(doc.getDescription());
+        newdoc.setDocdate(doc.getDocdate());
+        newdoc.setEmp(doc.getEmp());
+        newdoc.setManualno(doc.getManualno());
+        newdoc.setExtra1(doc.getExtra1());
+        newdoc.setExtra2(doc.getExtra2());
+        newdoc.setExtra3(doc.getExtra3());
+        newdoc.setExtra4(doc.getExtra4());
+        newdoc.setExtra5(doc.getExtra5());
+        newdoc.setExtra6(doc.getExtra6());
+        newdoc.setExtra7(doc.getExtra7());
+        newdoc.setExtra8(doc.getExtra8());
+        newdoc.setExtra9(doc.getExtra9());
+        newdoc.setExtra10(doc.getExtra10());
+        newdoc.setExtra11(doc.getExtra11());
+        newdoc.setExtra12(doc.getExtra12());
+        
+        for(LedgerLine line: doc.getLedlines()){
+            newdoc.addLedline(LedgerLine.clone(line));
+        }
+        return newdoc;
+    }
+    
 }

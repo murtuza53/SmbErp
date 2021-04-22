@@ -21,7 +21,7 @@
         <ui:insert name="head"/>
     </h:head>
 
-    <h:body styleClass="#{guestPreferences.inputStyleClass}">
+    <h:body style="font-size: smaller" styleClass="#{guestPreferences.inputStyleClass}">
 
         <div class="layout-wrapper #{guestPreferences.layoutClass} #{guestPreferences.sidebarThemeClass}" data-theme="#{guestPreferences.menuTheme}">
             <ui:include src="./sidebar.xhtml"></ui:include>
@@ -65,6 +65,7 @@
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
         <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
         <h:outputStylesheet name="css/nanoscroller.css"/>
+        <h:outputStylesheet name="css/custom.css"/>
         <h:outputStylesheet name="css/primeflex.min.css" library="diamond-layout" />
         <h:outputStylesheet id="layout-scheme" name="css/layout-#{guestPreferences.scheme}.css" library="diamond-layout" />
         <h:outputStylesheet name="css/primeicons.css" library="diamond-layout" />

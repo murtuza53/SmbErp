@@ -16,13 +16,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.web.context.annotation.SessionScope;
 
 /**
@@ -110,8 +110,9 @@ public class ApplicationMenuController implements Serializable {
             i.setIcon(m.getIcon());
         }
         if (m.getListurl() != null) {
-            i.setUrl("../../" + m.getListurl());
-            //i.setUrl("/" + m.getModule() + "/" + m.getAppmenuid());
+            i.setUrl(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/" + m.getListurl());
+            //i.setUrl("../../" + m.getListurl());
+            ////i.setUrl("/" + m.getModule() + "/" + m.getAppmenuid());
         }
 
         return i;

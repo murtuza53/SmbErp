@@ -1,5 +1,7 @@
 package com.smb.erp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -37,7 +39,9 @@ public class EmpRole implements Serializable {
     
     private Integer level;
 
-    @ManyToMany(mappedBy="emproles", fetch = FetchType.EAGER)
+    //@JsonBackReference
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="roleid")
+    @ManyToMany(mappedBy="emproles", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     private List<Emp> emps;
 

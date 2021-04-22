@@ -8,14 +8,15 @@ package com.smb.erp.controller;
 import com.smb.erp.UserSession;
 import com.smb.erp.entity.Branch;
 import com.smb.erp.entity.BusDocInfo;
-import com.smb.erp.entity.BusDocTransactionType;
 import com.smb.erp.entity.BusDocType;
 import com.smb.erp.entity.Company;
 import com.smb.erp.entity.Product;
 import com.smb.erp.entity.ProductTransaction;
+import com.smb.erp.entity.ProductTransactionExecution;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.CompanyRepository;
 import com.smb.erp.repo.ProductRepository;
+import com.smb.erp.repo.ProductTransactionExecutionRepository;
 import com.smb.erp.repo.ProductTransactionRepository;
 import com.smb.erp.report.NativeQueryReportObject;
 import com.smb.erp.report.NativeQueryTableModel;
@@ -31,6 +32,7 @@ import javax.persistence.Query;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -50,9 +52,15 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
     @Autowired
     CompanyRepository companyRepo;
+    
+    @Autowired
+    BranchController branchCon;
 
     @Autowired
     ProductRepository productRepo;
+
+    @Autowired
+    ProductTransactionExecutionRepository pteRepo;
 
     @Autowired
     UserSession userSession;
@@ -82,7 +90,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         if (getSelectProduct() == null) {
             items = new LinkedList<ProductTransaction>();
         } else {
-            items = repo.findStockMovement(getSelectProduct().getProductid(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate), BusDocTransactionType.INVENTORY.getValue());
+            items = repo.findStockMovement(getSelectProduct().getProductid(), DateUtil.startOfDay(fromDate), DateUtil.endOfDay(toDate));
             //System.out.println("FETCHED: " + getSelectProduct() + " => " + items);
             if (items != null) {
                 Double bal = repo.findStockBalanceByCompany(getSelectProduct().getProductid(), userSession.getLoggedInCompany().getCompanyid(), DateUtil.startOfDay(fromDate));
@@ -103,6 +111,20 @@ public class ProductTransactionController extends AbstractController<ProductTran
                 System.out.println(items.size() + " transactions listed from " + fromDate + " to " + toDate + ": " + getSelectProduct());
             }
         }
+    }
+    
+    @Transactional
+    public void remove(ProductTransaction pt){
+        if(pt.getToprodtransaction()!=null){
+            for(ProductTransactionExecution pte: pt.getToprodtransaction()){
+                if(pte.getExecutionid()>0){
+                    pte.setFromprodtransid(null);
+                    pte.setToprodtransid(null);
+                    pteRepo.delete(pte);
+                }
+            }
+        }
+        repo.delete(pt);
     }
 
     public void onItemSelect(SelectEvent event) {
@@ -133,7 +155,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
             //System.out.println(bdi.getPrefix() + "\t" + list);
             if (list != null && list.size() > 0) {
                 ptlist.addAll(list);
-                System.out.println(list.get(0));
+                //System.out.println(list.get(0));
             }
         }
         return ptlist;
@@ -159,7 +181,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
             //System.out.println(bdi.getPrefix() + "\t" + list);
             if (list != null && list.size() > 0) {
                 ptlist.addAll(list);
-                System.out.println(list.get(0));
+                //System.out.println(list.get(0));
             }
         }
         return ptlist;
@@ -172,7 +194,8 @@ public class ProductTransactionController extends AbstractController<ProductTran
 
         List<ProductTransaction> pts = new LinkedList<>();
 
-        for (Branch br : com.getBranches()) {
+        List<Branch> blist = branchCon.findBranchByCompanyId(com.getCompanyid());
+        for (Branch br : blist) {
             Double bal = repo.findStockBalanceByBranch(productid, br.getBranchid(), toDate);
             //System.out.println("ProductTransactionController.findStockBalanceByBranch: " + productid + " => " + br.getBranchid() + " => " + bal);
             if (bal == null) {
@@ -212,7 +235,8 @@ public class ProductTransactionController extends AbstractController<ProductTran
         String q = "SELECT pt.productid, p.productname, avg(pt.unitprice) as price,";
 
         String qtotal = null;
-        for (Branch br : com.getBranches()) {
+        List<Branch> blist = branchCon.findBranchByCompanyId(com.getCompanyid());
+        for (Branch br : blist) {
             nqModel.addColumns(new String[]{br.getAbbreviation()}, new Class[]{Double.class}, new String[]{""});
             if (qtotal == null) {
                 qtotal = "pt.branchid=" + br.getBranchid();
@@ -230,7 +254,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
                 + "GROUP BY pt.productid";
         nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
 
-        System.out.println("findStockBalances: " + q);
+        //System.out.println("findStockBalances: " + q);
 
         Query query = ds.createNativeQuery(q);
         query.setParameter("toDate", todate);
@@ -246,11 +270,15 @@ public class ProductTransactionController extends AbstractController<ProductTran
         //        + "ORDER BY p.productname asc";
 
         nqModel.resetModel();
-
+        
+        todate = DateUtil.endOfDay(todate);
+        
         String q = "SELECT ";
 
         String qtotal = null;
-        for (Branch br : com.getBranches()) {
+        
+        List<Branch> blist = branchCon.findBranchByCompanyId(com.getCompanyid());
+        for (Branch br : blist) {
             nqModel.addColumns(new String[]{br.getAbbreviation()}, new Class[]{Double.class}, new String[]{""});
             if (qtotal == null) {
                 qtotal = "pt.branchid=" + br.getBranchid();
@@ -262,7 +290,7 @@ public class ProductTransactionController extends AbstractController<ProductTran
         q = q + "sum(if(" + qtotal + ", pt.received-pt.sold, 0)) as TOTAL "
                 + "FROM prodtransaction as pt, product as p "
                 + "WHERE pt.productid=p.productid AND p.inactive=0 AND pt.transactiontype='Inventory' "
-                + "AND pt.transdate<=:toDate AND p.productid=:productid "
+                + "AND pt.transdate<=:toDate AND p.productid=:productid AND p.producttypeid=1 " //here producttype is 1 for Inventory
                 + "GROUP BY pt.productid";
         nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
         //System.out.println("findStockBalances: " + q);
@@ -271,6 +299,64 @@ public class ProductTransactionController extends AbstractController<ProductTran
         query.setParameter("toDate", todate).setParameter("productid", productid);
         nqModel.setData(NativeQueryReportObject.asReportObjectList(query.getResultList()));
         return nqModel;
+    }
+    
+    public NativeQueryTableModel findStockList(long companyid, Date todate){
+        Company com = companyRepo.getOne(companyid);
+        //String query = "SELECT OBJECT(p) FROM Product as p "
+        //        + "WHERE (TRIM(p.productid) LIKE %:criteria% OR p.productname LIKE %:criteria% OR "
+        //        + "p.supplierscode LIKE %:criteria% OR p.stockid LIKE %:criteria%) AND p.inactive=0 "
+        //        + "ORDER BY p.productname asc";
+
+        nqModel.resetModel();
+        
+        todate = DateUtil.endOfDay(todate);
+        
+        String q = "SELECT p.productid, p.productname, p.supplierscode, pc.catname, br.brandname, u.unitsym, ";
+
+        String qtotal = null;
+        nqModel.addColumns(new String[]{"Sotck#", "Description", "SupCode", "Category", "Brand", "Unit"}, 
+                new Class[]{Long.class, String.class, String.class, String.class, String.class, String.class}, new String[]{"", "", "", "", "", ""});
+
+        List<Branch> blist = branchCon.findBranchByCompanyId(com.getCompanyid());
+        for (Branch br : blist) {
+            nqModel.addColumns(new String[]{br.getAbbreviation()}, new Class[]{Double.class}, new String[]{""});
+            if (qtotal == null) {
+                qtotal = "pt.branchid=" + br.getBranchid();
+            } else {
+                qtotal = qtotal + " OR pt.branchid=" + br.getBranchid();
+            }
+            q = q + "sum(if(pt.branchid=" + br.getBranchid() + ", pt.received-pt.sold, 0)) as " + br.getAbbreviation() + ",";
+        }
+        q = q + "sum(if(" + qtotal + ", pt.received-pt.sold, 0)) as TOTAL "
+                + "FROM prodtransaction as pt, product as p, unit as u, brand as br, prodcategory as pc "
+                + "WHERE pt.productid=p.productid AND p.unitid=u.unitid AND p.brandid=br.brandid AND p.prodcatid=pc.prodcatId "
+                + "AND p.inactive=0 AND pt.transactiontype='Inventory' "
+                + "AND pt.transdate<=:toDate " //here producttype is 1 for Inventory
+                + "GROUP BY pt.productid ORDER BY p.productname";
+        nqModel.addColumns(new String[]{"TOTAL"}, new Class[]{Double.class}, new String[]{""});
+        System.out.println("findStockBalances: " + q);
+
+        Query query = ds.createNativeQuery(q);
+        query.setParameter("toDate", todate);
+        nqModel.setData(NativeQueryReportObject.asReportObjectList(query.getResultList()));
+        return nqModel;
+    }
+
+    public Double findAveragePurchaseOrAdjustment(long productid) {
+        Double cost = repo.findAveragePurchaseOrAdjustment(productid);
+        if (cost == null) {
+            return 0.0;
+        }
+        return cost;
+    }
+
+    public Double findAveragePurchaseOrAdjustment(long productid, Date toDate) {
+        Double cost = repo.findAveragePurchaseOrAdjustment(productid, DateUtil.endOfDay(toDate));
+        if (cost == null) {
+            return 0.0;
+        }
+        return cost;
     }
 
     public double findLastCostPurchaseOrAdjustment(long productid) {

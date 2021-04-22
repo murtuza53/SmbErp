@@ -131,7 +131,8 @@ public class ProductController extends AbstractController<Product> {
         if(getSelected().getProductid()==null || getSelected().getProductid()==0){
             getSelected().setProductid(keyController.getProductNextId());
         }
-        super.save();
+        //super.save();
+        prodRepo.save(getSelected());
         setSelected(prodRepo.getOne(getSelected().getProductid()));
         JsfUtil.addSuccessMessage(getSelected() + " saved successfuly");
     }

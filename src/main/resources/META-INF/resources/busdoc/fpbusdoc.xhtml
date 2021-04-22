@@ -19,14 +19,14 @@
                              process="@this" icon="fa fa-search" styleClass="purple-btn" style="margin: 2px;"/>
         </li>-->
         <li>
-            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl, :toolbarform" ajax="false"
+            <p:commandButton id="btnsave" title="Save" update=":mainform, :growl" ajax="false" process=":mainform" 
                              icon="fa fa-save" styleClass="#{systemDefaultsController.toolbarButtonStyle}"
                              actionListener="#{foreignPurchaseController.save()}"/>
         </li>
 
         <li>
-            <p:commandButton id="btnprint" title="Print" icon="fa fa-print" 
-                             styleClass="#{systemDefaultsController.toolbarButtonStyle}"/>
+            <p:splitButton id="btnprint" title="Print" icon="fa fa-print" model="#{foreignPurchaseController.printButtonModel}"
+                           disabled="#{foreignPurchaseController.printDisabled}" ajax="false"/>
         </li>
 
         <li>
@@ -58,7 +58,7 @@
                                 <p:inputText id="dno" value="#{foreignPurchaseController.selected.docno}" placeholder="Document No" disabled="true"/>
 
                                 <p:outputLabel value="Prepared By:" for="preparedby"/>
-                                <p:inputText id="preparedby" value="Prepard By" placeholder="" disabled="true"/>
+                                <p:inputText id="preparedby" value="#{foreignPurchaseController.selected.emp1}" placeholder="Prepard By" disabled="true"/>
 
                                 <p:outputLabel value="Offload In:" for="branch"/>
                                 <p:selectOneMenu id="branch" value="#{foreignPurchaseController.selected.branch}" converter="#{entityConverter}" 
@@ -110,7 +110,7 @@
                                                label="Total Expense (LC)" decimalPlaces="3" disabled="true"/>
 
                                 <p:outputLabel value="Ratio:" for="ratio"/>
-                                <p:inputNumber id="ratio" widgetVar="ratio" value="#{foreignPurchaseController.ratio}" inputStyle="text-align:right;" 
+                                <p:inputNumber id="ratio" widgetVar="dratio" value="#{foreignPurchaseController.ratio}" inputStyle="text-align:right;" 
                                                label="Landing Ratio" decimalPlaces="7" disabled="true"/>
 
                             </p:panelGrid>
@@ -197,7 +197,7 @@
                                         <f:facet name="input">
                                             <p:selectOneMenu id="curline" value="#{exp.country}" converter="#{entityConverter}" 
                                                              var="t" effect="fade" filter="true" filterMatchMode="contains">
-                                                <p:ajax event="change" listener="#{foreignPurchaseController.currencySelected()}" update="exptable, @widgetVar(expenselc)" />
+                                                <p:ajax event="change" listener="#{foreignPurchaseController.currencySelected()}" update="exptable, @widgetVar(expenselc), :mainform:tabsview:ratio" />
                                                 <f:selectItems value="#{countryController.countryAllDefaultFirst}" var="item" itemLabel="#{item.currencysym}" itemValue="#{item}"/>
                                                 <p:column style="width: 20%">
                                                     <f:facet name="header">
@@ -227,7 +227,7 @@
                                             <p:inputText id="rateline" value="#{exp.rate}" 
                                                          style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Rate">
                                                 <f:convertNumber pattern="#,##0.0000000" />
-                                                <p:ajax update="exptable, @widgetVar(expenselc)" />
+                                                <p:ajax update="exptable, @widgetVar(expenselc), :mainform:tabsview:ratio" />
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -300,7 +300,7 @@
                                             <p:inputText id="amountline" value="#{exp.amount}" 
                                                          style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Rate">
                                                 <f:convertNumber pattern="#,##0.000" />
-                                                <p:ajax update="exptable, @widgetVar(expenselc)" />
+                                                <p:ajax update="exptable, @widgetVar(expenselc), :mainform:tabsview:ratio" />
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -351,10 +351,7 @@
                                 <h:outputText value="#{pt.product.productid}" />
                             </p:column>
 
-                            <p:column headerText="Product" style="width: 30%">
-                                <f:facet name="header">
-                                    <h:outputText value="Product Name"/>
-                                </f:facet>
+                            <p:column headerText="Product" style="width: 25%">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{pt.customizedname}" /></f:facet>
                                     <f:facet name="input">
@@ -368,10 +365,7 @@
                                 <h:outputText value="#{pt.product.unit.unitsym}" />
                             </p:column>
 
-                            <p:column style="text-align: right">
-                                <f:facet name="header">
-                                    <h:outputText value="Qty"/>
-                                </f:facet>
+                            <p:column headerText="Qty" style="text-align: right">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{pt.lineqty}" style="float: right;">
@@ -381,16 +375,13 @@
                                     <f:facet name="input">
                                         <p:inputText id="unit" value="#{pt.lineqty}" style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Quantity">
                                             <f:convertNumber pattern="#,##0.000" />
-                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" update="vamount, namount, :mainform:totalpanel"/>
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
                             <p:column headerText="Price" style="text-align:right">
-                                <f:facet name="header">
-                                    <h:outputText value="Price"/>
-                                </f:facet>
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{pt.linefcunitprice}" style="float: right;">
@@ -401,7 +392,30 @@
                                         <p:inputText id="price" value="#{pt.linefcunitprice}" 
                                                      style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="UnitPrice">
                                             <f:convertNumber pattern="#,##0.000" />
-                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" update="stotal, total, vamount, namount, :mainform:totalpanel"/>
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="SubTotal" style="text-align: right">
+                                <h:outputText id="stotal" value="#{pt.subtotal}">
+                                    <f:convertNumber pattern="#,##0.000" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Discount" style="text-align:right">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{pt.discount}" style="float: right;">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="discount" value="#{pt.discount}" 
+                                                     style="text-align:right; border-left: 5px solid goldenrod; width: 100%;" label="Discount">
+                                            <f:convertNumber pattern="#,##0.000" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" update="total, vamount, namount, :mainform:totalpanel"/>
                                         </p:inputText>
                                     </f:facet>
                                 </p:cellEditor>
@@ -414,9 +428,6 @@
                             </p:column>
 
                             <p:column headerText="VAT Type" style="text-align: center; width: 10%">
-                                <f:facet name="header">
-                                    <h:outputText value="VAT Type"/>
-                                </f:facet>
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{pt.vatsptypeid.typename}" style="font-size: smaller"/>
@@ -425,7 +436,9 @@
                                         <p:selectOneMenu id="vatsptype" style="width:100%" value="#{pt.vatsptypeid}" converter="#{entityConverter}" 
                                                          var="t" effect="fade">
                                             <f:selectItems value="#{foreignPurchaseController.vatSalesPurchaseType}" var="item" itemLabel="#{item.typename}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
-                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()"/>
+                                            <p:ajax listener="#{foreignPurchaseController.updateVatCategory(pt)}" 
+                                                    update="@this, vattype1, vattype2, vamount, namount, :mainform:totalpanel"
+                                                    process="@this"/>
                                             <p:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Name"/>
@@ -438,18 +451,17 @@
                             </p:column>
 
                             <p:column headerText="VAT %" style="text-align: center">
-                                <f:facet name="header">
-                                    <h:outputText value="VAT %"/>
-                                </f:facet>
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{pt.vatcategoryid.categoryname}"/>
+                                        <h:outputText id="vattype1" value="#{pt.vatcategoryid.categoryname}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:selectOneMenu id="vattype" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
+                                        <p:selectOneMenu id="vattype2" style="width:100%" value="#{pt.vatcategoryid}" converter="#{entityConverter}" 
                                                          var="t" effect="fade">
                                             <f:selectItems value="#{foreignPurchaseController.vatCatogories}" var="item" itemLabel="#{item.categoryname}" itemValue="#{item}"/>                                        <p:ajax update="total, vamount, namount" />
-                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" oncomplete="onCellEdit()" />
+                                            <p:ajax listener="#{foreignPurchaseController.refreshTotal(pt)}" 
+                                                    update="@this, vamount, namount, :mainform:totalpanel"
+                                                    process="@this"/>
                                             <p:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Name"/>
@@ -473,7 +485,7 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:summaryRow id="tablesummary">
+                            <!--<p:summaryRow id="tablesummary">
                                 <p:column></p:column>
                                 <p:column></p:column>
                                 <p:column></p:column>
@@ -497,7 +509,7 @@
                                         <f:convertNumber pattern="#,##0.000" />
                                     </h:outputText>
                                 </p:column>
-                            </p:summaryRow>
+                            </p:summaryRow>-->
 
                         </p:dataTable>
                     </div>
@@ -608,7 +620,7 @@
                     </p:column>
 
                     <p:column style="width: 30%; text-align: right" headerText="Value">
-                        <h:outputText id="pcol2" value="#{trans.balance}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <h:outputText id="pcol2" value="#{systemDefaultsController.formatDecimal(trans.balance)}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
                         <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.branch.company.companyname}" showEffect="clip" position="left"/> 
                     </p:column>
                 </p:dataTable>
@@ -627,7 +639,7 @@
                     </p:column>
 
                     <p:column style="width: 30%; text-align: right" headerText="Value">
-                        <h:outputText id="scol2" value="#{trans.fcunitprice}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
+                        <h:outputText id="scol2" value="#{systemDefaultsController.formatDecimal(trans.fcunitprice)}" style="font-size: 12px;" styleClass="p-col-12 p-md-12"/>
                         <p:tooltip id="toolTipGrow2" for="scol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
                     </p:column>
                 </p:dataTable>
@@ -645,7 +657,7 @@
                     </p:column>
 
                     <p:column style="width: 30%; text-align: right" headerText="Value">
-                        <h:outputText id="pcol2" value="#{trans.fcunitprice}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
+                        <h:outputText id="pcol2" value="#{systemDefaultsController.formatDecimal(trans.fcunitprice)}" style="font-size: 12px" styleClass="p-col-12 p-md-12"/>
                         <p:tooltip id="toolTipGrow2" for="pcol2" value="#{trans.busdoc.businesspartner.companyname}" showEffect="clip" position="left"/> 
                     </p:column>
                 </p:dataTable>

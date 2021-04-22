@@ -1,6 +1,7 @@
 package com.smb.erp.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class Country implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long countryno;
+    private Long countryno = new Date().getTime();
 
     private String countryname;
 
@@ -34,15 +35,12 @@ public class Country implements Serializable {
     //bi-directional many-to-one association to AccDoc
     //@OneToMany(mappedBy = "country")
     //private List<AccDoc> accdocs;
-
     //bi-directional many-to-one association to BusinessPartner
     //@OneToMany(mappedBy = "country")
     //private List<BusinessPartner> businesspartners;
-
     //bi-directional many-to-one association to Product
     //@OneToMany(mappedBy = "country")
     //private List<Product> products;
-
     public Country() {
     }
 
@@ -167,7 +165,6 @@ public class Country implements Serializable {
 
         return product;
     }*/
-
     @Override
     public String toString() {
         return countryname + " [" + countryno + "]";
@@ -176,7 +173,7 @@ public class Country implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.countryno);
+        hash = 53 * hash + Objects.hashCode(this.countryno);
         return hash;
     }
 

@@ -48,8 +48,8 @@ public class Product implements Serializable {
     private Date updatedon = new Date();
 
     //bi-directional many-to-one association to PriceList
-    @OneToMany(mappedBy = "product")
-    private List<PriceList> pricelists;
+    //@OneToMany(mappedBy = "product")
+    //private List<PriceList> pricelists;
 
     @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "prodaccountid")
@@ -60,8 +60,8 @@ public class Product implements Serializable {
     private VatProductRegister vatregisterid;
 
     //bi-directional many-to-one association to ProductTransaction
-    @OneToMany(mappedBy = "product")
-    private List<ProductTransaction> prodtransactions;
+    //@OneToMany(mappedBy = "product")
+    //private List<ProductTransaction> prodtransactions;
 
     //bi-directional many-to-one association to Brand
     @ManyToOne
@@ -200,7 +200,7 @@ public class Product implements Serializable {
         this.updatedon = updatedon;
     }
 
-    public List<PriceList> getPricelists() {
+    /*public List<PriceList> getPricelists() {
         return this.pricelists;
     }
 
@@ -220,9 +220,9 @@ public class Product implements Serializable {
         pricelist.setProduct(null);
 
         return pricelist;
-    }
+    }*/
 
-    public List<ProductTransaction> getProdtransactions() {
+    /*public List<ProductTransaction> getProdtransactions() {
         return this.prodtransactions;
     }
 
@@ -242,7 +242,7 @@ public class Product implements Serializable {
         prodtransaction.setProduct(null);
 
         return prodtransaction;
-    }
+    }*/
 
     public Brand getBrand() {
         return this.brand;

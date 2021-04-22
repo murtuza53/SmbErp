@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The persistent class for the ppdetails database table.
@@ -19,7 +20,7 @@ public class PartialPaymentDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Long pplineno = 0l;
+    private Long pplineno = ThreadLocalRandom.current().nextLong();
 
     private Double amount = 0.0;
 

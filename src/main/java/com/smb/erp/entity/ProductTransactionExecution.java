@@ -3,6 +3,7 @@ package com.smb.erp.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The persistent class for the prodtransexecution database table.
@@ -17,7 +18,7 @@ public class ProductTransactionExecution implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    private Integer executionid = (int)new Date().getTime();
+    private Integer executionid = ThreadLocalRandom.current().nextInt();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdon;
@@ -25,12 +26,12 @@ public class ProductTransactionExecution implements Serializable {
     private double executionqty;
 
     @JoinColumn(name = "fromprodtransid", referencedColumnName = "prodtransid")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductTransaction fromprodtransid;
 
     //bi-directional many-to-one association to ProductTransaction
     @JoinColumn(name = "toprodtransid", referencedColumnName = "prodtransid")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductTransaction toprodtransid;
 
     public ProductTransactionExecution() {

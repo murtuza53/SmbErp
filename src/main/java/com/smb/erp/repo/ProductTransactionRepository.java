@@ -27,6 +27,12 @@ public interface ProductTransactionRepository extends BaseRepository<ProductTran
     Double findStockBalanceByCompany(@Param("productid") long productid, @Param("companyid") long companyid, @Param("toDate") Date toDate);
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
+                + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND mov.transactiontype='Inventory' "
+                + "ORDER BY mov.transdate DESC")
+    List<ProductTransaction> findStockMovement(@Param("productid") long productid, 
+            @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+
+    @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov "
                 + "WHERE mov.product.productid=:productid AND mov.transdate>=:fromDate AND mov.transdate<=:toDate AND mov.transactiontype=:transactiontype "
                 + "ORDER BY mov.transdate DESC")
     List<ProductTransaction> findStockMovement(@Param("productid") long productid, 
@@ -51,19 +57,27 @@ public interface ProductTransactionRepository extends BaseRepository<ProductTran
     List<ProductTransaction> findLastTransaction(@Param("productid") long productid, 
             @Param("toDate") Date toDate, @Param("doctype") String doctype, Pageable pageable);
 
+    @Query("SELECT avg(mov.cost) FROM ProductTransaction AS mov WHERE (mov.busdoc.busdocinfo.doctype='Purchase' OR mov.busdoc.busdocinfo.doctype='Inventory') " 
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid ORDER BY mov.transdate desc")
+    Double findAveragePurchaseOrAdjustment(@Param("productid") long productid);
+
+    @Query("SELECT avg(mov.cost) FROM ProductTransaction AS mov WHERE (mov.busdoc.busdocinfo.doctype='Purchase' OR mov.busdoc.busdocinfo.doctype='Inventory') " 
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate desc")
+    Double findAveragePurchaseOrAdjustment(@Param("productid") long productid, @Param("toDate") Date toDate);
+
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov WHERE (mov.busdoc.busdocinfo.doctype='Purchase' OR mov.busdoc.busdocinfo.doctype='Inventory') " 
-            + "AND mov.product.productid=:productid ORDER BY mov.transdate desc")
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid ORDER BY mov.transdate desc")
     List<ProductTransaction> findLastCostPurchaseOrAdjustment(@Param("productid") long productid, Pageable pageable);
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov WHERE (mov.busdoc.busdocinfo.doctype='Purchase' OR mov.busdoc.busdocinfo.doctype='Inventory') " 
-            + "AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate desc")
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate desc")
     List<ProductTransaction> findLastCostPurchaseOrAdjustment(@Param("productid") long productid, @Param("toDate") Date toDate, Pageable pageable);
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov WHERE mov.busdoc.busdocinfo.doctype='Purchase' " 
-            + "AND mov.product.productid=:productid ORDER BY mov.transdate desc")
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid ORDER BY mov.transdate desc")
     List<ProductTransaction> findLastCostPurchase(@Param("productid") long productid, Pageable pageable);
 
     @Query("SELECT OBJECT(mov) FROM ProductTransaction AS mov WHERE mov.busdoc.busdocinfo.doctype='Purchase' " 
-            + "AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate desc")
+            + "AND mov.transactiontype='Inventory' AND mov.product.productid=:productid AND mov.transdate<=:toDate ORDER BY mov.transdate desc")
     List<ProductTransaction> findLastCostPurchase(@Param("productid") long productid, @Param("toDate") Date toDate, Pageable pageable);
 }

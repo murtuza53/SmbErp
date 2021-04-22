@@ -11,26 +11,45 @@ import com.smb.erp.entity.Account;
 import com.smb.erp.entity.BusDoc;
 import com.smb.erp.entity.BusDocInfo;
 import com.smb.erp.entity.BusDocTransactionType;
+import com.smb.erp.entity.Country;
 import com.smb.erp.entity.LedgerLine;
+import com.smb.erp.entity.PaymentMethod;
 import com.smb.erp.repo.AccDocRepository;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.BusDocInfoRepository;
 import com.smb.erp.repo.LedgerLineRepository;
 import com.smb.erp.repo.PartialPaymentDetailRepository;
+import com.smb.erp.rest.JasperPrintReportGenerator;
 import com.smb.erp.util.DateUtil;
 import com.smb.erp.util.JsfUtil;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.el.ValueExpression;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import net.sf.jasperreports.engine.JRException;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.filedownload.FileDownloadActionListener;
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
+import org.smberp.json.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +76,9 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
     AccountRepository accRepo;
 
     @Autowired
+    CountryController countryCon;
+
+    @Autowired
     UserSession userSession;
 
     @Autowired
@@ -66,7 +88,13 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
     LedgerLineRepository ledRepo;
 
     @Autowired
+    PageAccessController pageController;
+
+    @Autowired
     EntityManager em;
+
+    @Autowired
+    JasperPrintReportGenerator reportGenerator;
 
     private BusDocInfo docInfo;
 
@@ -86,6 +114,12 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
 
     private Account defaultModeAccount;
 
+    private MenuModel printButtonModel;
+
+    private List<Country> currencyList;
+    
+    private AccDoc copydoc;
+
     //private List<AccountTab> tabs = new LinkedList<>();
     @Autowired
     public AccountVoucherEditController(AccDocRepository repo) {
@@ -99,6 +133,8 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
         HttpServletRequest req = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         String m = req.getParameter("mode");
 
+        setCurrencyList(countryCon.getCurrenyForAccountVoucher());
+
         if (m != null) {
             if (m.equalsIgnoreCase("n")) {   // new business document 
                 String docinfo = req.getParameter("docinfoid");
@@ -107,7 +143,12 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                 doc.setDocdate(new Date());
                 doc.setUpdatedon(doc.getDocdate());
                 doc.setBusdocinfo(docInfo);
+                doc.setEmp(userSession.getLoggedInEmp());
                 setSelected(doc);
+
+                getSelected().setPaymentMethod(new PaymentMethod());
+                getSelected().getPaymentMethod().setPaydate(new Date());
+                getSelected().setCurrency(countryCon.findCountryDefault());
 
                 if (doc.getBusdocinfo().isAccountDebitMode()) { //receipt
                     setDefaultModeAccount(doc.getBusdocinfo().getDebitaccountid());
@@ -119,11 +160,46 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                 mode = DocumentTab.MODE.NEW;
 
                 //docdate = getSelected().getDocdate();
+            } else if (m.equalsIgnoreCase("c")) {
+                String docno = req.getParameter("docno");
+                if (docno != null) {
+                    AccDoc doc = repo.getOne(docno);
+                    docInfo = doc.getBusdocinfo();
+                    copyDocument(doc);
+                }
+
+                if (getSelected().getPaymentMethod() == null) {
+                    getSelected().setPaymentMethod(new PaymentMethod());
+                    getSelected().getPaymentMethod().setPaydate(new Date());
+                }
+
+                //remove items if Debit or Credit Mode
+                if (getSelected().getBusdocinfo().isAccountDebitMode()) { //payment
+                    getSelected().getLedlines().removeIf(s -> s.getDebit() > 0);
+                    setDefaultModeAccount(getSelected().getBusdocinfo().getDebitaccountid());
+                }
+                if (getSelected().getBusdocinfo().isAccountCreditMode()) {    //receipt
+                    getSelected().getLedlines().removeIf(s -> s.getCredit() > 0);
+                    setDefaultModeAccount(getSelected().getBusdocinfo().getCreditaccountid());
+                }
+
+                mode = DocumentTab.MODE.NEW;
+                //docdate = getSelected().getDocdate();
+                for (LedgerLine ll : getSelected().getLedlines()) {
+                    addTab(ll);
+                }
+
+                //docdate = getSelected().getDocdate();
             } else {        //edit mode=e
                 String docno = req.getParameter("docno");
                 if (docno != null) {
                     setSelected(repo.getOne(docno));
                     docInfo = getSelected().getBusdocinfo();
+                }
+
+                if (getSelected().getPaymentMethod() == null) {
+                    getSelected().setPaymentMethod(new PaymentMethod());
+                    getSelected().getPaymentMethod().setPaydate(new Date());
                 }
 
                 //remove items if Debit or Credit Mode
@@ -141,19 +217,118 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                 for (LedgerLine ll : getSelected().getLedlines()) {
                     addTab(ll);
                 }
+                setupPrintMenu();
             }
+            pageController.hasAccess(docInfo);
+        }
+        showGrowl();
+    }
+
+    public void copyDocument(){
+        if(copydoc==null){
+           JsfUtil.addErrorMessage("Invalid document to copy");
+            return;
+        }
+        copyDocument(copydoc, docInfo);
+    }
+    
+    public void copyDocument(AccDoc doc){
+        copyDocument(doc, doc.getBusdocinfo());
+    }
+    
+    public void copyDocument(AccDoc doc, BusDocInfo targetInfo) {
+        if(doc==null){
+            JsfUtil.addErrorMessage("Invalid document to copy");
+            return;
+        }
+        AccDoc newdoc = AccDoc.clone(doc);
+        newdoc.setBusdocinfo(targetInfo);
+        setSelected(newdoc);
+        //System.out.println("CopyDocument: " + getSelected().getDescription());
+        if (newdoc.getPaymentMethod() == null) {
+            newdoc.setPaymentMethod(new PaymentMethod());
+            newdoc.getPaymentMethod().setPaydate(new Date());
+        }
+
+        //remove items if Debit or Credit Mode
+        if (newdoc.getBusdocinfo().isAccountDebitMode()) { //payment
+            newdoc.getLedlines().removeIf(s -> s.getDebit() > 0);
+            setDefaultModeAccount(newdoc.getBusdocinfo().getDebitaccountid());
+        }
+        if (newdoc.getBusdocinfo().isAccountCreditMode()) {    //receipt
+            newdoc.getLedlines().removeIf(s -> s.getCredit() > 0);
+            setDefaultModeAccount(newdoc.getBusdocinfo().getCreditaccountid());
+        }
+
+        mode = DocumentTab.MODE.NEW;
+        //docdate = getSelected().getDocdate();
+        for (LedgerLine ll : getSelected().getLedlines()) {
+            addTab(ll);
         }
     }
 
+    public void makeCopy() throws IOException {
+        if (getSelected() == null) {
+            JsfUtil.addErrorMessage("Document not selected to Copy");
+            return;
+        }
+
+        BusDocInfo info = getSelected().getBusdocinfo();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().redirect(facesContext.getExternalContext().getRequestContextPath() + "/" + getDocInfo().getDocediturl() + "?mode=c&docno=" + getSelected().getDocno());
+        //String url = facesContext.getExternalContext().getRequestContextPath() + "/" + getDocInfo().getDocediturl() + "?mode=c&docno=" + getSelected().getDocno();
+        //PF.current().executeScript("window.open('" + url + "', '_newtab')");
+    }
+
+    public void showGrowl() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        String labelAddedWithSuccess = (String) ec.getSessionMap().remove("addedWithSuccess");
+        //System.out.println("showGrowl: " + labelAddedWithSuccess);
+        //if the flag on context is true show the growl message
+        if (labelAddedWithSuccess != null && labelAddedWithSuccess.equals("true")) {
+            JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
+            PrimeFaces.current().ajax().update(":growl");
+        }
+    }
+    
+    public List<AccDoc> completeFilterBusDoc(String criteria) {
+        return repo.findByAccDocByPrefix(criteria);
+    }
+
+
     @Transactional
     public void save() {
+        if(getSelected().getLedlines()==null || getSelected().getLedlines().isEmpty()){
+            JsfUtil.addErrorMessage("No Transactions found");
+            return;
+        }
+        
+        Double diff = Math.abs(getSelected().getTotalDebit()-getSelected().getTotalCredit());
+        String accuracy = defaultController.getSystemPropertyValue("AccountTransactionAccuracy");
+        if(accuracy == null){
+            accuracy = "0.0001";
+        }
+        if(diff>Double.parseDouble(accuracy)){
+            JsfUtil.addErrorMessage("Total Credit doesn't match with Total Debit");
+            return;
+        }
+        //if(!Objects.equals(getSelected().getTotalDebit(), getSelected().getTotalCredit())){
+        //    JsfUtil.addErrorMessage("Total Credit doesn't match with Total Debit");
+        //    return;
+        //}
+        
         getSelected().setDocdate(DateUtil.setCurrentTime(getSelected().getDocdate()));
         if (mode == DocumentTab.MODE.NEW) {
             getSelected().setDocno(keyCon.getDocNo(getSelected().getBusdocinfo().getPrefix(), DateUtil.getYear(getSelected().getDocdate())));
             getSelected().setCreatedon(new Date());
         }
         getSelected().setUpdatedon(new Date());
-        getSelected().setBranch(userSession.getLoggedInBranch());
+        if (getSelected().getBranch() == null) {
+            getSelected().setBranch(userSession.getLoggedInBranch());
+        }
+        if (getSelected().getEmp() == null) {
+            getSelected().setEmp(userSession.getLoggedInEmp());
+        }
         getSelected().setBusdocinfo(docInfo);
         for (LedgerLine ll : getSelected().getLedlines()) {
             ll.setTransdate(getSelected().getDocdate());
@@ -168,12 +343,12 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
             ll.setTransdate(getSelected().getDocdate());
 
             if (getSelected().getBusdocinfo().isAccountDebitMode()) { //receipt
-                ll.setDebit(getCreditTotal());
-                ll.setFcDebit(getFcCreditTotal());
+                ll.setFcdebit(getFcCreditTotal());
+                ll.setDebit(getCreditTotal() * ll.getRate());
             }
             if (getSelected().getBusdocinfo().isAccountCreditMode()) {    //payment
-                ll.setCredit(getDebitTotal());
-                ll.setFcCredit(getFcDebitTotal());
+                ll.setFccredit(getFcDebitTotal());
+                ll.setCredit(getDebitTotal() * ll.getRate());
             }
 
             getSelected().addLedline(ll);
@@ -196,6 +371,17 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
 
         JsfUtil.addSuccessMessage("Success", getSelected().getDocno() + " saved successfuly");
         mode = DocumentTab.MODE.EDIT;
+        
+        //JsonUtils.writeJson("D:\\brt.json", getSelected());
+
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.getSessionMap().put("addedWithSuccess", "true");
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.getExternalContext().redirect(facesContext.getExternalContext().getRequestContextPath() + "/" + getDocInfo().getDocediturl() + "?mode=e&docno=" + getSelected().getDocno());
+        } catch (IOException ex) {
+            Logger.getLogger(BusDocController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Double getDebitTotal() {
@@ -209,7 +395,7 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
         if (getSelected().getLedlines() == null) {
             return 0.0;
         }
-        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFcDebit()).sum();
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFcdebit()).sum();
     }
 
     public Double getCreditTotal() {
@@ -223,7 +409,7 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
         if (getSelected().getLedlines() == null) {
             return 0.0;
         }
-        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFcCredit()).sum();
+        return getSelected().getLedlines().stream().mapToDouble(a -> a.getFccredit()).sum();
     }
 
     public void addTab(LedgerLine line) {
@@ -245,6 +431,12 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
             tabtable.remove(getSelectedLedgerLine().getAccount().getAccountid());
             ledRepo.delete(selectedLedgerLine);
         }
+    }
+
+    public void updateCurrency(LedgerLine led) {
+        //System.out.println("updateCurrency: " + getSelected().getCurrency());
+        //getSelected().setRate(getSelected().getCurrency().getRate());
+        led.setRate(led.getCurrency().getRate());
     }
 
     public void docdateChange(SelectEvent event) {
@@ -269,6 +461,7 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
             ll.setAccount(acc);
             ll.setBranch(userSession.getLoggedInBranch());
             ll.setTransdate(getSelected().getDocdate());
+            ll.setCurrency(getSelected().getCurrency());
             getSelected().addLedline(ll);
 
             addTab(ll);
@@ -310,7 +503,76 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
                     + " ORDER by a.docdate asc")
                     .getResultList();
         }
+        //remove all docs whose pending value is zero
+        docs.removeIf(d -> d.getTotalPending() == 0);
         return docs;
+    }
+
+    public void callDownloadReport(MenuActionEvent menuActionEvent) {
+        //Create new action event
+        final ActionEvent actionEvent = new ActionEvent(menuActionEvent.getComponent());
+
+        //Create the value expression for the download listener
+        //-> is executed when calling "processAction"!
+        final FacesContext context = FacesContext.getCurrentInstance();
+        final String exprStr = "#{accountVoucherEditController.exportPdf}";
+        final ValueExpression valueExpr = context.getApplication()
+                .getExpressionFactory()
+                .createValueExpression(context.getELContext(), exprStr, StreamedContent.class);
+
+        //Instantiate the download listener and indirectly call "downloadReport()"
+        new FileDownloadActionListener(valueExpr, null, null)
+                .processAction(actionEvent);
+    }
+
+    public StreamedContent getExportPdf() throws JRException {
+        //System.out.println("BusDocController_getExportPdf: " + reportid);
+        //PrintReport rep = null;
+        //for (PrintReport report : getSelected().getBusdocinfo().getReportid()) {
+        //    if (report.getReportid().toString().equalsIgnoreCase(reportid)) {
+        //        rep = report;
+        //    }
+        //}
+        //System.out.println("BusDocController_getExportPdf: " + rep);
+        //getSelected().setCurrentPrintReport(rep);
+        AccDoc doc = repo.getOne(getSelected().getDocno());
+        doc.getBusdocinfo().getAbbreviation();
+        doc.preparePaymentDetailsForPrinting();
+        return reportGenerator.downloadPdf(getSelected().getCurrentPrintReport(), doc, getSelected().getReportTitle());
+    }
+
+    public void setupPrintMenu() {
+        if (getSelected().getBusdocinfo().getReportid() != null
+                && getSelected().getBusdocinfo().getReportid().size() > 0) {
+            setPrintButtonModel(new DefaultMenuModel());
+            getSelected().getBusdocinfo().getReportid().forEach((report) -> {
+                DefaultMenuItem item = new DefaultMenuItem();
+                item.setCommand("#{accountVoucherEditController.callDownloadReport}");
+                item.setAjax(false);
+                item.setValue(report.getReportname());
+                getSelected().setCurrentPrintReport(report);
+                //item.setUrl("../viewer/doc/" + report.getReportid() + "/" + getSelected().getDocno());
+                getPrintButtonModel().getElements().add(item);
+            });
+        }
+    }
+
+    public boolean isPrintDisabled() {
+        return getPrintButtonModel() == null || getPrintButtonModel().getElements().isEmpty();
+    }
+
+    /**
+     * @return the printButtonModel
+     */
+    public MenuModel getPrintButtonModel() {
+        return printButtonModel;
+    }
+
+    /**
+     * @param printButtonModel the printButtonModel to set
+     */
+    public void setPrintButtonModel(MenuModel printButtonModel) {
+        this.printButtonModel = printButtonModel;
     }
 
     /**
@@ -395,6 +657,34 @@ public class AccountVoucherEditController extends AbstractController<AccDoc> {
      */
     public void setDefaultModeAccount(Account defaultModeAccount) {
         this.defaultModeAccount = defaultModeAccount;
+    }
+
+    /**
+     * @return the currencyList
+     */
+    public List<Country> getCurrencyList() {
+        return currencyList;
+    }
+
+    /**
+     * @param currencyList the currencyList to set
+     */
+    public void setCurrencyList(List<Country> currencyList) {
+        this.currencyList = currencyList;
+    }
+
+    /**
+     * @return the copydoc
+     */
+    public AccDoc getCopydoc() {
+        return copydoc;
+    }
+
+    /**
+     * @param copydoc the copydoc to set
+     */
+    public void setCopydoc(AccDoc copydoc) {
+        this.copydoc = copydoc;
     }
 
 }

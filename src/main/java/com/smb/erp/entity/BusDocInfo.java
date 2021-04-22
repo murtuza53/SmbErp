@@ -25,7 +25,7 @@ public class BusDocInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bdinfoid = (int) new Date().getTime();
+    private Integer bdinfoid = 0;
 
     private String abbreviation;
 
@@ -165,7 +165,7 @@ public class BusDocInfo implements Serializable {
     private Account creditaccountid;
 
     //bi-directional many-to-one association to Company
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "pageid")
     private Webpage pageid;
 
@@ -363,7 +363,8 @@ public class BusDocInfo implements Serializable {
      */
     @Override
     public String toString() {
-        return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getPrefix() + '}';
+        //return "BusDocInfo{" + "bdinfoid=" + getBdinfoid() + ", abbreviation=" + getPrefix() + '}';
+        return docname;
     }
 
     @Override

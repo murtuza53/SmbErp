@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/diamond-layout/template.xhtml">
+    <ui:define name="title">
+        Business Partner
+    </ui:define>
+
+    <ui:param name="viewname" value="Business Partner Group" />
+
+    <ui:define name="content">
+        <h:form id="busform">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12">
+                    <p:panel id="companylist" header="List of Business Partners" styleClass="card ui-fluid">
+                        <f:facet name="actions">
+                            <p:commandButton id="btnnew" title="New Group" icon="fa fa-plus"
+                                             actionListener="#{businessPartnerGroupController.prepareCreate()}"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             oncomplete="PF('Dialog').show()" update=":subform"/>
+                            <p:commandButton id="btnedit" title="New Group" icon="fa fa-pen" 
+                                             disabled="#{empty businessPartnerGroupController.selected}"
+                                             styleClass="#{systemDefaultsController.systemButtonStyle} p-mr-2 p-mb-2"
+                                             oncomplete="PF('Dialog').show()" update=":subform"/>
+                            <p:commandButton id="btnrefresh" styleClass="#{systemDefaultsController.systemButtonStyle}"
+                                             actionListener="#{businessPartnerGroupController.refresh()}" 
+                                             update="@form :growl" icon="fa fa-refresh" />
+                        </f:facet>
+
+                        <p:dataTable id="bustable" var="bus" widgetVar="btable"
+                                     value="#{businessPartnerGroupController.items}"
+                                     selectionMode="single"
+                                     selection="#{businessPartnerGroupController.selected}"
+                                     rowKey="#{bus.bpgroupid}"
+                                     emptyMessage="No Business Group found"
+                                     styleClass="products-table ui-datatable-sm ui-datatable-striped"
+                                     style="font-size: small">
+                            <p:ajax event="rowSelect" update=":busform:btnedit"/>
+                            <p:column headerText="Id" style="width: 20px; text-align: center">
+                                <h:outputText value="#{bus.bpgroupid}" />
+                            </p:column>
+
+                            <p:column headerText="Name" style="width: 20%">
+                                <h:outputText value="#{bus.groupname}" />
+                            </p:column>
+
+                            <p:column headerText="Email">
+                                <h:outputText value="#{bus.email}" />
+                            </p:column>
+
+                            <p:column headerText="Phone">
+                                <h:outputText value="#{bus.tel}" />
+                            </p:column>
+
+                            <p:column headerText="Fax">
+                                <h:outputText value="#{bus.fax}" />
+                            </p:column>
+
+                            <p:column headerText="TRN No">
+                                <h:outputText value="#{bus.trnno}" />
+                            </p:column>
+
+                            <p:column headerText="Address">
+                                <h:outputText value="#{bus.fulladdress}" />
+                            </p:column>
+                        </p:dataTable>    
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+        <ui:include src="/pr/bpg.xhtml"/>
+    </ui:define>
+
+</ui:composition>

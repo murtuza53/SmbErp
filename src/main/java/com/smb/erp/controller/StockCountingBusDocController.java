@@ -85,6 +85,9 @@ public class StockCountingBusDocController extends AbstractController<StockCount
     TransactionImportService importService;
 
     @Autowired
+    PageAccessController pageController;
+
+    @Autowired
     TableKeyController keyCon;
 
     private List<StockCountingBatch> countingBatch = new LinkedList<>();
@@ -175,6 +178,7 @@ public class StockCountingBusDocController extends AbstractController<StockCount
                 //docdate = getSelected().getDocdate();
                 prepareCountedReport();
             }
+            pageController.hasAccess(docInfo);
         }
         showGrowl();
     }
@@ -333,6 +337,9 @@ public class StockCountingBusDocController extends AbstractController<StockCount
                 pt.setFcunitprice(b.getCost());
                 pt.setLinefccost(b.getCost());
                 pt.setLinefcunitprice(b.getCost());
+                pt.setUnitprice(b.getCost());
+                pt.setLinecost(b.getCost());
+                pt.setCost(b.getCost());
                 if (b.getDifference() > 0) {
                     pt.setReceived(b.getDifference());
                     pt.setSold(0.0);

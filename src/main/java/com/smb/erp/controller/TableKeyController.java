@@ -5,6 +5,7 @@
  */
 package com.smb.erp.controller;
 
+import com.smb.erp.UserSession;
 import com.smb.erp.entity.TableKey;
 import com.smb.erp.repo.AccountRepository;
 import com.smb.erp.repo.TableKeyRepository;
@@ -26,6 +27,9 @@ public class TableKeyController extends AbstractController<TableKey> {
     
     HashMap<String, String> propertyTable;
 
+    @Autowired
+    UserSession userSession;
+    
     @Autowired
     AccountRepository accountRepo;
     
@@ -57,7 +61,7 @@ public class TableKeyController extends AbstractController<TableKey> {
 
     @Transactional
     public synchronized String getDocNo(String prefix, int year){
-        return prefix + year + getNextKey(prefix+year);
+        return prefix + "-" + userSession.getLoggedInCompany().getAbbreviation() + "-" + (year-2000) + "-" + getNextKey(prefix+year);
     }
     
     @Transactional

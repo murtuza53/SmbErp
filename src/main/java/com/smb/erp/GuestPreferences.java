@@ -39,9 +39,13 @@ public class GuestPreferences implements Serializable {
 
     private String inputStyle = "outlined";
 
-    private List<MenuTheme> menuThemes;
+    private MenuTheme currentMenuTheme;
+    
+    private ComponentTheme currentComponentTheme;
+    
+    private ArrayList<MenuTheme> menuThemes;
 
-    private List<ComponentTheme> componentThemes;
+    private ArrayList<ComponentTheme> componentThemes;
     
     @PostConstruct
     public void init() {
@@ -71,6 +75,9 @@ public class GuestPreferences implements Serializable {
         componentThemes.add(new ComponentTheme("cyan", "#26C6DA"));
         componentThemes.add(new ComponentTheme("pink", "#EC407A"));
         componentThemes.add(new ComponentTheme("teal", "#26A69A"));
+        
+        currentMenuTheme = menuThemes.get(1);
+        currentComponentTheme = componentThemes.get(0);
     }
 
     public String getLayout() {
@@ -150,6 +157,9 @@ public class GuestPreferences implements Serializable {
         if (menuTheme.getComponentTheme() != null) {
             this.componentTheme = menuTheme.getComponentTheme();
         }
+        
+        currentMenuTheme = menuTheme;
+        currentComponentTheme = componentThemes.stream().filter(c->c.getName().equals(componentTheme)).findFirst().orElse(componentThemes.get(0));
     }
 
     public String getScheme() {
@@ -160,6 +170,14 @@ public class GuestPreferences implements Serializable {
         this.scheme = scheme;
     }
 
+    public String getCurrentComponentColor(){
+        return currentComponentTheme.getColor();
+    }
+    
+    public String getCurrentMenuColor(){
+        return currentMenuTheme.getColor();
+    }
+    
     public void onLayoutChange() {
         PrimeFaces.current().executeScript("PrimeFaces.DiamondConfigurator.changeLayout('" + layout + "')");
     }

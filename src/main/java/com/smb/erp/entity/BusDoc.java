@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -99,10 +100,12 @@ public class BusDoc implements Serializable {
 
     private String refno;
 
+    private String lpono;
+
     private Double subtotal = 0.0;
 
     private Double discount = 0.0;
-    
+
     private Double roundoff = 0.0;
 
     private Double totalamount = 0.0;
@@ -166,45 +169,54 @@ public class BusDoc implements Serializable {
     private Country currency;
 
     //bi-directional many-to-one association to PartialPaymentDetail
-    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<BusDocExpense> expenses;
 
     //bi-directional many-to-one association to PartialPaymentDetail
-    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "busdoc", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<PartialPaymentDetail> ppdetails;
 
     @Transient
     private List<Account> accounts;
-    
+
     @Transient
     private Double executedQty;
-    
+
     @Transient
     private Double totalQty;
-    
+
     @Transient
     private String titleBadge;
-    
+
     @Transient
     private String statusCss;
-    
+
     @Transient
     private Double totalPaid;
-        
+
     @Transient
     private Double totalPending;
-    
+
     @Transient
     private Integer invoiceAge;
-    
+
     @Transient
     private Double cumulative;
-    
+
     @Transient
-    String spelledAmountInWords;
-    
+    private Double lineTotalDiscount;
+
+    @Transient
+    private Double totalDiscount;
+
+    @Transient
+    private String spelledAmountInWords;
+
+    @Transient
+    private PrintReport currentPrintReport;
+
     public BusDoc() {
     }
 
@@ -704,7 +716,6 @@ public class BusDoc implements Serializable {
     public String toString() {
         return docno;
     }*/
-
     @Override
     public String toString() {
         return "BusDoc{" + "docno=" + docno + ", busdocinfo=" + busdocinfo + ", docdate=" + docdate + ", extra1=" + extra1 + ", extra2=" + extra2 + ", refno=" + refno + ", emp1=" + emp1 + ", busdocinfo=" + busdocinfo + ", businesspartner=" + businesspartner + ", branch=" + branch + ", currency=" + currency + '}';
@@ -712,13 +723,14 @@ public class BusDoc implements Serializable {
 
     public void refreshTotal() {
         if (getProductTransactions() != null) {
-            setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getSubtotal()).sum());
-            setTotalcost((Double) getProductTransactions().stream().mapToDouble(x -> x.getTotalcost()).sum());
+            setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getFcSubtotal()).sum());
+            setTotalcost((Double) getProductTransactions().stream().mapToDouble(x -> x.getFcTotalcost()).sum());
             if (getSubtotal() == 0) {
-                setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getLineSubtotal()).sum());
+                setSubtotal((Double) getProductTransactions().stream().mapToDouble(x -> x.getFcLineSubtotal()).sum());
             }
-            setTotalamount((Double) getSubtotal() - discount);
+            setTotalamount((Double) getSubtotal() - getTotalDiscount());
             totalvat = getProductTransactions().stream().mapToDouble(x -> x.getVatamount()).sum();
+            //lineTotalDiscount = getProductTransactions().stream().mapToDouble(x -> x.getDiscount()).sum();
             setGrandtotal((Double) getTotalamount() + totalvat - roundoff);
         }
     }
@@ -840,11 +852,11 @@ public class BusDoc implements Serializable {
         if (docstatus.equalsIgnoreCase(DocStatus.CANCELLED.toString()) || docstatus.equalsIgnoreCase(DocStatus.RETURNED.toString())) {
             return docstatus;
         }
-        if(getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_RECEIVABLE.toString())
-                || getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_PAYABLE.toString())){
-            if(getTotalPending()==0){
+        if (getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_RECEIVABLE.toString())
+                || getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_PAYABLE.toString())) {
+            if (getTotalPending() == 0) {
                 return DocStatus.PAID.toString();
-            } else if(getTotalPaid()>0 && getTotalPaid()<getGrandtotal()){
+            } else if (getTotalPaid() > 0 && getTotalPaid() < getGrandtotal()) {
                 return DocStatus.PAID_PARTIAL.toString();
             }
         }
@@ -859,6 +871,38 @@ public class BusDoc implements Serializable {
             }
         }
         return docstatus;
+    }
+
+    public String getDocumentExecutionStatus() {
+        if (docstatus.equalsIgnoreCase(DocStatus.CANCELLED.toString()) || docstatus.equalsIgnoreCase(DocStatus.RETURNED.toString())) {
+            return docstatus;
+        }
+
+        double qty = getTotalQty();
+        double exe = getExecutedQty();
+        if (exe > 0) {
+            if (qty == exe) {
+                return DocStatus.COMPLETED.toString();
+            } else if (exe < qty) {
+                return DocStatus.PARTIAL.toString();
+            }
+        }
+        return DocStatus.PENDING.toString();
+    }
+
+    public String getDocumentPaymentStatus() {
+        if (docstatus.equalsIgnoreCase(DocStatus.CANCELLED.toString()) || docstatus.equalsIgnoreCase(DocStatus.RETURNED.toString())) {
+            return docstatus;
+        }
+        if (getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_RECEIVABLE.toString())
+                || getBusdocinfo().getAccounttype().equalsIgnoreCase(BusDocTransactionType.ACCOUNTS_PAYABLE.toString())) {
+            if (getTotalPending() == 0) {
+                return DocStatus.PAID.toString();
+            } else if (getTotalPaid() > 0 && getTotalPaid() < getGrandtotal()) {
+                return DocStatus.PAID_PARTIAL.toString();
+            }
+        }
+        return DocStatus.PENDING.toString();
     }
 
     /**
@@ -940,6 +984,9 @@ public class BusDoc implements Serializable {
     }
 
     public Double getTotalPaid() {
+        if (busdocinfo.hasCashRegister()) {
+            return getGrandtotal();
+        }
         if (getPpdetails() == null || getPpdetails().isEmpty()) {
             return 0.0;
         }
@@ -985,22 +1032,22 @@ public class BusDoc implements Serializable {
         this.expenses = expenses;
     }
 
-    public Double getExpenseLc(){
-        if(getExpenses()!=null){
+    public Double getExpenseLc() {
+        if (getExpenses() != null) {
             return getExpenses().stream().mapToDouble(o -> o.getAmountlc()).sum();
         }
         return 0.0;
     }
 
-    public Double getExpenseFc(){
-        if(getExpenses()!=null){
+    public Double getExpenseFc() {
+        if (getExpenses() != null) {
             return getExpenses().stream().mapToDouble(o -> o.getAmountfc()).sum();
         }
         return 0.0;
     }
 
     public BusDocExpense addBusDocExpense(BusDocExpense exp) {
-        if (getExpenses()== null) {
+        if (getExpenses() == null) {
             setExpenses(new LinkedList());
         }
         getExpenses().add(exp);
@@ -1015,9 +1062,9 @@ public class BusDoc implements Serializable {
 
         return exp;
     }
-    
-    public int findInvoiceAge(Date toDate){
-        if(getDocdate()!=null){
+
+    public int findInvoiceAge(Date toDate) {
+        if (getDocdate() != null) {
             return DateUtil.getDaysDiff(getDocdate().getTime(), toDate.getTime());
         }
         return 0;
@@ -1064,12 +1111,12 @@ public class BusDoc implements Serializable {
     public void setCurrency(Country currency) {
         this.currency = currency;
     }
-    
-    public String getSpelledAmountInWords(){
+
+    public String getSpelledAmountInWords() {
         return Speller.spellAmount(getCurrency().getCurrencysym(), getGrandtotal());
     }
 
-    public void setSpelledAmountInWords(String value){
+    public void setSpelledAmountInWords(String value) {
         this.spelledAmountInWords = value;
     }
 
@@ -1086,4 +1133,109 @@ public class BusDoc implements Serializable {
     public void setRoundoff(Double roundoff) {
         this.roundoff = roundoff;
     }
+
+    /**
+     * @return the lineTotalDiscount
+     */
+    public Double getLineTotalDiscount() {
+        //return lineTotalDiscount;
+        return getProductTransactions().stream().mapToDouble(x -> x.getDiscount()).sum();
+    }
+
+    /**
+     * @param lineTotalDiscount the lineTotalDiscount to set
+     */
+    public void setLineTotalDiscount(Double lineTotalDiscount) {
+        this.lineTotalDiscount = lineTotalDiscount;
+    }
+
+    /**
+     * @return the totalDiscount
+     */
+    public Double getTotalDiscount() {
+        return getDiscount() + getLineTotalDiscount();
+    }
+
+    /**
+     * @param totalDiscount the totalDiscount to set
+     */
+    public void setTotalDiscount(Double totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
+    /**
+     * @return the currentPrintReport
+     */
+    public PrintReport getCurrentPrintReport() {
+        return currentPrintReport;
+    }
+
+    /**
+     * @param currentPrintReport the currentPrintReport to set
+     */
+    public void setCurrentPrintReport(PrintReport currentPrintReport) {
+        this.currentPrintReport = currentPrintReport;
+    }
+
+    public String getReportTitle() {
+        if (getCurrentPrintReport() != null) {
+            return getCurrentPrintReport().getReporttitle();
+        }
+        return getBusdocinfo().getDocname();
+    }
+
+    public List<BusDocExpense> getForeignExpenses() {
+        List<BusDocExpense> exps = new LinkedList();
+        if (getExpenses() != null) {
+            getExpenses().stream().filter(exp -> (!exp.getCountry().getDefcountry())).forEachOrdered(exp -> {
+                exps.add(exp);
+            });
+        }
+        return exps;
+    }
+
+    public List<BusDocExpense> getLocalExpenses() {
+        List<BusDocExpense> exps = new LinkedList();
+        if (getExpenses() != null) {
+            getExpenses().stream().filter(exp -> (exp.getCountry().getDefcountry())).forEachOrdered(exp -> {
+                exps.add(exp);
+            });
+        }
+        return exps;
+    }
+
+    public String getToDocs() {
+        List<String> list = new LinkedList();
+        if (getProductTransactions() != null) {
+            for (ProductTransaction pt : getProductTransactions()) {
+                list.addAll(pt.getToDocs());
+            }
+        }
+        return list.stream().distinct().collect(Collectors.toList()).toString().replaceAll("\\[|\\]", "");
+    }
+
+    public String getFromDocs() {
+        List<String> list = new LinkedList();
+        if (getProductTransactions() != null) {
+            for (ProductTransaction pt : getProductTransactions()) {
+                list.addAll(pt.getFromDocs());
+            }
+        }
+        return list.stream().distinct().collect(Collectors.toList()).toString().replaceAll("\\[|\\]", "");
+    }
+
+    /**
+     * @return the lpono
+     */
+    public String getLpono() {
+        return lpono;
+    }
+
+    /**
+     * @param lpono the lpono to set
+     */
+    public void setLpono(String lpono) {
+        this.lpono = lpono;
+    }
+
 }

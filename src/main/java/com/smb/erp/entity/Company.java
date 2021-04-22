@@ -52,19 +52,19 @@ public class Company implements Serializable {
     private CompanyGroup companygroup;
 
     //bi-directional many-to-one association to Dept
-    @OneToMany(mappedBy = "company")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Dept> depts;
+    //@OneToMany(mappedBy = "company")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<Dept> depts;
 
     //bi-directional many-to-one association to Emp
-    @OneToMany(mappedBy = "company")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Emp> emps;
+    //@OneToMany(mappedBy = "company")
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<Emp> emps;
 
     //bi-directional many-to-one association to Warehouse
-    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Branch> branches;
+    //@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    //@Fetch(FetchMode.SUBSELECT)
+    //private List<Branch> branches;
 
     public Company() {
     }
@@ -163,7 +163,7 @@ public class Company implements Serializable {
         this.companygroup = companygroup;
     }
 
-    public List<Dept> getDepts() {
+    /*public List<Dept> getDepts() {
         return this.depts;
     }
 
@@ -227,7 +227,7 @@ public class Company implements Serializable {
         br.setCompany(null);
 
         return br;
-    }
+    }*/
     
     @Override
     public String toString() {
